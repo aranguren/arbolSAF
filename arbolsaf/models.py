@@ -160,7 +160,7 @@ class VariableModel(BasicAuditModel):
 
     categoria = models.CharField(_("categoria"), max_length=50)
     
-    especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"), on_delete=models.CASCADE)
+    especie = models.ForeignKey("arbolsaf.SpeciesModel", related_name="variables", verbose_name=_("Especie"), on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre
@@ -195,7 +195,7 @@ class SpeciesModel(BasicAuditModel):
 
     cod_esp = models.CharField(_("Código especie"), max_length=50)
     taxonid_wfo = models.CharField(_("Taxon ID WFO"), max_length=50)
-    nombre_comun = models.CharField(_("Taxon ID WFO"), max_length=255)
+    nombre_comun = models.CharField(_("Nombre comun"), max_length=255)
     nombre_cientifico = models.CharField(_("Nombre científico"), max_length=255)
     nombre_cientifico_completo = models.CharField(_("Nombre científico completo"), max_length=255)
     familia = models.ForeignKey("arbolsaf.FamilyModel", verbose_name=_("Familia"), on_delete=models.RESTRICT)
@@ -206,6 +206,10 @@ class SpeciesModel(BasicAuditModel):
     autor = models.CharField(_("Autor"), max_length=255, blank=True, null=True)
 
     nativa = models.BooleanField(_("Nativa?"))
+
+    @property
+    def get_variables(self):
+        return self.variables.all()
 
     def __str__(self):
         return self.nombre_comun
