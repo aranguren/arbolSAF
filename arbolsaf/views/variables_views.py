@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 import json
 from ..models import VariableModel
-from ..forms import SpeciesForm
+from ..forms import SpeciesForm, VariableO2MForm
 
 
 
@@ -146,6 +146,81 @@ class SpeciesUpdateView(LoginRequiredMixin, UpdateView):
         context['active_menu'] ='arbolsaf'
         return context
 """
+
+
+class VariableO2MCreateView(LoginRequiredMixin, CreateView):
+    model = VariableModel
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_o2m_form.html'
+    form_class = VariableO2MForm
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','species']
+        context['active_menu'] ='arbolsaf'
+        if 'pk' in self.kwargs:
+            context['specie_pk'] = self.kwargs['pk']
+            redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
+            context['species_url'] =  redireccion+'#variablessection'
+        return context
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
+            return redireccion+'#variablessection'
+        #else:
+        #    return reverse_lazy("ganaclima:period_detail", kwargs={"pk":self.object.id})   
+    
+
+
+    def form_valid(self, form):
+        specie = form.save(commit=False)
+        #User = get_user_model()
+
+        specie.created_by = self.request.user # use your own profile here
+        #farm.active=True
+        specie.save()
+        return super(VariableO2MCreateView, self).form_valid(form)
+
+
+class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
+    model = VariableModel
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_o2m_form.html'
+    form_class = VariableO2MForm
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','species']
+        context['active_menu'] ='arbolsaf'
+        context['specie_pk'] = self.object.especie.id
+        redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.object.especie.id})   
+        context['species_url'] =  redireccion+'#variablessection'
+        #if 'pk' in self.kwargs:
+        #    context['specie_pk'] = self.kwargs['pk']
+        #    redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
+        #    context['species_url'] =  redireccion+'#variablessection'
+        return context
+
+    def get_success_url(self):
+
+        redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.object.especie.id})   
+        return redireccion+'#variablessection'
+        #else:
+        #    return reverse_lazy("ganaclima:period_detail", kwargs={"pk":self.object.id})   
+    
+    def form_valid(self, form):
+        specie = form.save(commit=False)
+        #User = get_user_model()
+
+        specie.modified_by = self.request.user # use your own profile here
+        #farm.active=True
+        specie.save()
+        return super(VariableO2MUpdateView, self).form_valid(form)
+
+
 @login_required(login_url='/login/')
 def variable_delete(request):
     resp = {}

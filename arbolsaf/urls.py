@@ -11,6 +11,10 @@ urlpatterns = [
     path('especie/modificar/<str:pk>', SpeciesUpdateView.as_view(), name='species_update'),
     path('especie/eliminar', species_delete, name='species_delete'),
     
+    path('especie/<int:pk>/variable', VariableO2MCreateView.as_view(), name='species_create_variable'),
+    path('especie/variable/modificar/<str:pk>', VariableO2MUpdateView.as_view(), name='species_update_variable'),
+
+
     path('variable/eliminar', variable_delete, name='variable_delete'),
 
 ]

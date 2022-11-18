@@ -1,0 +1,150 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Formulario Variable {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+
+{% endblock stylesheets %}
+
+{% block body_class %} g-sidenav-show bg-gray-100 {% endblock %}
+
+{% block content %}
+
+  <div class="container-fluid py-4">
+
+    <div class="row">
+      <div class="col-lg-12 col-12 mx-auto">
+        <form enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          {% if form.errors %}
+          {% for field in form %}
+              {% for error in field.errors %}
+                  <div class="alert alert-danger text-white">
+                      <strong>{{ error|escape }}</strong>
+                        {{ field.label|capfirst }}
+                  </div>
+              {% endfor %}
+          {% endfor %}
+
+          {% for error in form.non_field_errors %}
+              <div class="alert alert-danger text-white">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endif %}
+        <div class="card card-body mt-4">
+          <!--h6 class="mb-0">New Project</h6>
+          <p class="text-sm mb-0">Create new project</p-->
+            <div class="row">
+              <div class="col-7">
+                {% if not form.instance.id %}
+                <h3>Nueva variable</h3>
+                {% else %}
+                    <h3>Actualizar variable:  <span>'{% firstof variable.nombre|default_if_none:"-" %}'</span></h3>
+                 
+                {% endif %}
+              
+              </div>
+              <div class="col-5">
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-save"></i>&nbsp;&nbsp;Guardar</button>
+                  <a href="{{species_url}}" class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+
+                </div>
+              </div>
+
+            </div>
+
+          <hr class="horizontal dark my-3">
+
+
+          <div class="row mb-2">
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.nombre.label }} {% if form.nombre.field.required %}<span>*</span>{% endif %}</h6>
+                {{ form.nombre }}
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.referencia.label }} {% if form.referencia.field.required %}<span>*</span>{% endif %}</h6>
+                {{ form.referencia }}
+              </div>                
+              
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.tipo_variable.label }} {% if form.tipo_variable.required %}<span>*</span>{% endif %}</h6>
+                {{ form.tipo_variable }}
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.cantidad.label }} {% if form.cantidad.field.required %}<span>*</span>{% endif %}</h6>
+                {{ form.cantidad }}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.rango_superior.label }} {% if form.rango_superior.field.required %}<span>*</span>{% endif %}</h6>
+                {{ form.rango_superior }}
+              </div>   
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.rango_inferior.label }} {% if form.rango_inferior.field.required %}<span>*</span>{% endif %}</h6>
+                {{ form.rango_inferior }}
+              </div>   
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>{{ form.categoria.label }} {% if form.categoria.field.required %}<span>*</span>{% endif %}</h6>
+                {{ form.categoria }}
+              </div>   
+            </div>
+            <div class="col-3">
+              {{ form.especie }}
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    {% include "includes/footer.html" %}
+    
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %} 
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+
+  $(document).ready(function () {
+
+   
+    //alert('el valor es '+{{specie_pk}})
+ 
+
+    document.getElementById("id_especie").value = "{{specie_pk}}";
+    //alert(document.getElementById("id_especie").value);
+     //$("#id_especie").value = {{specie_pk}};
+  
+
+
+});
+
+  
+  
+  </script>
+{% endblock javascripts %}

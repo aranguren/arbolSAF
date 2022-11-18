@@ -25,3 +25,23 @@ class SpeciesForm(forms.ModelForm):
             'autor':forms.TextInput(attrs={'class': 'form-control'}),
             'nativa': forms.CheckboxInput(),                      
             }
+
+
+class VariableO2MForm(forms.ModelForm):
+
+
+    class Meta:
+        model = VariableModel
+        exclude = ("id",'created_by', 'modified_by')
+        widgets = {
+            'nombre':forms.TextInput(attrs={'class': 'form-control'}),
+            'referencia': forms.Select(attrs={'class': 'form-control'}),
+            'tipo_variable': forms.Select(attrs={'class': 'form-control'}),
+            'cantidad':forms.NumberInput(attrs={'class': 'form-control'}),
+            'rango_superior':forms.NumberInput(attrs={'class': 'form-control'}),
+            'rango_inferior':forms.NumberInput(attrs={'class': 'form-control'}),
+            'referencia': forms.Select(attrs={'class': 'form-control'}),
+            'categoria':forms.TextInput(attrs={'class': 'form-control'}),
+            'especie': forms.HiddenInput(),
+            }
+

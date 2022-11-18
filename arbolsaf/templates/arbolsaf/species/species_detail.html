@@ -115,7 +115,8 @@
 </div>
 </div>
 </div>
-<section id="variables">
+<input type="hidden" id="selectedVariable" name="selectedVariableName"/>
+<section id="variablessection">
   <div class="card mt-4" id="geo">
     <div class="card-header">
       <div class="row">
@@ -124,13 +125,13 @@
         </div>
         <div class="col-2">
           <div class="d-flex justify-content-end">
-            <a href="#" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+            <a href="{% url 'arbolsaf:species_create_variable' specie.id %}" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
           </div>
         </div>
       </div>
     </div>
     <div class="card-body d-sm-flex pt-0">
-      <input type="hidden" id="selectedVariable" name="selectedVariableName"/>
+    
       {% if specie.get_variables %}
         <table class="table table-bordered table-hover mt-0" id="mydatatable">
           <thead>
@@ -155,7 +156,7 @@
                 <td>{{ variable.categoria }}</td>
                 <td class="text-center">
                   <a href="#"><i class="far fa-eye me-2" aria-hidden="true"></i></a>
-                  <a href="#"><i class="far fa-edit me-2" aria-hidden="true"></i></a>
+                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2" aria-hidden="true"></i></a>
                   <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin"
                           id="eliminarVariable"
                           data-bs-toggle="modal"
@@ -277,6 +278,7 @@
 
 $(".deletebin").on('click', function () {
   //alert(this.getAttribute('value'))
+  console.log('Estableciendo valot'+this.getAttribute('value'))
   var selectedbin = document.getElementById('selectedVariable')
   selectedbin.value = this.getAttribute('value')
   console.log(selectedbin.value)
@@ -294,14 +296,22 @@ $("#aceptarDeleteVariable").on('click', function () {
           "id": valor
       },
       success: function (response) {
-          console.log(response)
+          //console.log(response)
           $("#deleteVariableModal").modal('hide');
           //$(location).attr('href', "{% url 'arbolsaf:species_detail' specie.id %}"+'#variables');
-          window.location.hash = '#variables';
+          window.location.hash = '#variablessection';
           window.location.reload(true);
+          //$('#variablessection').load(document.URL +  ' #variablessection');
       },
       error: function (response, e) {
           console.log(response);
+          $("#deleteVariableModal").modal('hide');
+          if (response.responseJSON.mensaje =='restricted'){
+               alert(response.responseJSON.error);
+          }
+          else{
+             alert('Ha ocurrido un error al eliminar, Contacte al Administrador');
+          }
       }
   });
 
