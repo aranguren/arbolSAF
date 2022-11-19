@@ -5,8 +5,9 @@ from django.db.models import RestrictedError
 from django.urls import reverse_lazy
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 import json
-from ..models import VariableModel
+from ..models import VariableModel, SpeciesModel
 from ..forms import SpeciesForm, VariableO2MForm
 
 
@@ -147,6 +148,20 @@ class SpeciesUpdateView(LoginRequiredMixin, UpdateView):
         return context
 """
 
+class Variable2MDetailView(LoginRequiredMixin, DetailView):
+    model = VariableModel
+    #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_o2m_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','species']
+        context['active_menu'] ='arbolsaf'
+        context['specie_pk'] = self.object.especie.id
+        redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.object.especie.id})   
+        context['species_url'] =  redireccion+'#variablessection'
+        return context
 
 class VariableO2MCreateView(LoginRequiredMixin, CreateView):
     model = VariableModel
@@ -160,6 +175,8 @@ class VariableO2MCreateView(LoginRequiredMixin, CreateView):
         context['segment'] = ['arbolsaf','species']
         context['active_menu'] ='arbolsaf'
         if 'pk' in self.kwargs:
+            specie_id = get_object_or_404(SpeciesModel, pk=self.kwargs['pk'])
+            context['specie'] =specie_id
             context['specie_pk'] = self.kwargs['pk']
             redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
             context['species_url'] =  redireccion+'#variablessection'

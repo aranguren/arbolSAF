@@ -155,7 +155,7 @@
                 <td>{{ variable.tipo_variable }}</td>
                 <td>{{ variable.categoria }}</td>
                 <td class="text-center">
-                  <a href="#"><i class="far fa-eye me-2" aria-hidden="true"></i></a>
+                  <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2" aria-hidden="true"></i></a>
                   <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2" aria-hidden="true"></i></a>
                   <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin"
                           id="eliminarVariable"
