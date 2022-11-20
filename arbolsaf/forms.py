@@ -23,7 +23,7 @@ class SpeciesForm(forms.ModelForm):
             'epiteto':forms.TextInput(attrs={'class': 'form-control'}),
             'variedad_subespecie':forms.TextInput(attrs={'class': 'form-control'}),
             'autor':forms.TextInput(attrs={'class': 'form-control'}),
-            'nativa': forms.CheckboxInput(),                      
+            'nativa': forms.CheckboxInput(attrs={'class': 'form-check-input '}),                                 
             }
 
 
@@ -45,3 +45,18 @@ class VariableO2MForm(forms.ModelForm):
             'especie': forms.HiddenInput(),
             }
 
+
+
+
+
+#class CreateSynonimForm(forms.Form):
+#    nombre = forms.CharField(label='Nombre', max_length=100)
+#    forms.name = models.ForeignKey('TargetModel', related_name='', on_delete=models.CASCADE)
+class SynonymousForm(forms.ModelForm):
+    class Meta:
+        model = SynonymousModel
+        exclude = ("id",'created_by', 'modified_by')
+        widgets = {
+            'sinonimo':forms.TextInput(attrs={'class': 'form-control'}),
+            'especie': forms.HiddenInput(),
+            }

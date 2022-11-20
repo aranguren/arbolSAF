@@ -24,20 +24,22 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         context['segment'] = ['arbolsaf','species']
         context['active_menu'] ='arbolsaf'
 
-        context['value_name'] = self.request.GET.get('name', '')
+        context['cod_esp_name'] = self.request.GET.get('cod_esp', '')
 
-        if 'name' not in self.request.GET.keys():
+        if 'cod_esp' not in self.request.GET.keys():
             context['has_filters'] = False
         else:
             context['has_filters'] = True
         
-        self.request.session['page_from'] = ""
-        self.request.session['referer'] = {}
+        context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
+        context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
+        context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
+        context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
 
         if context['is_paginated']:
             list_pages = []
 
-            if 'name' not in self.request.GET:
+            if 'cod_esp' not in self.request.GET:
                 for i in range(context['page_obj'].number, context['page_obj'].number + 5):
                     if i <= context['page_obj'].paginator.num_pages:
                         list_pages.append(i)
@@ -67,13 +69,24 @@ class SpeciesListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
 
-        query = {'name': self.request.GET.get('name', None)}
+        query = {
+            'cod_esp': self.request.GET.get('cod_esp', None),
+            'taxonid_wfo': self.request.GET.get('taxonid_wfo', None),
+            'nombre_comun': self.request.GET.get('nombre_comun', None),
+            'nombre_cientifico': self.request.GET.get('nombre_cientifico', None)
+            }
 
 
         query_result =  SpeciesModel.objects.order_by('cod_esp')
 
-        if query['name'] and query['name'] != '':
-            query_result = query_result.filter(name__icontains=query['name'])
+        if query['cod_esp'] and query['cod_esp'] != '':
+            query_result = query_result.filter(cod_esp__icontains=query['cod_esp'])
+        if query['taxonid_wfo'] and query['taxonid_wfo'] != '':
+            query_result = query_result.filter(taxonid_wfo__icontains=query['taxonid_wfo'])
+        if query['nombre_comun'] and query['nombre_comun'] != '':
+            query_result = query_result.filter(nombre_comun__icontains=query['nombre_comun'])
+        if query['nombre_cientifico'] and query['nombre_cientifico'] != '':
+            query_result = query_result.filter(nombre_cientifico__icontains=query['nombre_cientifico'])
 
         return query_result
 

@@ -79,7 +79,7 @@
     <spam class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</span>
   </div>
 </div>
-<div>
+
   <div class="col-3">
     <div class="form-group">
       <h6>Género</h6>
@@ -89,7 +89,7 @@
 <div class="col-3">
   <div class="form-group">
     <h6>Epíteto</h6>
-  <spam class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</span>
+   <spam class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</span>
 </div>
 </div>
 </div>
@@ -109,13 +109,14 @@
 <div class="col-3">
   <div class="form-group">
     <h6>Nativa?</h6>
-  <spam class="mr-2"> {{ log.nativa|yesno:_("SI,NO") }}</span>
+  <spam class="mr-2"> {{ specie.nativa|yesno:_("SI,NO") }}</span>
 </div>
 </div>
 </div>
 </div>
 </div>
 <input type="hidden" id="selectedVariable" name="selectedVariableName"/>
+<input type="hidden" id="selectedSinonimo" name="selectedSinonimoName"/>
 <section id="variablessection">
   <div class="card mt-4" id="geo">
     <div class="card-header">
@@ -155,9 +156,9 @@
                 <td>{{ variable.tipo_variable }}</td>
                 <td>{{ variable.categoria }}</td>
                 <td class="text-center">
-                  <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2" aria-hidden="true"></i></a>
-                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2" aria-hidden="true"></i></a>
-                  <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin"
+                  <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
+                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
+                  <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
                           id="eliminarVariable"
                           data-bs-toggle="modal"
                           data-bs-target="#deleteVariableModal"
@@ -171,6 +172,51 @@
         </table>
       {% else %}
         <h5 style="color: red" class="text-center  float-center">No existen variables</h5>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section id="sinonimosection">
+  <div class="card mt-4" id="geo">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-10">
+          <h5>Sinónimos</h5>
+        </div>
+        <div class="col-2">
+          <div class="d-flex justify-content-end">
+            <a href="{% url 'arbolsaf:species_create_synonymous' specie.id %}" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+
+
+           
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body d-sm-flex pt-0">
+    
+      {% if specie.get_sinonimos %}
+        <table class="table table-bordered table-hover mt-0" id="mydatatable">
+          <tbody>
+            {% for sinonimo in specie.get_sinonimos %}
+              <tr>
+                <td>{{sinonimo}}</td>
+                <td class="text-center">
+                  <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin-sinonimo"
+                          id="eliminarSinonimo"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deletesinonimoModal"
+                          value="{{ sinonimo.id }}">
+                    <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          {% endfor %}
+        </table>
+      {% else %}
+        <h5 style="color: red" class="text-center  float-center">No existen sinónimos</h5>
       {% endif %}
     </div>
   </div>
@@ -233,6 +279,74 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade"
+     id="deletesinonimoModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+        <button type="button"
+                class="btn-close text-dark"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="elim">
+          <!--span aria-hidden="true">&times;</span-->
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar el sinónimoe?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button"
+                class="btn bg-danger text-white"
+                id="aceptarDeleteSinonimo">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade"
+     id="createSinonimoModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Crear sinonimo</h5>
+        <button type="button"
+                class="btn-close text-dark"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="crear-close">
+          <!--span aria-hidden="true">&times;</span-->
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'arbolsaf:sinonimo_create' %}" enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Sinonimo:</label>
+            <input type="text" class="form-control" id="sinonimo" id="sinonimo" required>
+            <input type="hidden" id="especie" id="especie">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-save"></i>&nbsp;&nbsp;Guardar</button>
+
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 {% include "includes/footer.html" %}
 </div>
 {% endblock content %}
@@ -285,6 +399,16 @@ $(".deletebin").on('click', function () {
 
 });
 
+$(".deletebin-sinonimo").on('click', function () {
+  //alert(this.getAttribute('value'))
+  console.log('Estableciendo valot'+this.getAttribute('value'))
+  var selectedbin = document.getElementById('selectedSinonimo')
+  selectedbin.value = this.getAttribute('value')
+  console.log(selectedbin.value)
+  alert("se ha cambiado el valor a ->"+selectedbin.value)
+
+});
+
 $("#aceptarDeleteVariable").on('click', function () {
 
   var valor = document.getElementById('selectedVariable').value;
@@ -316,7 +440,39 @@ $("#aceptarDeleteVariable").on('click', function () {
   });
 
 });
-                              
+
+$("#aceptarDeleteSinonimo").on('click', function () {
+
+  var valor = document.getElementById('selectedSinonimo').value;
+
+  var request = $.ajax({
+      type: "GET",
+      url: "/arbolsaf/sinonimo/eliminar",
+      data: {
+          "id": valor
+      },
+      success: function (response) {
+          //console.log(response)
+          $("#deletesinonimoModal").modal('hide');
+          //$(location).attr('href', "{% url 'arbolsaf:species_detail' specie.id %}"+'#variables');
+          window.location.hash = '#sinonimosection';
+          window.location.reload(true);
+          //$('#variablessection').load(document.URL +  ' #variablessection');
+      },
+      error: function (response, e) {
+          console.log(response);
+          $("#deletesinonimoModal").modal('hide');
+          if (response.responseJSON.mensaje =='restricted'){
+               alert(response.responseJSON.error);
+          }
+          else{
+             alert('Ha ocurrido un error al eliminar, Contacte al Administrador');
+          }
+      }
+  });
+
+});
+     
 
   </script>
 {% endblock javascripts %}

@@ -50,7 +50,12 @@
               <div class="col-5">
                 <div class="d-flex justify-content-end">
                   <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-save"></i>&nbsp;&nbsp;Guardar</button>
-                  <a href="{% url 'arbolsaf:species_list' %}" class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+                  
+                  {% if not form.instance.id %}
+                        <a href="{% url 'arbolsaf:species_list' %}" class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+                  {% else %}
+                        <a href="{% url 'arbolsaf:species_detail' form.instance.id  %}" class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+                  {% endif %}
 
                 </div>
               </div>
@@ -131,7 +136,11 @@
             <div class="col-3">
               <div class="form-group">
                 <h6>{{ form.nativa.label }} {% if form.nativa.field.required %}<span>*</span>{% endif %}</h6>
-                {{ form.nativa }}
+
+                <div class="form-check">
+                  {{ form.nativa }}
+                </div>
+                
               </div>   
             </div>
           </div>

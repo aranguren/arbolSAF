@@ -211,6 +211,12 @@ class SpeciesModel(BasicAuditModel):
     def get_variables(self):
         return self.variables.all()
 
+    @property
+    def get_sinonimos(self):
+        return self.sinonimos.all()
+
+        
+
     def __str__(self):
         return self.nombre_comun
 

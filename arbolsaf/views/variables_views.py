@@ -9,8 +9,8 @@ from django.shortcuts import get_object_or_404
 import json
 from ..models import VariableModel, SpeciesModel
 from ..forms import SpeciesForm, VariableO2MForm
-
-
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseServerError, HttpResponseBadRequest
 
 """
 class SpeciesListView(LoginRequiredMixin, ListView):

@@ -12,3 +12,8 @@ urlpatterns = [
     path('arbolsaf/', include('arbolsaf.urls', namespace="arbolsaf")), 
     path("", include("apps.home.urls"))             # UI Kits Html files
 ]
+
+handler404 = 'core.error_views.render_404_view'
+handler500 = 'core.error_views.render_500_view'
+handler403 = 'core.error_views.render_403_view'
+handler400 = 'core.error_views.render_400_view'

@@ -21,19 +21,19 @@
         <div class="row">
           <div class="col-lg-6 my-auto">
             <h1 class="display-1 text-bolder text-gradient text-danger">Error 403</h1>
-            <h2>Access Denied</h2>
-            <p class="lead">Please contact support or authenticate.</p>
-            <a href="{% url 'logout' %}" class="btn bg-gradient-dark mt-4">Sign IN</a>
+            <h2>Acceso Denegado</h2>
+            <p class="lead">Por favor, contacte con el Administrador o intente autenticarse</p>
+            <a href="{% url 'logout' %}" class="btn bg-gradient-dark mt-4">Autenticarse</a>
           </div>
           <div class="col-lg-6 my-auto position-relative">
-            <img class="w-100 position-relative" src="/static/assets/img/illustrations/error-404.png" alt="404-error">
+            <img class="w-100 position-relative" src="/static/assets/img/illustrations/error-404.png" alt="403-error">
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  {% include "includes/footer-auth.html" %}
+  {#% include "includes/footer-auth.html" %#}
 
 {% endblock content %}
 

@@ -21,12 +21,9 @@
         <div class="row">
           <div class="col-lg-6 my-auto">
             <h1 class="display-1 text-bolder text-gradient text-danger">Error 404</h1>
-            <h2>Página no encontrada</h2>
-            <p class="lead">Le sugerimos ir a la página principal mientras solucionamos este problema.</p>
-            <!--button type="button" class="btn bg-gradient-dark mt-4">Ir a la página principal</button-->
-            <a href="/" class="btn bg-gradient-dark mt-4">Ir a la página principal</a>
-
-            
+            <h2>Page not found</h2>
+            <p class="lead">We suggest you to go to the homepage while we solve this issue.</p>
+            <button type="button" class="btn bg-gradient-dark mt-4">Go to Homepage</button>
           </div>
           <div class="col-lg-6 my-auto position-relative">
             <img class="w-100 position-relative" src="/static/assets/img/illustrations/error-404.png" alt="404-error">
@@ -36,7 +33,7 @@
     </section>
   </main>
 
-  {#% include "includes/footer-auth.html" %#}
+  {% include "includes/footer-auth.html" %}
 
 {% endblock content %}
 
