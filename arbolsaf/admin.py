@@ -35,11 +35,18 @@ class MenaceInline(admin.TabularInline):
     fields = ['nombre','tipo_variable']
     extra = 3 
 
+class FamilyResource(resources.ModelResource):
+    class Meta:
+        model = models.FamilyModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('familia',)
 
-
-class FamilyAdmin(admin.ModelAdmin):
+class FamilyAdmin(ImportExportModelAdmin):
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    resource_classes = [FamilyResource]
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
@@ -56,9 +63,19 @@ class FamilyAdmin(admin.ModelAdmin):
 
 admin.site.register(models.FamilyModel, FamilyAdmin)
 
-class GenderAdmin(admin.ModelAdmin):
+
+class GenderResource(resources.ModelResource):
+    class Meta:
+        model = models.GenderModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('genero',)
+
+class GenderAdmin(ImportExportModelAdmin):
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    resource_classes = [GenderResource]
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
@@ -119,9 +136,13 @@ admin.site.register(models.FunctiomModel, FunctionAdmin)
 class VariableTypeResource(resources.ModelResource):
     class Meta:
         model = models.VariableTypeModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('cod_var',)
 
 class VariableTypeAdmin(ImportExportModelAdmin):
-    resource_class = VariableTypeResource
+    resource_classes = [VariableTypeResource]
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
     readonly_fields = ['created','created_by','modified','modified_by']
@@ -147,11 +168,15 @@ admin.site.register(models.VariableTypeModel, VariableTypeAdmin)
 class VariableResource(resources.ModelResource):
     class Meta:
         model = models.VariableModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('nombre',)
 
 
 
 class VariableAdmin(ImportExportModelAdmin):
-    resource_class = VariableResource
+    resource_classes = [VariableResource]
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
     readonly_fields = ['created','created_by','modified','modified_by']
@@ -183,9 +208,13 @@ admin.site.register(models.VariableModel, VariableAdmin)
 class SpeciesResource(resources.ModelResource):
     class Meta:
         model = models.SpeciesModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('cod_esp',)
 
 class SpeciesAdmin(ImportExportModelAdmin):
-    resource_class = SpeciesResource
+    resource_classes = [SpeciesResource]
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
     readonly_fields = ['created','created_by','modified','modified_by']
