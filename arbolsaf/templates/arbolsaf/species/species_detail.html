@@ -10,350 +10,411 @@
 {% block content %}
   <div class="container-fluid py-4">
     <div class="row">
-      <div class="col-lg-12 col-12 mx-auto">
-        <div class="card card-body mt-4">
-          <!--h6 class="mb-0">New Project</h6>
-          <p class="text-sm mb-0">Create new project</p-->
-          <div class="row">
-            <div class="col-7">
+      <div class="page-header min-height-300 border-radius-xl mt-4"
+           style="background-image: url('/static/assets/img/curved-images/curved0.jpg');
+                  background-position-y: 50%">
+        <span class="mask bg-gradient-primary opacity-6"></span>
+      </div>
+      <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+        <div class="row gx-4">
+          <!--div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img src="/static/assets/img/arbol.jpeg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            </div>
+          </div-->
+          <div class="col-auto my-auto">
+            <div class="h-100">
               <h3>
                 Detalles: <span>'{% firstof specie.nombre_comun|default_if_none:"-" %}'</span>
               </h3>
             </div>
-            <div class="col-5">
-              <div class="d-flex justify-content-end">
-                <a href="{% url 'arbolsaf:species_list' %}"
-                   class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
-                <a href="{% url 'arbolsaf:species_create' %}"
-                   class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
-                <a href="{% url 'arbolsaf:species_update' specie.id %}"
-                   class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
-                <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
-                <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
-                        id="eliminarB"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-                        value="{{ specie.id }} ">
-                  <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
+          </div>
+          <div class="col-lg-6 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3 d-flex justify-content-end">
+            <a href="{% url 'arbolsaf:species_list' %}"
+               class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
+            <a href="{% url 'arbolsaf:species_create' %}"
+               class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+            <a href="{% url 'arbolsaf:species_update' specie.id %}"
+               class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
+            <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
+            <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
+                    id="eliminarB"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                    value="{{ specie.id }} ">
+              <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-12 mx-auto">
+        <div class="card card-body mt-4">
+          <!--h6 class="mb-0">New Project</h6>
+<p class="text-sm mb-0">Create new project</p-->
+          <div class="row mt-4 mb-2">
+            <div class="col-6">
+              <div class="form-group">
+                <h6>Nombre comun</h6>
+                <div class="mr-2">
+                  {% firstof specie.nombre_comun|default_if_none:"-" %}</dic>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <h6>Nombre científico</h6>
+                <div class="mr-2">{% firstof specie.nombre_cientifico|default_if_none:"-" %}</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-6">
+              <div class="form-group">
+                <h6>Nombre científico completo</h6>
+                <div class="mr-2">{% firstof specie.nombre_cientifico_completo|default_if_none:"-" %}</div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Código especie</h6>
+                <div class="mr-2">{% firstof specie.cod_esp|default_if_none:"-" %}</div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Taxon ID WFO</h6>
+                <div class="mr-2">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Variedad/Subespecie</h6>
+                <div class="mr-2">{% firstof specie.variedad_subespecie|default_if_none:"-" %}</div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Familia</h6>
+                <div class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Género</h6>
+                <div class="mr-2">{% firstof specie.genero|default_if_none:"-" %}</div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Epíteto</h6>
+                <div class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Autor</h6>
+                <div class="mr-2">{% firstof specie.autor|default_if_none:"-" %}</div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <div class="form-group">
+                  <h6>Nativa?</h6>
+                  <div class="mr-2">{{ specie.nativa|yesno:_("SI,NO") }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="selectedVariable" name="selectedVariableName"/>
+        <input type="hidden" id="selectedSinonimo" name="selectedSinonimoName"/>
+        <section id="variablessection">
+          <div class="card mt-4" id="geo">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-10">
+                  <h5>Variables</h5>
+                </div>
+                <div class="col-2">
+                  <div class="d-flex justify-content-end">
+                    <a href="{% url 'arbolsaf:species_create_variable' specie.id %}"
+                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body d-sm-flex pt-0">
+              {% if specie.get_variables %}
+                <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                  <thead>
+                    <td>
+                      <b>Nombre</b>
+                    </td>
+                    <td>
+                      <b>Tipo variable</b>
+                    </td>
+                    <td>
+                      <b>Categoria</b>
+                    </td>
+                    <td class="text-center">
+                      <b>Acciones</b>
+                    </td>
+                  </thead>
+                  <tbody>
+                    {% for variable in specie.get_variables %}
+                      <tr>
+                        <td>{{ variable.nombre }}</td>
+                        <td>{{ variable.tipo_variable }}</td>
+                        <td>
+                          {{ variable.categoria }}
+                        </td>
+                        <td class="text-center">
+                          <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
+                          <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
+                          <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
+                                  id="eliminarVariable"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#deleteVariableModal"
+                                  value="{{ variable.id }}">
+                            <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  {% endfor %}
+                </table>
+              {% else %}
+                <h5 style="color: red" class="text-center  float-center">
+                  No existen variables
+                </h5>
+              {% endif %}
+            </div>
+          </div>
+        </section>
+        <section id="sinonimosection">
+          <div class="card mt-4" id="geo">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-10">
+                  <h5>
+                    Sinónimos
+                  </h5>
+                </div>
+                <div class="col-2">
+                  <div class="d-flex justify-content-end">
+                    <a href="{% url 'arbolsaf:species_create_synonymous' specie.id %}"
+                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body d-sm-flex pt-0">
+              {% if specie.get_sinonimos %}
+                <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                  <tbody>
+                    {% for sinonimo in specie.get_sinonimos %}
+                      <tr>
+                        <td>
+                          {{ sinonimo }}
+                        </td>
+                        <td class="text-center">
+                          <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin-sinonimo"
+                                  id="eliminarSinonimo"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#deletesinonimoModal"
+                                  value="{{ sinonimo.id }}">
+                            <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  {% endfor %}
+                </table>
+              {% else %}
+                <h5 style="color: red" class="text-center  float-center">
+                  No existen sinónimos
+                </h5>
+              {% endif %}
+            </div>
+          </div>
+        </section>
+        <div class="modal fade"
+             id="deleteModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Eliminar
+                </h5>
+                <button type="button"
+                        class="btn-close text-dark"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        id="elim">
+                  <!--span aria-hidden="true">&times;</span-->
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">
+                  Está seguro que desea eliminar la especie?
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button"
+                        class="btn bg-success text-white"
+                        data-bs-dismiss="modal">
+                  Cerrar
+                </button>
+                <button type="button" class="btn bg-danger text-white" id="aceptar">
+                  Aceptar
                 </button>
               </div>
             </div>
           </div>
-          <hr class="horizontal dark my-3"/>
-          <div class="row mb-2">
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Código especie</h6>
-              <spam class="mr-2">{% firstof specie.cod_esp|default_if_none:"-" %}</span>
+        </div>
+        <div class="modal fade"
+             id="deleteVariableModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Eliminar
+                </h5>
+                <button type="button"
+                        class="btn-close text-dark"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        id="elim">
+                  <!--span aria-hidden="true">&times;</span-->
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">
+                  Está seguro que desea eliminar la variable?
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button"
+                        class="btn bg-success text-white"
+                        data-bs-dismiss="modal">
+                  Cerrar
+                </button>
+                <button type="button"
+                        class="btn bg-danger text-white"
+                        id="aceptarDeleteVariable">
+                  Aceptar
+                </button>
+              </div>
             </div>
           </div>
-          <div class="col-3">
-            <div class="form-group">
-              <h6>Taxon ID WFO</h6>
-            <spam class="mr-2">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</span>
+        </div>
+        <div class="modal fade"
+             id="deletesinonimoModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Eliminar
+                </h5>
+                <button type="button"
+                        class="btn-close text-dark"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        id="elim">
+                  <!--span aria-hidden="true">&times;</span-->
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">
+                  Está seguro que desea eliminar el sinónimoe?
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button"
+                        class="btn bg-success text-white"
+                        data-bs-dismiss="modal">
+                  Cerrar
+                </button>
+                <button type="button"
+                        class="btn bg-danger text-white"
+                        id="aceptarDeleteSinonimo">
+                  Aceptar
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-3">
-          <div class="form-group">
-            <h6>Nombre comun</h6>
-          <spam class="mr-2">{% firstof specie.nombre_comun|default_if_none:"-" %}</span>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="form-group">
-          <h6>Nombre científico</h6>
-        <spam class="mr-2">{% firstof specie.nombre_cientifico|default_if_none:"-" %}</span>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-3">
-      <div class="form-group">
-        <h6>Nombre científico completo</h6>
-      <spam class="mr-2">{% firstof specie.nombre_cientifico_completo|default_if_none:"-" %}</span>
-    </div>
-  </div>
-  <div class="col-3">
-    <div class="form-group">
-      <h6>Familia</h6>
-    <spam class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</span>
-  </div>
-</div>
-
-  <div class="col-3">
-    <div class="form-group">
-      <h6>Género</h6>
-    <spam class="mr-2">{% firstof specie.genero|default_if_none:"-" %}</span>
-  </div>
-</div>
-<div class="col-3">
-  <div class="form-group">
-    <h6>Epíteto</h6>
-   <spam class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</span>
-</div>
-</div>
-</div>
-<div class="row">
-  <div class="col-3">
-    <div class="form-group">
-      <h6>Variedad/Subespecie</h6>
-    <spam class="mr-2">{% firstof specie.variedad_subespecie|default_if_none:"-" %}</span>
-  </div>
-</div>
-<div class="col-3">
-  <div class="form-group">
-    <h6>Autor</h6>
-  <spam class="mr-2">{% firstof specie.autor|default_if_none:"-" %}</span>
-</div>
-</div>
-<div class="col-3">
-  <div class="form-group">
-    <h6>Nativa?</h6>
-  <spam class="mr-2"> {{ specie.nativa|yesno:_("SI,NO") }}</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<input type="hidden" id="selectedVariable" name="selectedVariableName"/>
-<input type="hidden" id="selectedSinonimo" name="selectedSinonimoName"/>
-<section id="variablessection">
-  <div class="card mt-4" id="geo">
-    <div class="card-header">
-      <div class="row">
-        <div class="col-10">
-          <h5>Variables</h5>
-        </div>
-        <div class="col-2">
-          <div class="d-flex justify-content-end">
-            <a href="{% url 'arbolsaf:species_create_variable' specie.id %}" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-body d-sm-flex pt-0">
-    
-      {% if specie.get_variables %}
-        <table class="table table-bordered table-hover mt-0" id="mydatatable">
-          <thead>
-            <td>
-              <b>Nombre</b>
-            </td>
-            <td>
-              <b>Tipo variable</b>
-            </td>
-            <td>
-              <b>Categoria</b>
-            </td>
-            <td class="text-center">
-              <b>Acciones</b>
-            </td>
-          </thead>
-          <tbody>
-            {% for variable in specie.get_variables %}
-              <tr>
-                <td>{{ variable.nombre }}</td>
-                <td>{{ variable.tipo_variable }}</td>
-                <td>{{ variable.categoria }}</td>
-                <td class="text-center">
-                  <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
-                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
-                  <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
-                          id="eliminarVariable"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteVariableModal"
-                          value="{{ variable.id }}">
-                    <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          {% endfor %}
-        </table>
-      {% else %}
-        <h5 style="color: red" class="text-center  float-center">No existen variables</h5>
-      {% endif %}
-    </div>
-  </div>
-</section>
-
-<section id="sinonimosection">
-  <div class="card mt-4" id="geo">
-    <div class="card-header">
-      <div class="row">
-        <div class="col-10">
-          <h5>Sinónimos</h5>
-        </div>
-        <div class="col-2">
-          <div class="d-flex justify-content-end">
-            <a href="{% url 'arbolsaf:species_create_synonymous' specie.id %}" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
-
-
-           
+        <div class="modal fade"
+             id="createSinonimoModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Crear sinonimo
+                </h5>
+                <button type="button"
+                        class="btn-close text-dark"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        id="crear-close">
+                  <!--span aria-hidden="true">&times;</span-->
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="{% url 'arbolsaf:sinonimo_create' %}"
+                      enctype="multipart/form-data"
+                      method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">
+                      Sinonimo:
+                    </label>
+                    <input type="text" class="form-control" id="sinonimo" id="sinonimo" required>
+                    <input type="hidden" id="especie" id="especie">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button"
+                        class="btn bg-success text-white"
+                        data-bs-dismiss="modal">
+                  Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1">
+                  <i class="fa fa-save"></i>&nbsp;&nbsp;Guardar
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+      {% include "includes/footer.html" %}
     </div>
-    <div class="card-body d-sm-flex pt-0">
-    
-      {% if specie.get_sinonimos %}
-        <table class="table table-bordered table-hover mt-0" id="mydatatable">
-          <tbody>
-            {% for sinonimo in specie.get_sinonimos %}
-              <tr>
-                <td>{{sinonimo}}</td>
-                <td class="text-center">
-                  <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin-sinonimo"
-                          id="eliminarSinonimo"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deletesinonimoModal"
-                          value="{{ sinonimo.id }}">
-                    <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          {% endfor %}
-        </table>
-      {% else %}
-        <h5 style="color: red" class="text-center  float-center">No existen sinónimos</h5>
-      {% endif %}
-    </div>
-  </div>
-</section>
-<div class="modal fade"
-     id="deleteModal"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
-        <button type="button"
-                class="btn-close text-dark"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                id="elim">
-          <!--span aria-hidden="true">&times;</span-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la especie?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn bg-danger text-white" id="aceptar">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade"
-     id="deleteVariableModal"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
-        <button type="button"
-                class="btn-close text-dark"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                id="elim">
-          <!--span aria-hidden="true">&times;</span-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la variable?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button"
-                class="btn bg-danger text-white"
-                id="aceptarDeleteVariable">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade"
-     id="deletesinonimoModal"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
-        <button type="button"
-                class="btn-close text-dark"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                id="elim">
-          <!--span aria-hidden="true">&times;</span-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar el sinónimoe?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button"
-                class="btn bg-danger text-white"
-                id="aceptarDeleteSinonimo">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade"
-     id="createSinonimoModal"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Crear sinonimo</h5>
-        <button type="button"
-                class="btn-close text-dark"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                id="crear-close">
-          <!--span aria-hidden="true">&times;</span-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="{% url 'arbolsaf:sinonimo_create' %}" enctype="multipart/form-data" method="post">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Sinonimo:</label>
-            <input type="text" class="form-control" id="sinonimo" id="sinonimo" required>
-            <input type="hidden" id="especie" id="especie">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-save"></i>&nbsp;&nbsp;Guardar</button>
-
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
-{% include "includes/footer.html" %}
-</div>
-{% endblock content %}
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
-  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-  <script type="text/javascript">
+  {% endblock content %}
+  <!-- Specific JS goes HERE -->
+  {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script type="text/javascript">
   document.getElementById("aceptar").addEventListener('click', function(){
 
     console.log('ACEPTAR');
@@ -405,7 +466,7 @@ $(".deletebin-sinonimo").on('click', function () {
   var selectedbin = document.getElementById('selectedSinonimo')
   selectedbin.value = this.getAttribute('value')
   console.log(selectedbin.value)
-  alert("se ha cambiado el valor a ->"+selectedbin.value)
+
 
 });
 
@@ -474,5 +535,5 @@ $("#aceptarDeleteSinonimo").on('click', function () {
 });
      
 
-  </script>
-{% endblock javascripts %}
+    </script>
+  {% endblock javascripts %}

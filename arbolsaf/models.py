@@ -194,7 +194,7 @@ class DistributionMenaceModel(BasicAuditModel):
 class SpeciesModel(BasicAuditModel):
 
 
-    cod_esp = models.CharField(_("Código especie"), max_length=50)
+    cod_esp = models.CharField(_("Código especie"), max_length=50, unique=True)
     taxonid_wfo = models.CharField(_("Taxon ID WFO"), max_length=50)
     nombre_comun = models.CharField(_("Nombre comun"), max_length=255)
     nombre_cientifico = models.CharField(_("Nombre científico"), max_length=255)
