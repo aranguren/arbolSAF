@@ -14,6 +14,34 @@ class GenderSpecieResource(resources.ModelResource):
 class GenderSpecieAdmin(ImportExportModelAdmin):
     resource_class = GenderSpecieResource
 """
+class SynonymousResource(resources.ModelResource):
+    class Meta:
+        model = models.SynonymousModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('sinonimo','especie',)
+
+class SynonymousAdmin(ImportExportModelAdmin):
+    #fields = ['name', 'geom']
+    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    resource_classes = [SynonymousResource]
+    readonly_fields = ['created','created_by','modified','modified_by']
+    fieldsets = [
+        #(None,               {'fields': ['question_text']}),
+         (None, {'fields': ['sinonimo','especie']}),
+         ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
+    ]
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.modified_by = request.user
+        else:
+            obj.created_by = request.user
+            obj.modified_by = request.user
+        super().save_model(request, obj, form, change)
+
+admin.site.register(models.SynonymousModel, SynonymousAdmin)
+
 class SynonymousInline(admin.TabularInline):
     model = models.SynonymousModel
     fields = ['sinonimo',]
@@ -93,13 +121,22 @@ class GenderAdmin(ImportExportModelAdmin):
 admin.site.register(models.GenderModel, GenderAdmin)
 
 
-class MeasureUnitTypeAdmin(admin.ModelAdmin):
+class MeasureUnitTypeResource(resources.ModelResource):
+    class Meta:
+        model = models.MeasureUnitTypeModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('abreviatura',)
+
+class MeasureUnitTypeAdmin(ImportExportModelAdmin):
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    resource_classes = [MeasureUnitTypeResource]
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
-         (None, {'fields': ['nombre', 'abreviatura']}),
+         (None, {'fields': ['abreviatura', 'nombre' ]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
     ]
     def save_model(self, request, obj, form, change):

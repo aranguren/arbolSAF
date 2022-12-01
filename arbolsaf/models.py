@@ -25,7 +25,7 @@ class BasicAuditModel(models.Model):
 
 class SynonymousModel(BasicAuditModel):
 
-    sinonimo = models.CharField(_("sinónimo"), max_length=50)
+    sinonimo = models.CharField(_("sinónimo"), max_length=255)
     especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"), 
                     related_name="sinonimos", on_delete=models.CASCADE)
     def __str__(self):
@@ -75,18 +75,18 @@ class ReferenceModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_reference'
         managed = True
-        verbose_name = 'Género'
-        verbose_name_plural = 'Género'
+        verbose_name = 'Referencia'
+        verbose_name_plural = 'Referencias'
 
 class MeasureUnitTypeModel(BasicAuditModel):
 
     abreviatura = models.CharField(_("abreviatura"), max_length=50)
-    nombre = models.CharField(_("nombre"), max_length=50)
+    nombre = models.CharField(_("nombre"), max_length=50, blank=True, null=True)
 
     
 
     def __str__(self):
-        return self.nombre
+        return self.abreviatura
 
     class Meta:
         db_table = 'arbolsaf_measure_unit_type'
@@ -124,11 +124,12 @@ class VariableTypeModel(BasicAuditModel):
 
     cod_var = models.CharField(_("código variable"), max_length=50)
     tipo_variables = models.CharField(_("tipo variable"), 
-                    choices=TYPE_CHOICES, max_length=50, default="numerico")
+                    choices=TYPE_CHOICES, max_length=50, blank=True, null=True)
     
-    unidad_medida =  models.ForeignKey("arbolsaf.MeasureUnitTypeModel", verbose_name=_("Unidad medida"), on_delete=models.CASCADE)
-    variable = models.CharField(_("variable"), max_length=50)
-    niveles_categoricos = models.CharField(_("Niveles categóricos"), max_length=50)
+    unidad_medida =  models.ForeignKey("arbolsaf.MeasureUnitTypeModel", verbose_name=_("Unidad medida"), 
+                on_delete=models.CASCADE, blank=True, null=True)
+    variable = models.CharField(_("variable"), max_length=255)
+    niveles_categoricos = models.TextField(_("Niveles categóricos"))
     descripcion = models.TextField(_("descripción"))    
 
     min = models.FloatField(_("Valor mínimo"), blank=True, null=True)
