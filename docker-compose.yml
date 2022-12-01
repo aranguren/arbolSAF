@@ -1,28 +1,57 @@
-version: '3.8'
+version: '3'
+
+volumes:
+   db-data:
+   pgadmin:
+
 services:
-  appseed-app:
-    container_name: appseed_app
-    restart: always
-    env_file: .env
-    build: .
-    networks:
-      - db_network
-      - web_network
-  nginx:
-    container_name: nginx
-    restart: always
-    image: "nginx:latest"
-    ports:
-      - "85:85"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-    networks:
-      - web_network
-    depends_on: 
-      - appseed-app
-networks:
-  db_network:
-    driver: bridge
-  web_network:
-    driver: bridge
- 
+   db:
+      image: kartoza/postgis:12.0
+      volumes:
+         - db-data:/var/lib/postgresql
+      ports:
+        - "25432:5432"
+      env_file:
+      - docker-env/db.env
+        #      restart: on-failure
+      healthcheck:
+        test: "exit 0"
+
+   pgadmin:
+      image: dpage/pgadmin4
+      volumes:
+      - pgadmin:/var/lib/pgadmin
+      ports:
+      - "5050:80"
+      env_file:
+        - docker-env/pgadmin.env
+      restart: on-failure
+
+
+   web:
+      build: .
+      command: bash -c "python manage.py runserver 0.0.0.0:8000"
+      #      volumes:
+      #   - ./code:/code
+      env_file:
+      - docker-env/web.env
+      ports:
+         - "8000:8000"
+      depends_on:
+         - db
+   nginx:
+      image: nginx:latest
+      volumes:
+          - ./nginx/conf:/etc/nginx/conf.d
+          - ./nginx/certbot/conf:/etc/letsencrypt
+          - ./nginx/certbot/www:/var/www/certbot
+      ports:
+       - "80:80"
+       - "443:443"
+      #restart: on-failure
+
+   certbot:
+      image: certbot/certbot
+      volumes:
+          - ./nginx/certbot/conf:/etc/letsencrypt
+          - ./nginx/certbot/www:/var/www/certbot

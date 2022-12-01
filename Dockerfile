@@ -1,18 +1,9 @@
-FROM python:3.9
-
-COPY . .
-
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# install python dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-
-# running migrations
-RUN python manage.py migrate
-
-# gunicorn
-CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
-
+FROM python:3
+ENV PYTHONUNBUFFERED=1
+WORKDIR /code
+COPY requirements.txt /code/
+RUN apt update -y
+RUN apt install -y gdal-bin python3-gdal libgdal-dev python3-pycurl
+#RUN pip install GDAL==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}') --global-option=build_ext --global-option="-I/usr/include/gdal"
+RUN pip install -r requirements.txt
+COPY . /code
