@@ -21,13 +21,13 @@
           <!--h6 class="mb-0">New Project</h6>
           <p class="text-sm mb-0">Create new project</p-->
             <div class="row">
-              <div class="col-7">
-               <h3> Detalles variable: <span>'{% firstof variable.nombre|default_if_none:"-" %}' </span></h3>
+              <div class="col-6">
+               <h3> Detalles: <span>'{% firstof variable.nombre|default_if_none:"-" %}' </span></h3>
               
                <h4> Especie: <span> {{variable.especie}}</span></h4>
               
               </div>
-              <div class="col-5">
+              <div class="col-6">
                   <div class="d-flex justify-content-end">
                       <a href="{{species_url}}"
                       class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>

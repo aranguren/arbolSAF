@@ -9,64 +9,58 @@
 {% block content %}
   <div class="container-fluid py-4">
     <div class="row">
-      <div class="col-lg-12 col-12 mx-auto">
-        <form enctype="multipart/form-data" method="post">
-          {% csrf_token %}
-          {% if form.errors %}
-            {% for field in form %}
-              {% for error in field.errors %}
-                <div class="alert alert-danger text-white">
-                  <strong>{{ error|escape }}</strong>
-                  {{ field.label|capfirst }}
-                </div>
-              {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
+      <!--div class="col-lg-12 col-12 mx-auto"-->
+      <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+          {% for field in form %}
+            {% for error in field.errors %}
               <div class="alert alert-danger text-white">
                 <strong>{{ error|escape }}</strong>
+                {{ field.label|capfirst }}
               </div>
             {% endfor %}
-          {% endif %}
-          <div class="page-header min-height-300 border-radius-xl mt-4"
-               style="background-image: url('/static/assets/img/curved-images/curved0.jpg');
-                      background-position-y: 50%">
-            <span class="mask bg-gradient-primary opacity-6"></span>
-          </div>
-          <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
-            <div class="row gx-4">
-              <!--div class="col-auto">
-            <div class="avatar avatar-xl position-relative">
-              <img src="/static/assets/img/arbol.jpeg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger text-white">
+              <strong>{{ error|escape }}</strong>
             </div>
-          </div-->
-              <div class="col-auto my-auto">
-                <div class="h-100">
-                  {% if not form.instance.id %}
-                    <h3>Nueva especie</h3>
-                  {% else %}
-                    <h3>
-                      Actualizar:  <span>'{% firstof specie.nombre_comun|default_if_none:"-" %}'</span>
-                    </h3>
-                  {% endif %}
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3 d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1">
-                  <i class="fa fa-save"></i>&nbsp;&nbsp;Guardar
-                </button>
+          {% endfor %}
+        {% endif %}
+        <div class="page-header min-height-300 border-radius-xl mt-4"
+             style="background-image: url('/static/assets/img/curved-images/curved0.jpg');
+                    background-position-y: 50%">
+          <span class="mask bg-gradient-primary opacity-6"></span>
+        </div>
+        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+          <div class="row gx-4">
+            <div class="col-auto my-auto">
+              <div class="h-100">
                 {% if not form.instance.id %}
-                  <a href="{% url 'arbolsaf:species_list' %}"
-                     class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+                  <h3>Nueva especie</h3>
                 {% else %}
-                  <a href="{% url 'arbolsaf:species_detail' form.instance.id  %}"
-                     class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+                  <h3>
+                    Actualizar:  <span>'{% firstof specie.nombre_comun|default_if_none:"-" %}'</span>
+                  </h3>
                 {% endif %}
               </div>
             </div>
+            <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3 d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1">
+                <i class="fa fa-save"></i>&nbsp;&nbsp;Guardar
+              </button>
+              {% if not form.instance.id %}
+                <a href="{% url 'arbolsaf:species_list' %}"
+                   class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+              {% else %}
+                <a href="{% url 'arbolsaf:species_detail' form.instance.id %}"
+                   class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
+              {% endif %}
+            </div>
           </div>
-          <div class="card card-body mt-4">
-            <!--h6 class="mb-0">New Project</h6>
-<p class="text-sm mb-0">Create new project</p-->
+        </div>
+        <div class="col-lg-12 col-12 mx-auto">
+          <div class="card card-body mt-2">
             <div class="row mt-4 mb-2">
               <div class="col-6">
                 <div class="form-group">
@@ -176,7 +170,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </form>
+      <!--/div-->
       {% include "includes/footer.html" %}
     </div>
   {% endblock content %}

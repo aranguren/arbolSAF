@@ -26,6 +26,7 @@ Listado Especies
           <!-- Card header -->
           <div class="card-header">
             <h3 class="mb-1">Listado Especies</h3>
+            <hr class="horizontal dark my-2">
             <div class="d-flex justify-content-left">
               <a href="{% url 'arbolsaf:species_create' %}"
                  class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
@@ -35,15 +36,16 @@ Listado Especies
                       data-bs-target="#filterModal">
                 <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar
               </button>
+
               {% if has_filters %}
-                <h5>
-                  <span class="badge badge-sm badge-large badge-danger mt-0 ml-1 mr-0">Filtros aplicados
-                    <button type="button"
-                            onclick="window.location='{% url 'arbolsaf:species_list' %}'"
-                            class="btn-close"></button>
-                  </span>
-                </h5>
-              {% endif %}
+              <h6 class="mt-0">
+                <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
+                  <button type="button"
+                          onclick="window.location='{% url 'arbolsaf:species_list' %}'"
+                          class="btn-close"></button>
+                </span>
+              </h6>
+            {% endif %}
             </div>
           </div>
           <div class="card-body mt-0">
