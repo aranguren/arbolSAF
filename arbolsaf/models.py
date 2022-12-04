@@ -154,9 +154,12 @@ class VariableModel(BasicAuditModel):
                     on_delete=models.RESTRICT)                    
     nombre = models.CharField(_("nombre"), max_length=50)
 
-    cantidad = models.FloatField(_("Cantidad"), blank=True, null=True)
+    valor_numerico = models.FloatField(_("Valor numérico"), blank=True, null=True)
     rango_superior = models.FloatField(_("rango superior"), blank=True, null=True)
     rango_inferior = models.FloatField(_("rango inferior"), blank=True, null=True)
+    valor_texto = models.CharField(_("Valor texto"), max_length=255, blank=True, null=True)
+    valor_boolean = models.BooleanField(_("Verdadero?"), default=False)
+
     #TODO averiguar si categoria puede ser una llave foranea
 
     categoria = models.CharField(_("categoria"), max_length=50)

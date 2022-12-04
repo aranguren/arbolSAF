@@ -7,10 +7,11 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 import json
-from ..models import VariableModel, SpeciesModel
+from ..models import VariableModel, SpeciesModel, VariableTypeModel
 from ..forms import SpeciesForm, VariableO2MForm
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseServerError, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404
 
 """
 class SpeciesListView(LoginRequiredMixin, ListView):
@@ -262,3 +263,22 @@ def variable_delete(request):
 
 
 
+@login_required(login_url='/login/')
+def variable_tipo_get(request):
+    resp = {}
+    query = {'id': request.GET.get('id', None)}
+    id= query['id']
+    print(id)
+    
+    try:
+        variable  = get_object_or_404(VariableTypeModel, pk=id)
+        resp['tipo_variable']= variable.tipo_variables or 'desconocido'
+
+    except Exception as e:
+        resp['mensaje']= 'error'
+        resp['error'] = json.dumps(e)
+        return  JsonResponse(resp, status=404)
+    
+    
+    print(resp)
+    return  JsonResponse(resp, status=200)

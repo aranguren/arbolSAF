@@ -15,7 +15,7 @@ urlpatterns = [
     path('especie/<int:pk>/variable', VariableO2MCreateView.as_view(), name='species_create_variable'),
     path('especie/variable/modificar/<str:pk>', VariableO2MUpdateView.as_view(), name='species_update_variable'),
     path('especie/variable/detalles/<str:pk>', Variable2MDetailView.as_view(),name='species_detail_variable'),
-
+    path('variable/tipo', variable_tipo_get, name='variable_tipo'),
     path('variable/eliminar', variable_delete, name='variable_delete'),
     path('especie/<int:pk>/sinonimo', Synonymous2MCreateView.as_view(), name='species_create_synonymous'),
     path('sinonimo/eliminar', sinonimo_delete, name='sinonimo_delete'),

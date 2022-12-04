@@ -47,16 +47,18 @@ class SynonymousInline(admin.TabularInline):
     fields = ['sinonimo',]
     extra = 3 
 
-class VariableInline(admin.TabularInline):
+class VariableInline(admin.StackedInline):
     model = models.VariableModel
     fields = ['nombre' ,
                 'referencia', 
                 'tipo_variable',            
-                'cantidad', 
+                'valor_numerico', 
+                'valor_texto',
                 'rango_superior', 
                 'rango_inferior',
+                'valor_boolean',
                 'categoria']
-    extra = 3 
+    extra = 1 
 
 class MenaceInline(admin.TabularInline):
     model = models.DistributionMenaceModel
@@ -222,9 +224,11 @@ class VariableAdmin(ImportExportModelAdmin):
          ('Informacion variable', {'fields': [ 'nombre' ,
                                                 'referencia', 
                                                 'tipo_variable',            
-                                                'cantidad', 
+                                                'valor_numerico', 
+                                                'valor_texto',
                                                 'rango_superior', 
                                                 'rango_inferior',
+                                                'valor_boolean',
                                                 'categoria', 
                                                 'especie' ,]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   

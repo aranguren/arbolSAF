@@ -58,29 +58,28 @@
                 <spam class="mr-2">{% firstof variable.nombre|default_if_none:"-" %}</span>
               </div>
             </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Referencia</h6>
-                <spam class="mr-2">{% firstof variable.referencia|default_if_none:"-" %}</span>
-              </div>                
-              
-            </div>
+
             <div class="col-3">
               <div class="form-group">
                 <h6>Tipo variable</h6>
                 <spam class="mr-2">{% firstof variable.tipo_variable|default_if_none:"-" %}</span>
               </div>
             </div>
+            {% if  variable.tipo_variable.tipo_variables == 'numerico'%}
             <div class="col-3">
               <div class="form-group">
-                <h6>Cantidad</h6>
-                <spam class="mr-2">{% firstof variable.cantidad|default_if_none:"-" %}</span>
+                <h6>Valor numérico</h6>
+                <spam class="mr-2">{% firstof variable.valor_numerico|default_if_none:"-" %}</span>
               </div>
             </div>
-
-          </div>
-
-          <div class="row">
+            {% elif  variable.tipo_variable.tipo_variables == 'texto'%}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valor texto</h6>
+                <spam class="mr-2">{% firstof variable.valor_texto|default_if_none:"-" %}</span>
+              </div>
+            </div>
+            {% elif  variable.tipo_variable.tipo_variables == 'rango'%}
             <div class="col-3">
               <div class="form-group">
                 <h6>Rango superior</h6>
@@ -93,9 +92,34 @@
                 <spam class="mr-2">{% firstof variable.rango_inferior|default_if_none:"-" %}</span>
               </div>   
             </div>
+            {% elif  variable.tipo_variable.tipo_variables == 'boolean'%}
             <div class="col-3">
               <div class="form-group">
-                <h6>Rango inferior</h6>
+                <h6>Verdadero/Falso</h6>
+                <spam class="mr-2">{% firstof variable.valor_boolean|default_if_none:"-" %}</span>
+              </div>   
+            </div>
+            {% else %}
+             No es un tipo valido
+            {% endif %}
+
+
+
+
+          </div>
+
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Referencia</h6>
+                <spam class="mr-2">{% firstof variable.referencia|default_if_none:"-" %}</span>
+              </div>                
+              
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Categoría</h6>
                 <spam class="mr-2">{% firstof variable.categoria|default_if_none:"-" %}</span>
               </div>   
             </div>
