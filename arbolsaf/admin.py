@@ -229,6 +229,7 @@ class VariableAdmin(ImportExportModelAdmin):
                                                 'rango_superior', 
                                                 'rango_inferior',
                                                 'valor_boolean',
+                                                'valor_general',
                                                 'categoria', 
                                                 'especie' ,]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
@@ -309,13 +310,22 @@ class PriorityAdmin(admin.ModelAdmin):
 admin.site.register(models.PriorityModel, PriorityAdmin)
 
 
-class ReferenceAdmin(admin.ModelAdmin):
+class ReferenceResource(resources.ModelResource):
+    class Meta:
+        model = models.ReferenceModel
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('created','created_by','modified','modified_by',)
+        import_id_fields = ('cod_cita',)
+
+class ReferenceAdmin(ImportExportModelAdmin):
+    resource_classes = [ReferenceResource]
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
-         (None, {'fields': ['referencia','cod_cita','fuente_final']}),
+         (None, {'fields': ['cod_cita','fuente_final', 'referencia']}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
     ]
     def save_model(self, request, obj, form, change):

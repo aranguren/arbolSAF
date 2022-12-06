@@ -102,6 +102,12 @@
             {% else %}
              No es un tipo valido
             {% endif %}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valor general</h6>
+                <spam class="mr-2">{% firstof variable.valor_general|default_if_none:"-" %}</span>
+              </div>
+            </div>
 
 
 

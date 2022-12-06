@@ -146,7 +146,7 @@
             </div>
             <div class="card-body d-sm-flex pt-0">
               {% if specie.get_variables %}
-                <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                <table class="table table-bordered table-hover  mt-0" id="mydatatable">
                   <thead>
                     <td>
                       <b>Nombre</b>
@@ -155,7 +155,7 @@
                       <b>Tipo variable</b>
                     </td>
                     <td>
-                      <b>Categoria</b>
+                      <b>Valor general</b>
                     </td>
                     <td class="text-center">
                       <b>Acciones</b>
@@ -167,7 +167,7 @@
                         <td>{{ variable.nombre }}</td>
                         <td>{{ variable.tipo_variable }}</td>
                         <td>
-                          {{ variable.categoria }}
+                          {{ variable.valor_general |slice:":20"}}
                         </td>
                         <td class="text-center">
                           <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>

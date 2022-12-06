@@ -64,13 +64,12 @@ class GenderModel(BasicAuditModel):
 
 class ReferenceModel(BasicAuditModel):
 
-    referencia = models.CharField(_("referencia"), max_length=50)
-    cod_cita = models.CharField(_("código cita"), max_length=50)
-    fuente_final = models.CharField(_("fuente"), max_length=255)
-    
+    fuente_final = models.CharField(_("referencia"), max_length=255)
+    cod_cita = models.CharField(_("código cita"), max_length=50, unique=True)
+    referencia = models.TextField(_("fuente"), blank=True, null=True)
 
     def __str__(self):
-        return self.referencia
+        return self.fuente_final
 
     class Meta:
         db_table = 'arbolsaf_reference'
@@ -130,7 +129,7 @@ class VariableTypeModel(BasicAuditModel):
                 on_delete=models.CASCADE, blank=True, null=True)
     variable = models.CharField(_("variable"), max_length=255)
     niveles_categoricos = models.TextField(_("Niveles categóricos"))
-    descripcion = models.TextField(_("descripción"))    
+    descripcion = models.TextField(_("descripción"), blank=True, null=True)    
 
     min = models.FloatField(_("Valor mínimo"), blank=True, null=True)
     max = models.FloatField(_("Valor máximo"), blank=True, null=True)
@@ -149,20 +148,23 @@ class VariableModel(BasicAuditModel):
 
 
     referencia = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Referencia"), 
-                        on_delete=models.RESTRICT)
+                        on_delete=models.RESTRICT,  blank=True, null=True)
     tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo Variable"), 
                     on_delete=models.RESTRICT)                    
-    nombre = models.CharField(_("nombre"), max_length=50)
+    nombre = models.CharField(_("nombre"), max_length=255)
 
     valor_numerico = models.FloatField(_("Valor numérico"), blank=True, null=True)
     rango_superior = models.FloatField(_("rango superior"), blank=True, null=True)
     rango_inferior = models.FloatField(_("rango inferior"), blank=True, null=True)
     valor_texto = models.CharField(_("Valor texto"), max_length=255, blank=True, null=True)
-    valor_boolean = models.BooleanField(_("Verdadero?"), default=False)
+    valor_boolean = models.BooleanField(_("Verdadero?"), default=False, null=True)
+
+    valor_general = models.CharField(_("Valor general"), max_length=255, blank=True, null=True)
+
 
     #TODO averiguar si categoria puede ser una llave foranea
 
-    categoria = models.CharField(_("categoria"), max_length=50)
+    categoria = models.CharField(_("categoria"), max_length=50, blank=True, null=True)
     
     especie = models.ForeignKey("arbolsaf.SpeciesModel", related_name="variables", verbose_name=_("Especie"), on_delete=models.CASCADE)
 
