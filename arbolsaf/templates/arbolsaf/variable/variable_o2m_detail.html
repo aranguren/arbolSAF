@@ -6,6 +6,11 @@
 {% block stylesheets %}
 
 
+<style type="text/css">
+
+
+
+</style>
 {% endblock stylesheets %}
 
 {% block body_class %} g-sidenav-show bg-gray-100 {% endblock %}
@@ -22,7 +27,7 @@
           <p class="text-sm mb-0">Create new project</p-->
             <div class="row">
               <div class="col-6">
-               <h3> Detalles: <span>'{% firstof variable.nombre|default_if_none:"-" %}' </span></h3>
+               <h3> Detalles: <span>'{% firstof variable.tipo_variable|default_if_none:"-" %}' </span></h3>
               
                <h4> Especie: <span> {{variable.especie}}</span></h4>
               
