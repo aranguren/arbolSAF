@@ -151,7 +151,7 @@ class VariableModel(BasicAuditModel):
                         on_delete=models.RESTRICT,  blank=True, null=True)
     tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo Variable"), 
                     on_delete=models.RESTRICT)                    
-    nombre = models.CharField(_("nombre"), max_length=255)
+    #nombre = models.CharField(_("nombre"), max_length=255)
 
     valor_numerico = models.FloatField(_("Valor numérico"), blank=True, null=True)
     rango_superior = models.FloatField(_("rango superior"), blank=True, null=True)

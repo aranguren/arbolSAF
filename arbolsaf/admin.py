@@ -210,7 +210,7 @@ class VariableResource(resources.ModelResource):
         skip_unchanged = True
         report_skipped = True
         exclude = ('created','created_by','modified','modified_by',)
-        import_id_fields = ('nombre',)
+        #import_id_fields = ('nombre',)
 
 
 
@@ -221,7 +221,7 @@ class VariableAdmin(ImportExportModelAdmin):
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
-         ('Informacion variable', {'fields': [ 'nombre' ,
+         ('Informacion variable', {'fields': [ 
                                                 'referencia', 
                                                 'tipo_variable',            
                                                 'valor_numerico', 

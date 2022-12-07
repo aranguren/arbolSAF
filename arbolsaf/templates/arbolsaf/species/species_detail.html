@@ -148,11 +148,12 @@
               {% if specie.get_variables %}
                 <table class="table table-bordered table-hover  mt-0" id="mydatatable">
                   <thead>
-                    <td>
-                      <b>Nombre</b>
-                    </td>
+
                     <td>
                       <b>Tipo variable</b>
+                    </td>
+                    <td>
+                      <b>Referencia</b>
                     </td>
                     <td>
                       <b>Valor general</b>
@@ -164,8 +165,9 @@
                   <tbody>
                     {% for variable in specie.get_variables %}
                       <tr>
-                        <td>{{ variable.nombre }}</td>
+                        
                         <td>{{ variable.tipo_variable }}</td>
+                        <td>{{ variable.referencia }}</td>
                         <td>
                           {{ variable.valor_general |slice:":20"}}
                         </td>

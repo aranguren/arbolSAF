@@ -34,7 +34,7 @@ class VariableO2MForm(forms.ModelForm):
         model = VariableModel
         exclude = ("id",'created_by', 'modified_by')
         widgets = {
-            'nombre':forms.TextInput(attrs={'class': 'form-control'}),
+            #'nombre':forms.TextInput(attrs={'class': 'form-control'}),
             'referencia': forms.Select(attrs={'class': 'form-control'}),
             'tipo_variable': forms.Select(attrs={'class': 'form-control'}),
             'valor_numerico':forms.NumberInput(attrs={'class': 'form-control'}),

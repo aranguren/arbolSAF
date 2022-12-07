@@ -62,26 +62,22 @@
               </div>
             </div>
             <hr class="horizontal dark my-3">
-            <div class="row mb-2">
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.nombre.label }}
-                    {% if form.nombre.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.nombre }}
-                </div>
+            <div class="row mb-3">
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.tipo_variable.label }}
+                  {% if form.tipo_variable.field.required %}<span>*</span>{% endif %}
+                </h6>
               </div>
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.tipo_variable.label }}
-                   <span>*</span>
-                  </h6>
-                  {{ form.tipo_variable }}
-                </div>
+              <div class="col-3">{{ form.tipo_variable }}</div>
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.referencia.label }}
+                  {% if form.referencia.field.required %}<span>*</span>{% endif %}
+                </h6>
               </div>
-              <div class="col-3" id="div_valor_numerico">
+              <div class="col-3">{{ form.referencia }}</div>
+              <!--div class="col-3" id="div_valor_numerico">
                 <div class="form-group">
                   <h6>
                     {{ form.valor_numerico.label }}
@@ -120,43 +116,85 @@
 
               <div class="col-3" id="div_valor_boolean">
                 <div class="form-group">
-                  <h6>
-                    {{ form.valor_boolean.label }}
-                  </h6>
+                  <h6>{{ form.valor_boolean.label }}</h6>
                   <div class="form-check">{{ form.valor_boolean }}</div>
                 </div>
-              </div>
-
-              <div class="col-3" id="div_valor_general">
-                <div class="form-group">
-                  <h6>
-                    {{ form.valor_general.label }}
-                   <span>*</span>
-                  </h6>
-                  {{ form.valor_general }}
-                </div>
-              </div>
+</div-->
             </div>
+            <div class="row mb-3">
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.valor_general.label }}
+                  {% if form.valor_general.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.valor_general }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.valor_numerico.label }}
+                  {% if form.valor_numerico.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.valor_numerico }}</div>
+              
+            </div>
+            <div class="row mb-3">
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.rango_inferior.label }}
+                  {% if form.rango_inferior.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.rango_inferior }}</div>
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.rango_superior.label }}
+                  {% if form.rango_superior.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.rango_superior }}</div>
+            </div>
+            <div class="row mb-3">
+
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.valor_texto.label }}
+                  {% if form.valor_texto.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.valor_texto }}</div>
+
+            </div>
+            <div class="row mb-3">
+
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.valor_boolean.label }}
+                  {% if form.valor_boolean.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3"><div class="form-check">{{ form.valor_boolean }}</div></div>
+              
+            </div>
+
+            <div class="row mb-3">
+
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.categoria.label }}
+                  {% if form.categoria.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.categoria }}</div>
+
+            </div>
+
             <div class="row">
               <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.referencia.label }}
-                    {% if form.referencia.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.referencia }}
-                </div>
+                {{ form.especie }}
               </div>
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.categoria.label }}
-                    {% if form.categoria.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.categoria }}
-                </div>
-              </div>
-              <div class="col-3">{{ form.especie }}</div>
             </div>
           </div>
         </form>
@@ -171,7 +209,7 @@
   <script>
   $(document).ready(function () {
 
-    getVariableType();
+    //getVariableType();
 /*
   tipo_variable = $('#id_tipo_variable').find(":selected").val();
   if (tipo_variable=='numerico'){
@@ -188,6 +226,7 @@
     
   }
 */
+/*
   $('#id_tipo_variable').on('change', function() { 
 
     $("#id_tipo_variable").prop('required',true);
@@ -195,7 +234,7 @@
     
     
 
-  })
+  })*/
     //alert('el valor es '+{{specie_pk}})
  
 
