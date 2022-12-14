@@ -169,7 +169,7 @@ class VariableModel(BasicAuditModel):
     especie = models.ForeignKey("arbolsaf.SpeciesModel", related_name="variables", verbose_name=_("Especie"), on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nombre
+        return "{} - Especie: {}".format(self.tipo_variable, self.especie)
 
     class Meta:
         db_table = 'arbolsaf_variable'
