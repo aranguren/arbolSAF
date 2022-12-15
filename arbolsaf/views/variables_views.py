@@ -12,6 +12,7 @@ from ..forms import SpeciesForm, VariableO2MForm
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseServerError, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
 
 """
 class SpeciesListView(LoginRequiredMixin, ListView):
@@ -210,7 +211,10 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
 
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)   
+        context = super().get_context_data(**kwargs)  
+        if self.object.chequeo:
+            raise PermissionDenied()
+             
         context['segment'] = ['arbolsaf','species']
         context['active_menu'] ='arbolsaf'
         context['specie_pk'] = self.object.especie.id
@@ -220,6 +224,7 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
         #    context['specie_pk'] = self.kwargs['pk']
         #    redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
         #    context['species_url'] =  redireccion+'#variablessection'
+        
         return context
 
     def get_success_url(self):

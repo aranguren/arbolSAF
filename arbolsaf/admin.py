@@ -172,6 +172,25 @@ class FunctionAdmin(admin.ModelAdmin):
 admin.site.register(models.FunctiomModel, FunctionAdmin)
 
 
+
+class VariableTypeFamilyAdmin(admin.ModelAdmin):
+
+    readonly_fields = ['created','created_by','modified','modified_by']
+    fieldsets = [
+        #(None,               {'fields': ['question_text']}),
+         (None, {'fields': ['nombre','descripcion']}),
+         ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
+    ]
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.modified_by = request.user
+        else:
+            obj.created_by = request.user
+            obj.modified_by = request.user
+        super().save_model(request, obj, form, change)
+
+admin.site.register(models.VariableTypeFamilyModel, VariableTypeFamilyAdmin)
+
 class VariableTypeResource(resources.ModelResource):
     class Meta:
         model = models.VariableTypeModel
@@ -187,7 +206,8 @@ class VariableTypeAdmin(ImportExportModelAdmin):
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
-         ('Informacion tipo variable', {'fields': [ 'variable','cod_var', 'tipo_variables', 'unidad_medida',
+         ('Informacion tipo variable', {'fields': [ 'variable','cod_var', 'familia', 'tipo_variables',
+                             'unidad_medida',
                              'niveles_categoricos','descripcion', 
                             'min' ,'max',]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
@@ -231,6 +251,7 @@ class VariableAdmin(ImportExportModelAdmin):
                                                 'valor_boolean',
                                                 'valor_general',
                                                 'categoria', 
+                                                'chequeo',
                                                 'especie' ,]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
     ]

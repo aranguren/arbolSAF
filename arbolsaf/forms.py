@@ -45,6 +45,7 @@ class VariableO2MForm(forms.ModelForm):
             'rango_inferior':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_general':forms.TextInput(attrs={'class': 'form-control'}),
             'categoria':forms.TextInput(attrs={'class': 'form-control'}),
+            'chequeo': forms.CheckboxInput(attrs={'class': 'form-check-input '}),     
             'especie': forms.HiddenInput(),
             }
 

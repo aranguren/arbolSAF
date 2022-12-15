@@ -152,6 +152,18 @@
 
             </div>
 
+            <div class="row mb-3">
+
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.chequeo.label }}
+                  {% if form.chequeo.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3"><div class="form-check">{{ form.chequeo }}</div></div>
+              
+            </div>
+
             <div class="row">
               <div class="col-3">
                 {{ form.especie }}

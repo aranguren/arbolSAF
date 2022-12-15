@@ -110,6 +110,20 @@ class FunctiomModel(BasicAuditModel):
         verbose_name_plural = 'Funciones'
 
 
+class VariableTypeFamilyModel(BasicAuditModel):
+
+    nombre = models.CharField(_("nombre"), max_length=50)
+    descripcion = models.TextField(_("descripción"), blank=True, null=True)
+    
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        db_table = 'arbolsaf_variable_type_family'
+        managed = True
+        verbose_name = 'Familia tipo variable'
+        verbose_name_plural = 'Familias tipo variables'
+
 class VariableTypeModel(BasicAuditModel):
 
     TYPE_CHOICES = (
@@ -126,7 +140,12 @@ class VariableTypeModel(BasicAuditModel):
                     choices=TYPE_CHOICES, max_length=50, blank=True, null=True)
     
     unidad_medida =  models.ForeignKey("arbolsaf.MeasureUnitTypeModel", verbose_name=_("Unidad medida"), 
-                on_delete=models.CASCADE, blank=True, null=True)
+                on_delete=models.SET_NULL, blank=True, null=True)
+    
+    familia =  models.ForeignKey("arbolsaf.VariableTypeFamilyModel", verbose_name=_("Familia"), 
+                on_delete=models.SET_NULL, blank=True, null=True)
+
+                
     variable = models.CharField(_("variable"), max_length=255)
     niveles_categoricos = models.TextField(_("Niveles categóricos"))
     descripcion = models.TextField(_("descripción"), blank=True, null=True)    
@@ -168,6 +187,8 @@ class VariableModel(BasicAuditModel):
     
     especie = models.ForeignKey("arbolsaf.SpeciesModel", related_name="variables", verbose_name=_("Especie"), on_delete=models.CASCADE)
 
+    chequeo = models.BooleanField(_("Chequeada?"), default=False) 
+    
     def __str__(self):
         return "{} - Especie: {}".format(self.tipo_variable, self.especie)
 
