@@ -227,34 +227,9 @@ Listado Especies
                             class=""
                             method="get"
                             autocomplete="off">
+
                         <div class="form-group">
-                          <label class="control-label" for="id_cod_esp">
-                            Código especie
-                          </label>
-                          <div class=" ">
-                            <input id="id_cod_esp"
-                                   type="text"
-                                   name="cod_esp"
-                                   class="form-control"
-                                   value="{{ value_cod_esp }}">
-                          </div>
-                          <br>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label" for="id_taxonid_wfo">
-                            Taxon ID WFO
-                          </label>
-                          <div class=" ">
-                            <input id="id_taxonid_wfo"
-                                   type="text"
-                                   name="taxonid_wfo"
-                                   class="form-control"
-                                   value="{{ value_taxonid_wfo }}">
-                          </div>
-                          <br>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label" for="id_taxonid_wfo">
+                          <label class="control-label" for="id_nombre_comun">
                             Nombre común
                           </label>
                           <div class=" ">
@@ -267,18 +242,34 @@ Listado Especies
                           <br>
                         </div>
                         <div class="form-group">
-                          <label class="control-label" for="id_taxonid_wfo">
+                          <label class="control-label" for="id_nombre_cientifico">
                             Nombre científico
                           </label>
                           <div class=" ">
-                            <input id="id_nnombre_cientifico"
+                            <input id="id_nombre_cientifico"
                                    type="text"
                                    name="nombre_cientifico"
                                    class="form-control"
-                                   value="{{ value_value_nombre_cientifico }}">
+                                   value="{{ value_nombre_cientifico }}">
                           </div>
                           <br>
                         </div>
+                        <div class="form-group">
+                          <label class="control-label" for="id_center">Tipo Variable</label>
+                       <div class=" ">
+                           <select id="id_tipo_variable" class="form-select" name="tipo_variable">
+                               <option></option>   
+                               {% for variable in variables %}                                       
+                               <option value="{{variable.id}}">{{variable.variable}}</option>
+                               {% endfor %}  
+                               <!--option>Desmembramiento</option>
+                               <option>Unión</option-->
+                              
+                           </select>
+                           {#                                        <input id="id_tipo_mantenimiento" type="text" name="tipo_mantenimiento" class="form-control" value="{{ value_tipo_mantenimiento }}">#}
+                       </div>
+                          
+                       </div>
                       </form>
                     </div>
                   </div>
@@ -312,9 +303,19 @@ Listado Especies
   <script>
 
 
+    $(document).ready(function () {
+
+
+      document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
+     
+  });
+
   $('#reset_button').click(function () {
-      document.getElementById("id_cod_esp").value = "";
-      document.getElementById("id_taxonid_wfo").value = "";
+      //document.getElementById("id_cod_esp").value = "";
+      //document.getElementById("id_taxonid_wfo").value = "";
+      document.getElementById("id_nombre_comun").value = "";
+      document.getElementById("id_nombre_cientifico").value = "";
+      document.getElementById("id_tipo_variable").value = "";
      
   });
 

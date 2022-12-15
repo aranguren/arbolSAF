@@ -5,8 +5,9 @@ from django.db.models import RestrictedError
 from django.urls import reverse_lazy
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
+from django.db import connection
 import json
-from ..models import SpeciesModel
+from ..models import SpeciesModel, VariableTypeModel
 from ..forms import SpeciesForm
 
 
@@ -24,22 +25,27 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         context['segment'] = ['arbolsaf','species']
         context['active_menu'] ='arbolsaf'
 
-        context['cod_esp_name'] = self.request.GET.get('cod_esp', '')
+        context['nombre_comun'] = self.request.GET.get('nombre_comun', '')
 
-        if 'cod_esp' not in self.request.GET.keys():
+        if 'nombre_comun' not in self.request.GET.keys():
             context['has_filters'] = False
         else:
             context['has_filters'] = True
-        
-        context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
-        context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
+
+        variables =  VariableTypeModel.objects.order_by('variable')
+        context['variables']=variables
+
+        #context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
+        #context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
         context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
         context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
+        context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
+
 
         if context['is_paginated']:
             list_pages = []
 
-            if 'cod_esp' not in self.request.GET:
+            if 'nombre_comun' not in self.request.GET:
                 for i in range(context['page_obj'].number, context['page_obj'].number + 5):
                     if i <= context['page_obj'].paginator.num_pages:
                         list_pages.append(i)
@@ -70,23 +76,44 @@ class SpeciesListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
 
         query = {
-            'cod_esp': self.request.GET.get('cod_esp', None),
-            'taxonid_wfo': self.request.GET.get('taxonid_wfo', None),
+            #'cod_esp': self.request.GET.get('cod_esp', None),
+            #'taxonid_wfo': self.request.GET.get('taxonid_wfo', None),
             'nombre_comun': self.request.GET.get('nombre_comun', None),
-            'nombre_cientifico': self.request.GET.get('nombre_cientifico', None)
+            'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
+            'tipo_variable': self.request.GET.get('tipo_variable', None),
+            
             }
 
 
         query_result =  SpeciesModel.objects.order_by('cod_esp')
 
-        if query['cod_esp'] and query['cod_esp'] != '':
-            query_result = query_result.filter(cod_esp__icontains=query['cod_esp'])
-        if query['taxonid_wfo'] and query['taxonid_wfo'] != '':
-            query_result = query_result.filter(taxonid_wfo__icontains=query['taxonid_wfo'])
+
+
+           
+
+        #if query['cod_esp'] and query['cod_esp'] != '':
+        #    query_result = query_result.filter(cod_esp__icontains=query['cod_esp'])
+        #if query['taxonid_wfo'] and query['taxonid_wfo'] != '':
+        #    query_result = query_result.filter(taxonid_wfo__icontains=query['taxonid_wfo'])
         if query['nombre_comun'] and query['nombre_comun'] != '':
             query_result = query_result.filter(nombre_comun__icontains=query['nombre_comun'])
         if query['nombre_cientifico'] and query['nombre_cientifico'] != '':
             query_result = query_result.filter(nombre_cientifico__icontains=query['nombre_cientifico'])
+        
+        if query['tipo_variable'] and query['tipo_variable'] != '':
+            with connection.cursor() as cursor:
+                
+                cursor.execute(""" 
+                    Select as2.id from 
+                    arbolsaf_species as2 join arbolsaf_variable av on(av.especie_id=as2.id)
+                    join arbolsaf_variable_type avt on(avt.id=av.tipo_variable_id)
+                    where avt.id={}
+                """.format(int(query['tipo_variable'])))
+
+                especies = cursor.fetchall()
+                lista_variables = [x[0] for x in especies]
+                query_result = query_result.filter(id__in=lista_variables)
+
 
         return query_result
 
