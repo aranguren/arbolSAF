@@ -239,7 +239,7 @@ Listado Especies
                                    class="form-control"
                                    value="{{ value_nombre_comun }}">
                           </div>
-                          <br>
+                    
                         </div>
                         <div class="form-group">
                           <label class="control-label" for="id_nombre_cientifico">
@@ -252,11 +252,11 @@ Listado Especies
                                    class="form-control"
                                    value="{{ value_nombre_cientifico }}">
                           </div>
-                          <br>
+                      
                         </div>
                         <div class="form-group">
-                          <label class="control-label" for="id_center">Tipo Variable</label>
-                       <div class=" ">
+                          <label class="control-label" for="id_tipo_variable">Tipo Variable</label>
+                          <div class=" ">
                            <select id="id_tipo_variable" class="form-select" name="tipo_variable">
                                <option></option>   
                                {% for variable in variables %}                                       
@@ -266,10 +266,27 @@ Listado Especies
                                <option>Unión</option-->
                               
                            </select>
-                           {#                                        <input id="id_tipo_mantenimiento" type="text" name="tipo_mantenimiento" class="form-control" value="{{ value_tipo_mantenimiento }}">#}
+                         
                        </div>
                           
                        </div>
+
+                       <div class="form-group">
+                        <label class="control-label" for="id_referencia">Referencia</label>
+                        <div class=" ">
+                         <select id="id_referencia" class="form-select" name="referencia">
+                             <option></option>   
+                             {% for referencia in referencias %}                                       
+                             <option value="{{referencia.id}}">{{referencia.fuente_final}}</option>
+                             {% endfor %}  
+                             <!--option>Desmembramiento</option>
+                             <option>Unión</option-->
+                            
+                         </select>
+                       
+                     </div>
+                        
+                     </div>
                       </form>
                     </div>
                   </div>
@@ -307,6 +324,7 @@ Listado Especies
 
 
       document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
+      document.getElementById("id_referencia").value = "{{value_referencia}}";
      
   });
 
@@ -316,6 +334,7 @@ Listado Especies
       document.getElementById("id_nombre_comun").value = "";
       document.getElementById("id_nombre_cientifico").value = "";
       document.getElementById("id_tipo_variable").value = "";
+      document.getElementById("id_referencia").value = "";
      
   });
 

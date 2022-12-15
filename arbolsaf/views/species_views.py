@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.db import connection
 import json
-from ..models import SpeciesModel, VariableTypeModel
+from ..models import SpeciesModel, VariableTypeModel, ReferenceModel
 from ..forms import SpeciesForm
 
 
@@ -35,12 +35,15 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         variables =  VariableTypeModel.objects.order_by('variable')
         context['variables']=variables
 
+        referencias =  ReferenceModel.objects.order_by('fuente_final')
+        context['referencias']=referencias
+
         #context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
         #context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
         context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
         context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
-
+        context['value_referencia'] = self.request.GET.get('referencia', '')
 
         if context['is_paginated']:
             list_pages = []
@@ -81,7 +84,7 @@ class SpeciesListView(LoginRequiredMixin, ListView):
             'nombre_comun': self.request.GET.get('nombre_comun', None),
             'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
             'tipo_variable': self.request.GET.get('tipo_variable', None),
-            
+            'referencia': self.request.GET.get('referencia', None),
             }
 
 
@@ -104,7 +107,7 @@ class SpeciesListView(LoginRequiredMixin, ListView):
             with connection.cursor() as cursor:
                 
                 cursor.execute(""" 
-                    Select as2.id from 
+                    Select distinct as2.id from 
                     arbolsaf_species as2 join arbolsaf_variable av on(av.especie_id=as2.id)
                     join arbolsaf_variable_type avt on(avt.id=av.tipo_variable_id)
                     where avt.id={}
@@ -113,6 +116,19 @@ class SpeciesListView(LoginRequiredMixin, ListView):
                 especies = cursor.fetchall()
                 lista_variables = [x[0] for x in especies]
                 query_result = query_result.filter(id__in=lista_variables)
+        
+        if query['referencia'] and query['referencia'] != '':
+            with connection.cursor() as cursor:
+                
+                cursor.execute(""" 
+                    Select distinct as2.id, as2.nombre_comun from arbolsaf_species as2 join arbolsaf_variable av on(av.especie_id=as2.id)
+                    join arbolsaf_reference ar on (av.referencia_id= ar.id) 
+                    where ar.id={}
+                """.format(int(query['referencia'])))
+
+                referencias = cursor.fetchall()
+                lista_referencias = [x[0] for x in referencias]
+                query_result = query_result.filter(id__in=lista_referencias)
 
 
         return query_result
