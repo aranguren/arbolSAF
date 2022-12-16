@@ -183,14 +183,14 @@ class VariableTypeUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @login_required(login_url='/login/')
-def species_delete(request):
+def variable_type_delete(request):
     resp = {}
     query = {'id': request.GET.get('id', None)}
     id= query['id']
     print(id)
-    period = SpeciesModel.objects.get(pk=id)
+    variable = VariableTypeModel.objects.get(pk=id)
     try:
-        period.delete()
+        variable.delete()
     except RestrictedError as e:
         resp['mensaje']= 'restricted'
         resp['error'] = "{} {}".format(e.args[0], str(e.args[1]))

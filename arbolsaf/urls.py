@@ -27,6 +27,7 @@ urlpatterns = [
 
     path('tipos_variable/crear', VariableTypeCreateView.as_view(),name='variable_type_create'),
     path('tipos_variable/modificar/<str:pk>', VariableTypeUpdateView.as_view(), name='variable_type_update'),
+     path('tipos_variable/eliminar', variable_type_delete, name='variable_type_delete'),
     
 
 ]

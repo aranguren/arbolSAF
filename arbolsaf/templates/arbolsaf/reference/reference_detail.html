@@ -155,7 +155,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminarel tipo de variable?</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la especie?</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
@@ -182,14 +182,14 @@ document.getElementById("aceptar").addEventListener('click', function(){
 
   var request = $.ajax({
       type: "GET",
-      url: "/arbolsaf/tipos_variable/eliminar",
+      url: "/arbolsaf/variable/eliminar",
       data: {
           "id": valor
       },
       success: function (response) {
           console.log(response)
           $("#deleteModal").modal('hide');
-          $(location).attr('href', "{% url 'arbolsaf:variable_type_list'%}");
+          $(location).attr('href', "{{species_url}}");
 
       },
       error: function (response, e) {

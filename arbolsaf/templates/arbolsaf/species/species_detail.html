@@ -748,7 +748,7 @@
         success: function (response) {
             console.log(response)
             $("#deleteModal").modal('hide');
-            $(location).attr('href', "{% url 'arbolsaf:species_detail' specie.id %}");
+            $(location).attr('href', "{% url 'arbolsaf:species_list'%}");
 
         },
         error: function (response, e) {
