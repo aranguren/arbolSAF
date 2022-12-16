@@ -64,3 +64,22 @@ class SynonymousForm(forms.ModelForm):
             'sinonimo':forms.TextInput(attrs={'class': 'form-control'}),
             'especie': forms.HiddenInput(),
             }
+
+
+class VariableTypeForm(forms.ModelForm):
+
+
+    class Meta:
+        model = VariableTypeModel
+        exclude = ("id",'created_by', 'modified_by')
+        widgets = {
+            'cod_var':forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_variables': forms.Select(attrs={'class': 'form-select'}),
+            'unidad_medida': forms.Select(attrs={'class': 'form-select'}),
+            'familia': forms.Select(attrs={'class': 'form-select'}),    
+            'variable':forms.TextInput(attrs={'class': 'form-control'}),
+            'niveles_categoricos':forms.Textarea(attrs={'class': 'form-control'}),
+            'descripcion':forms.Textarea(attrs={'class': 'form-control'}),
+            'min':forms.NumberInput(attrs={'class': 'form-control'}),
+            'max':forms.NumberInput(attrs={'class': 'form-control'}),
+            }

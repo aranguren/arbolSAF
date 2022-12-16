@@ -1,5 +1,6 @@
 from .views.species_views import *
 from .views.variables_views import *
+from .views.variable_type_views import *
 from .views.synonymous_views import sinonimo_delete, create_sinonimo, Synonymous2MCreateView
 from django.urls import path 
 
@@ -20,6 +21,12 @@ urlpatterns = [
     path('especie/<int:pk>/sinonimo', Synonymous2MCreateView.as_view(), name='species_create_synonymous'),
     path('sinonimo/eliminar', sinonimo_delete, name='sinonimo_delete'),
     path('sinonimo/crear', create_sinonimo, name='sinonimo_create'),
+
+    path('tipos_variable/listado', VariableTypeListView.as_view(),name='variable_type_list'),
+    path('tipos_variable/detalles/<str:pk>', VariableTypeDetailView.as_view(),name='variable_type_detail'),
+
+    path('tipos_variable/crear', VariableTypeCreateView.as_view(),name='variable_type_create'),
+    path('tipos_variable/modificar/<str:pk>', VariableTypeUpdateView.as_view(), name='variable_type_update'),
     
 
 ]
