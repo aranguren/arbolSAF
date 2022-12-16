@@ -209,7 +209,7 @@
                         <td>{{ variable.tipo_variable }}</td>
                         <td>{{ variable.referencia }}</td>
                         <td>
-                          {{ variable.valor_general |slice:":20"}}
+                          {{ variable.valor_general |slice:":20"}} ({{ variable.tipo_variable.unidad_medida|default_if_none:'Sin unidad'}})
                         </td>
                         <td class="text-center">
                           <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
