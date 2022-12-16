@@ -173,6 +173,8 @@
           </div>
         </form>
       </div>
+
+      
     </div>
     {% include "includes/footer.html" %}
   </div>
@@ -184,13 +186,12 @@
 
 
   <script>
-    function clicked() {
-      if (confirm('Do you want to submit?')) {
-         document.theForm.submit();
-      } else {
-          return false;
-      }
-   }
+    function clicked(e)
+    {
+        if(!confirm('Seguro de que desea guardar los cambios?')) {
+            e.preventDefault();
+        }
+    }
 
 
   $(document).ready(function () {
