@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block title %}
-  Formulario tipo variable
+  Formulario referencia
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -34,10 +34,10 @@
             <div class="row">
               <div class="col-7">
                 {% if not form.instance.id %}
-                  <h3>Nuevo tipo variable</h3>
+                  <h3>Nueva referencia</h3>
                 {% else %}
                   <h3>
-                    Actualizar tipo variable:  <span>'{% firstof variable.variable|default_if_none:"-" %}'</span>
+                    Actualizar referencia:  <span>'{% firstof reference.fuente_final|default_if_none:"-" %}'</span>
                   </h3>
                 {% endif %}
               </div>
@@ -47,10 +47,10 @@
                     <i class="fa fa-save"></i>&nbsp;&nbsp;Guardar
                   </button>
                   {% if not form.instance.id %}
-                  <a href="{% url 'arbolsaf:variable_type_list' %}"
+                  <a href="{% url 'arbolsaf:reference_list' %}"
                      class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
                 {% else %}
-                  <a href="{% url 'arbolsaf:variable_type_detail' form.instance.id %}"
+                  <a href="{% url 'arbolsaf:reference_detail' form.instance.id %}"
                      class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-undo"></i>&nbsp;&nbsp;Cancelar</a>
                 {% endif %}
                 </div>
@@ -59,95 +59,37 @@
             <hr class="horizontal dark my-3">
             
             <div class="row mt-4 mb-2">
-              <div class="col-3">
+              <div class="col-6">
                 <div class="form-group">
                   <h6>
-                    {{ form.cod_var.label }}
-                    {% if form.cod_var.required %}<span>*</span>{% endif %}
+                    {{ form.fuente_final.label }}
+                    {% if form.fuente_final.required %}<span>*</span>{% endif %}
                   </h6>
-                  {{ form.cod_var }}
+                  {{ form.fuente_final }}
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-6">
                 <div class="form-group">
                   <h6>
-                    {{ form.variable.label }}
-                    {% if form.variable.field.required %}<span>*</span>{% endif %}
+                    {{ form.cod_cita.label }}
+                    {% if form.cod_cita.field.required %}<span>*</span>{% endif %}
                   </h6>
-                  {{ form.variable }}
+                  {{ form.cod_cita }}
                 </div>
               </div>
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.unidad_medida.label }}
-                    {% if form.unidad_medida.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.unidad_medida }}
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.tipo_variables.label }}
-                    {% if form.tipo_variables.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.tipo_variables }}
-                </div>
-              </div>
+
             </div>
 
-            <div class="row mb-2">
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.familia.label }}
-                    {% if form.familia.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.familia }}
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.min.label }}
-                    {% if form.min.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.min }}
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-group">
-                  <h6>
-                    {{ form.max.label }}
-                    {% if form.max.field.required %}<span>*</span>{% endif %}
-                  </h6>
-                  {{ form.max }}
-                </div>
-              </div>
-            </div>
+
 
             <div class="row mb-2">
               <div class="col-12">
                 <div class="form-group">
                   <h5>
-                    {{ form.niveles_categoricos.label }}
-                    {% if form.niveles_categoricos.required %}<span>*</span>{% endif %}
+                    {{ form.referencia.label }}
+                    {% if form.referencia.required %}<span>*</span>{% endif %}
                   </h5>
-                  {{ form.niveles_categoricos }}
-                </div>
-              </div>
-
-            </div>
-
-            <div class="row mb-2">
-              <div class="col-12">
-                <div class="form-group">
-                  <h5>
-                    {{ form.descripcion.label }}
-                    {% if form.descripcion.required %}<span>*</span>{% endif %}
-                  </h5>
-                  {{ form.descripcion }}
+                  {{ form.referencia }}
                 </div>
               </div>
 

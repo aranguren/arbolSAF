@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Formulario Variable {% endblock title %}
+{% block title %} Detalles referencia {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -27,26 +27,26 @@
           <p class="text-sm mb-0">Create new project</p-->
             <div class="row">
               <div class="col-6">
-               <h3> Detalles: <span>'{% firstof variable.variable|default_if_none:"-" %}' </span></h3>           
+               <h3> Detalles: <span>'{% firstof reference.fuente_final|default_if_none:"-" %}' </span></h3>           
               </div>
               <div class="col-6">
                   <div class="d-flex justify-content-end">
-                      <a href="{% url 'arbolsaf:variable_type_list' %}"
+                      <a href="{% url 'arbolsaf:reference_list' %}"
                       class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
-                  <a href="{% url 'arbolsaf:variable_type_create' %}"
+                  <a href="{% url 'arbolsaf:reference_create' %}"
                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
            
                   
 \
                  
-                  <a href="{% url 'arbolsaf:variable_type_update' variable.id %}"
+                  <a href="{% url 'arbolsaf:reference_update' reference.id %}"
                       class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
                   <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
                   <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
                           id="eliminarB"
                           data-bs-toggle="modal"
                           data-bs-target="#deleteModal"
-                          value="{{ variable.id }} ">
+                          value="{{ reference.id }} ">
                     <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
                   </button>
            
@@ -59,75 +59,27 @@
 
 
           <div class="row mb-2">
-            <div class="col-3">
+            <div class="col-6">
               <div class="form-group">
-                <h6>Código variable </h6>
-                <spam class="mr-2">{% firstof variable.cod_var|default_if_none:"-" %}</span>
+                <h6>Referencia </h6>
+                <div class="mr-2">{% firstof reference.fuente_final|default_if_none:"-" %}</div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-6">
               <div class="form-group">
-                <h6>Variable </h6>
-                <spam class="mr-2">{% firstof variable.variable|default_if_none:"-" %}</span>
+                <h6>Código cita </h6>
+                <div class="mr-2">{% firstof reference.cod_cita|default_if_none:"-" %}</div>
               </div>
             </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Unidad medida </h6>
-                <spam class="mr-2">{% firstof variable.unidad_medida|default_if_none:"-" %}</span>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Tipo Variable </h6>
-                <spam class="mr-2">{% firstof variable.get_tipo_variables_display|default_if_none:"-" %}</span>
-              </div>
-            </div>
+
           
           </div>
 
-          <div class="row mb-2">
+          <div class="row mb-4">
             <div class="col-3">
               <div class="form-group">
-                <h6>Familia </h6>
-                <spam class="mr-2">{% firstof variable.familia|default_if_none:"-" %}</span>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Min </h6>
-                <spam class="mr-2">{% firstof variable.min|default_if_none:"-" %}</span>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Max </h6>
-                <spam class="mr-2">{% firstof variable.max|default_if_none:"-" %}</span>
-              </div>
-            </div>
-            <!--div class="col-3">
-              <div class="form-group">
-                <h6>Tipo Variable </h6>
-                <spam class="mr-2">{% firstof variable.get_tipo_variables_display|default_if_none:"-" %}</span>
-              </div>
-            </div-->
-          
-          </div>
-
-          <div class="row mb-2">
-            <div class="col-3">
-              <div class="form-group">
-                <h5>Niveles categoricos </h5>
-                <spam class="mr-2">{% firstof variable.niveles_categoricos|default_if_none:"-" %}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mb-2">
-            <div class="col-3">
-              <div class="form-group">
-                <h5>Descripción </h5>
-                <spam class="mr-2">{% firstof variable.descripcion|default_if_none:"-" %}</span>
+                <h5>Fuente </h5>
+                <div class="mr-2">{{reference.referencia|default_if_none:"-" }}</div>
               </div>
             </div>
           </div>
@@ -155,7 +107,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la especie?</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la referencia?</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
@@ -182,14 +134,14 @@ document.getElementById("aceptar").addEventListener('click', function(){
 
   var request = $.ajax({
       type: "GET",
-      url: "/arbolsaf/variable/eliminar",
+      url: "/arbolsaf/referencia/eliminar",
       data: {
           "id": valor
       },
       success: function (response) {
           console.log(response)
           $("#deleteModal").modal('hide');
-          $(location).attr('href', "{{species_url}}");
+          $(location).attr('href', "{% url 'arbolsaf:reference_list'%}");
 
       },
       error: function (response, e) {

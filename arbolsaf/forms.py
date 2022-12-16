@@ -83,3 +83,16 @@ class VariableTypeForm(forms.ModelForm):
             'min':forms.NumberInput(attrs={'class': 'form-control'}),
             'max':forms.NumberInput(attrs={'class': 'form-control'}),
             }
+
+class ReferenceForm(forms.ModelForm):
+
+
+    class Meta:
+        model = ReferenceModel
+        exclude = ("id",'created_by', 'modified_by')
+        widgets = {
+            'fuente_final':forms.TextInput(attrs={'class': 'form-control'}),
+            'cod_cita':forms.TextInput(attrs={'class': 'form-control'}),
+            'referencia':forms.Textarea(attrs={'class': 'form-control'}),
+
+            }

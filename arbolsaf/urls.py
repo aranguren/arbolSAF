@@ -1,6 +1,7 @@
 from .views.species_views import *
 from .views.variables_views import *
 from .views.variable_type_views import *
+from .views.reference_views import *
 from .views.synonymous_views import sinonimo_delete, create_sinonimo, Synonymous2MCreateView
 from django.urls import path 
 
@@ -24,10 +25,16 @@ urlpatterns = [
 
     path('tipos_variable/listado', VariableTypeListView.as_view(),name='variable_type_list'),
     path('tipos_variable/detalles/<str:pk>', VariableTypeDetailView.as_view(),name='variable_type_detail'),
-
     path('tipos_variable/crear', VariableTypeCreateView.as_view(),name='variable_type_create'),
     path('tipos_variable/modificar/<str:pk>', VariableTypeUpdateView.as_view(), name='variable_type_update'),
-     path('tipos_variable/eliminar', variable_type_delete, name='variable_type_delete'),
+    path('tipos_variable/eliminar', variable_type_delete, name='variable_type_delete'),
+
+
+    path('referencia/listado', ReferenceListView.as_view(),name='reference_list'),
+    path('referencia/detalles/<str:pk>', ReferenceDetailView.as_view(),name='reference_detail'),
+    path('referencia/crear', ReferenceCreateView.as_view(),name='reference_create'),
+    path('referencia/modificar/<str:pk>', ReferenceUpdateView.as_view(), name='reference_update'),
+    path('referencia/eliminar', reference_delete, name='reference_delete'),
     
 
 ]

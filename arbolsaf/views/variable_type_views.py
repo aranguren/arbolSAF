@@ -55,7 +55,7 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
         if context['is_paginated']:
             list_pages = []
 
-            if 'nombre_comun' not in self.request.GET:
+            if 'cod_var' not in self.request.GET:
                 for i in range(context['page_obj'].number, context['page_obj'].number + 5):
                     if i <= context['page_obj'].paginator.num_pages:
                         list_pages.append(i)
