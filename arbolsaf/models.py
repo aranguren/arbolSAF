@@ -239,6 +239,17 @@ class SpeciesModel(BasicAuditModel):
         return self.variables.all()
 
     @property
+    def get_variables_no_diligenciadas(self):
+        variables = VariableTypeModel.objects.raw("""Select avt.id, avt.variable from arbolsaf_variable_type avt where avt.id not in 
+                (select distinct av.tipo_variable_id from arbolsaf_variable av where av.especie_id=%s)
+            """, [self.id])
+        
+        return variables
+
+
+
+
+    @property
     def get_sinonimos(self):
         return self.sinonimos.all()
 

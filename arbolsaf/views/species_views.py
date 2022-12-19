@@ -143,6 +143,10 @@ class SpeciesDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)   
         context['segment'] = ['arbolsaf','species']
         context['active_menu'] ='arbolsaf'
+        """
+        Select avt.id, avt.variable from arbolsaf_variable_type avt where avt.id not in 
+(select distinct av.tipo_variable_id from arbolsaf_variable av where av.especie_id=24)
+        """
         return context
 
 class SpeciesCreateView(LoginRequiredMixin, CreateView):
