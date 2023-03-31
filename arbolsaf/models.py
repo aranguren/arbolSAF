@@ -64,9 +64,9 @@ class GenderModel(BasicAuditModel):
 
 class ReferenceModel(BasicAuditModel):
 
-    fuente_final = models.CharField(_("referencia"), max_length=255)
+    fuente_final = models.CharField(_("Cita"), max_length=255)
     cod_cita = models.CharField(_("código cita"), max_length=50, unique=True)
-    referencia = models.TextField(_("fuente"), blank=True, null=True)
+    referencia = models.TextField(_("Referencia"), blank=True, null=True)
 
     def __str__(self):
         return self.fuente_final
