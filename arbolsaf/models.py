@@ -142,7 +142,7 @@ class VariableTypeModel(BasicAuditModel):
     unidad_medida =  models.ForeignKey("arbolsaf.MeasureUnitTypeModel", verbose_name=_("Unidad medida"), 
                 on_delete=models.SET_NULL, blank=True, null=True)
     
-    familia =  models.ForeignKey("arbolsaf.VariableTypeFamilyModel", verbose_name=_("Familia"), 
+    familia =  models.ForeignKey("arbolsaf.VariableTypeFamilyModel", verbose_name=_("Grupo"),
                 on_delete=models.SET_NULL, blank=True, null=True)
 
                 
