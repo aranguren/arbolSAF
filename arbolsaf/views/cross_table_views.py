@@ -112,7 +112,7 @@ class ExportCsvView(LoginRequiredMixin, View):
             'tipo_variable': self.request.GET.get('tipo_variable', None),
             'referencia': self.request.GET.get('referencia', None),
         }
-        print('OK')
+
         query_result = VariableModel.objects.order_by('especie__nombre_comun')
 
         if query['nombre_comun'] and query['nombre_comun'] != '':
@@ -133,10 +133,7 @@ class ExportCsvView(LoginRequiredMixin, View):
         writer = csv.writer(response)
         writer.writerow([])
         writer.writerow(['Nombre Común', 'Nombre Científico', 'Tipo de variable', 'Referencia', 'Valor'])
-        # studs = students.values_list('id', 'roll', 'sclass', 'fname', 'lname')
-        # for std in studs:
-        #     writer.writerow(std)
-        print(f"{query_result}")
+
         for item in query_result:
             especie = item.especie
             writer.writerow([especie.nombre_comun, especie.nombre_cientifico, item.tipo_variable,
