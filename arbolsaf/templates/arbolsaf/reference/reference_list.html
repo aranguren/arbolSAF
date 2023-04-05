@@ -49,107 +49,107 @@ Listado Referencias
             </div>
           </div>
           <div class="card-body mt-0">
-            <div class="d-flex justify-content-right">
-              <nav>
-                <ul class="pagination">
-                  {% if 'cod_cita' in request.get_full_path %}
-                    {% if has_previous_pages %}
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="{{ request.get_full_path }}&page={{ 1 }}"
-                           aria-label="1...">
-                          <span aria-hidden="true">1</span>
-                          <span class="sr-only">1...</span>
-                        </a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="{{ request.get_full_path }}&page={{ previous_page }}"
-                           aria-label="Anterior">
-                          <span aria-hidden="true">&laquo;</span>
-                          <span class="sr-only">{% trans 'Anterior' %}</span>
-                        </a>
-                      </li>
-                    {% endif %}
-                    {% for pr in paginator_rows %}
-                      {% if pr == actual_page %}
-                        <li class="page-item active">
-                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>
-                        </li>
-                      {% else %}
-                        <li class="page-item">
-                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>
-                        </li>
-                      {% endif %}
-                    {% endfor %}
-                    {% if has_more_pages %}
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="{{ request.get_full_path }}&page={{ next_page }}"
-                           aria-label=">>">
-                          <span aria-hidden="true">&raquo;</span>
-                          <span class="sr-only">>></span>
-                        </a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="{{ request.get_full_path }}&page={{ total_pages }}"
-                           aria-label="1...">
-                          <span aria-hidden="true">{{ total_pages }}</span>
-                          <span class="sr-only">{{ total_pages }}...</span>
-                        </a>
-                      </li>
-                    {% endif %}
-                  {% else %}
-                    {% if page_obj.has_previous %}
-                      <li class="page-item">
-                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">
-                          <span aria-hidden="true">1</span>
-                          <span class="sr-only">1...</span>
-                        </a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.previous_page_number }}"
-                           aria-label="Anterior">
-                          <span aria-hidden="true">&laquo;</span>
-                          <span class="sr-only">{% trans 'Anterior' %}</span>
-                        </a>
-                      </li>
-                    {% endif %}
-                    {% for pr in paginator_rows %}
-                      {% if pr == page_obj.number %}
-                        <li class="page-item active">
-                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>
-                        </li>
-                      {% else %}
-                        <li class="page-item">
-                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>
-                        </li>
-                      {% endif %}
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.next_page_number }}"
-                           aria-label=">>">
-                          <span aria-hidden="true">&raquo;</span>
-                          <span class="sr-only">>></span>
-                        </a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.paginator.num_pages }}"
-                           aria-label="1...">
-                          <span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span>
-                          <span class="sr-only">{{ page_obj.paginator.num_pages }}...</span>
-                        </a>
-                      </li>
-                    {% endif %}
-                  {% endif %}
-                </ul>
-              </nav>
-            </div>
+{#            <div class="d-flex justify-content-right">#}
+{#              <nav>#}
+{#                <ul class="pagination">#}
+{#                  {% if 'cod_cita' in request.get_full_path %}#}
+{#                    {% if has_previous_pages %}#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ 1 }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">1</span>#}
+{#                          <span class="sr-only">1...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ previous_page }}"#}
+{#                           aria-label="Anterior">#}
+{#                          <span aria-hidden="true">&laquo;</span>#}
+{#                          <span class="sr-only">{% trans 'Anterior' %}</span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                    {% endif %}#}
+{#                    {% for pr in paginator_rows %}#}
+{#                      {% if pr == actual_page %}#}
+{#                        <li class="page-item active">#}
+{#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+{#                      {% else %}#}
+{#                        <li class="page-item">#}
+{#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+{#                      {% endif %}#}
+{#                    {% endfor %}#}
+{#                    {% if has_more_pages %}#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ next_page }}"#}
+{#                           aria-label=">>">#}
+{#                          <span aria-hidden="true">&raquo;</span>#}
+{#                          <span class="sr-only">>></span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ total_pages }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">{{ total_pages }}</span>#}
+{#                          <span class="sr-only">{{ total_pages }}...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                    {% endif %}#}
+{#                  {% else %}#}
+{#                    {% if page_obj.has_previous %}#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">#}
+{#                          <span aria-hidden="true">1</span>#}
+{#                          <span class="sr-only">1...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="?page={{ page_obj.previous_page_number }}"#}
+{#                           aria-label="Anterior">#}
+{#                          <span aria-hidden="true">&laquo;</span>#}
+{#                          <span class="sr-only">{% trans 'Anterior' %}</span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                    {% endif %}#}
+{#                    {% for pr in paginator_rows %}#}
+{#                      {% if pr == page_obj.number %}#}
+{#                        <li class="page-item active">#}
+{#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+{#                      {% else %}#}
+{#                        <li class="page-item">#}
+{#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+{#                      {% endif %}#}
+{#                    {% endfor %}#}
+{#                    {% if page_obj.has_next %}#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="?page={{ page_obj.next_page_number }}"#}
+{#                           aria-label=">>">#}
+{#                          <span aria-hidden="true">&raquo;</span>#}
+{#                          <span class="sr-only">>></span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="?page={{ page_obj.paginator.num_pages }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span>#}
+{#                          <span class="sr-only">{{ page_obj.paginator.num_pages }}...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                    {% endif %}#}
+{#                  {% endif %}#}
+{#                </ul>#}
+{#              </nav>#}
+{#            </div>#}
             <div class="table-responsive mt-0">
               {% if references %}
                 <table class="table table-bordered table-hover mt-0" id="mydatatable">
@@ -187,6 +187,115 @@ Listado Referencias
                 </h3>
               {% endif %}
             </div>
+
+          <div class="d-flex justify-content-center">
+              <nav>
+                <ul class="pagination">
+                  {% if 'nombre_comun' in request.get_full_path %}
+                    {% if has_previous_pages %}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ 1 }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">1</span>#}
+{#                          <span class="sr-only">1...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ previous_page }}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">{% trans 'Anterior' %}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for pr in paginator_rows %}
+                      {% if pr == actual_page %}
+{#                        <li class="page-item active">#}
+{#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+                          <li class="me-3 ms-2 mt-1">
+                          <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                        </li>
+                      {% else %}
+{#                        <li class="page-item">#}
+{#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+                      {% endif %}
+                    {% endfor %}
+                    {% if has_more_pages %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ next_page }}"
+                           aria-label=">>">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">>></span>
+                        </a>
+                      </li>
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ total_pages }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">{{ total_pages }}</span>#}
+{#                          <span class="sr-only">{{ total_pages }}...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                    {% endif %}
+                  {% else %}
+                    {% if page_obj.has_previous %}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">#}
+{#                          <span aria-hidden="true">1</span>#}
+{#                          <span class="sr-only">1...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.previous_page_number }}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">{% trans 'Anterior' %}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for pr in paginator_rows %}
+                      {% if pr == page_obj.number %}
+{#                          <li class="page-item active">#}
+{#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+{#                          </li>#}
+                        <li class="me-3 ms-2 mt-1">
+                          <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                        </li>
+                      {% else %}
+{#                        <li class="page-item">#}
+{#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.next_page_number }}"
+                           aria-label=">>">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">>></span>
+                        </a>
+                      </li>
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="?page={{ page_obj.paginator.num_pages }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span>#}
+{#                          <span class="sr-only">{{ page_obj.paginator.num_pages }}...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                    {% endif %}
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+
             <div class="modal fade"
                  id="filterModal"
                  tabindex="-1"
