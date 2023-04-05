@@ -55,6 +55,13 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
         if context['is_paginated']:
             list_pages = []
 
+            first_range = self.request.GET.get('page', '1')
+            actual_rows = round(int(first_range) * self.paginate_by)
+            total_rows = len(VariableTypeListView.get_queryset(self))
+
+            context['count_actual_rows'] = total_rows if actual_rows > total_rows else actual_rows
+            context['total_rows'] = total_rows
+
             if 'cod_var' not in self.request.GET:
                 for i in range(context['page_obj'].number, context['page_obj'].number + 5):
                     if i <= context['page_obj'].paginator.num_pages:
