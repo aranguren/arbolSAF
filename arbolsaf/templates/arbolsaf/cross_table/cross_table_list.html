@@ -1,0 +1,440 @@
+{% extends 'layouts/base.html' %}
+{% load l10n %}
+{% load i18n %}
+{% block title %}
+    Tabla Cruzada
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <style>
+        .clickable {
+            cursor: pointer;
+        }
+
+        .btn-close {
+            color: red;
+            opacity: 1;
+        }
+    </style>
+{% endblock stylesheets %}
+{% block body_class %}g-sidenav-show  bg-gray-100{% endblock %}
+{% block content %}
+    <div class="container-fluid py-4">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-1">Tabla Cruzada</h3>
+                        <hr class="horizontal dark my-2">
+                        <div class="d-flex justify-content-left">
+                            {#                            <a href="{% url 'arbolsaf:species_create' %}"#}
+                            {#                               class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>#}
+                            {#                            <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"#}
+                            {#                                    id="filtroB"#}
+                            {#                                    data-bs-toggle="modal"#}
+                            {#                                    data-bs-target="#filterModal">#}
+                            {#                                <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar#}
+                            {#                            </button>#}
+
+                            {% if has_filters %}
+                                <h6 class="mt-0">
+                <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
+                  <button type="button"
+                          onclick="window.location='{% url 'arbolsaf:cross_table_list' %}'"
+                          class="btn-close"></button>
+                </span>
+                                </h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body mt-0 pt-0">
+                        <div class="container ps-0">
+                            <form class="row g-md-2 g-sm-1  justify-content-start " id="filter_form"
+                                  action="{% url 'arbolsaf:cross_table_list' %}"
+                                  method="get"
+                                  autocomplete="off">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_nombre_comun">
+                                            Nombre común
+                                        </label>
+                                        <input id="id_nombre_comun"
+                                               type="text"
+                                               name="nombre_comun"
+                                               class="form-control"
+                                               value="{{ value_nombre_comun }}">
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_nombre_cientifico">
+                                            Nombre científico
+                                        </label>
+                                        <input id="id_nombre_cientifico"
+                                               type="text"
+                                               name="nombre_cientifico"
+                                               class="form-control"
+                                               value="{{ value_nombre_cientifico }}">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_tipo_variable">Tipo Variable</label>
+                                        <select id="id_tipo_variable" class="form-select" name="tipo_variable">
+                                            <option></option>
+                                            {% for variable in variables %}
+                                                <option value="{{ variable.id }}">{{ variable.variable }}</option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_referencia">Referencia</label>
+                                        <select id="id_referencia" class="form-select" name="referencia">
+                                            <option></option>
+                                            {% for referencia in referencias %}
+                                                <option value="{{ referencia.id }}">{{ referencia.fuente_final }}</option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group mt-md-4">
+                                                <button form="filter_form" type="submit"
+                                                        class="btn bg-secondary text-white btn-sm mt-2">
+                                                    <i class="fa fa-filter"></i>&nbsp;&nbsp;Filtrar
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group mt-md-4 text-end">
+                                                <button form="filter_form"
+                                                        formaction="{% url 'arbolsaf:cross_table_export' %}"
+                                                        class="btn btn-primary text-white btn-sm mt-2">
+                                                    <i class="fa fa-file-csv"></i>&nbsp;&nbsp;Exportar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="table-responsive mt-0">
+                            {% if cross_table %}
+                                <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <b>Nombre común</b>
+                                        </th>
+                                        <th>
+                                            <b>Nombre científico</b>
+                                        </th>
+                                        <th>
+                                            <b>Tipo de variable</b>
+                                        </th>
+                                        <th>
+                                            <b>Referencia</b>
+                                        </th>
+                                        <th>
+                                            <b>Valor</b>
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for variable in cross_table %}
+                                        <tr class="clickable"
+                                            onclick="window.location='{% url 'arbolsaf:species_detail' variable.especie.id %}'">
+                                            <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
+
+                                            <td>{% firstof variable.especie.nombre_comun|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.especie.nombre_cientifico|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.tipo_variable|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.referencia|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.valor_general|default_if_none:"" %}</td>
+
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                            {% else %}
+                                <h3 style="color: red" class="text-center">
+                                    {% trans 'No existen datos para mostrar' %}
+                                </h3>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <nav>
+                                <ul class="pagination">
+                                    {% if 'nombre_comun' in request.get_full_path %}
+                                        {% if has_previous_pages %}
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link"#}
+                                            {#                           href="{{ request.get_full_path }}&page={{ 1 }}"#}
+                                            {#                           aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">1</span>#}
+                                            {#                          <span class="sr-only">1...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="{{ request.get_full_path }}&page={{ previous_page }}"
+                                                   aria-label="Anterior">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">{% trans 'Anterior' %}</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% for pr in paginator_rows %}
+                                            {% if pr == actual_page %}
+                                                {#                        <li class="page-item active">#}
+                                                {#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+                                                {#                        </li>#}
+                                                <li class="me-3 ms-2 mt-1">
+                                                    <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                                                </li>
+                                            {% else %}
+                                                {#                        <li class="page-item">#}
+                                                {#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+                                                {#                        </li>#}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if has_more_pages %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="{{ request.get_full_path }}&page={{ next_page }}"
+                                                   aria-label=">>">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">>></span>
+                                                </a>
+                                            </li>
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link"#}
+                                            {#                           href="{{ request.get_full_path }}&page={{ total_pages }}"#}
+                                            {#                           aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">{{ total_pages }}</span>#}
+                                            {#                          <span class="sr-only">{{ total_pages }}...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if page_obj.has_previous %}
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">1</span>#}
+                                            {#                          <span class="sr-only">1...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ page_obj.previous_page_number }}"
+                                                   aria-label="Anterior">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">{% trans 'Anterior' %}</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% for pr in paginator_rows %}
+                                            {% if pr == page_obj.number %}
+                                                {#                          <li class="page-item active">#}
+                                                {#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+                                                {#                          </li>#}
+                                                <li class="me-3 ms-2 mt-1">
+                                                    <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                                                </li>
+                                            {% else %}
+                                                {#                        <li class="page-item">#}
+                                                {#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+                                                {#                        </li>#}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ page_obj.next_page_number }}"
+                                                   aria-label=">>">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">>></span>
+                                                </a>
+                                            </li>
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link"#}
+                                            {#                           href="?page={{ page_obj.paginator.num_pages }}"#}
+                                            {#                           aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span>#}
+                                            {#                          <span class="sr-only">{{ page_obj.paginator.num_pages }}...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                        {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+
+                        {#                        <div class="modal fade"#}
+                        {#                             id="filterModal"#}
+                        {#                             tabindex="-1"#}
+                        {#                             role="dialog"#}
+                        {#                             aria-labelledby="exampleModalLabel"#}
+                        {#                             aria-hidden="true">#}
+                        {#                            <div class="modal-dialog modal-dialog-centered" role="document">#}
+                        {#                                <div class="modal-content">#}
+                        {#                                    <div class="modal-header">#}
+                        {#                                        <h5 class="modal-title" id="exampleModalLabel">#}
+                        {#                                            Filtrar#}
+                        {#                                        </h5>#}
+                        {#                                        <button type="button"#}
+                        {#                                                class="btn-close text-dark"#}
+                        {#                                                data-bs-dismiss="modal"#}
+                        {#                                                aria-label="Close"#}
+                        {#                                                id="elim">#}
+                        {#                                            <span aria-hidden="true">&times;</span>#}
+                        {#                                        </button>#}
+                        {#                                    </div>#}
+                        {#                                    <div class="modal-body">#}
+                        {#                                        <div class="container">#}
+                        {#                                            <form id="filter_form"#}
+                        {#                                                  action="{% url 'arbolsaf:cross_table_list' %}"#}
+                        {#                                                  class=""#}
+                        {#                                                  method="get"#}
+                        {#                                                  autocomplete="off">#}
+                        {##}
+                        {#                                                <div class="form-group">#}
+                        {#                                                    <label class="control-label" for="id_nombre_comun">#}
+                        {#                                                        Nombre común#}
+                        {#                                                    </label>#}
+                        {#                                                    <div class=" ">#}
+                        {#                                                        <input id="id_nombre_comun"#}
+                        {#                                                               type="text"#}
+                        {#                                                               name="nombre_comun"#}
+                        {#                                                               class="form-control"#}
+                        {#                                                               value="{{ value_nombre_comun }}">#}
+                        {#                                                    </div>#}
+                        {##}
+                        {#                                                </div>#}
+                        {#                                                <div class="form-group">#}
+                        {#                                                    <label class="control-label" for="id_nombre_cientifico">#}
+                        {#                                                        Nombre científico#}
+                        {#                                                    </label>#}
+                        {#                                                    <div class=" ">#}
+                        {#                                                        <input id="id_nombre_cientifico"#}
+                        {#                                                               type="text"#}
+                        {#                                                               name="nombre_cientifico"#}
+                        {#                                                               class="form-control"#}
+                        {#                                                               value="{{ value_nombre_cientifico }}">#}
+                        {#                                                    </div>#}
+                        {##}
+                        {#                                                </div>#}
+                        {#                                                <div class="form-group">#}
+                        {#                                                    <label class="control-label" for="id_tipo_variable">Tipo#}
+                        {#                                                        Variable</label>#}
+                        {#                                                    <div class=" ">#}
+                        {#                                                        <select id="id_tipo_variable" class="form-select"#}
+                        {#                                                                name="tipo_variable">#}
+                        {#                                                            <option></option>#}
+                        {#                                                            {% for variable in variables %}#}
+                        {#                                                                <option value="{{ variable.id }}">{{ variable.variable }}</option>#}
+                        {#                                                            {% endfor %}#}
+                        {#                                                            <!--option>Desmembramiento</option>#}
+                        {#                                                            <option>Unión</option-->#}
+                        {##}
+                        {#                                                        </select>#}
+                        {##}
+                        {#                                                    </div>#}
+                        {##}
+                        {#                                                </div>#}
+                        {##}
+                        {#                                                <div class="form-group">#}
+                        {#                                                    <label class="control-label" for="id_referencia">Referencia</label>#}
+                        {#                                                    <div class=" ">#}
+                        {#                                                        <select id="id_referencia" class="form-select"#}
+                        {#                                                                name="referencia">#}
+                        {#                                                            <option></option>#}
+                        {#                                                            {% for referencia in referencias %}#}
+                        {#                                                                <option value="{{ referencia.id }}">{{ referencia.fuente_final }}</option>#}
+                        {#                                                            {% endfor %}#}
+                        {#                                                            <!--option>Desmembramiento</option>#}
+                        {#                                                            <option>Unión</option-->#}
+                        {##}
+                        {#                                                        </select>#}
+                        {##}
+                        {#                                                    </div>#}
+                        {##}
+                        {#                                                </div>#}
+                        {#                                            </form>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                    <div class="modal-footer">#}
+                        {#                                        <button id="reset_button"#}
+                        {#                                                form="filter_form"#}
+                        {#                                                type="button"#}
+                        {#                                                class="btn btn-light btn-sm">#}
+                        {#                                            <i class="fa fa-trash"></i>&nbsp;&nbsp;Limpiar filtros#}
+                        {#                                        </button>#}
+                        {#                                        <button form="filter_form" type="submit" class="btn btn-primary btn-sm">#}
+                        {#                                            <i class="fa fa-filter"></i>&nbsp;&nbsp;Filtrar#}
+                        {#                                        </button>#}
+                        {#                                        <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="modal">#}
+                        {#                                            Cerrar#}
+                        {#                                        </button>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include "includes/footer.html" %}
+    </div>
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+
+
+            document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
+            document.getElementById("id_referencia").value = "{{value_referencia}}";
+
+        });
+
+        $('#reset_button').click(function () {
+            //document.getElementById("id_cod_esp").value = "";
+            //document.getElementById("id_taxonid_wfo").value = "";
+            document.getElementById("id_nombre_comun").value = "";
+            document.getElementById("id_nombre_cientifico").value = "";
+            document.getElementById("id_tipo_variable").value = "";
+            document.getElementById("id_referencia").value = "";
+
+        });
+
+
+        //$(document).ready(function() {
+        //    $('#mydatatable').DataTable();
+        //} );
+
+
+    </script>
+{% endblock javascripts %}

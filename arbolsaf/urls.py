@@ -2,6 +2,7 @@ from .views.species_views import *
 from .views.variables_views import *
 from .views.variable_type_views import *
 from .views.reference_views import *
+from .views.cross_table_views import *
 from .views.synonymous_views import sinonimo_delete, create_sinonimo, Synonymous2MCreateView
 from django.urls import path 
 
@@ -35,6 +36,8 @@ urlpatterns = [
     path('referencia/crear', ReferenceCreateView.as_view(),name='reference_create'),
     path('referencia/modificar/<str:pk>', ReferenceUpdateView.as_view(), name='reference_update'),
     path('referencia/eliminar', reference_delete, name='reference_delete'),
-    
+
+    path('tabla_cruzada/listado', CrossTableListView.as_view(), name='cross_table_list'),
+    path('tabla_cruzada/exportar', ExportCsvView.as_view(), name='cross_table_export'),
 
 ]
