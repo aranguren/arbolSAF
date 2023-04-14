@@ -49,7 +49,7 @@ class SynonymousInline(admin.TabularInline):
 
 class VariableInline(admin.StackedInline):
     model = models.VariableModel
-    fields = ['nombre' ,
+    fields = [
                 'referencia', 
                 'tipo_variable',            
                 'valor_numerico', 
