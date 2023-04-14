@@ -19,10 +19,21 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         context['active_menu'] = 'arbolsaf'
 
         context['nombre_comun'] = self.request.GET.get('nombre_comun', '')
+        context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
+        context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
+        context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
+        context['value_referencia'] = self.request.GET.get('referencia', '')
 
-        if 'nombre_comun' not in self.request.GET.keys():
-            context['has_filters'] = False
-        else:
+        filtrado = context['nombre_comun'] + context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
+                   context['value_tipo_variable'] + context['value_referencia']
+
+        print(len(filtrado))
+
+        context['ordenar_por'] = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+        context['has_filters'] = False
+
+        if len(filtrado) > 0:
             context['has_filters'] = True
 
         especies = SpeciesModel.objects.all()
@@ -44,13 +55,6 @@ class CrossTableListView(LoginRequiredMixin, ListView):
 
         referencias = ReferenceModel.objects.order_by('fuente_final')
         context['referencias'] = referencias
-
-        # context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
-        # context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
-        context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
-        context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
-        context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
-        context['value_referencia'] = self.request.GET.get('referencia', '')
 
         if context['is_paginated']:
             list_pages = []
@@ -96,8 +100,22 @@ class CrossTableListView(LoginRequiredMixin, ListView):
             'tipo_variable': self.request.GET.get('tipo_variable', None),
             'referencia': self.request.GET.get('referencia', None),
         }
+        tipos_de_orden = {
+            'nombre_comun': 'especie__nombre_comun',
+            'nombre_comun_dec': '-especie__nombre_comun',
+            'nombre_cientifico': 'especie__nombre_cientifico',
+            'nombre_cientifico_dec': '-especie__nombre_cientifico',
+            'tipo_variable': 'tipo_variable__tipo_variables',
+            'tipo_variable_dec': '-tipo_variable__tipo_variables',
+            'referencia': 'referencia__fuente_final',
+            'referencia_dec': '-referencia__fuente_final',
+            'valor': 'valor_general',
+            'valor_dec': '-valor_general'
 
-        query_result = VariableModel.objects.order_by('especie__nombre_comun')
+        }
+        orden = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+        query_result = VariableModel.objects
 
         if query['nombre_comun'] and query['nombre_comun'] != '':
             query_result = query_result.filter(especie__nombre_comun__icontains=query['nombre_comun'])
@@ -111,6 +129,11 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         if query['referencia'] and query['referencia'] != '':
             referencia = ReferenceModel.objects.get(pk=int(query['referencia']))
             query_result = query_result.filter(referencia=referencia)
+
+        if orden in tipos_de_orden:
+            query_result = query_result.order_by(tipos_de_orden[orden])
+        else:
+            query_result = query_result.order_by(tipos_de_orden['nombre_comun'])
 
         return query_result
 
