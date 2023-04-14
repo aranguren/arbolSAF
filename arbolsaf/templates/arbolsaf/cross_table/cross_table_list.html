@@ -60,11 +60,13 @@
                                         <label class="control-label" for="id_nombre_comun">
                                             Nombre común
                                         </label>
-                                        <input id="id_nombre_comun"
-                                               type="text"
-                                               name="nombre_comun"
-                                               class="form-control"
-                                               value="{{ value_nombre_comun }}">
+                                        <select id="id_nombre_comun" class="form-select" name="nombre_comun">
+                                            <option></option>
+                                            {% for nombre in nombre_comun_values %}
+                                                <option value="{{ nombre }}">{{ nombre }}</option>
+                                            {% endfor %}
+
+                                        </select>
 
 
                                     </div>
@@ -74,11 +76,13 @@
                                         <label class="control-label" for="id_nombre_cientifico">
                                             Nombre científico
                                         </label>
-                                        <input id="id_nombre_cientifico"
-                                               type="text"
-                                               name="nombre_cientifico"
-                                               class="form-control"
-                                               value="{{ value_nombre_cientifico }}">
+                                        <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
+                                            <option></option>
+                                            {% for nombre in nombre_cientifico_values %}
+                                                <option value="{{ nombre }}">{{ nombre }}</option>
+                                            {% endfor %}
+
+                                        </select>
 
                                     </div>
                                 </div>
@@ -414,7 +418,8 @@
 
         $(document).ready(function () {
 
-
+            document.getElementById("id_nombre_comun").value = "{{value_nombre_comun}}";
+            document.getElementById("id_nombre_cientifico").value = "{{value_nombre_cientifico}}";
             document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
             document.getElementById("id_referencia").value = "{{value_referencia}}";
 

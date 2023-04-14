@@ -25,13 +25,25 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         else:
             context['has_filters'] = True
 
+        especies = SpeciesModel.objects.all()
+
+        nombre_comun_values = list()
+        for especie in especies.order_by('nombre_comun'):
+            nombre_comun_values.append(especie.nombre_comun)
+
+        context['nombre_comun_values'] = nombre_comun_values
+
+        nombre_cientifico_values = list()
+        for especie in especies.order_by('nombre_cientifico'):
+            nombre_cientifico_values.append(especie.nombre_cientifico)
+
+        context['nombre_cientifico_values'] = nombre_cientifico_values
+
         variables = VariableTypeModel.objects.order_by('variable')
         context['variables'] = variables
 
         referencias = ReferenceModel.objects.order_by('fuente_final')
         context['referencias'] = referencias
-
-        nombre_comun = SpeciesModel.objects.all()
 
         # context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
         # context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
