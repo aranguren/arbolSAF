@@ -280,6 +280,9 @@
                     <td>
                       <b>Unidad medida</b>
                     </td>
+                    <td>
+                      <b>Diligenciar</b>
+                    </td>
                   </tr>
                   </thead>
                   <tbody>
@@ -293,7 +296,9 @@
                         <td> {% firstof variable_nd.unidad_medida|default_if_none:"-" %}</td>
                         
                
-
+                        <td> <a href="{% url 'arbolsaf:species_diligenciar_variable' specie.id variable_nd.id %}"   data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Diligenciar"><i class="fa fa-plus mx-2" aria-hidden="true"></i></a>
+                        </td> 
                       </tr>
                       {% endfor %}
                     </tbody>

@@ -186,7 +186,11 @@ class SpeciesCreateView(LoginRequiredMixin, CreateView):
         farm.save()
         return super(SpeciesCreateView, self).form_valid(form)
         #return HttpResponseRedirect(self.get_success_url())
-    
+        #("numerico", "Valor numérico"),
+        #("texto", "Valor texto"),
+        #("rango", "Rango"),
+        #(#"cualitativo", "Cualitativo"),
+        #("boolean", "Boolean"),
 
 class SpeciesUpdateView(LoginRequiredMixin, UpdateView):
     model = SpeciesModel

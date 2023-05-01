@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 import json
-from ..models import VariableModel, SpeciesModel, VariableTypeModel
+from ..models import VariableModel, SpeciesModel, VariableTypeModel, VariableTypeOption
 from ..forms import SpeciesForm, VariableO2MForm
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseServerError, HttpResponseBadRequest
@@ -182,6 +182,10 @@ class VariableO2MCreateView(LoginRequiredMixin, CreateView):
             context['specie_pk'] = self.kwargs['pk']
             redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
             context['species_url'] =  redireccion+'#variablessection'
+        if 'tipo' in self.kwargs:
+            context['id_diligenciar'] = self.kwargs['tipo']
+            nombre_variable_diligenciar = VariableTypeModel.objects.get(id=int(self.kwargs['tipo'])).variable
+            context['nombre_variable_diligenciar'] = nombre_variable_diligenciar
         return context
 
     def get_success_url(self):
@@ -199,6 +203,17 @@ class VariableO2MCreateView(LoginRequiredMixin, CreateView):
 
         specie.created_by = self.request.user # use your own profile here
         #farm.active=True
+        if specie.tipo_variable.tipo_variables == 'cualitativo':
+            specie.valor_general = specie.valor_cualitativo.nombre
+        elif specie.tipo_variable.tipo_variables == 'numerico': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'texto': 
+            specie.valor_general = specie.valor_texto
+        elif specie.tipo_variable.tipo_variables == 'rango': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'boolean': 
+            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
+         
         specie.save()
         return super(VariableO2MCreateView, self).form_valid(form)
 
@@ -240,6 +255,18 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
 
         specie.modified_by = self.request.user # use your own profile here
         #farm.active=True
+
+        if specie.tipo_variable.tipo_variables == 'cualitativo':
+            specie.valor_general = specie.valor_cualitativo.nombre
+        elif specie.tipo_variable.tipo_variables == 'numerico': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'texto': 
+            specie.valor_general = specie.valor_texto
+        elif specie.tipo_variable.tipo_variables == 'rango': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'boolean': 
+            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
+         
         specie.save()
         return super(VariableO2MUpdateView, self).form_valid(form)
 
@@ -287,3 +314,18 @@ def variable_tipo_get(request):
     
     print(resp)
     return  JsonResponse(resp, status=200)
+
+
+@login_required(login_url='/login/')
+def variable_get_opciones(request):
+    resp = {}
+    variable = int(request.GET.get('variable_id', 0)) if request.GET.get('variable_id', '0') !='' else 0 
+  
+    opciones = VariableTypeOption.objects.filter(tipo_variable__id=variable)
+    lista_opciones= [{"id":opcion.id, "nombre":opcion.nombre} for opcion in opciones ]
+    
+
+    
+    resp['mensaje'] = 'ok'
+    resp['opciones'] = lista_opciones
+    return JsonResponse(resp, status=200)

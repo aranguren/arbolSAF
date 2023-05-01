@@ -360,7 +360,16 @@ class ReferenceAdmin(ImportExportModelAdmin):
 admin.site.register(models.ReferenceModel, ReferenceAdmin)
 
 
+class VariableTypeOptionAdmin(admin.ModelAdmin):
+    #fields = ['name', 'geom']
+    list_display = ('nombre','tipo_variable')
+    
+    fields = [
+       'tipo_variable', 'nombre'  
+    ]
 
+
+admin.site.register(models.VariableTypeOption, VariableTypeOptionAdmin)
 
 
  #inlines = [SynonymousInline,]

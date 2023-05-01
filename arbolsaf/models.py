@@ -121,8 +121,8 @@ class VariableTypeFamilyModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_variable_type_family'
         managed = True
-        verbose_name = 'Familia tipo variable'
-        verbose_name_plural = 'Familias tipo variables'
+        verbose_name = 'Grupo de variable'
+        verbose_name_plural = 'Grupos de variables'
 
 class VariableTypeModel(BasicAuditModel):
 
@@ -163,11 +163,29 @@ class VariableTypeModel(BasicAuditModel):
         verbose_name_plural = 'Tipos de variable'
 
 
+class VariableTypeOption(models.Model):
+
+    def __str__(self):
+        return self.nombre
+
+    tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo Variable"), 
+                on_delete=models.RESTRICT) 
+    
+    nombre = models.CharField(_("Nombre"), max_length=50)
+
+    class Meta:
+        db_table = 'arbolsaf_variable_type_option'
+        managed = True
+        verbose_name = 'Opción Tipo Variable'
+        verbose_name_plural = 'Opciones Tipo Variable'
+
 class VariableModel(BasicAuditModel):
 
 
     referencia = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Referencia"), 
                         on_delete=models.RESTRICT,  blank=True, null=True)
+    referencia_2 = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Repetir referencia"), 
+                        on_delete=models.RESTRICT,  blank=True, null=True, related_name="+")
     tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo Variable"), 
                     on_delete=models.RESTRICT)                    
     #nombre = models.CharField(_("nombre"), max_length=255)
@@ -179,7 +197,8 @@ class VariableModel(BasicAuditModel):
     valor_boolean = models.BooleanField(_("Verdadero?"), default=False, null=True)
 
     valor_general = models.CharField(_("Valor general"), max_length=255, blank=True, null=True)
-
+    valor_cualitativo = models.ForeignKey("arbolsaf.VariableTypeOption", verbose_name=_("Valor cualitativo"), 
+                    on_delete=models.RESTRICT, blank=True, null=True) 
 
     #TODO averiguar si categoria puede ser una llave foranea
 

@@ -109,14 +109,34 @@
                 <spam class="mr-2">{% firstof variable.valor_boolean|default_if_none:"-" %}</span>
               </div>   
             </div>
-            {% else %}
-             No es un tipo valido
-            {% endif %}
+            {% elif  variable.tipo_variable.tipo_variables == 'cualitativo'%}
             <div class="col-3">
+              <div class="form-group">
+                <h6>Valor cualitativo</h6>
+                <spam class="mr-2">{% firstof variable.valor_cualitativo|default_if_none:"-" %}</span>
+              </div>   
+            </div>
+            {% else %}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>No es un tipo valido</h6>
+               
+              </div>   
+            </div>
+             
+            {% endif %}
+            <!--div class="col-3">
               <div class="form-group">
                 <h6>Valor general</h6>
                 <spam class="mr-2">{% firstof variable.valor_general|default_if_none:"-" %} ({{ variable.tipo_variable.unidad_medida|default_if_none:'Sin unidad'}})</span>
               </div>
+            </div-->
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Referencia</h6>
+                <spam class="mr-2">{% firstof variable.referencia|default_if_none:"-" %}</span>
+              </div>                
+              
             </div>
 
             <div class="col-3">
@@ -132,13 +152,7 @@
           </div>
 
           <div class="row">
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Referencia</h6>
-                <spam class="mr-2">{% firstof variable.referencia|default_if_none:"-" %}</span>
-              </div>                
-              
-            </div>
+            
 
             <div class="col-3">
               <div class="form-group">

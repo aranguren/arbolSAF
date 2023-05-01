@@ -74,7 +74,7 @@
               </div>
             </div>
             <hr class="horizontal dark my-3">
-            <div class="row mb-3">
+            <div class="row mb-3" id="div_tipo_variable">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.tipo_variable.label }}
@@ -82,6 +82,33 @@
                 </h6>
               </div>
               <div class="col-3">{{ form.tipo_variable }}</div>
+              <!--div class="col-2 mt-2">
+                <h6>
+                  {{ form.referencia.label }}
+                  {% if form.referencia.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.referencia }}</div-->
+            </div>
+
+            <div class="row mb-3" id="div_tipo_variable_diligenciar">
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.tipo_variable.label }}
+                  {% if form.tipo_variable.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{nombre_variable_diligenciar}}</div>
+              <!--div class="col-2 mt-2">
+                <h6>
+                  {{ form.referencia.label }}
+                  {% if form.referencia.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.referencia }}</div-->
+            </div>
+
+            <div class="row mb-3">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.referencia.label }}
@@ -89,8 +116,15 @@
                 </h6>
               </div>
               <div class="col-3">{{ form.referencia }}</div>
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.referencia_2.label }}
+                  {% if form.referencia_2.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.referencia_2 }}</div>
             </div>
-            <div class="row mb-3">
+            <!--div class="row mb-3">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.valor_general.label }}
@@ -98,8 +132,8 @@
                 </h6>
               </div>
               <div class="col-3">{{ form.valor_general }}</div>
-            </div>
-            <div class="row mb-3">
+            </div-->
+            <!--div class="row mb-3" id="">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.valor_numerico.label }}
@@ -107,8 +141,8 @@
                 </h6>
               </div>
               <div class="col-3">{{ form.valor_numerico }}</div>
-            </div>
-            <div class="row mb-3">
+            </div-->
+            <div class="row mb-3" id="div_rango_superior">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.rango_inferior.label }}
@@ -124,7 +158,7 @@
               </div>
               <div class="col-3">{{ form.rango_superior }}</div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-3"  id="div_valor_texto">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.valor_texto.label }}
@@ -133,7 +167,16 @@
               </div>
               <div class="col-3">{{ form.valor_texto }}</div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-3"  id="div_valor_cualitativo">
+              <div class="col-2 mt-2">
+                <h6>
+                  {{ form.valor_cualitativo.label }}
+                  {% if form.valor_cualitativo.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-3">{{ form.valor_cualitativo }}</div>
+            </div>
+            <div class="row mb-3" id="div_valor_boolean">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.valor_boolean.label }}
@@ -233,7 +276,9 @@
 
   $(document).ready(function () {
 
-    //getVariableType();
+    getVariableType();
+
+
 /*
   tipo_variable = $('#id_tipo_variable').find(":selected").val();
   if (tipo_variable=='numerico'){
@@ -250,15 +295,27 @@
     
   }
 */
-/*
+
   $('#id_tipo_variable').on('change', function() { 
 
     $("#id_tipo_variable").prop('required',true);
-    getVariableType();
-    
+
+
+    document.getElementById("id_valor_texto").value = "";
+    document.getElementById("id_rango_superior").value = "";
+    document.getElementById("id_rango_inferior").value = "";
+    document.getElementById("id_valor_boolean").value = "";
+    document.getElementById("id_valor_cualitativo").value = "";
+
+    var tipo_variable_retornada = getVariableType();
+    console.log(tipo_variable_retornada);
     
 
-  })*/
+
+    getVariableOptions();
+    
+
+  })
     //alert('el valor es '+{{specie_pk}})
  
 
@@ -266,9 +323,56 @@
     //alert(document.getElementById("id_especie").value);
      //$("#id_especie").value = {{specie_pk}};
   
-
+     console.log("diligenciar");
+     console.log({{id_diligenciar}});
+     {% if id_diligenciar %}
+       $('#id_tipo_variable').val({{id_diligenciar}});
+       $("#div_tipo_variable").hide();
+       $("#div_tipo_variable_diligenciar").show();
+   
+       
+   
+     {% endif %}
 
 });
+
+function getVariableOptions(){
+
+  var variable_id = $("#id_tipo_variable").val();
+
+  if (variable_id){
+    $.ajax({
+          type: "GET",
+          url: "/arbolsaf/variable/opciones/",
+          data: {
+            'variable_id': variable_id
+          },
+          success: function (data) {
+            console.log(data);
+            
+            let html_data = '<option value="" selected>---------</option>';
+            data.opciones.forEach(function (data) {
+              {% if  form.instance.id%}
+                  if(data.id == {{variable.tipo_variable.id }})
+                  {
+                    html_data += `<option value="${data.id}" selected>${data.nombre}</option>`
+                  }
+                  else{
+                    html_data += `<option value="${data.id}">${data.nombre}</option>`
+                  }
+              
+              {% else %}
+                html_data += `<option value="${data.id}">${data.nombre}</option>`
+              {% endif %}
+              
+            });
+            $("#id_valor_cualitativo").html(html_data);
+          }
+        });
+
+      }
+    }
+
 
 
 function getVariableType(){
@@ -286,98 +390,129 @@ function getVariableType(){
           if (response.tipo_variable=='numerico'){
             console.log('Tipo variable numerico');
             $("#id_valor_texto").prop('disabled', true);
-            $("#id_valor_numerico").prop('disabled', false);
-            $("#id_rango_superior").prop('disabled', true);
-            $("#id_rango_inferior").prop('disabled', true);
-            $("#id_valor_boolean").prop('disabled', true);
-            $("#div_valor_texto").hide();
-            $("#div_valor_numerico").show();
-            $("#div_rango_superior").hide();
-            $("#div_rango_inferior").hide();
-            $("#div_valor_boolean").hide();
-  
-            $("#id_valor_texto").prop('required',false);
-            $("#id_valor_numerico").prop('required',true);
-            $("#id_rango_superior").prop('required',false);
-            $("#id_rango_inferior").prop('required',false);
-            $("#id_valor_boolean").prop('required',false);
-  
-  
-  
-          }
-          else if (response.tipo_variable=='texto'){
-            console.log('Tipo variable texto');
-            $("#id_valor_texto").prop('disabled', false);
-            $("#id_valor_numerico").prop('disabled', true);
-            $("#id_rango_superior").prop('disabled', true);
-            $("#id_rango_inferior").prop('disabled', true);
-            $("#id_valor_boolean").prop('disabled', true);
-            $("#div_valor_texto").show();
-            $("#div_valor_numerico").hide();
-            $("#div_rango_superior").hide();
-            $("#div_rango_inferior").hide();
-            $("#div_valor_boolean").hide();
-  
-            $("#id_valor_texto").prop('required',true);
-            $("#id_valor_numerico").prop('required',false);
-            $("#id_rango_superior").prop('required',false);
-            $("#id_rango_inferior").prop('required',false);
-            $("#id_valor_boolean").prop('required',false);
-  
-          }
-          else if (response.tipo_variable=='rango'){
-            console.log('Tipo variable rango');
-            $("#id_valor_texto").prop('disabled', true);
-            $("#id_valor_numerico").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', false);
             $("#id_rango_superior").prop('disabled', false);
             $("#id_rango_inferior").prop('disabled', false);
             $("#id_valor_boolean").prop('disabled', true);
             $("#div_valor_texto").hide();
-            $("#div_valor_numerico").hide();
+            //$("#div_valor_numerico").show();
             $("#div_rango_superior").show();
             $("#div_rango_inferior").show();
             $("#div_valor_boolean").hide();
   
             $("#id_valor_texto").prop('required',false);
-            $("#id_valor_numerico").prop('required',false);
+            //$("#id_valor_numerico").prop('required',true);
             $("#id_rango_superior").prop('required',true);
             $("#id_rango_inferior").prop('required',true);
             $("#id_valor_boolean").prop('required',false);
+  
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
+  
+          }
+          else if (response.tipo_variable=='texto'){
+            console.log('Tipo variable texto');
+            $("#id_valor_texto").prop('disabled', false);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', true);
+            $("#id_rango_inferior").prop('disabled', true);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#div_valor_texto").show();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").hide();
+            $("#div_rango_inferior").hide();
+            $("#div_valor_boolean").hide();
+  
+            $("#id_valor_texto").prop('required',true);
+            //$("#id_valor_numerico").prop('required',false);
+            $("#id_rango_superior").prop('required',false);
+            $("#id_rango_inferior").prop('required',false);
+            $("#id_valor_boolean").prop('required',false);
+
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
+  
+          }
+          else if (response.tipo_variable=='rango'){
+            console.log('Tipo variable rango');
+            $("#id_valor_texto").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', false);
+            $("#id_rango_inferior").prop('disabled', false);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#div_valor_texto").hide();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").show();
+            $("#div_rango_inferior").show();
+            $("#div_valor_boolean").hide();
+  
+            $("#id_valor_texto").prop('required',false);
+            //$("#id_valor_numerico").prop('required',false);
+            $("#id_rango_superior").prop('required',true);
+            $("#id_rango_inferior").prop('required',true);
+            $("#id_valor_boolean").prop('required',false);
+
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
   
           }
           else if (response.tipo_variable=='boolean'){
             console.log('Tipo variable boolean');
             $("#id_valor_texto").prop('disabled', true);
-            $("#id_valor_numerico").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
             $("#id_rango_superior").prop('disabled', true);
             $("#id_rango_inferior").prop('disabled', true);
             $("#id_valor_boolean").prop('disabled', false);
   
             $("#div_valor_texto").hide();
-            $("#div_valor_numerico").hide();
+            //$("#div_valor_numerico").hide();
             $("#div_rango_superior").hide();
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").show();
+
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
+          }
+          else if (response.tipo_variable=='cualitativo'){
+            console.log('Tipo variable cualitativo');
+            $("#id_valor_texto").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', true);
+            $("#id_rango_inferior").prop('disabled', true);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#id_valor_cualitativo").prop('disabled', false);
+  
+            $("#div_valor_texto").hide();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").hide();
+            $("#div_rango_inferior").hide();
+            $("#div_valor_boolean").hide();
+            $("#div_valor_cualitativo").show();
+
+        
           }
           else {
             console.log('Tipo variable desconocido');
             $("#id_valor_texto").prop('disabled', true);
-            $("#id_valor_numerico").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
             $("#id_rango_superior").prop('disabled', true);
             $("#id_rango_inferior").prop('disabled', true);
             $("#id_valor_boolean").prop('disabled', true);
+            $("#id_valor_cualitativo").prop('disabled', true);
   
             $("#div_valor_texto").hide();
-            $("#div_valor_numerico").hide();
+            //$("#div_valor_numerico").hide();
             $("#div_rango_superior").hide();
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
+            $("#div_valor_cualitativo").hide();
           }
   
   
-      },
+          return response.tipo_variable
+        },
       error: function (response, e) {
-  
+        return 'fail'
       }
       
   });
@@ -386,16 +521,18 @@ function getVariableType(){
   else{
     console.log('Tipo variable desconocido');
     $("#id_valor_texto").prop('disabled', true);
-    $("#id_valor_numerico").prop('disabled', true);
+    //$("#id_valor_numerico").prop('disabled', true);
     $("#id_rango_superior").prop('disabled', true);
     $("#id_rango_inferior").prop('disabled', true);
     $("#id_valor_boolean").prop('disabled', true);
+    $("#id_valor_cualitativo").prop('disabled', true);
 
     $("#div_valor_texto").hide();
-    $("#div_valor_numerico").hide();
+    //$("#div_valor_numerico").hide();
     $("#div_rango_superior").hide();
     $("#div_rango_inferior").hide();
     $("#div_valor_boolean").hide();
+    $("#div_valor_cualitativo").hide();
   }
 
 

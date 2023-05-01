@@ -38,6 +38,7 @@ class VariableO2MForm(forms.ModelForm):
             #'referencia': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'tipo_variable': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'referencia': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+            'referencia_2': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'valor_numerico':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_texto':forms.TextInput(attrs={'class': 'form-control'}),
             'valor_boolean': forms.CheckboxInput(attrs={'class': 'form-check-input '}),    
@@ -47,9 +48,36 @@ class VariableO2MForm(forms.ModelForm):
             'categoria':forms.TextInput(attrs={'class': 'form-control'}),
             'chequeo': forms.CheckboxInput(attrs={'class': 'form-check-input '}),     
             'especie': forms.HiddenInput(),
+            'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+
+            
             }
 
 
+    def clean(self):
+        data = super().clean()
+
+        referencia1 = self.cleaned_data.get('referencia', '')
+        referencia2 = self.cleaned_data.get('referencia_2', '')
+
+        if referencia1 !=referencia2:
+            raise forms.ValidationError(
+                    {"referencia": "Los valores de referencia deben coincidir"})
+
+        
+        if self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'rango':
+
+            rango_superior = self.cleaned_data.get('rango_superior', 0)
+            rango_inferior = self.cleaned_data.get('rango_inferior', 0)
+            if rango_superior<rango_inferior:
+                raise forms.ValidationError(
+                    {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})
+        
+
+
+
+
+        return data
 
 
 
