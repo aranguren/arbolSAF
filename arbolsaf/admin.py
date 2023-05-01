@@ -199,6 +199,11 @@ class VariableTypeResource(resources.ModelResource):
         exclude = ('created','created_by','modified','modified_by',)
         import_id_fields = ('cod_var',)
 
+class VariableTypeOptionInline(admin.TabularInline):
+    model = models.VariableTypeOption
+    fields = ['nombre',]
+    extra = 3 
+
 class VariableTypeAdmin(ImportExportModelAdmin):
     resource_classes = [VariableTypeResource]
     #fields = ['name', 'geom']
@@ -213,7 +218,7 @@ class VariableTypeAdmin(ImportExportModelAdmin):
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
     ]
 
-
+    inlines = [VariableTypeOptionInline,]
     def save_model(self, request, obj, form, change):
         if change:
             obj.modified_by = request.user
