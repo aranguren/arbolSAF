@@ -116,7 +116,12 @@
             <div class="col-3">
               <div class="form-group">
                 <h6>Taxon ID WFO</h6>
-                <div class="mr-2">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</div>
+                {% if specie.taxonid_wfo%}
+                  <a href="http://www.worldfloraonline.org/taxon/{{specie.taxonid_wfo}}" target="_blank">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</a>
+                {% else %}
+                -
+                {% endif %}
+                <!--div class="mr-2">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</div-->
               </div>
             </div>
           </div>
