@@ -241,7 +241,7 @@ class SpeciesModel(BasicAuditModel):
 
     cod_esp = models.CharField(_("Código especie"), max_length=50, unique=True)
     taxonid_wfo = models.CharField(_("Taxon ID WFO"), max_length=50)
-    nombre_comun = models.CharField(_("Nombre comun"), max_length=255)
+    nombre_comun = models.CharField(_("Nombre común"), max_length=255)
     nombre_cientifico = models.CharField(_("Nombre científico"), max_length=255)
     nombre_cientifico_completo = models.CharField(_("Nombre científico completo"), max_length=255)
     familia = models.ForeignKey("arbolsaf.FamilyModel", verbose_name=_("Familia"), on_delete=models.RESTRICT)

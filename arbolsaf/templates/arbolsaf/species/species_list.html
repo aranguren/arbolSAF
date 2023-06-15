@@ -62,13 +62,49 @@ Listado Especies
                         <b>Taxon ID WFO</b>
                       </th>
                       <th>
-                        <b>Nombre comun</b>
+                          {% if ordenar_por == 'nombre_comun' %}
+                              <a id="ord-nombre_comun" href="#">
+                                  <b>Nombre común</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'nombre_comun_dec' %}
+                              <a id="ord-nombre_comun" href="#">
+                                  <b>Nombre común</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-nombre_comun" href="#">
+                                  <b>Nombre común</b>
+                              </a>
+                          {% endif %}
                       </th>
                       <th>
-                        <b>Nombre científico</b>
+                          {% if ordenar_por == 'nombre_cientifico' %}
+                              <a id="ord-nombre_cientifico" href="#">
+                                  <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'nombre_cientifico_dec' %}
+                              <a id="ord-nombre_cientifico" href="#">
+                                  <b>Nombre científico</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-nombre_cientifico" href="#">
+                                  <b>Nombre científico</b>
+                              </a>
+                          {% endif %}
                       </th>
                       <th>
-                        <b>Familia</b>
+                          {% if ordenar_por == 'familia' %}
+                              <a id="ord-familia" href="#">
+                                  <b>Familia</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'familia_dec' %}
+                              <a id="ord-familia" href="#">
+                                  <b>Familia</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-familia" href="#">
+                                  <b>Familia</b>
+                              </a>
+                          {% endif %}
                       </th>
                       <th>
                         <b>Nativa para Perú</b>
@@ -345,7 +381,7 @@ Listado Especies
                             class=""
                             method="get"
                             autocomplete="off">
-
+                        <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
                         <div class="form-group">
                           <label class="control-label" for="id_cod_esp">
                             Código especie
@@ -464,6 +500,9 @@ Listado Especies
 
       document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
       document.getElementById("id_referencia").value = "{{value_referencia}}";
+
+
+      
      
   });
 
@@ -476,6 +515,48 @@ Listado Especies
       document.getElementById("id_referencia").value = "";
      
   });
+
+      $('#ord-nombre_comun').click(function () {
+          let ordenar = document.getElementById("ordenar_por").value;
+
+          if (ordenar == "nombre_comun"){
+              document.getElementById("ordenar_por").value = "nombre_comun_dec";
+          }else{
+              document.getElementById("ordenar_por").value = "nombre_comun";
+          }
+
+          let formulario = document.getElementById('filter_form');
+          formulario.submit();
+
+      });
+
+      $('#ord-nombre_cientifico').click(function () {
+          let ordenar = document.getElementById("ordenar_por").value;
+
+          if (ordenar == "nombre_cientifico"){
+              document.getElementById("ordenar_por").value = "nombre_cientifico_dec";
+          }else{
+              document.getElementById("ordenar_por").value = "nombre_cientifico";
+          }
+
+          let formulario = document.getElementById('filter_form');
+          formulario.submit();
+
+      });
+
+      $('#ord-familia').click(function () {
+        let ordenar = document.getElementById("ordenar_por").value;
+
+        if (ordenar == "familia"){
+            document.getElementById("ordenar_por").value = "familia_dec";
+        }else{
+            document.getElementById("ordenar_por").value = "familia";
+        }
+
+        let formulario = document.getElementById('filter_form');
+        formulario.submit();
+
+    });
 
 
   //$(document).ready(function() {

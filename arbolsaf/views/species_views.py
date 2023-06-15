@@ -27,10 +27,12 @@ class SpeciesListView(LoginRequiredMixin, ListView):
 
         context['nombre_comun'] = self.request.GET.get('nombre_comun', '')
 
-        if 'nombre_comun' not in self.request.GET.keys():
-            context['has_filters'] = False
-        else:
-            context['has_filters'] = True
+        #if 'nombre_comun' not in self.request.GET.keys():
+        #    context['has_filters'] = False
+        #else:
+        #    context['has_filters'] = True
+
+
 
         variables =  VariableTypeModel.objects.order_by('variable')
         context['variables']=variables
@@ -60,6 +62,16 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
         context['value_referencia'] = self.request.GET.get('referencia', '')
 
+        filtrado = context['value_cod_esp'] + context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
+                   context['value_tipo_variable'] + context['value_referencia']
+
+ 
+        context['ordenar_por'] = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+        context['has_filters'] = False
+
+        if len(filtrado) > 0:
+            context['has_filters'] = True
 
         
 
@@ -112,8 +124,19 @@ class SpeciesListView(LoginRequiredMixin, ListView):
             'referencia': self.request.GET.get('referencia', None),
             }
 
+        tipos_de_orden = {
+            'nombre_comun': 'nombre_comun',
+            'nombre_comun_dec': '-nombre_comun',
+            'nombre_cientifico': 'nombre_cientifico',
+            'nombre_cientifico_dec': '-nombre_cientifico',
+            'familia': 'familia__familia',
+            'familia_dec': '-familia__familia',
 
-        query_result =  SpeciesModel.objects.order_by('cod_esp')
+        }
+        orden = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+
+        query_result =  SpeciesModel.objects
 
 
 
@@ -157,6 +180,10 @@ class SpeciesListView(LoginRequiredMixin, ListView):
                 lista_referencias = [x[0] for x in referencias]
                 query_result = query_result.filter(id__in=lista_referencias)
 
+        if orden in tipos_de_orden:
+            query_result = query_result.order_by(tipos_de_orden[orden])
+        else:
+            query_result = query_result.order_by(tipos_de_orden['nombre_comun'])
 
         return query_result
 
