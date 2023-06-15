@@ -25,7 +25,7 @@ Listado Especies
         <div class="card">
           <!-- Card header -->
           <div class="card-header">
-            <h3 class="mb-1">Listado Especies</h3>
+            <h3 class="mb-1">Listado de especies</h3>
             <hr class="horizontal dark my-2">
             <div class="d-flex justify-content-left">
               <a href="{% url 'arbolsaf:species_create' %}"
@@ -71,7 +71,7 @@ Listado Especies
                         <b>Familia</b>
                       </th>
                       <th>
-                        <b>Género</b>
+                        <b>Nativa para Perú</b>
                       </th>
                     </tr>
                   </thead>
@@ -88,7 +88,14 @@ Listado Especies
                         <td >{% firstof specie.nombre_comun|default_if_none:"" %}</td>
                         <td >{% firstof specie.nombre_cientifico|default_if_none:"" %}</td>
                         <td >{% firstof specie.familia|default_if_none:"" %}</td>
-                        <td >{% firstof specie.genero|default_if_none:"" %}</td>
+
+                        <td class="text-center">
+                          {% if specie.nativa %}
+                          SI
+                          {% else %}
+                          NO
+                          {% endif %}
+                        </td>
                       
                       </tr>
                     </tbody>
@@ -357,11 +364,12 @@ Listado Especies
                             Nombre común
                           </label>
                           <div class=" ">
-                            <input id="id_nombre_comun"
-                                   type="text"
-                                   name="nombre_comun"
-                                   class="form-control"
-                                   value="{{ value_nombre_comun }}">
+                            <select id="id_nombre_comun" class="form-select" name="nombre_comun">
+                              <option></option>
+                              {% for nombre in nombre_comun_values %}
+                                  <option value="{{ nombre }}">{{ nombre }}</option>
+                              {% endfor %}
+                              </select>
                           </div>
                     
                         </div>
@@ -370,11 +378,13 @@ Listado Especies
                             Nombre científico
                           </label>
                           <div class=" ">
-                            <input id="id_nombre_cientifico"
-                                   type="text"
-                                   name="nombre_cientifico"
-                                   class="form-control"
-                                   value="{{ value_nombre_cientifico }}">
+                            <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
+                              <option></option>
+                              {% for nombre in nombre_cientifico_values %}
+                                  <option value="{{ nombre }}">{{ nombre }}</option>
+                              {% endfor %}
+
+                          </select>
                           </div>
                       
                         </div>
@@ -447,6 +457,10 @@ Listado Especies
 
     $(document).ready(function () {
 
+      
+
+      document.getElementById("id_nombre_comun").value = "{{value_nombre_comun}}";
+      document.getElementById("id_nombre_cientifico").value = "{{value_nombre_cientifico}}";
 
       document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
       document.getElementById("id_referencia").value = "{{value_referencia}}";

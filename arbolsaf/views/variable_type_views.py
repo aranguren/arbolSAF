@@ -38,12 +38,18 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
 
 
         context['value_cod_var'] = self.request.GET.get('cod_var', '')
+
+        
+
+
         context['value_variable'] = self.request.GET.get('variable', '')
 
         context['value_tipo_variables'] = self.request.GET.get('tipo_variables', '')
         context['value_familia'] = self.request.GET.get('familia', '')
 
 
+        variables_todas = VariableTypeModel.objects.order_by('variable')
+        context['variables_todas'] = variables_todas
 
 
         #context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
@@ -105,8 +111,12 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
         if query['cod_var'] and query['cod_var'] != '':
             query_result = query_result.filter(cod_var__iexact=query['cod_var'])
 
+        #if query['variable'] and query['variable'] != '':
+        #    query_result = query_result.filter(variable__icontains=query['variable'])
+
         if query['variable'] and query['variable'] != '':
-            query_result = query_result.filter(variable__icontains=query['variable'])
+            #tipo_variable = VariableTypeModel.objects.get(pk=int(query['variable']))
+            query_result = query_result.filter(id=int(query['variable']))
 
         if query['tipo_variables'] and query['tipo_variables'] != '':
             query_result = query_result.filter(tipo_variables=query['tipo_variables'])

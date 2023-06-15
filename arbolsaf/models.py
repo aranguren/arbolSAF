@@ -66,7 +66,7 @@ class ReferenceModel(BasicAuditModel):
 
     fuente_final = models.CharField(_("Cita"), max_length=255)
     cod_cita = models.CharField(_("código cita"), max_length=50, unique=True)
-    referencia = models.TextField(_("Referencia"), blank=True, null=True)
+    referencia = models.TextField(_("Fuente"), blank=True, null=True)
 
     def __str__(self):
         return self.fuente_final
@@ -182,9 +182,9 @@ class VariableTypeOption(models.Model):
 class VariableModel(BasicAuditModel):
 
 
-    referencia = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Referencia"), 
+    referencia = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Fuente"), 
                         on_delete=models.RESTRICT,  blank=True, null=True)
-    referencia_2 = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Repetir referencia"), 
+    referencia_2 = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Repetir fuente"), 
                         on_delete=models.RESTRICT,  blank=True, null=True, related_name="+")
     tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Variable"), 
                     on_delete=models.RESTRICT)                    
@@ -259,10 +259,10 @@ class SpeciesModel(BasicAuditModel):
 
     @property
     def get_variables_no_diligenciadas(self):
-        variables = VariableTypeModel.objects.raw("""Select avt.id, avt.variable from arbolsaf_variable_type avt where avt.id not in 
-                (select distinct av.tipo_variable_id from arbolsaf_variable av where av.especie_id=%s)
-            """, [self.id])
-        
+        #variables = VariableTypeModel.objects.raw("""Select avt.id, avt.variable from arbolsaf_variable_type avt where avt.id not in 
+        #        (select distinct av.tipo_variable_id from arbolsaf_variable av where av.especie_id=%s)
+        #    """, [self.id])
+        variables = VariableTypeModel.objects.all()
         return variables
 
 
