@@ -103,7 +103,7 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
         query_result =  VariableTypeModel.objects.order_by('cod_var')
 
         if query['cod_var'] and query['cod_var'] != '':
-            query_result = query_result.filter(cod_var__icontains=query['cod_var'])
+            query_result = query_result.filter(cod_var__iexact=query['cod_var'])
 
         if query['variable'] and query['variable'] != '':
             query_result = query_result.filter(variable__icontains=query['variable'])

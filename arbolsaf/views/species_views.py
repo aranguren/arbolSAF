@@ -40,10 +40,15 @@ class SpeciesListView(LoginRequiredMixin, ListView):
 
         #context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
         #context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
+        context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
+        
         context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
         context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
         context['value_referencia'] = self.request.GET.get('referencia', '')
+
+
+        
 
         if context['is_paginated']:
             list_pages = []
@@ -87,6 +92,7 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         query = {
             #'cod_esp': self.request.GET.get('cod_esp', None),
             #'taxonid_wfo': self.request.GET.get('taxonid_wfo', None),
+            'cod_esp': self.request.GET.get('cod_esp', None),
             'nombre_comun': self.request.GET.get('nombre_comun', None),
             'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
             'tipo_variable': self.request.GET.get('tipo_variable', None),
@@ -104,6 +110,8 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         #    query_result = query_result.filter(cod_esp__icontains=query['cod_esp'])
         #if query['taxonid_wfo'] and query['taxonid_wfo'] != '':
         #    query_result = query_result.filter(taxonid_wfo__icontains=query['taxonid_wfo'])
+        if query['cod_esp'] and query['cod_esp'] != '':
+            query_result = query_result.filter(cod_esp__iexact=query['cod_esp'])
         if query['nombre_comun'] and query['nombre_comun'] != '':
             query_result = query_result.filter(nombre_comun__icontains=query['nombre_comun'])
         if query['nombre_cientifico'] and query['nombre_cientifico'] != '':

@@ -235,6 +235,10 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
         context['specie_pk'] = self.object.especie.id
         redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.object.especie.id})   
         context['species_url'] =  redireccion+'#variablessection'
+
+        context['id_diligenciar'] = self.object.tipo_variable.id
+        nombre_variable_diligenciar = VariableTypeModel.objects.get(id=int(self.object.tipo_variable.id)).variable
+        context['nombre_variable_diligenciar'] = nombre_variable_diligenciar
         #if 'pk' in self.kwargs:
         #    context['specie_pk'] = self.kwargs['pk']
         #    redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   

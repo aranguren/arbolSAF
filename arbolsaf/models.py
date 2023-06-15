@@ -186,7 +186,7 @@ class VariableModel(BasicAuditModel):
                         on_delete=models.RESTRICT,  blank=True, null=True)
     referencia_2 = models.ForeignKey("arbolsaf.ReferenceModel", verbose_name=_("Repetir referencia"), 
                         on_delete=models.RESTRICT,  blank=True, null=True, related_name="+")
-    tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo Variable"), 
+    tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Variable"), 
                     on_delete=models.RESTRICT)                    
     #nombre = models.CharField(_("nombre"), max_length=255)
 

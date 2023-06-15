@@ -71,7 +71,7 @@
 
             <div class="col-3">
               <div class="form-group">
-                <h6>Tipo variable</h6>
+                <h6>Variable</h6>
                 <spam class="mr-2">{% firstof variable.tipo_variable|default_if_none:"-" %}</span>
               </div>
             </div>
@@ -125,12 +125,6 @@
             </div>
              
             {% endif %}
-            <!--div class="col-3">
-              <div class="form-group">
-                <h6>Valor general</h6>
-                <spam class="mr-2">{% firstof variable.valor_general|default_if_none:"-" %} ({{ variable.tipo_variable.unidad_medida|default_if_none:'Sin unidad'}})</span>
-              </div>
-            </div-->
             <div class="col-3">
               <div class="form-group">
                 <h6>Referencia</h6>
@@ -159,6 +153,12 @@
                 <h6>Categoría</h6>
                 <spam class="mr-2">{% firstof variable.categoria|default_if_none:"-" %}</span>
               </div>   
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valor general</h6>
+                <spam class="mr-2">{% firstof variable.valor_general|default_if_none:"-" %} ({{ variable.tipo_variable.unidad_medida|default_if_none:'Sin unidad'}})</span>
+              </div>
             </div>
           </div>
 
