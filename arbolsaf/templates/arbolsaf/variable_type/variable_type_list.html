@@ -56,19 +56,82 @@ Listado Tipos Variable
                   <thead>
                     <tr>
                       <th style="width:10%">
-                        <b>Código variable:</b>
+                          {% if ordenar_por == 'cod_var' %}
+                              <a id="ord-cod_var" href="#">
+                                  <b>Código variable</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'cod_var_dec' %}
+                              <a id="ord-cod_var" href="#">
+                                  <b>Código variable</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-cod_var" href="#">
+                                  <b>Código variable</b>
+                              </a>
+                          {% endif %}              
+                 
                       </th>
                       <th>
-                        <b>Variable</b>
+                          {% if ordenar_por == 'variable' %}
+                              <a id="ord-variable" href="#">
+                                  <b>Variable</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'variable_dec' %}
+                              <a id="ord-variable" href="#">
+                                  <b>Variable</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-variable" href="#">
+                                  <b>Variable</b>
+                              </a>
+                          {% endif %} 
                       </th>
                       <th>
-                        <b>Unidad medida</b>
+                          {% if ordenar_por == 'unidad_medida' %}
+                              <a id="ord-unidad_medida" href="#">
+                                  <b>Unidad medida</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'unidad_medida_dec' %}
+                              <a id="ord-unidad_medida" href="#">
+                                  <b>Unidad medida</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-unidad_medida" href="#">
+                                  <b>Unidad medida</b>
+                              </a>
+                          {% endif %} 
                       </th>
                       <th>
-                        <b>Tipo Variable</b>
+                          {% if ordenar_por == 'tipo_variable' %}
+                              <a id="ord-tipo_variable" href="#">
+                                  <b>Tipo Variable</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'tipo_variable_dec' %}
+                              <a id="ord-tipo_variable" href="#">
+                                  <b>Tipo Variable</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-tipo_variable" href="#">
+                                  <b>Tipo Variable</b>
+                              </a>
+                          {% endif %} 
+                      
                       </th>
                       <th>
-                        <b>Grupo</b>
+                          {% if ordenar_por == 'grupo' %}
+                              <a id="ord-grupo" href="#">
+                                  <b>Grupo</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'grupo_dec' %}
+                              <a id="ord-grupo" href="#">
+                                  <b>Grupo</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-grupo" href="#">
+                                  <b>Grupo</b>
+                              </a>
+                          {% endif %} 
+                       
                       </th>
                     </tr>
                   </thead>
@@ -331,6 +394,7 @@ Listado Tipos Variable
                             method="get"
                             autocomplete="off">
 
+                      <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
                         <div class="form-group">
                           <label class="control-label" for="id_cod_var">
                             Código variable
@@ -454,7 +518,75 @@ Listado Tipos Variable
      
   });
 
+  $('#ord-cod_var').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
 
+    if (ordenar == "cod_var"){
+        document.getElementById("ordenar_por").value = "cod_var_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "cod_var";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+  $('#ord-variable').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "variable"){
+        document.getElementById("ordenar_por").value = "variable_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "variable";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+  $('#ord-unidad_medida').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "unidad_medida"){
+        document.getElementById("ordenar_por").value = "unidad_medida_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "unidad_medida";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+  $('#ord-tipo_variable').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "tipo_variable"){
+        document.getElementById("ordenar_por").value = "tipo_variable_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "tipo_variable";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+  $('#ord-grupo').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "grupo"){
+        document.getElementById("ordenar_por").value = "grupo_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "grupo";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
   //$(document).ready(function() {
   //    $('#mydatatable').DataTable();
   //} );

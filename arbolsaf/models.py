@@ -127,8 +127,8 @@ class VariableTypeFamilyModel(BasicAuditModel):
 class VariableTypeModel(BasicAuditModel):
 
     TYPE_CHOICES = (
-        ("numerico", "Valor numérico"),
-        ("texto", "Valor texto"),
+        ("numerico", "Numérico"),
+        ("texto", "Texto"),
         ("rango", "Rango"),
         ("cualitativo", "Cualitativo"),
         ("boolean", "Boolean"),

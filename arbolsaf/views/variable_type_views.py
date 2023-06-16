@@ -29,14 +29,14 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
 
         familias =  VariableTypeFamilyModel.objects.order_by('nombre')
         context['familias']=familias
-
+        """
         if 'variable' not in self.request.GET.keys():
             context['has_filters'] = False
         else:
             context['has_filters'] = True
 
 
-
+        """
         context['value_cod_var'] = self.request.GET.get('cod_var', '')
 
         
@@ -51,6 +51,17 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
         variables_todas = VariableTypeModel.objects.order_by('variable')
         context['variables_todas'] = variables_todas
 
+        filtrado = context['value_cod_var'] + context['value_variable'] + context['value_tipo_variables'] + \
+                   context['value_familia']
+
+        print(len(filtrado))
+
+        context['ordenar_por'] = self.request.GET.get('ordenar_por', 'cod_var')
+
+        context['has_filters'] = False
+
+        if len(filtrado) > 0:
+            context['has_filters'] = True
 
         #context['value_taxonid_wfo'] = self.request.GET.get('taxonid_wfo', '')
         #context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
@@ -104,9 +115,28 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
             'tipo_variables': self.request.GET.get('tipo_variables', None),
             'familia': self.request.GET.get('familia', None),
             }
+        
+        tipos_de_orden = {
+            'cod_var': 'cod_var',
+            'cod_var_dec': '-cod_var',
 
+            'variable': 'variable',
+            'variable_dec': '-variable',
 
-        query_result =  VariableTypeModel.objects.order_by('cod_var')
+            'unidad_medida': 'unidad_medida__abreviatura',
+            'unidad_medida_dec': '-unidad_medida__abreviatura',
+
+            'tipo_variable': 'tipo_variables',
+            'tipo_variable_dec': '-tipo_variables',
+
+            'grupo': 'familia__nombre',
+            'grupo_dec': '-familia__nombre',
+
+        }
+
+        orden = self.request.GET.get('ordenar_por', 'cod_var')
+
+        query_result =  VariableTypeModel.objects
 
         if query['cod_var'] and query['cod_var'] != '':
             query_result = query_result.filter(cod_var__iexact=query['cod_var'])
@@ -125,6 +155,10 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
             query_result = query_result.filter(familia__id=int(query['familia']))
 
         
+        if orden in tipos_de_orden:
+            query_result = query_result.order_by(tipos_de_orden[orden])
+        else:
+            query_result = query_result.order_by(tipos_de_orden['cod_var'])
 
         return query_result
 
