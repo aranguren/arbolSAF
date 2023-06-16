@@ -7,8 +7,8 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 import json
-from ..models import VariableModel, SpeciesModel, VariableTypeModel, VariableTypeOption
-from ..forms import SpeciesForm, VariableO2MForm
+from ..models import VariableModel, SpeciesModel, VariableTypeModel, VariableTypeOption, ReferenceModel
+from ..forms import SpeciesForm, VariableO2MForm, VariableSpeciesForm
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseServerError, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
@@ -333,3 +333,177 @@ def variable_get_opciones(request):
     resp['mensaje'] = 'ok'
     resp['opciones'] = lista_opciones
     return JsonResponse(resp, status=200)
+
+
+class VariableSpeciesListView(LoginRequiredMixin, ListView):
+    model = VariableModel
+    template_name = 'arbolsaf/variable/variable_specie_list.html'
+    context_object_name = 'variables_species'
+    paginate_by = 10
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(VariableSpeciesListView, self).get_context_data(*args, **kwargs)
+
+        context['segment'] = ['arbolsaf', 'variable-species']
+        context['active_menu'] = 'arbolsaf'
+
+        context['value_nombre_comun'] = self.request.GET.get('nombre_comun', '')
+        context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
+        context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
+        context['value_referencia'] = self.request.GET.get('referencia', '')
+
+        filtrado = context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
+                   context['value_tipo_variable'] + context['value_referencia']
+
+        print(len(filtrado))
+
+        context['ordenar_por'] = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+        context['has_filters'] = False
+
+        if len(filtrado) > 0:
+            context['has_filters'] = True
+
+        especies = SpeciesModel.objects.all()
+
+        nombre_comun_values = list()
+        for especie in especies.order_by('nombre_comun'):
+            nombre_comun_values.append(especie.nombre_comun)
+
+        context['nombre_comun_values'] = nombre_comun_values
+
+        nombre_cientifico_values = list()
+        for especie in especies.order_by('nombre_cientifico'):
+            nombre_cientifico_values.append(especie.nombre_cientifico)
+
+        context['nombre_cientifico_values'] = nombre_cientifico_values
+
+        variables = VariableTypeModel.objects.order_by('variable')
+        context['variables'] = variables
+
+        referencias = ReferenceModel.objects.order_by('fuente_final')
+        context['referencias'] = referencias
+
+        if context['is_paginated']:
+            list_pages = []
+
+            first_range = self.request.GET.get('page', '1')
+            actual_rows = round(int(first_range) * self.paginate_by)
+            total_rows = len(VariableSpeciesListView.get_queryset(self))
+
+            context['count_actual_rows'] = total_rows if actual_rows > total_rows else actual_rows
+            context['total_rows'] = total_rows
+
+            if 'nombre_comun' not in self.request.GET:
+                for i in range(context['page_obj'].number, context['page_obj'].number + 5):
+                    if i <= context['page_obj'].paginator.num_pages:
+                        list_pages.append(i)
+            else:
+
+                if len(VariableSpeciesListView.get_queryset(self)) % self.paginate_by == 0:
+                    paginated = int(len(VariableSpeciesListView.get_queryset(self)) / self.paginate_by)
+                else:
+                    paginated = int(len(VariableSpeciesListView.get_queryset(self)) / self.paginate_by) + 1
+
+                if paginated > 1:
+                    for i in range(int(first_range), int(first_range) + 5):
+                        if i <= paginated:
+                            list_pages.append(i)
+
+                    context['total_pages'] = paginated
+                    context['has_more_pages'] = True if int(first_range) < paginated else False
+                    context['next_page'] = int(first_range) + 1 if int(first_range) < paginated else '0'
+                    context['has_previous_pages'] = True if int(first_range) > 1 else False
+                    context['previous_page'] = int(first_range) - 1 if int(first_range) > 1 else '0'
+                    context['actual_page'] = int(first_range)
+
+            context['paginator_rows'] = list_pages
+
+        return context
+
+    def get_queryset(self):
+        query = {
+            'nombre_comun': self.request.GET.get('nombre_comun', None),
+            'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
+            'tipo_variable': self.request.GET.get('tipo_variable', None),
+            'referencia': self.request.GET.get('referencia', None),
+        }
+        tipos_de_orden = {
+            'nombre_comun': 'especie__nombre_comun',
+            'nombre_comun_dec': '-especie__nombre_comun',
+            'nombre_cientifico': 'especie__nombre_cientifico',
+            'nombre_cientifico_dec': '-especie__nombre_cientifico',
+            'tipo_variable': 'tipo_variable__tipo_variables',
+            'tipo_variable_dec': '-tipo_variable__tipo_variables',
+            'referencia': 'referencia__fuente_final',
+            'referencia_dec': '-referencia__fuente_final',
+            'valor': 'valor_general',
+            'valor_dec': '-valor_general'
+
+        }
+        orden = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+        query_result = VariableModel.objects
+
+        if query['nombre_comun'] and query['nombre_comun'] != '':
+            query_result = query_result.filter(especie__nombre_comun__icontains=query['nombre_comun'])
+        if query['nombre_cientifico'] and query['nombre_cientifico'] != '':
+            query_result = query_result.filter(especie__nombre_cientifico__icontains=query['nombre_cientifico'])
+
+        if query['tipo_variable'] and query['tipo_variable'] != '':
+            tipo_variable = VariableTypeModel.objects.get(pk=int(query['tipo_variable']))
+            query_result = query_result.filter(tipo_variable=tipo_variable)
+
+        if query['referencia'] and query['referencia'] != '':
+            referencia = ReferenceModel.objects.get(pk=int(query['referencia']))
+            query_result = query_result.filter(referencia=referencia)
+
+        if orden in tipos_de_orden:
+            query_result = query_result.order_by(tipos_de_orden[orden])
+        else:
+            query_result = query_result.order_by(tipos_de_orden['nombre_comun'])
+
+        return query_result
+
+
+class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
+    model = VariableModel
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_specie_form.html'
+    form_class = VariableSpeciesForm
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','variable-species']
+        context['active_menu'] ='arbolsaf'
+
+        return context
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
+            return redireccion+'#variablessection'
+        #else:
+        #   return reverse_lazy("ganaclima:period_detail", kwargs={"pk":self.object.id})   
+    
+
+
+    def form_valid(self, form):
+        specie = form.save(commit=False)
+        #User = get_user_model()
+
+        specie.created_by = self.request.user # use your own profile here
+        if specie.tipo_variable.tipo_variables == 'cualitativo':
+            specie.valor_general = specie.valor_cualitativo.nombre
+        elif specie.tipo_variable.tipo_variables == 'numerico': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'texto': 
+            specie.valor_general = specie.valor_texto
+        elif specie.tipo_variable.tipo_variables == 'rango': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'boolean': 
+            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
+         
+        specie.save()
+        return super(VariableSpeciesCreateView, self).form_valid(form)

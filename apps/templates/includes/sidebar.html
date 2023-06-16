@@ -49,6 +49,14 @@
                 </a>
               </li>
               <li class="nav-item ">
+                <a class="nav-link {% if 'variable-species' in segment %} active {% endif %}" href="{% url 'arbolsaf:variable_species_list' %}">
+                  <span class="sidenav-mini-icon"> V-E</span>
+                  <span class="sidenav-normal">Variables - Especies</span>
+                </a>
+              </li>
+
+              
+              <li class="nav-item ">
                 <a class="nav-link {% if 'reference' in segment %} active {% endif %}" href="{% url 'arbolsaf:reference_list' %}">
                   <span class="sidenav-mini-icon">R</span>
                   <span class="sidenav-normal"> Fuentes </span>

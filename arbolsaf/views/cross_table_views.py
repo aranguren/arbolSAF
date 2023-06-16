@@ -1,9 +1,11 @@
 import csv
 
 from django.http import HttpResponse
-from django.views.generic import ListView, View
+from django.views.generic import ListView, View, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel, VariableModel
+from ..forms import VariableSpeciesForm
+from django.urls import reverse_lazy
 
 
 class CrossTableListView(LoginRequiredMixin, ListView):
@@ -175,3 +177,4 @@ class ExportCsvView(LoginRequiredMixin, View):
                             item.referencia, item.valor_general])
 
         return response
+

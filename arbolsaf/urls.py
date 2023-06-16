@@ -42,4 +42,8 @@ urlpatterns = [
     path('tabla_cruzada/listado', CrossTableListView.as_view(), name='cross_table_list'),
     path('tabla_cruzada/exportar', ExportCsvView.as_view(), name='cross_table_export'),
 
+
+    path('variable-especie/listado', VariableSpeciesListView.as_view(), name='variable_species_list'),
+    
+
 ]
