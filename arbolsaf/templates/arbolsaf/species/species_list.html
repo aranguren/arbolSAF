@@ -55,13 +55,26 @@ Listado Especies
                 <table class="table table-bordered table-hover mt-0" id="mydatatable">
                   <thead>
                     <tr>
-                      <th>
-                        <b>Código especie</b>
-                      </th>
-                      <th>
+                      <td class="pt-3 pb-3">
+                          {% if ordenar_por == 'cod_esp' %}
+                              <a id="ord-cod_esp" href="#">
+                                  <b>Código especie</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'cod_esp_dec' %}
+                              <a id="ord-cod_esp" href="#">
+                                  <b>Código especie</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-cod_esp" href="#">
+                                  <b>Código especie</b>
+                              </a>
+                          {% endif %}
+                        
+                      </td>
+                      <td class="pt-3 pb-3">
                         <b>Taxon ID WFO</b>
-                      </th>
-                      <th>
+                      </td>
+                      <td class="pt-3 pb-3">
                           {% if ordenar_por == 'nombre_comun' %}
                               <a id="ord-nombre_comun" href="#">
                                   <b>Nombre común</b> <i class="fa fa-angle-down"></i>
@@ -71,12 +84,12 @@ Listado Especies
                                   <b>Nombre común</b> <i class="fa fa-angle-up"></i>
                               </a>
                           {% else %}
-                              <a id="ord-nombre_comun" href="#">
+                              <a id="ord-nombre_comun" href="#" >
                                   <b>Nombre común</b>
                               </a>
                           {% endif %}
-                      </th>
-                      <th>
+                      </td>
+                      <td class="pt-3 pb-3">
                           {% if ordenar_por == 'nombre_cientifico' %}
                               <a id="ord-nombre_cientifico" href="#">
                                   <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
@@ -90,8 +103,8 @@ Listado Especies
                                   <b>Nombre científico</b>
                               </a>
                           {% endif %}
-                      </th>
-                      <th>
+                      </td>
+                      <td class="pt-3 pb-3">
                           {% if ordenar_por == 'familia' %}
                               <a id="ord-familia" href="#">
                                   <b>Familia</b> <i class="fa fa-angle-down"></i>
@@ -105,10 +118,23 @@ Listado Especies
                                   <b>Familia</b>
                               </a>
                           {% endif %}
-                      </th>
-                      <th>
-                        <b>Nativa para Perú</b>
-                      </th>
+                      </td>
+                      <td class="pt-3 pb-3">
+                        {% if ordenar_por == 'nativa_peru' %}
+                          <a id="ord-nativa_peru" href="#">
+                              <b>Nativa para Perú</b> <i class="fa fa-angle-down"></i>
+                          </a>
+                        {% elif ordenar_por == 'nativa_peru_dec' %}
+                            <a id="ord-nativa_peru" href="#">
+                                <b>Nativa para Perú</b> <i class="fa fa-angle-up"></i>
+                            </a>
+                        {% else %}
+                            <a id="ord-nativa_peru" href="#">
+                                <b>Nativa para Perú</b>
+                            </a>
+                        {% endif %}
+                    
+                      </td>
                     </tr>
                   </thead>
                   <tbody>
@@ -516,6 +542,20 @@ Listado Especies
      
   });
 
+
+      $('#ord-cod_esp').click(function () {
+        let ordenar = document.getElementById("ordenar_por").value;
+
+        if (ordenar == "cod_esp"){
+            document.getElementById("ordenar_por").value = "cod_esp_dec";
+        }else{
+            document.getElementById("ordenar_por").value = "cod_esp";
+        }
+
+        let formulario = document.getElementById('filter_form');
+        formulario.submit();
+
+    });
       $('#ord-nombre_comun').click(function () {
           let ordenar = document.getElementById("ordenar_por").value;
 
@@ -558,6 +598,19 @@ Listado Especies
 
     });
 
+    $('#ord-nativa_peru').click(function () {
+      let ordenar = document.getElementById("ordenar_por").value;
+
+      if (ordenar == "nativa_peru"){
+          document.getElementById("ordenar_por").value = "nativa_peru_dec";
+      }else{
+          document.getElementById("ordenar_por").value = "nativa_peru";
+      }
+
+      let formulario = document.getElementById('filter_form');
+      formulario.submit();
+
+  });
 
   //$(document).ready(function() {
   //    $('#mydatatable').DataTable();

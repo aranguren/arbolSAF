@@ -193,22 +193,6 @@
 
                                         </th>
                                         <th>
-                                            {% if ordenar_por == 'referencia' %}
-                                                <a id="ord-referencia" href="#">
-                                                    <b>Referencia</b> <i class="fa fa-angle-down"></i>
-                                                </a>
-                                            {% elif ordenar_por == 'referencia_dec' %}
-                                                <a id="ord-referencia" href="#">
-                                                    <b>Referencia</b> <i class="fa fa-angle-up"></i>
-                                                </a>
-                                            {% else %}
-                                                <a id="ord-referencia" href="#">
-                                                    <b>Referencia</b>
-                                                </a>
-                                            {% endif %}
-
-                                        </th>
-                                        <th>
                                             {% if ordenar_por == 'valor' %}
                                                 <a id="ord-valor" href="#">
                                                     <b>Valor</b> <i class="fa fa-angle-down"></i>
@@ -220,6 +204,22 @@
                                             {% else %}
                                                 <a id="ord-valor" href="#">
                                                     <b>Valor</b>
+                                                </a>
+                                            {% endif %}
+
+                                        </th>
+                                        <th>
+                                            {% if ordenar_por == 'referencia' %}
+                                                <a id="ord-referencia" href="#">
+                                                    <b>Fuente</b> <i class="fa fa-angle-down"></i>
+                                                </a>
+                                            {% elif ordenar_por == 'referencia_dec' %}
+                                                <a id="ord-referencia" href="#">
+                                                    <b>Fuente</b> <i class="fa fa-angle-up"></i>
+                                                </a>
+                                            {% else %}
+                                                <a id="ord-referencia" href="#">
+                                                    <b>Fuente</b>
                                                 </a>
                                             {% endif %}
 
@@ -236,8 +236,8 @@
                                             <td>{% firstof variable.especie.nombre_comun|default_if_none:"" %}</td>
                                             <td>{% firstof variable.especie.nombre_cientifico|default_if_none:"" %}</td>
                                             <td>{% firstof variable.tipo_variable|default_if_none:"" %}</td>
-                                            <td>{% firstof variable.referencia|default_if_none:"" %}</td>
                                             <td>{% firstof variable.valor_general|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.referencia|default_if_none:"" %}</td>
 
                                         </tr>
                                         </tbody>

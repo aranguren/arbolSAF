@@ -158,6 +158,7 @@ class VariableTypeModel(BasicAuditModel):
 
     class Meta:
         db_table = 'arbolsaf_variable_type'
+        ordering = ["variable"]
         managed = True
         verbose_name = 'Tipo de variable'
         verbose_name_plural = 'Tipos de variable'
@@ -202,7 +203,7 @@ class VariableModel(BasicAuditModel):
 
     #TODO averiguar si categoria puede ser una llave foranea
 
-    categoria = models.CharField(_("categoria"), max_length=50, blank=True, null=True)
+    #categoria = models.CharField(_("categoria"), max_length=50, blank=True, null=True)
     
     especie = models.ForeignKey("arbolsaf.SpeciesModel", related_name="variables", verbose_name=_("Especie"), on_delete=models.CASCADE)
 
@@ -280,6 +281,7 @@ class SpeciesModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_species'
         managed = True
+        ordering = ["nombre_comun"]
         verbose_name = 'Especie'
         verbose_name_plural = 'Especies'
 

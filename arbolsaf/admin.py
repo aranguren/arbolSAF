@@ -56,8 +56,8 @@ class VariableInline(admin.StackedInline):
                 'valor_texto',
                 'rango_superior', 
                 'rango_inferior',
-                'valor_boolean',
-                'categoria']
+                'valor_boolean'
+               ]
     extra = 1 
 
 class MenaceInline(admin.TabularInline):
@@ -255,7 +255,6 @@ class VariableAdmin(ImportExportModelAdmin):
                                                 'rango_inferior',
                                                 'valor_boolean',
                                                 'valor_general',
-                                                'categoria', 
                                                 'chequeo',
                                                 'especie' ,]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   

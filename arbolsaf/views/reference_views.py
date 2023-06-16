@@ -40,7 +40,14 @@ class ReferenceListView(LoginRequiredMixin, ListView):
 
         context['value_referencia'] = self.request.GET.get('referencia', '')
 
+        filtrado = context['value_fuente_final'] + context['value_cod_cita'] + context['value_referencia']
 
+        context['ordenar_por'] = self.request.GET.get('ordenar_por', 'cod_cita')
+
+        context['has_filters'] = False
+
+        if len(filtrado) > 0:
+            context['has_filters'] = True
 
         if context['is_paginated']:
             list_pages = []
@@ -89,8 +96,16 @@ class ReferenceListView(LoginRequiredMixin, ListView):
             }
 
 
+        tipos_de_orden = {
+            'cod_cita': 'cod_cita',
+            'cod_cita_dec': '-cod_cita',
+            'cita': 'fuente_final',
+            'cita_dec': '-fuente_final',
 
-        query_result =  ReferenceModel.objects.order_by('cod_cita')
+        }
+        orden = self.request.GET.get('ordenar_por', 'nombre_comun')
+
+        query_result =  ReferenceModel.objects
 
 
         if query['fuente_final'] and query['fuente_final'] != '':
@@ -104,6 +119,11 @@ class ReferenceListView(LoginRequiredMixin, ListView):
 
 
         
+        if orden in tipos_de_orden:
+            query_result = query_result.order_by(tipos_de_orden[orden])
+        else:
+            query_result = query_result.order_by(tipos_de_orden['cod_cita'])
+
 
         return query_result
 

@@ -55,10 +55,35 @@ Listado Referencias
                   <thead>
                     <tr>
                       <th>
-                        <b>Código cita</b>
+                          {% if ordenar_por == 'cod_cita' %}
+                              <a id="ord-cod_cita" href="#">
+                                  <b>Código cita</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'cod_cita_dec' %}
+                              <a id="ord-cod_cita" href="#">
+                                  <b>Código cita</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-cod_cita" href="#">
+                                  <b>Código cita</b>
+                              </a>
+                          {% endif %}
+                      
                       </th>
                       <th>
-                        <b>Cita</b>
+                        {% if ordenar_por == 'cita' %}
+                        <a id="ord-cita" href="#">
+                            <b>Cita</b> <i class="fa fa-angle-down"></i>
+                        </a>
+                        {% elif ordenar_por == 'cita_dec' %}
+                            <a id="ord-cita" href="#">
+                                <b>Cita</b> <i class="fa fa-angle-up"></i>
+                            </a>
+                        {% else %}
+                            <a id="ord-cita" href="#">
+                                <b>Cita</b>
+                            </a>
+                        {% endif %}
                       </th>
                       <th>
                         <b>Referencia</b>
@@ -324,6 +349,7 @@ Listado Referencias
                             class=""
                             method="get"
                             autocomplete="off">
+                            <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
 
                         <div class="form-group">
                           <label class="control-label" for="cod_cita">
@@ -418,6 +444,36 @@ Listado Referencias
       document.getElementById("id_tipo_variables").value = "";
 
      
+  });
+
+
+  $('#ord-cod_cita').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "cod_cita"){
+        document.getElementById("ordenar_por").value = "cod_cita_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "cod_cita";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+
+  $('#ord-cita').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "cita"){
+        document.getElementById("ordenar_por").value = "cita_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "cita";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
   });
 
 
