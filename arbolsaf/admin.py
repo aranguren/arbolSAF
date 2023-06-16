@@ -206,8 +206,9 @@ class VariableTypeOptionInline(admin.TabularInline):
 
 class VariableTypeAdmin(ImportExportModelAdmin):
     resource_classes = [VariableTypeResource]
+    search_fields = ['cod_var', 'variable']
     #fields = ['name', 'geom']
-    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    list_display = ('cod_var', 'variable', 'tipo_variables','familia', 'unidad_medida',)
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
@@ -282,7 +283,9 @@ class SpeciesResource(resources.ModelResource):
 
 class SpeciesAdmin(ImportExportModelAdmin):
     resource_classes = [SpeciesResource]
-    #fields = ['name', 'geom']
+    search_fields = ['cod_esp', 'nombre_comun', 'nombre_cientifico']
+    list_display = ['cod_esp', 'nombre_comun', 'nombre_cientifico', 'familia', 
+                                        'genero',]
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
