@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Formulario Variable {% endblock title %}
+{% block title %} Detalles Variable - Especie {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -27,22 +27,22 @@
           <p class="text-sm mb-0">Create new project</p-->
             <div class="row">
               <div class="col-6">
-               <h3> Detalles: <span>'{% firstof variable.tipo_variable|default_if_none:"-" %}' </span></h3>
+               <h3> Detalles variable: <span>'{% firstof variable.tipo_variable|default_if_none:"-" %}' </span></h3>
               
                <h4> Especie: <span> {{variable.especie}}</span></h4>
               
               </div>
               <div class="col-6">
                   <div class="d-flex justify-content-end">
-                      <a href="{{species_url}}"
+                      <a href="{% url 'arbolsaf:variable_species_list' %}"
                       class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
-                  <a href="{% url 'arbolsaf:species_create_variable' variable.especie.id %}"
+                  <a href="{% url 'arbolsaf:variable_species_create' %}"
                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
                   {% if not variable.chequeo %}
                   
 \
                  
-                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"
+                  <a href="{% url 'arbolsaf:variable_species_update' variable.id %}"
                       class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
                   <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
                   <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
@@ -62,12 +62,12 @@
 
 
           <div class="row mb-2">
-            <!--div class="col-3">
+            <div class="col-3">
               <div class="form-group">
-                <h6>Nombre</h6>
-                <spam class="mr-2">{% firstof variable.nombre|default_if_none:"-" %}</span>
+                <h6>Especie</h6>
+                <spam class="mr-2">{% firstof variable.especie|default_if_none:"-" %}</span>
               </div>
-            </div-->
+            </div>
 
             <div class="col-3">
               <div class="form-group">
@@ -75,6 +75,7 @@
                 <spam class="mr-2">{% firstof variable.tipo_variable|default_if_none:"-" %}</span>
               </div>
             </div>
+            
             {% if  variable.tipo_variable.tipo_variables == 'numerico'%}
             <div class="col-3">
               <div class="form-group">
@@ -140,12 +141,6 @@
               </div>   
             </div>
 
-
-
-
-          </div>
-
-          <div class="row">
           
             <div class="col-3">
               <div class="form-group">
@@ -154,6 +149,7 @@
               </div>
             </div>
           </div>
+
 
         </div>
 
@@ -178,7 +174,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la variable?</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la variable - especie?</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
@@ -212,7 +208,7 @@ document.getElementById("aceptar").addEventListener('click', function(){
       success: function (response) {
           console.log(response)
           $("#deleteModal").modal('hide');
-          $(location).attr('href', "{{species_url}}");
+          $(location).attr('href', "{% url 'arbolsaf:variable_species_list' %}");
 
       },
       error: function (response, e) {

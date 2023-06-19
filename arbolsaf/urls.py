@@ -44,6 +44,13 @@ urlpatterns = [
 
 
     path('variable-especie/listado', VariableSpeciesListView.as_view(), name='variable_species_list'),
+
+
+    path('variable-especie/detalles/<str:pk>', VariableSpeciesDetailView.as_view(),name='variable_species_detail'),
+
     
+    path('variable-especie/crear', VariableSpeciesCreateView.as_view(), name='variable_species_create'),
+    path('variable-especie/modificar/<str:pk>', VariableSpeciesUpdateView.as_view(),name='variable_species_update'),
+
 
 ]

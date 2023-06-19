@@ -28,7 +28,7 @@ Listado Variable - Especies
             <h3 class="mb-1">Listado de variables - especies</h3>
             <hr class="horizontal dark my-2">
             <div class="d-flex justify-content-left">
-              <a href="{% url 'arbolsaf:variable_type_create' %}"
+              <a href="{% url 'arbolsaf:variable_species_create' %}"
                  class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
               <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"
                       id="filtroB"
@@ -141,7 +141,7 @@ Listado Variable - Especies
                   <tbody>
                   {% for variable_specie in variables_species %}
                       <tr class="clickable"
-                          onclick="window.location='#'">
+                          onclick="window.location='{% url 'arbolsaf:variable_species_detail' variable_specie.id %}'">
                           <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
 
                           <td>{% firstof variable_specie.especie.nombre_comun|default_if_none:"" %}</td>

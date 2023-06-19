@@ -337,7 +337,7 @@ def variable_get_opciones(request):
 
 class VariableSpeciesListView(LoginRequiredMixin, ListView):
     model = VariableModel
-    template_name = 'arbolsaf/variable/variable_specie_list.html'
+    template_name = 'arbolsaf/variable/variable_species_list.html'
     context_object_name = 'variables_species'
     paginate_by = 10
 
@@ -466,10 +466,22 @@ class VariableSpeciesListView(LoginRequiredMixin, ListView):
         return query_result
 
 
+class VariableSpeciesDetailView(LoginRequiredMixin, DetailView):
+    model = VariableModel
+    #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_species_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','variable-species']
+        context['active_menu'] ='arbolsaf'
+        return context
+    
 class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
     model = VariableModel
     context_object_name = 'variable'
-    template_name = 'arbolsaf/variable/variable_specie_form.html'
+    template_name = 'arbolsaf/variable/variable_species_form.html'
     form_class = VariableSpeciesForm
 
 
@@ -481,9 +493,7 @@ class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def get_success_url(self):
-        if 'pk' in self.kwargs:
-            redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":self.kwargs['pk']})   
-            return redireccion+'#variablessection'
+        return reverse_lazy("arbolsaf:variable_species_detail", kwargs={"pk":self.object.id})   
         #else:
         #   return reverse_lazy("ganaclima:period_detail", kwargs={"pk":self.object.id})   
     
@@ -507,3 +517,49 @@ class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
          
         specie.save()
         return super(VariableSpeciesCreateView, self).form_valid(form)
+    
+
+
+
+class VariableSpeciesUpdateView(LoginRequiredMixin, UpdateView):
+    model = VariableModel
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_species_form.html'
+    form_class = VariableSpeciesForm
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','variable-species']
+        context['active_menu'] ='arbolsaf'
+
+        context['nombre_especie']  = self.object.especie
+        context['nombre_variable']  = self.object.tipo_variable
+
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("arbolsaf:variable_species_detail", kwargs={"pk":self.object.id})   
+        #else:
+        #    return reverse_lazy("ganaclima:period_detail", kwargs={"pk":self.object.id})   
+    
+    def form_valid(self, form):
+        specie = form.save(commit=False)
+        #User = get_user_model()
+
+        specie.modified_by = self.request.user # use your own profile here
+        #farm.active=True
+
+        if specie.tipo_variable.tipo_variables == 'cualitativo':
+            specie.valor_general = specie.valor_cualitativo.nombre
+        elif specie.tipo_variable.tipo_variables == 'numerico': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'texto': 
+            specie.valor_general = specie.valor_texto
+        elif specie.tipo_variable.tipo_variables == 'rango': 
+            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
+        elif specie.tipo_variable.tipo_variables == 'boolean': 
+            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
+         
+        specie.save()
+        return super(VariableSpeciesUpdateView, self).form_valid(form)
