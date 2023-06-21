@@ -47,7 +47,7 @@ class VariableO2MForm(forms.ModelForm):
             'valor_general':forms.TextInput(attrs={'class': 'form-control'}),
             'chequeo': forms.CheckboxInput(attrs={'class': 'form-check-input '}),     
             'especie': forms.HiddenInput(),
-            'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+            #'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'valores_cualitativos': forms.CheckboxSelectMultiple(attrs={'class': 'four-columns'}),
 
 
@@ -105,7 +105,7 @@ class VariableSpeciesForm(forms.ModelForm):
             'rango_inferior':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_general':forms.TextInput(attrs={'class': 'form-control'}),
             'chequeo': forms.CheckboxInput(attrs={'class': 'form-check-input '}),     
-            'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+            #'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
 
             
             }

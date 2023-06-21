@@ -182,7 +182,7 @@
               </div>
               <div class="col-3">{{ form.valor_texto }}</div>
             </div>
-            <div class="row mb-3"  id="div_valor_cualitativo">
+            <!--div class="row mb-3"  id="div_valor_cualitativo">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.valor_cualitativo.label }}
@@ -190,7 +190,7 @@
                 </h6>
               </div>
               <div class="col-3">{{ form.valor_cualitativo }}</div>
-            </div>
+            </div-->
             <div class="row mb-3" id="div_valor_boolean">
               <div class="col-2 mt-2">
                 <h6>
@@ -330,7 +330,7 @@
     document.getElementById("id_rango_superior").value = "";
     document.getElementById("id_rango_inferior").value = "";
     document.getElementById("id_valor_boolean").value = "";
-    document.getElementById("id_valor_cualitativo").value = "";
+    //document.getElementById("id_valor_cualitativo").value = "";
 
     var tipo_variable_retornada = getVariableType();
     console.log(tipo_variable_retornada);
@@ -374,8 +374,8 @@
             $("#id_rango_inferior").prop('required',true);
             $("#id_valor_boolean").prop('required',false);
   
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
       {% elif tipo_variable_diligenciar == 'texto'  %}
 
@@ -397,8 +397,8 @@
             $("#id_rango_inferior").prop('required',false);
             $("#id_valor_boolean").prop('required',false);
 
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
 
       {% elif tipo_variable_diligenciar == 'rango'  %}
@@ -421,8 +421,8 @@
             $("#id_rango_inferior").prop('required',true);
             $("#id_valor_boolean").prop('required',false);
 
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
 
       {% elif tipo_variable_diligenciar == 'boolean'  %}
@@ -439,8 +439,8 @@
           $("#div_rango_inferior").hide();
           $("#div_valor_boolean").show();
 
-          $("#id_valor_cualitativo").prop('disabled', true);
-          $("#div_valor_cualitativo").hide();
+          //$("#id_valor_cualitativo").prop('disabled', true);
+          //$("#div_valor_cualitativo").hide();
           $("#div_valores_cualitativos").hide();
 
       {% elif tipo_variable_diligenciar == 'cualitativo'  %}
@@ -451,14 +451,14 @@
             $("#id_rango_superior").prop('disabled', true);
             $("#id_rango_inferior").prop('disabled', true);
             $("#id_valor_boolean").prop('disabled', true);
-            $("#id_valor_cualitativo").prop('disabled', false);
+            //$("#id_valor_cualitativo").prop('disabled', false);
 
             $("#div_valor_texto").hide();
             //$("#div_valor_numerico").hide();
             $("#div_rango_superior").hide();
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
-            $("#div_valor_cualitativo").show();
+            //$("#div_valor_cualitativo").show();
             $("#div_valores_cualitativos").show();
       
 
@@ -471,14 +471,14 @@
             $("#id_rango_superior").prop('disabled', true);
             $("#id_rango_inferior").prop('disabled', true);
             $("#id_valor_boolean").prop('disabled', true);
-            $("#id_valor_cualitativo").prop('disabled', true);
+            //$("#id_valor_cualitativo").prop('disabled', true);
 
             $("#div_valor_texto").hide();
             //$("#div_valor_numerico").hide();
             $("#div_rango_superior").hide();
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
-            $("#div_valor_cualitativo").hide();
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
 
        {% endif %}
@@ -575,8 +575,8 @@ function getVariableType(){
             $("#id_rango_inferior").prop('required',true);
             $("#id_valor_boolean").prop('required',false);
   
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
   
           }
@@ -599,8 +599,8 @@ function getVariableType(){
             $("#id_rango_inferior").prop('required',false);
             $("#id_valor_boolean").prop('required',false);
 
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
   
           }
@@ -623,8 +623,8 @@ function getVariableType(){
             $("#id_rango_inferior").prop('required',true);
             $("#id_valor_boolean").prop('required',false);
 
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
   
           }
@@ -642,8 +642,8 @@ function getVariableType(){
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").show();
 
-            $("#id_valor_cualitativo").prop('disabled', true);
-            $("#div_valor_cualitativo").hide();
+            //$("#id_valor_cualitativo").prop('disabled', true);
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
           }
           else if (response.tipo_variable=='cualitativo'){
@@ -653,14 +653,14 @@ function getVariableType(){
             $("#id_rango_superior").prop('disabled', true);
             $("#id_rango_inferior").prop('disabled', true);
             $("#id_valor_boolean").prop('disabled', true);
-            $("#id_valor_cualitativo").prop('disabled', false);
+            //$("#id_valor_cualitativo").prop('disabled', false);
   
             $("#div_valor_texto").hide();
             //$("#div_valor_numerico").hide();
             $("#div_rango_superior").hide();
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
-            $("#div_valor_cualitativo").show();
+            //$("#div_valor_cualitativo").show();
             $("#div_valores_cualitativos").show();
             
 
@@ -673,14 +673,14 @@ function getVariableType(){
             $("#id_rango_superior").prop('disabled', true);
             $("#id_rango_inferior").prop('disabled', true);
             $("#id_valor_boolean").prop('disabled', true);
-            $("#id_valor_cualitativo").prop('disabled', true);
+            //$("#id_valor_cualitativo").prop('disabled', true);
   
             $("#div_valor_texto").hide();
             //$("#div_valor_numerico").hide();
             $("#div_rango_superior").hide();
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
-            $("#div_valor_cualitativo").hide();
+            //$("#div_valor_cualitativo").hide();
             $("#div_valores_cualitativos").hide();
           }
   
@@ -701,14 +701,14 @@ function getVariableType(){
     $("#id_rango_superior").prop('disabled', true);
     $("#id_rango_inferior").prop('disabled', true);
     $("#id_valor_boolean").prop('disabled', true);
-    $("#id_valor_cualitativo").prop('disabled', true);
+    //$("#id_valor_cualitativo").prop('disabled', true);
 
     $("#div_valor_texto").hide();
     //$("#div_valor_numerico").hide();
     $("#div_rango_superior").hide();
     $("#div_rango_inferior").hide();
     $("#div_valor_boolean").hide();
-    $("#div_valor_cualitativo").hide();
+    //$("#div_valor_cualitativo").hide();
     $("#div_valores_cualitativos").hide();
   }
 
