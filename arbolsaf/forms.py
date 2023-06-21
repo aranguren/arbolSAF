@@ -48,6 +48,10 @@ class VariableO2MForm(forms.ModelForm):
             'chequeo': forms.CheckboxInput(attrs={'class': 'form-check-input '}),     
             'especie': forms.HiddenInput(),
             'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+            'valores_cualitativos': forms.CheckboxSelectMultiple(attrs={'class': 'four-columns'}),
+
+
+         
 
             
             }
@@ -71,6 +75,12 @@ class VariableO2MForm(forms.ModelForm):
             if rango_superior<rango_inferior:
                 raise forms.ValidationError(
                     {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})
+        elif self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'cualitativo':
+            if len(self.cleaned_data.get('valores_cualitativos',[]))<1:
+                raise forms.ValidationError(
+                    {"valores_cualitativos": "Debe seleccionar al menos un valor cualitativo"})
+
+
         
         return data
 

@@ -133,7 +133,7 @@ class VariableTypeModel(BasicAuditModel):
         ("cualitativo", "Cualitativo"),
         ("boolean", "Boolean"),
     )
-
+    seleccion_multiple = models.BooleanField(_("Es selección múltiple? (Aplicable solo a variables cualitativas)"), default=False)
 
     cod_var = models.CharField(_("código variable"), max_length=50)
     tipo_variables = models.CharField(_("tipo variable"), 
@@ -200,7 +200,8 @@ class VariableModel(BasicAuditModel):
     valor_general = models.CharField(_("Valor general"), max_length=255, blank=True, null=True)
     valor_cualitativo = models.ForeignKey("arbolsaf.VariableTypeOption", verbose_name=_("Valor cualitativo"), 
                     on_delete=models.RESTRICT, blank=True, null=True) 
-
+    valores_cualitativos =   models.ManyToManyField("arbolsaf.VariableTypeOption", verbose_name=_("Valores cualitativos"), 
+                                                    related_name="+", blank=True, null=True)
     #TODO averiguar si categoria puede ser una llave foranea
 
     #categoria = models.CharField(_("categoria"), max_length=50, blank=True, null=True)

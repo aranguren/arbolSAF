@@ -15,8 +15,12 @@ urlpatterns = [
     path('especie/modificar/<str:pk>', SpeciesUpdateView.as_view(), name='species_update'),
     path('especie/eliminar', species_delete, name='species_delete'),
     
-    path('especie/<int:pk>/variable', VariableO2MCreateView.as_view(), name='species_create_variable'),
-    path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', VariableO2MCreateView.as_view(), name='species_diligenciar_variable'),
+    path('especie/<int:pk>/variable', create_variable_especie, name='species_create_variable'),
+    path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', create_variable_especie, name='species_diligenciar_variable'),
+    
+    #path('especie/<int:pk>/variable', VariableO2MCreateView.as_view(), name='species_create_variable'),
+    #path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', VariableO2MCreateView.as_view(), name='species_diligenciar_variable'),
+
     path('especie/variable/modificar/<str:pk>', VariableO2MUpdateView.as_view(), name='species_update_variable'),
     path('especie/variable/detalles/<str:pk>', Variable2MDetailView.as_view(),name='species_detail_variable'),
     path('variable/tipo', variable_tipo_get, name='variable_tipo'),

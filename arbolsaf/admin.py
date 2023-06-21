@@ -212,7 +212,7 @@ class VariableTypeAdmin(ImportExportModelAdmin):
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
-         ('Informacion tipo variable', {'fields': [ 'variable','cod_var', 'familia', 'tipo_variables',
+         ('Informacion tipo variable', {'fields': [ 'variable','cod_var', 'familia', 'tipo_variables', 'seleccion_multiple',
                              'unidad_medida',
                              'niveles_categoricos','descripcion', 
                             'min' ,'max',]}),

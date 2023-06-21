@@ -5,6 +5,21 @@
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+
+
+<style type="text/css">
+
+  ul.four-columns {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+    columns: 4;
+    -webkit-columns: 4;
+    -moz-columns: 4;
+  
+  }
+
+</style>
 {% endblock stylesheets %}
 {% block body_class %}g-sidenav-show bg-gray-100{% endblock %}
 {% block content %}
@@ -204,7 +219,17 @@
                 </h6>
               </div>
               <div class="col-3">{{ form.valor_general }}</div>
-            </div-->
+            </div>
+            <div class="row mb-3"  id="div_valores_cualitativos">
+              <div class="col-2 mt-2">
+                <h6>
+                  Valores Cualitativos
+                  {% if form.valores_cualitativos.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-6">{{ form.valores_cualitativos }}</div>
+              <!--div class="form-check">{{ form.valores_cualitativos }}</div-->
+            </div>
             </div>
             <div class="row">
               <div class="col-3">
@@ -327,8 +352,136 @@
      console.log({{id_diligenciar}});
      {% if id_diligenciar %}
        $('#id_tipo_variable').val({{id_diligenciar}});
+       console.log({{id_diligenciar}});
        $("#div_tipo_variable").hide();
        $("#div_tipo_variable_diligenciar").show();
+       {% if tipo_variable_diligenciar == 'numerico' %}
+            console.log('Tipo variable numerico');
+            $("#id_valor_texto").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', false);
+            $("#id_rango_superior").prop('disabled', false);
+            $("#id_rango_inferior").prop('disabled', false);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#div_valor_texto").hide();
+            //$("#div_valor_numerico").show();
+            $("#div_rango_superior").show();
+            $("#div_rango_inferior").show();
+            $("#div_valor_boolean").hide();
+  
+            $("#id_valor_texto").prop('required',false);
+            //$("#id_valor_numerico").prop('required',true);
+            $("#id_rango_superior").prop('required',true);
+            $("#id_rango_inferior").prop('required',true);
+            $("#id_valor_boolean").prop('required',false);
+  
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
+      {% elif tipo_variable_diligenciar == 'texto'  %}
+
+            console.log('Tipo variable texto');
+            $("#id_valor_texto").prop('disabled', false);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', true);
+            $("#id_rango_inferior").prop('disabled', true);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#div_valor_texto").show();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").hide();
+            $("#div_rango_inferior").hide();
+            $("#div_valor_boolean").hide();
+  
+            $("#id_valor_texto").prop('required',true);
+            //$("#id_valor_numerico").prop('required',false);
+            $("#id_rango_superior").prop('required',false);
+            $("#id_rango_inferior").prop('required',false);
+            $("#id_valor_boolean").prop('required',false);
+
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
+
+      {% elif tipo_variable_diligenciar == 'rango'  %}
+
+            console.log('Tipo variable rango');
+            $("#id_valor_texto").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', false);
+            $("#id_rango_inferior").prop('disabled', false);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#div_valor_texto").hide();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").show();
+            $("#div_rango_inferior").show();
+            $("#div_valor_boolean").hide();
+  
+            $("#id_valor_texto").prop('required',false);
+            //$("#id_valor_numerico").prop('required',false);
+            $("#id_rango_superior").prop('required',true);
+            $("#id_rango_inferior").prop('required',true);
+            $("#id_valor_boolean").prop('required',false);
+
+            $("#id_valor_cualitativo").prop('disabled', true);
+            $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
+
+      {% elif tipo_variable_diligenciar == 'boolean'  %}
+          console.log('Tipo variable boolean');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', true);
+          $("#id_rango_inferior").prop('disabled', true);
+          $("#id_valor_boolean").prop('disabled', false);
+
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").hide();
+          $("#div_rango_inferior").hide();
+          $("#div_valor_boolean").show();
+
+          $("#id_valor_cualitativo").prop('disabled', true);
+          $("#div_valor_cualitativo").hide();
+          $("#div_valores_cualitativos").hide();
+
+      {% elif tipo_variable_diligenciar == 'cualitativo'  %}
+
+            console.log('Tipo variable cualitativo');
+            $("#id_valor_texto").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', true);
+            $("#id_rango_inferior").prop('disabled', true);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#id_valor_cualitativo").prop('disabled', false);
+
+            $("#div_valor_texto").hide();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").hide();
+            $("#div_rango_inferior").hide();
+            $("#div_valor_boolean").hide();
+            $("#div_valor_cualitativo").show();
+            $("#div_valores_cualitativos").show();
+      
+
+
+       
+       {% else %}
+            console.log('Tipo variable desconocido');
+            $("#id_valor_texto").prop('disabled', true);
+            //$("#id_valor_numerico").prop('disabled', true);
+            $("#id_rango_superior").prop('disabled', true);
+            $("#id_rango_inferior").prop('disabled', true);
+            $("#id_valor_boolean").prop('disabled', true);
+            $("#id_valor_cualitativo").prop('disabled', true);
+
+            $("#div_valor_texto").hide();
+            //$("#div_valor_numerico").hide();
+            $("#div_rango_superior").hide();
+            $("#div_rango_inferior").hide();
+            $("#div_valor_boolean").hide();
+            $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
+
+       {% endif %}
    
     {% else %}
     $("#div_tipo_variable").show();
@@ -352,23 +505,37 @@ function getVariableOptions(){
           success: function (data) {
             console.log(data);
             
-            let html_data = '<option value="" selected>---------</option>';
+            //let html_data = '<option value="" selected>---------</option>';
+            let html_data = ''
+            {% if valores_cualitativos_lista %}
+                const array_val = {{valores_cualitativos_lista}}
+    
+            {% endif %}
+          
             data.opciones.forEach(function (data) {
-              {% if  form.instance.id%}
-                  if(data.id == {{variable.tipo_variable.id }})
+              {% if valores_cualitativos_lista %}
+                  console.log(array_val);
+                  console.log(data.id);
+                  if(array_val.includes(data.id))
                   {
-                    html_data += `<option value="${data.id}" selected>${data.nombre}</option>`
+                    console.log(data.nombre);
+                    html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}" checked> ${data.nombre}</label>`
+
+                    //html_data += `<option value="${data.id}" selected>${data.nombre}</option>`
                   }
                   else{
-                    html_data += `<option value="${data.id}">${data.nombre}</option>`
+                    html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}"> ${data.nombre}</label>`
+                    //html_data += `<option value="${data.id}">${data.nombre}</option>`
                   }
               
               {% else %}
-                html_data += `<option value="${data.id}">${data.nombre}</option>`
+                html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}"> ${data.nombre}</label>`
+
+                //html_data += `<option value="${data.id}">${data.nombre}</option>`
               {% endif %}
               
             });
-            $("#id_valor_cualitativo").html(html_data);
+            $("#id_valores_cualitativos").html(html_data);
           }
         });
 
@@ -410,6 +577,7 @@ function getVariableType(){
   
             $("#id_valor_cualitativo").prop('disabled', true);
             $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
   
           }
           else if (response.tipo_variable=='texto'){
@@ -433,6 +601,7 @@ function getVariableType(){
 
             $("#id_valor_cualitativo").prop('disabled', true);
             $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
   
           }
           else if (response.tipo_variable=='rango'){
@@ -456,6 +625,7 @@ function getVariableType(){
 
             $("#id_valor_cualitativo").prop('disabled', true);
             $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
   
           }
           else if (response.tipo_variable=='boolean'){
@@ -474,6 +644,7 @@ function getVariableType(){
 
             $("#id_valor_cualitativo").prop('disabled', true);
             $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
           }
           else if (response.tipo_variable=='cualitativo'){
             console.log('Tipo variable cualitativo');
@@ -490,8 +661,10 @@ function getVariableType(){
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
             $("#div_valor_cualitativo").show();
+            $("#div_valores_cualitativos").show();
+            
 
-        
+          
           }
           else {
             console.log('Tipo variable desconocido');
@@ -508,6 +681,7 @@ function getVariableType(){
             $("#div_rango_inferior").hide();
             $("#div_valor_boolean").hide();
             $("#div_valor_cualitativo").hide();
+            $("#div_valores_cualitativos").hide();
           }
   
   
@@ -535,6 +709,7 @@ function getVariableType(){
     $("#div_rango_inferior").hide();
     $("#div_valor_boolean").hide();
     $("#div_valor_cualitativo").hide();
+    $("#div_valores_cualitativos").hide();
   }
 
 
