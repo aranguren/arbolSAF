@@ -104,7 +104,7 @@ class VariableO2MForm(forms.ModelForm):
                 raise forms.ValidationError(
                     {"valores_cualitativos": "Debe seleccionar al menos un valor cualitativo"})
             
-            if not self.cleaned_data.get('seleccion_multiple') and len(self.cleaned_data.get('valores_cualitativos',[]))>1:
+            if not self.cleaned_data.get('tipo_variable').seleccion_multiple and len(self.cleaned_data.get('valores_cualitativos',[]))>1:
                 raise forms.ValidationError(
                     {"valores_cualitativos": "Solamente puede seleccionar un valor cualitativo para la variable actual"})
             
@@ -189,7 +189,7 @@ class VariableSpeciesForm(forms.ModelForm):
                 raise forms.ValidationError(
                     {"valores_cualitativos": "Debe seleccionar al menos un valor cualitativo"})
             
-            if not self.cleaned_data.get('seleccion_multiple') and len(self.cleaned_data.get('valores_cualitativos',[]))>1:
+            if not self.cleaned_data.get('tipo_variable').seleccion_multiple and len(self.cleaned_data.get('valores_cualitativos',[]))>1:
                 raise forms.ValidationError(
                     {"valores_cualitativos": "Solamente puede seleccionar un valor cualitativo para la variable actual"})
             
