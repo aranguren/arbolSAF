@@ -15,8 +15,8 @@ urlpatterns = [
     path('especie/modificar/<str:pk>', SpeciesUpdateView.as_view(), name='species_update'),
     path('especie/eliminar', species_delete, name='species_delete'),
     
-    path('especie/<int:pk>/variable', create_variable_especie, name='species_create_variable'),
-    path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', create_variable_especie, name='species_diligenciar_variable'),
+    path('especie/<int:pk>/variable', create_variable_o2m, name='species_create_variable'),
+    path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', create_variable_o2m, name='species_diligenciar_variable'),
     
     #path('especie/<int:pk>/variable', VariableO2MCreateView.as_view(), name='species_create_variable'),
     #path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', VariableO2MCreateView.as_view(), name='species_diligenciar_variable'),
@@ -53,7 +53,7 @@ urlpatterns = [
     path('variable-especie/detalles/<str:pk>', VariableSpeciesDetailView.as_view(),name='variable_species_detail'),
 
     
-    path('variable-especie/crear', VariableSpeciesCreateView.as_view(), name='variable_species_create'),
+    path('variable-especie/crear', create_variable_specie, name='variable_species_create'),
     path('variable-especie/modificar/<str:pk>', VariableSpeciesUpdateView.as_view(),name='variable_species_update'),
 
 

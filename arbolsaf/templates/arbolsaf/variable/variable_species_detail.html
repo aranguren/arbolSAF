@@ -113,8 +113,12 @@
             {% elif  variable.tipo_variable.tipo_variables == 'cualitativo'%}
             <div class="col-3">
               <div class="form-group">
-                <h6>Valor cualitativo</h6>
-                <spam class="mr-2">{% firstof variable.valor_cualitativo|default_if_none:"-" %}</span>
+                <h6>Valors cualitativos</h6>
+                <ul>
+                  {% for valor in variable.valores_cualitativos.all %}
+                      <li>{{ valor }}</li>
+                    {% endfor %}
+                  </ul>
               </div>   
             </div>
             {% else %}

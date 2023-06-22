@@ -277,12 +277,12 @@ class SpeciesModel(BasicAuditModel):
         
 
     def __str__(self):
-        return self.nombre_comun
+        return self.nombre_cientifico
 
     class Meta:
         db_table = 'arbolsaf_species'
         managed = True
-        ordering = ["nombre_comun"]
+        ordering = ["nombre_cientifico"]
         verbose_name = 'Especie'
         verbose_name_plural = 'Especies'
 

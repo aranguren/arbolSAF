@@ -168,7 +168,7 @@ class Variable2MDetailView(LoginRequiredMixin, DetailView):
 
 
 @login_required(login_url='/login/')
-def create_variable_especie(request, pk, tipo=None):
+def create_variable_o2m(request, pk, tipo=None):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -198,8 +198,11 @@ def create_variable_especie(request, pk, tipo=None):
                 'active_menu' :'arbolsaf'
             }
             if pk:
-                redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":pk})   
-                red = redireccion+'#variablessection'
+                redireccion = reverse_lazy("arbolsaf:species_detail", kwargs={"pk":pk})
+                if tipo:
+                    red = redireccion+'#variablesndsection'
+                else:
+                    red = redireccion+'#variablessection'
 
            
             return HttpResponseRedirect(red)
@@ -577,7 +580,8 @@ class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
 
         specie.created_by = self.request.user # use your own profile here
         if specie.tipo_variable.tipo_variables == 'cualitativo':
-            specie.valor_general = specie.valor_cualitativo.nombre
+            nombres=  [valor.nombre for valor in specie.valores_cualitativos.all()]
+            specie.valor_general = ','.join(nombres)
         elif specie.tipo_variable.tipo_variables == 'numerico': 
             specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
         elif specie.tipo_variable.tipo_variables == 'texto': 
@@ -591,6 +595,59 @@ class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
         return super(VariableSpeciesCreateView, self).form_valid(form)
     
 
+
+@login_required(login_url='/login/')
+def create_variable_specie(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = VariableSpeciesForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            variable = form.save()
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            if variable.tipo_variable.tipo_variables == 'cualitativo':
+                nombres=  [valor.nombre for valor in variable.valores_cualitativos.all()]
+                variable.valor_general = ','.join(nombres)
+            elif variable.tipo_variable.tipo_variables == 'numerico': 
+                variable.valor_general = f"{variable.rango_inferior}:{variable.rango_superior}"
+            elif variable.tipo_variable.tipo_variables == 'texto': 
+                variable.valor_general = variable.valor_texto
+            elif variable.tipo_variable.tipo_variables == 'rango': 
+                variable.valor_general = f"{variable.rango_inferior}:{variable.rango_superior}"
+            elif variable.tipo_variable.tipo_variables == 'boolean': 
+                variable.valor_general = "Verdadero" if variable.valor_boolean else "Falso"
+            variable.save()
+
+            context = {
+                'form': form,
+                'segment' : ['arbolsaf','species'],
+                'active_menu' :'arbolsaf'
+            }
+           
+            redireccion = reverse_lazy("arbolsaf:variable_species_detail", kwargs={"pk":variable.id})   
+            
+
+           
+            return HttpResponseRedirect(redireccion)
+            #return render(request, 'arbolsaf/variable/variable_o2m_form.html', context)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = VariableSpeciesForm()
+
+
+    context = {
+        'form': form,
+        'segment' : ['arbolsaf','variable-species'],
+        'active_menu' :'arbolsaf'
+
+    }
+
+
+    return render(request, 'arbolsaf/variable/variable_species_form.html', context)
 
 
 class VariableSpeciesUpdateView(LoginRequiredMixin, UpdateView):
@@ -607,6 +664,8 @@ class VariableSpeciesUpdateView(LoginRequiredMixin, UpdateView):
 
         context['nombre_especie']  = self.object.especie
         context['nombre_variable']  = self.object.tipo_variable
+        valores_cualitativos = [valor.id for valor in self.object.valores_cualitativos.all()]
+        context['valores_cualitativos_lista'] = valores_cualitativos
 
         return context
 
@@ -623,7 +682,8 @@ class VariableSpeciesUpdateView(LoginRequiredMixin, UpdateView):
         #farm.active=True
 
         if specie.tipo_variable.tipo_variables == 'cualitativo':
-            specie.valor_general = specie.valor_cualitativo.nombre
+            nombres=  [valor.nombre for valor in specie.valores_cualitativos.all()]
+            specie.valor_general = ','.join(nombres)
         elif specie.tipo_variable.tipo_variables == 'numerico': 
             specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
         elif specie.tipo_variable.tipo_variables == 'texto': 

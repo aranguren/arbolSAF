@@ -182,6 +182,16 @@
               </div>
               <div class="col-3">{{ form.valor_texto }}</div>
             </div>
+            <div class="row mb-3"  id="div_valores_cualitativos">
+              <div class="col-2 mt-2">
+                <h6>
+                  Valores Cualitativos
+                  {% if form.valores_cualitativos.field.required %}<span>*</span>{% endif %}
+                </h6>
+              </div>
+              <div class="col-6">{{ form.valores_cualitativos }}</div>
+              <!--div class="form-check">{{ form.valores_cualitativos }}</div-->
+            </div>
             <!--div class="row mb-3"  id="div_valor_cualitativo">
               <div class="col-2 mt-2">
                 <h6>
@@ -220,16 +230,7 @@
               </div>
               <div class="col-3">{{ form.valor_general }}</div>
             </div>
-            <div class="row mb-3"  id="div_valores_cualitativos">
-              <div class="col-2 mt-2">
-                <h6>
-                  Valores Cualitativos
-                  {% if form.valores_cualitativos.field.required %}<span>*</span>{% endif %}
-                </h6>
-              </div>
-              <div class="col-6">{{ form.valores_cualitativos }}</div>
-              <!--div class="form-check">{{ form.valores_cualitativos }}</div-->
-            </div>
+
             </div>
             <div class="row">
               <div class="col-3">

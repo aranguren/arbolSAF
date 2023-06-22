@@ -70,15 +70,45 @@ class VariableO2MForm(forms.ModelForm):
         
         if self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'rango':
 
+
             rango_superior = self.cleaned_data.get('rango_superior', 0)
             rango_inferior = self.cleaned_data.get('rango_inferior', 0)
             if rango_superior<rango_inferior:
                 raise forms.ValidationError(
                     {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})
+            
+            if rango_superior<rango_inferior:
+                raise forms.ValidationError(
+                    {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})
+            
+            min = self.cleaned_data.get('tipo_variable').min or False
+            max = self.cleaned_data.get('tipo_variable').max or False
+            if max and rango_superior and rango_superior>max:
+                raise forms.ValidationError(
+                    {"rango_superior": f"El rango superior no debe ser mayor que el valor máximo definido para la variable ({max})"})
+            if min and rango_superior and rango_superior<min:
+                raise forms.ValidationError(
+                    {"rango_superior": f"El rango superior no debe ser menor que el valor mínimo definido para la variable ({min})"})
+            
+            if max and rango_inferior and rango_inferior>max:
+                raise forms.ValidationError(
+                    {"rango_inferior": f"El rango inferior no debe ser mayor que el valor máximo definido para la variable ({max})"})
+            if min and rango_inferior and rango_inferior<min:
+                raise forms.ValidationError(
+                    {"rango_inferior": f"El rango inferior no debe ser menor que el valor mínimo definido para la variable ({min})"})
+
+
+
         elif self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'cualitativo':
             if len(self.cleaned_data.get('valores_cualitativos',[]))<1:
                 raise forms.ValidationError(
                     {"valores_cualitativos": "Debe seleccionar al menos un valor cualitativo"})
+            
+            if not self.cleaned_data.get('seleccion_multiple') and len(self.cleaned_data.get('valores_cualitativos',[]))>1:
+                raise forms.ValidationError(
+                    {"valores_cualitativos": "Solamente puede seleccionar un valor cualitativo para la variable actual"})
+            
+            
 
 
         
@@ -106,6 +136,7 @@ class VariableSpeciesForm(forms.ModelForm):
             'valor_general':forms.TextInput(attrs={'class': 'form-control'}),
             'chequeo': forms.CheckboxInput(attrs={'class': 'form-check-input '}),     
             #'valor_cualitativo': forms.Select(attrs={'class': 'form-select form-select-lg'}),
+             'valores_cualitativos': forms.CheckboxSelectMultiple(attrs={'class': 'four-columns'}),
 
             
             }
@@ -124,11 +155,47 @@ class VariableSpeciesForm(forms.ModelForm):
         
         if self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'rango':
 
+
             rango_superior = self.cleaned_data.get('rango_superior', 0)
             rango_inferior = self.cleaned_data.get('rango_inferior', 0)
             if rango_superior<rango_inferior:
                 raise forms.ValidationError(
                     {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})
+            
+            if rango_superior<rango_inferior:
+                raise forms.ValidationError(
+                    {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})
+            
+            min = self.cleaned_data.get('tipo_variable').min or False
+            max = self.cleaned_data.get('tipo_variable').max or False
+            if max and rango_superior and rango_superior>max:
+                raise forms.ValidationError(
+                    {"rango_superior": f"El rango superior no debe ser mayor que el valor máximo definido para la variable ({max})"})
+            if min and rango_superior and rango_superior<min:
+                raise forms.ValidationError(
+                    {"rango_superior": f"El rango superior no debe ser menor que el valor mínimo definido para la variable ({min})"})
+            
+            if max and rango_inferior and rango_inferior>max:
+                raise forms.ValidationError(
+                    {"rango_inferior": f"El rango inferior no debe ser mayor que el valor máximo definido para la variable ({max})"})
+            if min and rango_inferior and rango_inferior<min:
+                raise forms.ValidationError(
+                    {"rango_inferior": f"El rango inferior no debe ser menor que el valor mínimo definido para la variable ({min})"})
+
+
+
+        elif self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'cualitativo':
+            if len(self.cleaned_data.get('valores_cualitativos',[]))<1:
+                raise forms.ValidationError(
+                    {"valores_cualitativos": "Debe seleccionar al menos un valor cualitativo"})
+            
+            if not self.cleaned_data.get('seleccion_multiple') and len(self.cleaned_data.get('valores_cualitativos',[]))>1:
+                raise forms.ValidationError(
+                    {"valores_cualitativos": "Solamente puede seleccionar un valor cualitativo para la variable actual"})
+            
+            
+
+
         
         return data
 
