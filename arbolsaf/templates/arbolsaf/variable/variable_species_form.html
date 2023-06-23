@@ -179,7 +179,7 @@
               </div>
               <div class="col-3">{{ form.valor_texto }}</div>
             </div>
-            <div class="row mb-3"  id="div_valores_cualitativos">
+            <div class="row mb-3"  id="div_valores_cualitativos"  style="display:none;">
               <div class="col-2 mt-2">
                 <h6>
                   {{ form.valores_cualitativos.label }}
@@ -264,6 +264,256 @@
   {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <script>
+
+      function getVariableType(){
+        tipo_variable = $('#id_tipo_variable').find(":selected").val();
+        console.log("desde ajax "+ tipo_variable)
+        if (tipo_variable){
+          var request = $.ajax({
+            type: "GET",
+            url: "/arbolsaf/variable/tipo",
+            data: {
+                "id": tipo_variable
+            },
+            success: function (response) {
+                
+                console.log(response.tipo_variable);
+                
+        
+                ShowHideFields(response.tipo_variable);
+      
+                return response.tipo_variable
+              },
+            error: function (response, e) {
+              return 'fail'
+            }
+            
+        });
+      
+        }
+        else{
+          console.log('Tipo variable desconocido');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', true);
+          $("#id_rango_inferior").prop('disabled', true);
+          $("#id_valor_boolean").prop('disabled', true);
+          //$("#id_valor_cualitativo").prop('disabled', true);
+      
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").hide();
+          $("#div_rango_inferior").hide();
+          $("#div_valor_boolean").hide();
+          //$("#div_valor_cualitativo").hide();
+          $("#div_valores_cualitativos").hide();
+        }
+      
+      
+      }
+      
+      
+      function getVariableOptions(){
+      
+        var variable_id = $("#id_tipo_variable").val();
+      
+        if (variable_id){
+          $.ajax({
+                type: "GET",
+                url: "/arbolsaf/variable/opciones/",
+                data: {
+                  'variable_id': variable_id
+                },
+                success: function (data) {
+            
+                  
+                  //let html_data = '<option value="" selected>---------</option>';
+                  let html_data = ''
+                  {% if valores_cualitativos_lista %}
+                      const array_val = {{valores_cualitativos_lista}}
+          
+                  {% endif %}
+                
+                  data.opciones.forEach(function (data) {
+                    {% if valores_cualitativos_lista %}
+                        console.log(array_val);
+                        console.log(data.id);
+                        if(array_val.includes(data.id))
+                        {
+                          console.log(data.nombre);
+                          html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}" checked> ${data.nombre}</label>`
+      
+                          //html_data += `<option value="${data.id}" selected>${data.nombre}</option>`
+                        }
+                        else{
+                          html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}"> ${data.nombre}</label>`
+                          //html_data += `<option value="${data.id}">${data.nombre}</option>`
+                        }
+                    
+                    {% else %}
+                      html_data += `<li><label for="id_valores_cualitativos_${data.id}" style="font-size:16px;"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}"> ${data.nombre}</label>`
+      
+                      //html_data += `<option value="${data.id}">${data.nombre}</option>`
+                    {% endif %}
+                    
+                  });
+                  $("#id_valores_cualitativos").html(html_data);
+                  //$("#div_valores_cualitativos").show();
+                  console.log("Se van a desocultar las opciones");
+                  document.getElementById("div_valores_cualitativos").style.display = "inline";
+                  //document.getElementById('div_valores_cualitativos').removeAttribute("hidden");
+                  
+      
+                }
+              });
+      
+            }
+      }
+      
+      
+      function ShowHideFields(tipo_variable){
+        if (tipo_variable=='numerico'){
+          console.log('Tipo variable numerico');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', false);
+          $("#id_rango_superior").prop('disabled', false);
+          $("#id_rango_inferior").prop('disabled', false);
+          $("#id_valor_boolean").prop('disabled', true);
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").show();
+          $("#div_rango_superior").show();
+          $("#div_rango_inferior").show();
+          $("#div_valor_boolean").hide();
+      
+          $("#id_valor_texto").prop('required',false);
+          //$("#id_valor_numerico").prop('required',true);
+          $("#id_rango_superior").prop('required',true);
+          $("#id_rango_inferior").prop('required',true);
+          $("#id_valor_boolean").prop('required',false);
+          document.getElementById("div_valores_cualitativos").style.display = "none";
+          //document.getElementById('div_valores_cualitativos').setAttribute("hidden", true);
+      
+          //$("#id_valor_cualitativo").prop('disabled', true);
+          //$("#div_valor_cualitativo").hide();
+          //$("#div_valores_cualitativos").hide();
+      
+        }
+        else if (tipo_variable=='texto'){
+          console.log('Tipo variable texto');
+          $("#id_valor_texto").prop('disabled', false);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', true);
+          $("#id_rango_inferior").prop('disabled', true);
+          $("#id_valor_boolean").prop('disabled', true);
+          $("#div_valor_texto").show();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").hide();
+          $("#div_rango_inferior").hide();
+          $("#div_valor_boolean").hide();
+      
+          $("#id_valor_texto").prop('required',true);
+          //$("#id_valor_numerico").prop('required',false);
+          $("#id_rango_superior").prop('required',false);
+          $("#id_rango_inferior").prop('required',false);
+          $("#id_valor_boolean").prop('required',false);
+          document.getElementById("div_valores_cualitativos").style.display = "none";
+          //document.getElementById('div_valores_cualitativos').setAttribute("hidden", true);
+      
+          //$("#id_valor_cualitativo").prop('disabled', true);
+          //$("#div_valor_cualitativo").hide();
+          //$("#div_valores_cualitativos").hide();
+      
+      
+        }
+        else if (tipo_variable=='rango'){
+          console.log('Tipo variable rango');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', false);
+          $("#id_rango_inferior").prop('disabled', false);
+          $("#id_valor_boolean").prop('disabled', true);
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").show();
+          $("#div_rango_inferior").show();
+          $("#div_valor_boolean").hide();
+      
+          $("#id_valor_texto").prop('required',false);
+          //$("#id_valor_numerico").prop('required',false);
+          $("#id_rango_superior").prop('required',true);
+          $("#id_rango_inferior").prop('required',true);
+          $("#id_valor_boolean").prop('required',false);
+          document.getElementById("div_valores_cualitativos").style.display = "none";
+          //document.getElementById('div_valores_cualitativos').setAttribute("hidden", true);
+      
+          //$("#id_valor_cualitativo").prop('disabled', true);
+          //$("#div_valor_cualitativo").hide();
+          //$("#div_valores_cualitativos").hide();
+      
+        }
+        else if (tipo_variable=='boolean'){
+          console.log('Tipo variable boolean');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', true);
+          $("#id_rango_inferior").prop('disabled', true);
+          $("#id_valor_boolean").prop('disabled', false);
+      
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").hide();
+          $("#div_rango_inferior").hide();
+          $("#div_valor_boolean").show();
+          document.getElementById("div_valores_cualitativos").style.display = "none";
+          //document.getElementById('div_valores_cualitativos').setAttribute("hidden", true);
+          //$("#id_valor_cualitativo").prop('disabled', true);
+          //$("#div_valor_cualitativo").hide();
+          //$("#div_valores_cualitativos").hide();
+        }
+        else if (tipo_variable=='cualitativo'){
+          console.log('Tipo variable cualitativo');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', true);
+          $("#id_rango_inferior").prop('disabled', true);
+          $("#id_valor_boolean").prop('disabled', true);
+          //$("#id_valor_cualitativo").prop('disabled', false);
+      
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").hide();
+          $("#div_rango_inferior").hide();
+          $("#div_valor_boolean").hide();
+          //$("#div_valor_cualitativo").show();
+          //$("#div_valores_cualitativos").show();
+      
+      
+          getVariableOptions();
+          
+      
+        
+        }
+        else {
+          console.log('Tipo variable desconocido');
+          $("#id_valor_texto").prop('disabled', true);
+          //$("#id_valor_numerico").prop('disabled', true);
+          $("#id_rango_superior").prop('disabled', true);
+          $("#id_rango_inferior").prop('disabled', true);
+          $("#id_valor_boolean").prop('disabled', true);
+          //$("#id_valor_cualitativo").prop('disabled', true);
+      
+          $("#div_valor_texto").hide();
+          //$("#div_valor_numerico").hide();
+          $("#div_rango_superior").hide();
+          $("#div_rango_inferior").hide();
+          $("#div_valor_boolean").hide();
+          document.getElementById("div_valores_cualitativos").style.display = "none";
+          //document.getElementById('div_valores_cualitativos').setAttribute("hidden", true);
+          //$("#div_valor_cualitativo").hide();
+          //$("#div_valores_cualitativos").hide();
+        }
+      }
+
     $('#aceptar').click(function(){
       /* when the submit button in the modal is clicked, submit the form */
      //alert('submitting');
@@ -282,8 +532,6 @@
 
   $(document).ready(function () {
 
-    getVariableType();
-    getVariableOptions();
 
 
 /*
@@ -314,12 +562,11 @@
     document.getElementById("id_valor_boolean").value = "";
     //document.getElementById("id_valor_cualitativo").value = "";
 
-    var tipo_variable_retornada = getVariableType();
-    console.log(tipo_variable_retornada);
-    
+    $("#id_valores_cualitativos").html('');
+
+    getVariableType();
 
 
-    getVariableOptions();
     
 
   })
@@ -342,237 +589,13 @@
     $("#div_especie_fijo").hide();
    
      {% endif %}
+     getVariableType();
+   
 
 });
 
 
-function getVariableOptions(){
 
-  var variable_id = $("#id_tipo_variable").val();
-
-  if (variable_id){
-    $.ajax({
-          type: "GET",
-          url: "/arbolsaf/variable/opciones/",
-          data: {
-            'variable_id': variable_id
-          },
-          success: function (data) {
-            console.log(data);
-            
-            //let html_data = '<option value="" selected>---------</option>';
-            let html_data = ''
-            {% if valores_cualitativos_lista %}
-                const array_val = {{valores_cualitativos_lista}}
-    
-            {% endif %}
-          
-            data.opciones.forEach(function (data) {
-              {% if valores_cualitativos_lista %}
-                  console.log(array_val);
-                  console.log(data.id);
-                  if(array_val.includes(data.id))
-                  {
-                    console.log(data.nombre);
-                    html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}" checked> ${data.nombre}</label>`
-
-                    //html_data += `<option value="${data.id}" selected>${data.nombre}</option>`
-                  }
-                  else{
-                    html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}"> ${data.nombre}</label>`
-                    //html_data += `<option value="${data.id}">${data.nombre}</option>`
-                  }
-              
-              {% else %}
-                html_data += `<li><label for="id_valores_cualitativos_${data.id}"><input type="checkbox" name="valores_cualitativos" value="${data.id}" class="four-columns" id="id_valores_cualitativos_${data.id}"> ${data.nombre}</label>`
-
-                //html_data += `<option value="${data.id}">${data.nombre}</option>`
-              {% endif %}
-              
-            });
-            $("#id_valores_cualitativos").html(html_data);
-          }
-        });
-
-      }
-    }
-
-
-
-
-
-function getVariableType(){
-  tipo_variable = $('#id_tipo_variable').find(":selected").val();
-  if (tipo_variable){
-    var request = $.ajax({
-      type: "GET",
-      url: "/arbolsaf/variable/tipo",
-      data: {
-          "id": tipo_variable
-      },
-      success: function (response) {
-          
-          console.log(response.tipo_variable);
-          if (response.tipo_variable=='numerico'){
-            console.log('Tipo variable numerico');
-            $("#id_valor_texto").prop('disabled', true);
-            //$("#id_valor_numerico").prop('disabled', false);
-            $("#id_rango_superior").prop('disabled', false);
-            $("#id_rango_inferior").prop('disabled', false);
-            $("#id_valor_boolean").prop('disabled', true);
-            $("#div_valor_texto").hide();
-            //$("#div_valor_numerico").show();
-            $("#div_rango_superior").show();
-            $("#div_rango_inferior").show();
-            $("#div_valor_boolean").hide();
-  
-            $("#id_valor_texto").prop('required',false);
-            //$("#id_valor_numerico").prop('required',true);
-            $("#id_rango_superior").prop('required',true);
-            $("#id_rango_inferior").prop('required',true);
-            $("#id_valor_boolean").prop('required',false);
-  
-            //$("#id_valor_cualitativo").prop('disabled', true);
-            //$("#div_valor_cualitativo").hide();
-            $("#div_valores_cualitativos").hide();
-  
-          }
-          else if (response.tipo_variable=='texto'){
-            console.log('Tipo variable texto');
-            $("#id_valor_texto").prop('disabled', false);
-            //$("#id_valor_numerico").prop('disabled', true);
-            $("#id_rango_superior").prop('disabled', true);
-            $("#id_rango_inferior").prop('disabled', true);
-            $("#id_valor_boolean").prop('disabled', true);
-            $("#div_valor_texto").show();
-            //$("#div_valor_numerico").hide();
-            $("#div_rango_superior").hide();
-            $("#div_rango_inferior").hide();
-            $("#div_valor_boolean").hide();
-  
-            $("#id_valor_texto").prop('required',true);
-            //$("#id_valor_numerico").prop('required',false);
-            $("#id_rango_superior").prop('required',false);
-            $("#id_rango_inferior").prop('required',false);
-            $("#id_valor_boolean").prop('required',false);
-
-            //$("#id_valor_cualitativo").prop('disabled', true);
-            //$("#div_valor_cualitativo").hide();
-            $("#div_valores_cualitativos").hide();
-  
-          }
-          else if (response.tipo_variable=='rango'){
-            console.log('Tipo variable rango');
-            $("#id_valor_texto").prop('disabled', true);
-            //$("#id_valor_numerico").prop('disabled', true);
-            $("#id_rango_superior").prop('disabled', false);
-            $("#id_rango_inferior").prop('disabled', false);
-            $("#id_valor_boolean").prop('disabled', true);
-            $("#div_valor_texto").hide();
-            //$("#div_valor_numerico").hide();
-            $("#div_rango_superior").show();
-            $("#div_rango_inferior").show();
-            $("#div_valor_boolean").hide();
-  
-            $("#id_valor_texto").prop('required',false);
-            //$("#id_valor_numerico").prop('required',false);
-            $("#id_rango_superior").prop('required',true);
-            $("#id_rango_inferior").prop('required',true);
-            $("#id_valor_boolean").prop('required',false);
-
-            $("#div_valores_cualitativos").hide();
-
-            //$("#id_valor_cualitativo").prop('disabled', true);
-            //$("#div_valor_cualitativo").hide();
-  
-          }
-          else if (response.tipo_variable=='boolean'){
-            console.log('Tipo variable boolean');
-            $("#id_valor_texto").prop('disabled', true);
-            //$("#id_valor_numerico").prop('disabled', true);
-            $("#id_rango_superior").prop('disabled', true);
-            $("#id_rango_inferior").prop('disabled', true);
-            $("#id_valor_boolean").prop('disabled', false);
-  
-            $("#div_valor_texto").hide();
-            //$("#div_valor_numerico").hide();
-            $("#div_rango_superior").hide();
-            $("#div_rango_inferior").hide();
-            $("#div_valor_boolean").show();
-
-            $("#div_valores_cualitativos").hide();
-
-            //$("#id_valor_cualitativo").prop('disabled', true);
-            //$("#div_valor_cualitativo").hide();
-          }
-          else if (response.tipo_variable=='cualitativo'){
-            console.log('Tipo variable cualitativo');
-            $("#id_valor_texto").prop('disabled', true);
-            //$("#id_valor_numerico").prop('disabled', true);
-            $("#id_rango_superior").prop('disabled', true);
-            $("#id_rango_inferior").prop('disabled', true);
-            $("#id_valor_boolean").prop('disabled', true);
-            //$("#id_valor_cualitativo").prop('disabled', false);
-  
-            $("#div_valor_texto").hide();
-            //$("#div_valor_numerico").hide();
-            $("#div_rango_superior").hide();
-            $("#div_rango_inferior").hide();
-            $("#div_valor_boolean").hide();
-            //$("#div_valor_cualitativo").show();
-
-            $("#div_valores_cualitativos").show();
-
-        
-          }
-          else {
-            console.log('Tipo variable desconocido');
-            $("#id_valor_texto").prop('disabled', true);
-            //$("#id_valor_numerico").prop('disabled', true);
-            $("#id_rango_superior").prop('disabled', true);
-            $("#id_rango_inferior").prop('disabled', true);
-            $("#id_valor_boolean").prop('disabled', true);
-            //$("#id_valor_cualitativo").prop('disabled', true);
-  
-            $("#div_valor_texto").hide();
-            //$("#div_valor_numerico").hide();
-            $("#div_rango_superior").hide();
-            $("#div_rango_inferior").hide();
-            $("#div_valor_boolean").hide();
-            //$("#div_valor_cualitativo").hide();
-            $("#div_valores_cualitativos").hide();
-          }
-  
-  
-          return response.tipo_variable
-        },
-      error: function (response, e) {
-        return 'fail'
-      }
-      
-  });
-
-  }
-  else{
-    console.log('Tipo variable desconocido');
-    $("#id_valor_texto").prop('disabled', true);
-    //$("#id_valor_numerico").prop('disabled', true);
-    $("#id_rango_superior").prop('disabled', true);
-    $("#id_rango_inferior").prop('disabled', true);
-    $("#id_valor_boolean").prop('disabled', true);
-    //$("#id_valor_cualitativo").prop('disabled', true);
-
-    $("#div_valor_texto").hide();
-    //$("#div_valor_numerico").hide();
-    $("#div_rango_superior").hide();
-    $("#div_rango_inferior").hide();
-    $("#div_valor_boolean").hide();
-    $("#div_valores_cualitativos").hide();
-    //$("#div_valor_cualitativo").hide();
-  }
-
-
-}
   
     </script>
   {% endblock javascripts %}
