@@ -295,8 +295,10 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
         context['species_url'] =  redireccion+'#variablessection'
 
         context['id_diligenciar'] = self.object.tipo_variable.id
-        nombre_variable_diligenciar = VariableTypeModel.objects.get(id=int(self.object.tipo_variable.id)).variable
+        variable = VariableTypeModel.objects.get(id=int(self.object.tipo_variable.id))
+        nombre_variable_diligenciar = variable.variable
         context['nombre_variable_diligenciar'] = nombre_variable_diligenciar
+        context['tipo_variable_diligenciar'] =  variable.tipo_variables
        
 
         valores_cualitativos = [valor.id for valor in self.object.valores_cualitativos.all()]
