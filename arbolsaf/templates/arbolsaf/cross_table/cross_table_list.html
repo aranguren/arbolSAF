@@ -236,7 +236,7 @@
                                             <td>{% firstof variable.especie.nombre_comun|default_if_none:"" %}</td>
                                             <td>{% firstof variable.especie.nombre_cientifico|default_if_none:"" %}</td>
                                             <td>{% firstof variable.tipo_variable|default_if_none:"" %}</td>
-                                            <td>{% firstof variable.valor_general|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.get_valor_general|default_if_none:"" %}</td>
                                             <td>{% firstof variable.referencia|default_if_none:"" %}</td>
 
                                         </tr>

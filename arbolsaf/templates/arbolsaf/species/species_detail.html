@@ -260,7 +260,7 @@
                         
                         <td>{{ variable.tipo_variable }}</td>
                         <td>
-                          {{ variable.valor_general |slice:":20"}} ({{ variable.tipo_variable.unidad_medida|default_if_none:'Sin unidad'}})
+                          {{ variable.get_valor_general |slice:":20"}} {{ variable.tipo_variable.unidad_medida|default_if_none:''}}
                         </td>
                         <td>{{ variable.referencia }}</td>
                    

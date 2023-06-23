@@ -179,18 +179,6 @@ def create_variable_o2m(request, pk, tipo=None):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            if variable.tipo_variable.tipo_variables == 'cualitativo':
-                nombres=  [valor.nombre for valor in variable.valores_cualitativos.all()]
-                variable.valor_general = ','.join(nombres)
-            elif variable.tipo_variable.tipo_variables == 'numerico': 
-                variable.valor_general = f"{variable.rango_inferior}:{variable.rango_superior}"
-            elif variable.tipo_variable.tipo_variables == 'texto': 
-                variable.valor_general = variable.valor_texto
-            elif variable.tipo_variable.tipo_variables == 'rango': 
-                variable.valor_general = f"{variable.rango_inferior}:{variable.rango_superior}"
-            elif variable.tipo_variable.tipo_variables == 'boolean': 
-                variable.valor_general = "Verdadero" if variable.valor_boolean else "Falso"
-            variable.save()
 
             context = {
                 'form': form,
@@ -332,20 +320,7 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
         #User = get_user_model()
 
         specie.modified_by = self.request.user # use your own profile here
-        #farm.active=True
-
-        if specie.tipo_variable.tipo_variables == 'cualitativo':
-            nombres=  [valor.nombre for valor in specie.valores_cualitativos.all()]
-            specie.valor_general = ','.join(nombres)
-        elif specie.tipo_variable.tipo_variables == 'numerico': 
-            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
-        elif specie.tipo_variable.tipo_variables == 'texto': 
-            specie.valor_general = specie.valor_texto
-        elif specie.tipo_variable.tipo_variables == 'rango': 
-            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
-        elif specie.tipo_variable.tipo_variables == 'boolean': 
-            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
-         
+        #farm.active=True         
         specie.save()
         return super(VariableO2MUpdateView, self).form_valid(form)
 
@@ -578,20 +553,6 @@ class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
         specie = form.save(commit=False)
         #User = get_user_model()
 
-        specie.created_by = self.request.user # use your own profile here
-        if specie.tipo_variable.tipo_variables == 'cualitativo':
-            nombres=  [valor.nombre for valor in specie.valores_cualitativos.all()]
-            specie.valor_general = ','.join(nombres)
-        elif specie.tipo_variable.tipo_variables == 'numerico': 
-            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
-        elif specie.tipo_variable.tipo_variables == 'texto': 
-            specie.valor_general = specie.valor_texto
-        elif specie.tipo_variable.tipo_variables == 'rango': 
-            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
-        elif specie.tipo_variable.tipo_variables == 'boolean': 
-            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
-         
-        specie.save()
         return super(VariableSpeciesCreateView, self).form_valid(form)
     
 
@@ -608,18 +569,7 @@ def create_variable_specie(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            if variable.tipo_variable.tipo_variables == 'cualitativo':
-                nombres=  [valor.nombre for valor in variable.valores_cualitativos.all()]
-                variable.valor_general = ','.join(nombres)
-            elif variable.tipo_variable.tipo_variables == 'numerico': 
-                variable.valor_general = f"{variable.rango_inferior}:{variable.rango_superior}"
-            elif variable.tipo_variable.tipo_variables == 'texto': 
-                variable.valor_general = variable.valor_texto
-            elif variable.tipo_variable.tipo_variables == 'rango': 
-                variable.valor_general = f"{variable.rango_inferior}:{variable.rango_superior}"
-            elif variable.tipo_variable.tipo_variables == 'boolean': 
-                variable.valor_general = "Verdadero" if variable.valor_boolean else "Falso"
-            variable.save()
+
 
             context = {
                 'form': form,
@@ -679,19 +629,5 @@ class VariableSpeciesUpdateView(LoginRequiredMixin, UpdateView):
         #User = get_user_model()
 
         specie.modified_by = self.request.user # use your own profile here
-        #farm.active=True
 
-        if specie.tipo_variable.tipo_variables == 'cualitativo':
-            nombres=  [valor.nombre for valor in specie.valores_cualitativos.all()]
-            specie.valor_general = ','.join(nombres)
-        elif specie.tipo_variable.tipo_variables == 'numerico': 
-            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
-        elif specie.tipo_variable.tipo_variables == 'texto': 
-            specie.valor_general = specie.valor_texto
-        elif specie.tipo_variable.tipo_variables == 'rango': 
-            specie.valor_general = f"{specie.rango_inferior}:{specie.rango_superior}"
-        elif specie.tipo_variable.tipo_variables == 'boolean': 
-            specie.valor_general = "Verdadero" if specie.valor_boolean else "Falso"
-         
-        specie.save()
         return super(VariableSpeciesUpdateView, self).form_valid(form)

@@ -212,6 +212,23 @@ class VariableModel(BasicAuditModel):
     
     def __str__(self):
         return "{} - Especie: {}".format(self.tipo_variable, self.especie)
+    
+    @property
+    def get_valor_general(self):
+        if self.valor_general:
+            valor = self.valor_general
+        elif self.tipo_variable.tipo_variables == 'cualitativo':
+            nombres=  [valor.nombre for valor in self.valores_cualitativos.all()]
+            valor = ','.join(nombres)
+        elif self.tipo_variable.tipo_variables == 'numerico': 
+            valor = f"{self.rango_inferior}:{self.rango_superior}"
+        elif self.tipo_variable.tipo_variables == 'texto': 
+            valor = self.valor_texto
+        elif self.tipo_variable.tipo_variables == 'rango': 
+            valor = f"{self.rango_inferior}:{self.rango_superior}"
+        elif self.tipo_variable.tipo_variables == 'boolean': 
+            valor = "SI" if self.valor_boolean else "NO"
+        return valor
 
     class Meta:
         db_table = 'arbolsaf_variable'

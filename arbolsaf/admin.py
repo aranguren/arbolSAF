@@ -350,6 +350,7 @@ class ReferenceAdmin(ImportExportModelAdmin):
     resource_classes = [ReferenceResource]
     #fields = ['name', 'geom']
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    search_fields = ['cod_cita','fuente_final', 'referencia']
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),

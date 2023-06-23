@@ -42,20 +42,13 @@
                   <span class="sidenav-normal"> Especies </span>
                 </a>
               </li>
+              
               <li class="nav-item ">
                 <a class="nav-link {% if 'variable_type' in segment %} active {% endif %}" href="{% url 'arbolsaf:variable_type_list' %}">
                   <span class="sidenav-mini-icon"> V</span>
                   <span class="sidenav-normal"> Variables </span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link {% if 'variable-species' in segment %} active {% endif %}" href="{% url 'arbolsaf:variable_species_list' %}">
-                  <span class="sidenav-mini-icon"> V-E</span>
-                  <span class="sidenav-normal">Variables - Especies</span>
-                </a>
-              </li>
-
-              
               <li class="nav-item ">
                 <a class="nav-link {% if 'reference' in segment %} active {% endif %}" href="{% url 'arbolsaf:reference_list' %}">
                   <span class="sidenav-mini-icon">R</span>
@@ -65,9 +58,18 @@
                 <li class="nav-item ">
                     <a class="nav-link {% if 'cross_table' in segment %} active {% endif %}" href="{% url 'arbolsaf:cross_table_list' %}">
                         <span class="sidenav-mini-icon">T</span>
-                        <span class="sidenav-normal"> Tabla Cruzada </span>
+                        <span class="sidenav-normal">Tabla Cruzada</span>
                     </a>
                 </li>
+              <li class="nav-item ">
+                <a class="nav-link {% if 'variable-species' in segment %} active {% endif %}" href="{% url 'arbolsaf:variable_species_list' %}">
+                  <span class="sidenav-mini-icon"> V-E</span>
+                  <span class="sidenav-normal">Entrada de datos</span>
+                </a>
+              </li>
+
+              
+
 
               <!--li class="nav-item ">
                 <a class="nav-link {% if 'periodo' in segment %} active {% endif %}" href="{% url 'arbolsaf:species_list' %}">
