@@ -287,7 +287,18 @@ class SpeciesAdmin(ImportExportModelAdmin):
     list_display = ['cod_esp', 'nombre_comun', 'nombre_cientifico', 'familia', 
                                         'genero',]
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
-    readonly_fields = ['created','created_by','modified','modified_by']
+    readonly_fields = ['created','created_by','modified','modified_by','valor_madera', 
+                                        'valor_madera_category' ,
+                                        'valor_fruta', 
+                                        'valor_fruta_category',
+                                        'valor_otros_usos', 
+                                        'valor_otros_usos_category', 
+                                        'valor_biodiversidad',
+                                        'valor_biodiversidad_category' ,
+                                        'valor_microclima' ,
+                                        'valor_microclima_category', 
+                                        'valor_suelo' ,
+                                        'valor_suelo_category', ]
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
          ('Informacion variable', {'fields': ['cod_esp', 
@@ -301,11 +312,24 @@ class SpeciesAdmin(ImportExportModelAdmin):
                                         'variedad_subespecie' ,
                                         'autor', 
                                         'nativa', ]}),
+        ('Valores índices', {'fields': ['valor_madera', 
+                                        'valor_madera_category' ,
+                                        'valor_fruta', 
+                                        'valor_fruta_category',
+                                        'valor_otros_usos', 
+                                        'valor_otros_usos_category', 
+                                        'valor_biodiversidad',
+                                        'valor_biodiversidad_category' ,
+                                        'valor_microclima' ,
+                                        'valor_microclima_category', 
+                                        'valor_suelo' ,
+                                        'valor_suelo_category', 
+                                        ]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
     ]
 
 
-    inlines = [SynonymousInline, VariableInline, MenaceInline]
+    inlines = [SynonymousInline, MenaceInline]
 
     def save_model(self, request, obj, form, change):
         if change:

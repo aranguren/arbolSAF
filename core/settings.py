@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'computedfields',
     'import_export',
     'arbolsaf', 
     'apps.home'  # Enable the inner home (home)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from computedfields.models import ComputedFieldsModel, computed, compute
 # Create your models here.
 
 class BasicAuditModel(models.Model):
@@ -255,9 +256,15 @@ class DistributionMenaceModel(BasicAuditModel):
         verbose_name = 'Amenaza distribución'
         verbose_name_plural = 'Amenazas distribución'
 
-class SpeciesModel(BasicAuditModel):
+class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
-
+    VALUES_CHOICES = (
+        ("ninguno", "Ninguno"),
+        ("bajo", "Bajo"),
+        ("medio", "Medio"),
+        ("alto", "Alto"),
+    )
+        
     cod_esp = models.CharField(_("Código especie"), max_length=50, unique=True)
     taxonid_wfo = models.CharField(_("Taxon ID WFO"), max_length=50)
     nombre_comun = models.CharField(_("Nombre común"), max_length=255)
@@ -272,6 +279,269 @@ class SpeciesModel(BasicAuditModel):
 
     nativa = models.BooleanField(_("Nativa?"))
 
+    #campos calculados
+    @computed(models.IntegerField(_("Valor para  Madera"), default=0),
+                depends=[('variables', ['valor_boolean'])])
+    def valor_madera(self):
+        if len(self.get_variables)== 0:
+            return 0
+     
+        v163 = 0
+        v167 = 0
+        v168 = 0
+
+        v163_instance = self.variables.filter(tipo_variable__cod_var__iexact='v163').first()
+        if v163_instance:
+            v163 = 1 if v163_instance.valor_boolean else 0 
+        else:
+            v163 = 0
+
+        v167_instance = self.variables.filter(tipo_variable__cod_var__iexact='v167').first()
+        if v167_instance:
+            v167 = 1 if v167_instance.valor_boolean else 0 
+        else:
+            v167 = 0 
+
+        v168_instance = self.variables.filter(tipo_variable__cod_var__iexact='v168').first()
+        if v168_instance:
+            v168 = 1 if v167_instance.valor_boolean else 0 
+        else:
+            v168 = 0     
+
+
+        
+        return v163 + v167 + v168
+
+    @computed(models.IntegerField(_("Valor para  Fruta"), default=0),
+                depends=[('variables', ['valor_boolean'])])
+    def valor_fruta(self):
+        if len(self.get_variables)== 0:
+            return 0
+     
+        v23_instance = self.variables.filter(tipo_variable__cod_var__iexact='v23').first()
+        if v23_instance:
+            v23 = 3 if v23_instance.valor_boolean else 0 
+        else:
+            v23 = 0
+
+        return v23
+
+    @computed(models.IntegerField(_("Valor para Otros usos"), default=0),
+                depends=[('variables', ['valor_boolean'])])
+    def valor_otros_usos(self):
+        """ V102 V111 V112 V113 V162 V39 V70"""
+        if len(self.get_variables)== 0:
+            return 0
+        
+
+        #v102_instance = self.variables.filter(tipo_variable__cod_var__in=['V102', 'V111', 'V112', 'V113', 'V162', 'V39', 'V70']).first()
+
+
+        v102_instance = self.variables.filter(tipo_variable__cod_var__iexact='v102').first()
+        if v102_instance:
+            v102 = 1 if v102_instance.valor_boolean else 0 
+        else:
+            v102 = 0
+
+        v111_instance = self.variables.filter(tipo_variable__cod_var__iexact='v111').first()
+        if v111_instance:
+            v111 = 1 if v111_instance.valor_boolean else 0 
+        else:
+            v111 = 0
+
+        v112_instance = self.variables.filter(tipo_variable__cod_var__iexact='v112').first()
+        if v112_instance:
+            v112 = 1 if v112_instance.valor_boolean else 0 
+        else:
+            v112 = 0
+
+        v113_instance = self.variables.filter(tipo_variable__cod_var__iexact='v113').first()
+        if v113_instance:
+            v113 = 1 if v113_instance.valor_boolean else 0 
+        else:
+            v113 = 0
+
+        v162_instance = self.variables.filter(tipo_variable__cod_var__iexact='v162').first()
+        if v162_instance:
+            v162 = 1 if v162_instance.valor_boolean else 0 
+        else:
+            v162 = 0
+
+        v39_instance = self.variables.filter(tipo_variable__cod_var__iexact='v39').first()
+        if v39_instance:
+            v39 = 1 if v39_instance.valor_boolean else 0 
+        else:
+            v39 = 0
+
+
+        v70_instance = self.variables.filter(tipo_variable__cod_var__iexact='v70').first()
+        if v70_instance:
+            v70 = 1 if v70_instance.valor_boolean else 0 
+        else:
+            v70 = 0
+
+        return v102 + v111 + v112 + v113 +  v162 + v39 + v70
+    
+    @computed(models.IntegerField(_("Valor para Biodiversidad"), default=0),
+                depends=[('variables', ['valor_boolean'])])
+    def valor_biodiversidad(self):
+        """V127	V14	V18	V89	V90	V91"""
+        if len(self.get_variables)== 0:
+            return 0
+     
+
+        v127_instance = self.variables.filter(tipo_variable__cod_var__iexact='v127').first()
+        if v127_instance:
+            v127 = 1 if v127_instance.valor_boolean else 0 
+        else:
+            v127 = 0
+
+        v14_instance = self.variables.filter(tipo_variable__cod_var__iexact='v14').first()
+        if v14_instance:
+            v14 = 1 if v14_instance.valor_boolean else 0 
+        else:
+            v14 = 0
+  
+        v18_instance = self.variables.filter(tipo_variable__cod_var__iexact='v18').first()
+        if v18_instance:
+            v18 = 1 if v18_instance.valor_boolean else 0 
+        else:
+            v18 = 0
+
+        v89_instance = self.variables.filter(tipo_variable__cod_var__iexact='v89').first()
+        if v89_instance:
+            v89 = 1 if v89_instance.valor_boolean else 0 
+        else:
+            v89 = 0
+
+        v90_instance = self.variables.filter(tipo_variable__cod_var__iexact='v90').first()
+        if v90_instance:
+            v90 = 1 if v90_instance.valor_boolean else 0 
+        else:
+            v90 = 0
+
+        v91_instance = self.variables.filter(tipo_variable__cod_var__iexact='v91').first()
+        if v91_instance:
+            v91 = 1 if v91_instance.valor_boolean else 0 
+        else:
+            v91 = 0
+                                
+        return v127 + v14 + v18 + v89 + v90 + v91
+
+    @computed(models.IntegerField(_("Valor para Microclima"), default=0),
+                depends=[('variables', ['valor_boolean'])])
+    def valor_microclima(self):
+        """V4 V58"""
+        if len(self.get_variables)== 0:
+            return 0
+        
+        v4_instance = self.variables.filter(tipo_variable__cod_var__iexact='v4').first()
+        if v4_instance:
+            v4 = 3 if v4_instance.valor_boolean else 0 
+        else:
+            v4 = 0
+
+        v58_instance = self.variables.filter(tipo_variable__cod_var__iexact='v58').first()
+        if v58_instance:
+            v58 = 3 if v58_instance.valor_boolean else 0 
+        else:
+            v58 = 0
+        
+        return max(v4, v58)
+    
+    #TODO pendiente por definir esto
+    @computed(models.IntegerField(_("Valor para el Suelo"), default=0),
+                depends=[('variables', ['valor_boolean'])])
+    def valor_suelo(self):
+        """V4 V58"""
+        if len(self.get_variables)== 0:
+            return 0
+    
+        return 0
+    
+
+    @computed(models.CharField(_("Valor para Madera"), max_length=50, 
+                               choices=VALUES_CHOICES, default='ninguno'),
+                depends=[('self', ['valor_madera'])])
+    def valor_madera_category(self):
+
+        match self.valor_madera:
+            case 0:
+                valor = 'ninguno' 
+            case 1:
+                valor = 'bajo'
+            case 2:
+                valor = 'medio'
+            case 3:
+                valor = 'alto'
+
+        return valor
+
+    @computed(models.CharField(_("Valor para Fruta"), max_length=50, 
+                               choices=VALUES_CHOICES, default='ninguno'),
+                                depends=[('self', ['valor_fruta'])])
+    def valor_fruta_category(self):
+
+        if self.valor_fruta==3:
+            valor = 'alto' 
+        else:
+            valor = 'ninguno'
+
+        return valor
+    
+    @computed(models.CharField(_("Valor para otros Usos"), max_length=50, 
+                               choices=VALUES_CHOICES, default='ninguno'),
+                                depends=[('self', ['valor_otros_usos'])])
+    def valor_otros_usos_category(self):
+
+        if self.valor_otros_usos==0:
+            valor = 'ninguno' 
+        elif self.valor_otros_usos<=2:
+            valor = 'bajo'
+        elif self.valor_otros_usos<=4:
+            valor = 'medio'
+        elif self.valor_otros_usos>=5:
+            valor = 'alto'
+
+        return valor
+
+    @computed(models.CharField(_("Valor para Biodiversidad"), max_length=50, 
+                               choices=VALUES_CHOICES, default='ninguno'),
+                                depends=[('self', ['valor_biodiversidad'])])
+    def valor_biodiversidad_category(self):
+
+        if self.valor_biodiversidad==0:
+            valor = 'ninguno' 
+        elif self.valor_biodiversidad<=2:
+            valor = 'bajo'
+        elif self.valor_biodiversidad<=4:
+            valor = 'medio'
+        elif self.valor_biodiversidad>=5:
+            valor = 'alto'
+
+        return valor
+
+    @computed(models.CharField(_("Valor para Microclima"), max_length=50, 
+                               choices=VALUES_CHOICES, default='ninguno'),
+                                depends=[('self', ['valor_microclima'])])
+    def valor_microclima_category(self):
+
+        if self.valor_microclima==3:
+            valor = 'alto' 
+        else:
+            valor = 'ninguno'
+
+        return valor
+
+    @computed(models.CharField(_("Valor para Suelo"), max_length=50, 
+                               choices=VALUES_CHOICES, default='ninguno'),
+                depends=[('self', ['valor_suelo'])])
+    def valor_suelo_category(self):
+
+        valor = 'ninguno'
+
+        return valor
+            
     @property
     def get_variables(self):
         return self.variables.all()
