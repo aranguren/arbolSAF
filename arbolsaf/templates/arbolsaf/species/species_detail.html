@@ -373,6 +373,57 @@
           </div>
         </section>
 
+        <div class="card mt-4" id="valores_calculados">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-12">
+                <h5>Funciones (valores calculados)</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Valor para madera</h6>
+                  <div class="mr-2">{% firstof specie.valor_madera_category|default_if_none:"-" %} ({{specie.valor_madera}})</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Valor para fruta</h6>
+                  <div class="mr-2">{% firstof specie.valor_fruta_category|default_if_none:"-" %} ({{specie.valor_fruta}})</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Valor para otros usos</h6>
+                  <div class="mr-2">{% firstof specie.valor_otros_usos_category|default_if_none:"-" %} ({{specie.valor_otros_usos}})</div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Valor para biodiversidad</h6>
+                  <div class="mr-2">{% firstof specie.valor_biodiversidad_category|default_if_none:"-" %} ({{specie.valor_biodiversidad}})</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Valor para microclima</h6>
+                  <div class="mr-2">{% firstof specie.valor_microclima_category|default_if_none:"-" %} ({{specie.valor_microclima}})</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Valor para suelo</h6>
+                  <div class="mr-2">{% firstof specie.valor_suelo_category|default_if_none:"-" %} ({{specie.valor_suelo}})</div>
+                </div>
+              </div>
+            </div>    
+          </div>
+        </div>
 
  
 

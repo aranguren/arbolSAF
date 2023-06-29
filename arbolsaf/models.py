@@ -286,10 +286,6 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         if len(self.get_variables)== 0:
             return 0
      
-        v163 = 0
-        v167 = 0
-        v168 = 0
-
         v163_instance = self.variables.filter(tipo_variable__cod_var__iexact='v163').first()
         if v163_instance:
             v163 = 1 if v163_instance.valor_boolean else 0 
