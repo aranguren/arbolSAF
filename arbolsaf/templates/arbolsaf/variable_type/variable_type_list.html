@@ -422,7 +422,7 @@ Listado Tipos Variable
                                    <select id="id_variable" class="form-select" name="variable">
                                     <option></option>
                                     {% for variable_filtro in variables_todas %}
-                                        <option value="{{ variable_filtro.id }}">{{ variable_filtro.variable }}</option>
+                                        <option value="{{ variable_filtro.id }}">{{ variable_filtro.variable }} ({{ variable_filtro.cod_var }})</option>
                                     {% endfor %}
 
                                 </select>

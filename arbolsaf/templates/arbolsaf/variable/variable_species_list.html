@@ -405,7 +405,7 @@ Listado Variable - Especies
                         <select id="id_nombre_comun" class="form-select" name="nombre_comun">
                             <option></option>
                             {% for nombre in nombre_comun_values %}
-                                <option value="{{ nombre }}">{{ nombre }}</option>
+                                <option value="{{ nombre.nombre_comun }}">{{ nombre.nombre_comun }} ({{ nombre.cod_esp }})</option>
                             {% endfor %}
 
                         </select>
@@ -419,7 +419,8 @@ Listado Variable - Especies
                               <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
                                   <option></option>
                                   {% for nombre in nombre_cientifico_values %}
-                                      <option value="{{ nombre }}">{{ nombre }}</option>
+                                  <option value="{{ nombre.nombre_cientifico }}">{{ nombre.nombre_cientifico }} ({{ nombre.cod_esp }})</option>
+                                      <!--option value="{{ nombre }}">{{ nombre }}</option-->
                                   {% endfor %}
 
                               </select>
@@ -432,7 +433,7 @@ Listado Variable - Especies
                           <select id="id_tipo_variable" class="form-select" name="tipo_variable">
                               <option></option>
                               {% for variable in variables %}
-                                  <option value="{{ variable.id }}">{{ variable.variable }}</option>
+                                  <option value="{{ variable.id }}">{{ variable.variable }} ({{ variable.cod_var }})</option>
                               {% endfor %}
 
                           </select>

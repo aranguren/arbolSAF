@@ -155,7 +155,7 @@ class VariableTypeModel(BasicAuditModel):
     max = models.FloatField(_("Valor máximo"), blank=True, null=True)
 
     def __str__(self):
-        return self.variable
+        return f"{self.variable} ({self.cod_var})"
 
     class Meta:
         db_table = 'arbolsaf_variable_type'
@@ -560,7 +560,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         
 
     def __str__(self):
-        return self.nombre_cientifico
+        return f"{self.nombre_cientifico} ({self.cod_esp})"
 
     class Meta:
         db_table = 'arbolsaf_species'

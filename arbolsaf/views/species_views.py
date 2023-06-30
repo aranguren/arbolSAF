@@ -43,13 +43,15 @@ class SpeciesListView(LoginRequiredMixin, ListView):
         especies = SpeciesModel.objects.all()
         nombre_comun_values = list()
         for especie in especies.order_by('nombre_comun'):
-            nombre_comun_values.append(especie.nombre_comun)
+            nombre_comun_values.append({"nombre_comun":especie.nombre_comun, "cod_esp":especie.cod_esp})
+            #nombre_comun_values.append(f"{especie.nombre_comun} ({especie.cod_esp})")
 
         context['nombre_comun_values'] = nombre_comun_values
 
         nombre_cientifico_values = list()
         for especie in especies.order_by('nombre_cientifico'):
-            nombre_cientifico_values.append(especie.nombre_cientifico)
+            nombre_cientifico_values.append({"nombre_cientifico":especie.nombre_cientifico, "cod_esp":especie.cod_esp}) 
+            #nombre_cientifico_values.append(f"{especie.nombre_cientifico} ({especie.cod_esp})")
 
         context['nombre_cientifico_values'] = nombre_cientifico_values
 

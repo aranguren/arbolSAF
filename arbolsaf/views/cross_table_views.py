@@ -25,7 +25,8 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
         context['value_referencia'] = self.request.GET.get('referencia', '')
-
+        context['value_cod_var'] = self.request.GET.get('cod_var', '')
+        
         filtrado = context['nombre_comun'] + context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
                    context['value_tipo_variable'] + context['value_referencia']
 
@@ -40,18 +41,19 @@ class CrossTableListView(LoginRequiredMixin, ListView):
 
         especies = SpeciesModel.objects.all()
 
-        nombre_comun_values = list()
-        for especie in especies.order_by('nombre_comun'):
-            nombre_comun_values.append(especie.nombre_comun)
+        #nombre_comun_values = list()
+        #for especie in especies.order_by('nombre_comun'):
+        #    nombre_comun_values.append(f"{especie.nombre_comun} ({especie.cod_esp})")
 
-        context['nombre_comun_values'] = nombre_comun_values
+        #context['nombre_comun_values'] = nombre_comun_values
 
         nombre_cientifico_values = list()
         for especie in especies.order_by('nombre_cientifico'):
-            nombre_cientifico_values.append(especie.nombre_cientifico)
+            nombre_cientifico_values.append({"nombre_cientifico":especie.nombre_cientifico,"cod_esp":especie.cod_esp})
 
         context['nombre_cientifico_values'] = nombre_cientifico_values
 
+        
         variables = VariableTypeModel.objects.order_by('variable')
         context['variables'] = variables
 
@@ -68,7 +70,7 @@ class CrossTableListView(LoginRequiredMixin, ListView):
             context['count_actual_rows'] = total_rows if actual_rows > total_rows else actual_rows
             context['total_rows'] = total_rows
 
-            if 'nombre_comun' not in self.request.GET:
+            if 'nombre_cientifico' not in self.request.GET:
                 for i in range(context['page_obj'].number, context['page_obj'].number + 5):
                     if i <= context['page_obj'].paginator.num_pages:
                         list_pages.append(i)
@@ -97,7 +99,8 @@ class CrossTableListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         query = {
-            'nombre_comun': self.request.GET.get('nombre_comun', None),
+            #'nombre_comun': self.request.GET.get('nombre_comun', None),
+            'cod_var': self.request.GET.get('cod_var', None),
             'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
             'tipo_variable': self.request.GET.get('tipo_variable', None),
             'referencia': self.request.GET.get('referencia', None),
@@ -119,10 +122,13 @@ class CrossTableListView(LoginRequiredMixin, ListView):
 
         query_result = VariableModel.objects
 
-        if query['nombre_comun'] and query['nombre_comun'] != '':
-            query_result = query_result.filter(especie__nombre_comun__icontains=query['nombre_comun'])
+        #if query['nombre_comun'] and query['nombre_comun'] != '':
+        #    query_result = query_result.filter(especie__nombre_comun__icontains=query['nombre_comun'])
         if query['nombre_cientifico'] and query['nombre_cientifico'] != '':
             query_result = query_result.filter(especie__nombre_cientifico__icontains=query['nombre_cientifico'])
+        
+        if query['cod_var'] and query['cod_var'] != '':
+            query_result = query_result.filter(tipo_variable__cod_var__iexact=query['cod_var'])
 
         if query['tipo_variable'] and query['tipo_variable'] != '':
             tipo_variable = VariableTypeModel.objects.get(pk=int(query['tipo_variable']))

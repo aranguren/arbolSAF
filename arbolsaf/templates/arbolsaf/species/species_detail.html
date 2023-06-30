@@ -261,7 +261,7 @@
                     {% for variable in specie.get_variables %}
                       <tr>
                         
-                        <td>{{ variable.tipo_variable }}</td>
+                        <td>{{ variable.tipo_variable.variable }}</td>
                         <td>{{ variable.tipo_variable.cod_var }}</td>
                         <td>
                           {{ variable.get_valor_general |slice:":20"}} {{ variable.tipo_variable.unidad_medida|default_if_none:''}}

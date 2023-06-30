@@ -55,22 +55,7 @@
                                   action="{% url 'arbolsaf:cross_table_list' %}"
                                   method="get"
                                   autocomplete="off">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_nombre_comun">
-                                            Nombre común
-                                        </label>
-                                        <select id="id_nombre_comun" class="form-select" name="nombre_comun">
-                                            <option></option>
-                                            {% for nombre in nombre_comun_values %}
-                                                <option value="{{ nombre }}">{{ nombre }}</option>
-                                            {% endfor %}
 
-                                        </select>
-
-
-                                    </div>
-                                </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label" for="id_nombre_cientifico">
@@ -79,7 +64,7 @@
                                         <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
                                             <option></option>
                                             {% for nombre in nombre_cientifico_values %}
-                                                <option value="{{ nombre }}">{{ nombre }}</option>
+                                                <option value="{{nombre.nombre_cientifico}}">{{nombre.nombre_cientifico}} ({{ nombre.cod_esp }})</option>
                                             {% endfor %}
 
                                         </select>
@@ -88,11 +73,23 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
+                                        <label class="control-label" for="id_cod_var">
+                                            Código variable
+                                          </label>
+                                            <input id="id_cod_var"
+                                                    type="text"
+                                                    name="cod_var"
+                                                    class="form-control"
+                                                    value="{{ value_cod_var }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
                                         <label class="control-label" for="id_tipo_variable">Variable</label>
                                         <select id="id_tipo_variable" class="form-select" name="tipo_variable">
                                             <option></option>
                                             {% for variable in variables %}
-                                                <option value="{{ variable.id }}">{{ variable.variable }}</option>
+                                                <option value="{{ variable.id }}">{{ variable.variable }} ({{ variable.cod_var }})</option>
                                             {% endfor %}
 
                                         </select>
@@ -253,7 +250,7 @@
                         <div class="d-flex justify-content-center">
                             <nav>
                                 <ul class="pagination">
-                                    {% if 'nombre_comun' in request.get_full_path %}
+                                    {% if 'nombre_cientifico' in request.get_full_path %}
                                         {% if has_previous_pages %}
                                             {#                      <li class="page-item">#}
                                             {#                        <a class="page-link"#}
@@ -366,7 +363,7 @@
 
         $(document).ready(function () {
 
-            document.getElementById("id_nombre_comun").value = "{{value_nombre_comun}}";
+            //document.getElementById("id_cod_var").value = "{{value_nombre_comun}}";
             document.getElementById("id_nombre_cientifico").value = "{{value_nombre_cientifico}}";
             document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
             document.getElementById("id_referencia").value = "{{value_referencia}}";
