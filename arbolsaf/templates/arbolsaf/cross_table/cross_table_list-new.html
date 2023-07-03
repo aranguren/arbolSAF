@@ -26,8 +26,23 @@
                 <div class="card">
                     <!-- Card header -->
                     <div class="card-header">
-                        <h3 class="mb-1">Tabla Cruzada</h3>
+                        <div class="row">
+                            <div class="col-6 float-left">
+                                <h3 class="mb-1">Tabla Cruzada</h3>
+
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                    <button form="filter_form"
+                                    formaction="{% url 'arbolsaf:cross_table_export' %}"
+                                    class="btn btn-primary text-white btn-sm mt-2">
+                                <i class="fa fa-file-csv"></i>&nbsp;&nbsp;Exportar
+                            </button>
+
+                            </div>
+                        </div>
+                        
                         <hr class="horizontal dark my-2">
+                        
                         <div class="d-flex justify-content-left">
                             {#                            <a href="{% url 'arbolsaf:species_create' %}"#}
                             {#                               class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>#}
@@ -69,7 +84,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label" for="id_nombre_cientifico">
@@ -85,6 +99,7 @@
 
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label" for="id_cod_var">
@@ -110,7 +125,7 @@
 
                                     </div>
                                 </div>
-                                <!--div class="col-md-2">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label" for="id_referencia">Referencia</label>
                                         <select id="id_referencia" class="form-select" name="referencia">
@@ -122,9 +137,9 @@
                                         </select>
 
                                     </div>
-                                </div-->
+                                </div>
                             <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group mt-md-4">
@@ -135,15 +150,11 @@
                                             </div>
 
                                         </div>
-                                        <div class="col">
+                                        <!--div class="col">
                                             <div class="form-group mt-md-4 text-end">
-                                                <button form="filter_form"
-                                                        formaction="{% url 'arbolsaf:cross_table_export' %}"
-                                                        class="btn btn-primary text-white btn-sm mt-2">
-                                                    <i class="fa fa-file-csv"></i>&nbsp;&nbsp;Exportar
-                                                </button>
+                                                
                                             </div>
-                                        </div>
+                                        </div-->
                                     </div>
                                 </div>
                             </form>
@@ -241,7 +252,7 @@
                                     <tbody>
                                     {% for variable in cross_table %}
                                         <tr class="clickable"
-                                            onclick="window.location='{% url 'arbolsaf:cross_table_detail' variable.id %}'">
+                                            onclick="window.location='{% url 'arbolsaf:species_detail' variable.especie.id %}'">
                                             <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
 
                                             <td>{% firstof variable.especie.nombre_comun|default_if_none:"" %}</td>

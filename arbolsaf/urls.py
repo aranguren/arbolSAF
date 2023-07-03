@@ -51,6 +51,8 @@ urlpatterns = [
 
 
     path('variable-especie/detalles/<str:pk>', VariableSpeciesDetailView.as_view(),name='variable_species_detail'),
+    path('tabla_cruzada/detalles/<str:pk>', CrossTableDetailView.as_view(),name='cross_table_detail'),
+    
 
     
     path('variable-especie/crear', create_variable_specie, name='variable_species_create'),

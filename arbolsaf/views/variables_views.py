@@ -530,6 +530,21 @@ class VariableSpeciesDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)   
         context['segment'] = ['arbolsaf','variable-species']
         context['active_menu'] ='arbolsaf'
+        context['list_from'] ='variable_species'
+        return context
+    
+
+class CrossTableDetailView(LoginRequiredMixin, DetailView):
+    model = VariableModel
+    #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
+    context_object_name = 'variable'
+    template_name = 'arbolsaf/variable/variable_species_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   
+        context['segment'] = ['arbolsaf','cross_table']
+        context['active_menu'] ='arbolsaf'
+        context['list_from'] ='cross_table'
         return context
     
 class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):

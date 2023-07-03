@@ -33,9 +33,17 @@
               
               </div>
               <div class="col-6">
+                
+                {% if list_from == 'variable_species' %}
                   <div class="d-flex justify-content-end">
                       <a href="{% url 'arbolsaf:variable_species_list' %}"
                       class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
+                  {% else %}
+                  <div class="d-flex justify-content-end">
+                    <a href="{% url 'arbolsaf:cross_table_list' %}"
+                    class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
+
+                  {% endif %}
                   <a href="{% url 'arbolsaf:variable_species_create' %}"
                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
                   {% if not variable.chequeo %}
@@ -212,7 +220,12 @@ document.getElementById("aceptar").addEventListener('click', function(){
       success: function (response) {
           console.log(response)
           $("#deleteModal").modal('hide');
+          {% if list_from == 'variable_species' %}
           $(location).attr('href', "{% url 'arbolsaf:variable_species_list' %}");
+          {% else %}
+          $(location).attr('href', "{% url 'arbolsaf:cross_table_list' %}");
+
+          {% endif %}
 
       },
       error: function (response, e) {

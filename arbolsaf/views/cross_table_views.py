@@ -26,9 +26,12 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
         context['value_referencia'] = self.request.GET.get('referencia', '')
         context['value_cod_var'] = self.request.GET.get('cod_var', '')
+        context['value_cod_esp'] = self.request.GET.get('cod_esp', '')
+
+        
         
         filtrado = context['nombre_comun'] + context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
-                   context['value_tipo_variable'] + context['value_referencia']
+                   context['value_tipo_variable'] + context['value_referencia'] +  context['value_cod_var'] + context['value_cod_esp']
 
         print(len(filtrado))
 
@@ -101,6 +104,7 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         query = {
             #'nombre_comun': self.request.GET.get('nombre_comun', None),
             'cod_var': self.request.GET.get('cod_var', None),
+            'cod_esp': self.request.GET.get('cod_esp', None),
             'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
             'tipo_variable': self.request.GET.get('tipo_variable', None),
             'referencia': self.request.GET.get('referencia', None),
@@ -129,6 +133,8 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         
         if query['cod_var'] and query['cod_var'] != '':
             query_result = query_result.filter(tipo_variable__cod_var__iexact=query['cod_var'])
+        if query['cod_esp'] and query['cod_esp'] != '':
+            query_result = query_result.filter(especie__cod_esp__iexact=query['cod_esp'])
 
         if query['tipo_variable'] and query['tipo_variable'] != '':
             tipo_variable = VariableTypeModel.objects.get(pk=int(query['tipo_variable']))
