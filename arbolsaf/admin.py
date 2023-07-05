@@ -298,7 +298,11 @@ class SpeciesAdmin(ImportExportModelAdmin):
                                         'valor_microclima' ,
                                         'valor_microclima_category', 
                                         'valor_suelo' ,
-                                        'valor_suelo_category', ]
+                                        'valor_suelo_category', 
+                                        'indice_multiuso',
+                                        'indice_valor_uso_relativo',
+                                        'ivim'
+                                        ]
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
          ('Informacion variable', {'fields': ['cod_esp', 
@@ -324,6 +328,9 @@ class SpeciesAdmin(ImportExportModelAdmin):
                                         'valor_microclima_category', 
                                         'valor_suelo' ,
                                         'valor_suelo_category', 
+                                        'indice_multiuso',
+                                        'indice_valor_uso_relativo',
+                                        'ivim',
                                         ]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
     ]

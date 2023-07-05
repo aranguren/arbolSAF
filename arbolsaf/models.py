@@ -300,7 +300,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
         v168_instance = self.variables.filter(tipo_variable__cod_var__iexact='v168').first()
         if v168_instance:
-            v168 = 1 if v167_instance.valor_boolean else 0 
+            v168 = 1 if v168_instance.valor_boolean else 0 
         else:
             v168 = 0     
 
@@ -461,15 +461,15 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
                 depends=[('self', ['valor_madera'])])
     def valor_madera_category(self):
 
-        match self.valor_madera:
-            case 0:
-                valor = 'ninguno' 
-            case 1:
-                valor = 'bajo'
-            case 2:
-                valor = 'medio'
-            case 3:
-                valor = 'alto'
+
+        if self.valor_madera == 0:
+            valor = 'ninguno' 
+        elif self.valor_madera == 1:
+            valor = 'bajo'
+        elif self.valor_madera == 2:
+            valor = 'medio'
+        elif self.valor_madera == 3:
+            valor = 'alto'
 
         return valor
 
@@ -537,7 +537,48 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         valor = 'ninguno'
 
         return valor
-            
+
+
+    @computed(models.FloatField(_("Índice Multiuso"), default=0.0),
+                depends=[('self', ['valor_madera','valor_fruta','valor_otros_usos',
+                                   'valor_biodiversidad','valor_microclima','valor_suelo'])])
+    def indice_multiuso(self):
+        count = 0
+        if self.valor_madera>0:
+            count+=1
+        if self.valor_fruta>0:
+            count+=1
+        if self.valor_otros_usos>0:
+            count+=1
+        if self.valor_biodiversidad>0:
+            count+=1
+        if self.valor_microclima>0:
+            count+=1
+        if self.valor_suelo>0:
+            count+=1
+
+    
+        return round(count/6*100, 2)
+
+    @computed(models.FloatField(_("Índice de valor de uso relativo"), default=0.0),
+                depends=[('self', ['valor_madera','valor_fruta','valor_otros_usos',
+                                   'valor_biodiversidad','valor_microclima','valor_suelo'])])
+    def indice_valor_uso_relativo(self):
+        
+        suma = self.valor_madera + self.valor_fruta + self.valor_otros_usos+\
+                self.valor_biodiversidad + self.valor_microclima + self.valor_suelo
+
+    
+        return round(suma/18*100, 2)
+
+    @computed(models.FloatField(_("IVIM"), default=0.0),
+                depends=[('self', ['indice_multiuso','indice_valor_uso_relativo'])])
+    def ivim(self):
+        
+    
+        return self.indice_multiuso+ self.indice_valor_uso_relativo
+    
+
     @property
     def get_variables(self):
         return self.variables.all()

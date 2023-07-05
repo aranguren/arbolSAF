@@ -421,7 +421,27 @@
                   <div class="mr-2">{% firstof specie.valor_suelo_category|default_if_none:"-" %} ({{specie.valor_suelo}})</div>
                 </div>
               </div>
-            </div>    
+            </div>
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Índice Multiuso</h6>
+                  <div class="mr-2">{{specie.indice_multiuso}}</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>Índice de valor de uso relativo</h6>
+                  <div class="mr-2">{{specie.indice_valor_uso_relativo}}</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <h6>IVIM</h6>
+                  <div class="mr-2">{{specie.ivim}}</div>
+                </div>
+              </div>
+            </div>        
           </div>
         </div>
 
