@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME', 'arbolsaf2'),
+        'NAME': os.getenv('DB_NAME', 'arbolsaf'),
         'HOST': os.getenv('DB_HOST', '127.0.0.1'),
         'PORT': int(os.getenv('DB_PORT', 5432)),
         'USER': os.getenv('DB_USER','postgres'),
