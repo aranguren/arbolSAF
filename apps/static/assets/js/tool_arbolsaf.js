@@ -1,0 +1,1 @@
+alert("El js ha sido cargado correctamente")
