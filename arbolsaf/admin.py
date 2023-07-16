@@ -243,7 +243,8 @@ class VariableResource(resources.ModelResource):
 class VariableAdmin(ImportExportModelAdmin):
     resource_classes = [VariableResource]
     #fields = ['name', 'geom']
-    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    list_display = ('id', 'tipo_variable', 'especie', 'referencia', 'valor_general')
+    search_fields = ['id', 'valor_general']
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
