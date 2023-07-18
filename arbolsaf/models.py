@@ -452,10 +452,84 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         """V4 V58"""
         if len(self.get_variables)== 0:
             return 0
+        """
+        #V114	V115	V117	V169	V30	V32	V37	V71
+        v114_instance = self.variables.filter(tipo_variable__cod_var__iexact='v114').first()
+        if v114_instance:
+            v114 = 1 if v114_instance.valor_boolean else 0 
+        else:
+            v114 = 0
+
+        v115_instance = self.variables.filter(tipo_variable__cod_var__iexact='v115').first()
+        if v115_instance:
+            v115 = 1 if v115_instance.valor_boolean else 0 
+        else:
+            v115 = 0
+
+        v117_instance = self.variables.filter(tipo_variable__cod_var__iexact='v117').first()
+        if v117_instance:
+            v117 = 1 if v117_instance.valor_boolean else 0 
+        else:
+            v117 = 0
+
+        v169_instance = self.variables.filter(tipo_variable__cod_var__iexact='v169').first()
+        if v169_instance:
+            v169 = 1 if v169_instance.valor_boolean else 0 
+        else:
+            v169 = 0
+
+        
     
+        v30_instance = self.variables.filter(tipo_variable__cod_var__iexact='v30').first()
+        if v30_instance:
+            v30= 1 if v30_instance.valor_boolean else 0 
+        else:
+            v30= 0
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0    
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0 
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0 
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0
+
+        _instance = self.variables.filter(tipo_variable__cod_var__iexact='').first()
+        if _instance:
+            = 1 if v90_instance.valor_boolean else 0 
+        else:
+            = 0
+        """ 
         return 0
     
-
     @computed(models.CharField(_("Valor para Madera"), max_length=50, 
                                choices=VALUES_CHOICES, default='ninguno'),
                 depends=[('self', ['valor_madera'])])
