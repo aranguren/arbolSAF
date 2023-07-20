@@ -147,7 +147,7 @@ Listado Variable - Especies
                           <td>{% firstof variable_specie.especie.nombre_comun|default_if_none:"" %}</td>
                           <td>{% firstof variable_specie.especie.nombre_cientifico|default_if_none:"" %}</td>
                           <td>{% firstof variable_specie.tipo_variable|default_if_none:"" %}</td>
-                          <td>{% firstof variable_specie.valor_general|default_if_none:"" %}</td>
+                          <td>{% firstof variable_specie.get_valor_general|default_if_none:"" %}</td>
                           <td>{% firstof variable_specie.referencia|default_if_none:"" %}</td>
 
                       </tr>
