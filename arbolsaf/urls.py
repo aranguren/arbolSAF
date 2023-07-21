@@ -63,5 +63,7 @@ urlpatterns = [
     path('variable-especie/modificar/<str:pk>', VariableSpeciesUpdateView.as_view(),name='variable_species_update'),
 
     path('herramienta/', ToolView.as_view(), name='tool_part1'),
+    path('herramienta/intro/', IntroToolView.as_view(), name='tool_part0'),
+
 
 ]
