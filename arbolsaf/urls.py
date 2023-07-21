@@ -4,13 +4,14 @@ from .views.variable_type_views import *
 from .views.reference_views import *
 from .views.cross_table_views import *
 from .views.tool_views import *
+from .views.homepage_views import *
 from .views.synonymous_views import sinonimo_delete, create_sinonimo, Synonymous2MCreateView
 from django.urls import path 
 
 app_name = 'arbolsaf'
 
 urlpatterns = [
-  
+    path('principal', Homepage.as_view(),name='homepage'),
     path('especie/listado', SpeciesListView.as_view(),name='species_list'),
     path('especie/listado/json/', species_list_json ,name='species_list_json'),
     
@@ -62,8 +63,9 @@ urlpatterns = [
     path('variable-especie/crear', create_variable_specie, name='variable_species_create'),
     path('variable-especie/modificar/<str:pk>', VariableSpeciesUpdateView.as_view(),name='variable_species_update'),
 
-    path('herramienta/', ToolView.as_view(), name='tool_part1'),
     path('herramienta/intro/', IntroToolView.as_view(), name='tool_part0'),
+    path('herramienta/', ToolView.as_view(), name='tool_part1'),
+
 
 
 ]

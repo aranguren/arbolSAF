@@ -31,16 +31,21 @@
         </div>
         <div class="col-8">
           <div class="card card-body">
-            <h1>¿Cómo funciona?<h2>
-            <p class="text-left letra mt-5">
-              ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
+            <p class="text-left letra">
+              ÁrbolSAF forma parte de un conjunto de herramientas que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones.
+            </p>
+            <p class="text-left letra">
+              Esta herramienta guía y acompaña al técnico/agricultor/investigador a seleccionar las especies de árboles más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá y los requerimientos de clima y suelo, características morfológicas y funcionales de las especies de árboles.
+            </p>
+            <p class="text-left letra">
+              El enfoque de ÁrbolSAF no es dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas sobre los árboles que podrían ser parte de su opción agroforestal.
             </p>
             <div></div>
             <div class="d-flex justify-content-end mt-5">
-              <a href="{% url 'arbolsaf:homepage' %}"
-              class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar</a>
-              <a href="{% url 'arbolsaf:tool_part1' %}"
-              class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Continuar&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+              <a href="{% url 'login' %}"
+              class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Plataforma de datos</a>
+              <a href="{% url 'arbolsaf:tool_part0' %}"
+              class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Ir a herramienta&nbsp;&nbsp;<i class="fa fa-tools"></i></a>
             </div>
           </div>
         </div>
