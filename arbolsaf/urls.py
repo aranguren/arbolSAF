@@ -10,7 +10,10 @@ from django.urls import path
 app_name = 'arbolsaf'
 
 urlpatterns = [
+  
     path('especie/listado', SpeciesListView.as_view(),name='species_list'),
+    path('especie/listado/json/', species_list_json ,name='species_list_json'),
+    
     path('especie/detalles/<str:pk>', SpeciesDetailView.as_view(),name='species_detail'),
     path('especie/crear', SpeciesCreateView.as_view(),name='species_create'),
     path('especie/modificar/<str:pk>', SpeciesUpdateView.as_view(), name='species_update'),
