@@ -201,7 +201,7 @@ class VariableModel(BasicAuditModel):
     valor_general = models.CharField(_("Valor general"), max_length=255, blank=True, null=True)
     #valor_cualitativo = models.ForeignKey("arbolsaf.VariableTypeOption", verbose_name=_("Valor cualitativo"), 
     #                on_delete=models.RESTRICT, blank=True, null=True) 
-    valores_cualitativos =   models.ManyToManyField("arbolsaf.VariableTypeOption", verbose_name=_("Valores cualitativos"))
+    valores_cualitativos =   models.ManyToManyField("arbolsaf.VariableTypeOption", verbose_name=_("Valores cualitativos"), blank=True, null=True)
     #TODO averiguar si categoria puede ser una llave foranea
 
     #categoria = models.CharField(_("categoria"), max_length=50, blank=True, null=True)
