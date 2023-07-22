@@ -69,6 +69,22 @@ body {
    
 }
 
+.title-step {
+    background-color: rgba(0, 164, 77, 0.3);
+    border: 0 solid rgba(0, 0, 0, 0.125);
+    border-radius: 1rem;
+    box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+    width: auto;
+}
+
+.p-step {
+    /* background-color: rgba(0, 164, 77, 0.3); */
+    /* border: 0 solid rgba(0, 0, 0, 0.125);
+    border-radius: 1rem;
+    box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05); */
+    width: auto;
+}
+
 .table th > a {
     text-align: center;
 
@@ -101,7 +117,35 @@ body {
     opacity: 0.9 !important;
 }
 
+.tool-tip {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+    user-select: none;
+    max-width: 13rem;
+    min-width: 8rem;
+    width: max-content;
+    text-align: center;
+    background-color: rgba(238, 238, 238, 0.95);
 
+    box-shadow: 0 0 10px #999898;
+
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 5px;
+
+    top: 65%;
+    left: 12.5%;
+
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+#table-conditions tbody tr td #specie_name:hover .tool-tip,
+#table-conditions2 tbody tr td #specie_name:hover .tool-tip,
+#table-asociations tbody tr td #specie_name:hover .tool-tip {
+    opacity: 1;
+}
 
 .dropbtn {
     /* background-color: #04AA6D; */
@@ -168,4 +212,34 @@ body {
 
 #container-treetrunk-asociations {
     visibility: hidden;
+}
+
+
+
+
+@media only screen and (min-width: 992px) {
+    .image-arbol {
+        display: none;
+    }
+
+    .circle-container {
+        position: initial !important;
+    }
+
+    .circle-container div {
+        position: initial !important;
+    }
+
+    .arbol-container {
+        margin-top: 0px !important;
+        /* background: center/cover url("/static/assets/img/herramienta/imagen_paso1.jpg") no-repeat; */
+        /* opacity: 0.5; */
+    }
+
+    .circle-arbol {
+        width: 130px;
+        height: 130px;
+    }
+
+    
 }

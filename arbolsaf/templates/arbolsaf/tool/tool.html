@@ -31,16 +31,16 @@
               <div class="col-12 col-lg-8 mx-auto my-3">
                 <div class="multisteps-form__progress">
                   <button class="multisteps-form__progress-btn js-active" type="button" title="User Info">
-                    <span> Paso 1</span>
+                    <span> Arma tu lista preliminar de árboles </span>
                   </button>
                   <button class="multisteps-form__progress-btn" type="button" title="Address">
-                    <span> Paso 2</span>
+                    <span> Revisa los requerimientos climáticos de tu lista de especies </span>
                   </button>
                   <button class="multisteps-form__progress-btn" type="button" title="Order Info">
-                    <span> Paso 2.1</span>
+                    <span> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </span>
                   </button>
                   <button class="multisteps-form__progress-btn" type="button" title="Order Info">
-                    <span> Paso 3</span>
+                    <span> Toma en cuenta las características morfológicas para tu diseño </span>
                   </button>
                 </div>
               </div>
@@ -51,31 +51,44 @@
                 <form class="multisteps-form__form">
                   <!--single form panel-->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                    <div class="row text-center">
+                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
+                        <div class="mb-4 p-4 mx-auto title-step">
+                          <h4 class="font-weight-normal"> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
+                        </div>
+                      </div>
+                    </div>
                     <div class="multisteps-form__content">
-                      <div class="row mt-3" style="height: 500px;">
+                      <div class="row mt-3 mb-8" style="height: 500px;">
                         <div class="col-6">
-                          <div style="margin-top: 7rem; position: relative;">
-                            <div style="position: relative;">
+                          <div class="row arbol-container h-100" style="margin-top: 7rem; position: relative;">
+                            <div style="position: relative;" class="image-arbol">
                               <img src="{% static 'assets/img/herramienta/imagen_paso1.jpg' %}" class="border-radius-md" style="width: 350px; margin-top: 8rem; position: absolute; right: 20rem; top: -5rem" alt="arbol">
                             </div>
-                            <div style="position: relative; width: 100%;">
-                              <div class="circle-arbol d-flex" style="position: absolute; top: 12rem; right: 42rem; background-color: #aa4207"><span class="m-auto text-uppercase font-weight-bold">Suelo</span></div>
+                            <div class="col-6 d-flex flex-column justify-content-between">
+                              <div class="circle-container" style="position: relative; width: 100%;">
+                                <div class="circle-arbol d-flex" style="position: absolute; top: 12rem; right: 42rem; background-color: #aa4207"><span class="m-auto text-uppercase font-weight-bold">Suelo</span></div>
+                              </div>
+                              <div class="circle-container" style="position: relative; width: 100%;">
+                                <div class="circle-arbol d-flex" style="position: absolute; top: 0rem; right: 43rem; background-color: #85604b"><span class="m-auto text-uppercase font-weight-bold">Madera</span></div>
+                              </div>
+                              <div class="circle-container" style="position: relative; width: 100%;">
+                                <div class="circle-arbol d-flex" style="position: absolute; top: -8rem; right: 33rem; background-color: #806377"><span class="m-auto text-uppercase font-weight-bold">Fruta</span></div>
+                              </div>
                             </div>
-                            <div style="position: relative; width: 100%;">
-                              <div class="circle-arbol d-flex" style="position: absolute; top: 0rem; right: 43rem; background-color: #85604b"><span class="m-auto text-uppercase font-weight-bold">Madera</span></div>
+                            
+                            <div class="col-6 d-flex flex-column justify-content-between">
+                              <div class="circle-container" style="position: relative; width: 100%;">
+                                <div class="circle-arbol d-flex" style="position: absolute; top: -8rem; right: 20rem; background-color: #006d70"><span class="m-auto text-uppercase font-weight-bold">Microclima</span></div>
+                              </div>
+                              <div class="circle-container" style="position: relative; width: 100%;">
+                                <div class="circle-arbol d-flex" style="position: absolute; top: 0rem; right: 11rem; background-color: #00a44d"><span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span></div>
+                              </div>
+                              <div class="circle-container" style="position: relative; width: 100%;">
+                                <div class="circle-arbol d-flex" style="position: absolute; top: 12rem; right: 13rem; background-color: #fdc00d"><span class="m-auto text-uppercase font-weight-bold">Otros usos</span></div>
+                              </div>
                             </div>
-                            <div style="position: relative; width: 100%;">
-                              <div class="circle-arbol d-flex" style="position: absolute; top: -8rem; right: 33rem; background-color: #806377"><span class="m-auto text-uppercase font-weight-bold">Fruta</span></div>
-                            </div>
-                            <div style="position: relative; width: 100%;">
-                              <div class="circle-arbol d-flex" style="position: absolute; top: -8rem; right: 20rem; background-color: #006d70"><span class="m-auto text-uppercase font-weight-bold">Microclima</span></div>
-                            </div>
-                            <div style="position: relative; width: 100%;">
-                              <div class="circle-arbol d-flex" style="position: absolute; top: 0rem; right: 11rem; background-color: #00a44d"><span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span></div>
-                            </div>
-                            <div style="position: relative; width: 100%;">
-                              <div class="circle-arbol d-flex" style="position: absolute; top: 12rem; right: 13rem; background-color: #ee685f"><span class="m-auto text-uppercase font-weight-bold">Otros usos</span></div>
-                            </div>
+                            
                           </div> 
                         </div>
 
@@ -86,7 +99,7 @@
                                 <thead class="thead-light">
                                   <tr>
                                     <th class="text-sm"> Especies </th>
-                                    <th class="text-sm"> IVIM </th>
+                                    {% comment %} <th class="text-sm"> IVIM </th> {% endcomment %}
                                     <th class="text-sm"> Seleccione </th>
                                   </tr>
                                 </thead>
@@ -190,12 +203,18 @@
                   <!--single form panel-->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 mx-auto">
-                        <h5 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h5>
-                        <p> 1. Resalta (clic) las celdas donde las condiciones de tu zona son muy diferentes a las que las especies necesiten. </p>
-                        <p> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
-                        <p> 3. Asigna el semáforo verde si consideras que las condiciones de tu zona no serán problema para el desarrollo de la especie. </p>
-                        <p> 4. Puedes eliminar la especie si consideras que no desarrollará bien en tu zona. </p>
+                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
+                        <div class="mb-4 p-4 mx-auto title-step">
+                          <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h4>
+                        </div>
+
+                        <div class="mb-4 p-4 mx-auto p-step">
+                          <p class="mb-0 text-start"> 1. Resalta (clic) las celdas donde las condiciones de tu zona son muy diferentes a las que las especies necesiten. </p>
+                          <p class="mb-0 text-start"> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
+                          <p class="mb-0 text-start"> 3. Asigna el semáforo verde si consideras que las condiciones de tu zona no serán problema para el desarrollo de la especie. </p>
+                          <p class="mb-0 text-start"> 4. Puedes eliminar la especie si consideras que no desarrollará bien en tu zona. </p>
+                        </div>
+                        
                       </div>
                     </div>
                     <div class="multisteps-form__content">
@@ -265,9 +284,9 @@
                       <div class="row col-11 mx-auto mt-2">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <div class="card-header pb-0 mb-5">
+                            {% comment %} <div class="card-header pb-0 mb-5">
                               <h6> Condiciones biofísicas y limitantes </h6>
-                            </div>
+                            </div> {% endcomment %}
                             <div class="card-body px-0 pt-0 pb-2">
                               <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0" id="table-conditions">
@@ -356,12 +375,17 @@
                   <!--single form panel-->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 mx-auto">
-                        <h5 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h5>
-                        <p> 1. Resalta (clic) las celdas donde las condiciones de tu parcela son muy diferentes a las que las especies necesiten. </p>
-                        <p> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
-                        <p> 3. Asigna el semáforo verde si consideras que las condiciones de tu parcela no serán problema para el desarrollo de la especie. </p>
-                        <p> 4. Puedes eliminar la especie si consideras que no desarrollará bien en tu parcela. </p>
+                      <div class="col-10 pb-7 mx-auto" style="width: 70%">
+                        <div class="mb-4 p-4 mx-auto title-step">
+                          <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h4>
+                        </div>
+                        
+                        <div class="mb-4 p-4 mx-auto p-step">
+                          <p class="mb-0 text-start"> 1. Resalta (clic) las celdas donde las condiciones de tu parcela son muy diferentes a las que las especies necesiten. </p>
+                          <p class="mb-0 text-start"> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
+                          <p class="mb-0 text-start"> 3. Asigna el semáforo verde si consideras que las condiciones de tu parcela no serán problema para el desarrollo de la especie. </p>
+                          <p class="mb-0 text-start"> 4. Puedes eliminar la especie si consideras que no desarrollará bien en tu parcela. </p>
+                        </div>
                       </div>
                     </div>
                     <div class="multisteps-form__content">
@@ -393,9 +417,9 @@
                       <div class="row col-11 mx-auto mt-2">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <div class="card-header pb-0 mb-5">
+                            {% comment %} <div class="card-header pb-0 mb-5">
                               <h6> Condiciones biofísicas y limitantes </h6>
-                            </div>
+                            </div> {% endcomment %}
                             <div class="card-body px-0 pt-0 pb-2">
                               <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0" id="table-conditions2">
@@ -491,9 +515,10 @@
                   </div>
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn" style="height: calc(100vh - 220px);">
                     <div class="row text-center">
-                      <div class="col-10 mx-auto">
-                        <h5 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
-                        
+                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
+                        <div class="mb-4 p-4 mx-auto title-step">
+                          <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
+                        </div>                        
                       </div>
                     </div>
                     <div class="multisteps-form__content" style="height: 100%;">
@@ -525,9 +550,9 @@
                       <div class="row col-11 mx-auto mt-2">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <div class="card-header pb-0 mb-5">
+                            {% comment %} <div class="card-header pb-0 mb-5">
                               <h6> Características para asociar las especies </h6>
-                            </div>
+                            </div> {% endcomment %}
                             <div class="card-body px-0 pt-0 pb-2">                              
                               <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0" id="table-asociations">
@@ -548,7 +573,7 @@
                                       <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> forma de copa </th>
                                       <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> gremio ecológico </th>
                                       <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Notas </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th>
+                                      {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-asociations">

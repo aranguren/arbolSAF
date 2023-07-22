@@ -37,6 +37,7 @@ var observer = new MutationObserver(function(mutations) {
     }); 
     
     // removeSpecies();
+    
 });
 
 // Configura el observer:
@@ -60,9 +61,9 @@ function createTable(data) {
                 '<td class="text-sm font-weight-bold">' +
                     '<span class="my-2 text-sm">' +  especie['NOMBRE COMUN'] + '</span>' +
                 '</td>' +
-                '<td class="text-sm font-weight-bold">' +
+                /* '<td class="text-sm font-weight-bold">' +
                     '<span class="my-2 text-sm">' + especie['IVIM'] + '</span>' +
-                '</td>' +
+                '</td>' + */
                 '<td>' +
                     '<div class="d-flex align-items-center justify-content-center">' +
                         '<div class="form-check">' +
@@ -272,10 +273,9 @@ function conditionSpecies(specie) {
                         '<h6 class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</h6>' +
                     '</div>' +
                 '</td>' + */
-                '<td>' + 
+                '<td class="position-relative">' + 
                     '<div class="d-flex px-3 py-1 justify-content-center">' +
-                        '<span class="mb-0 text-sm">' + specie['NOMBRE COMUN'] + '</span>' +
-                        
+                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +                        
                     '</div>' +
                 '</td>' +
                 '<td>' +
@@ -366,9 +366,9 @@ function conditionSpeciesTwo(specie) {
                         '<h6 class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</h6>' +
                     '</div>' +
                 '</td>' + */
-                '<td>' + 
+                '<td class="position-relative">' + 
                     '<div class="d-flex px-3 py-1 justify-content-center">' +
-                        '<span class="mb-0 text-sm">' + specie['NOMBRE COMUN'] + '</span>' +
+                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
@@ -455,9 +455,9 @@ function asociationSpecies(specie) {
                         '<h6 class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</h6>' +
                     '</div>' +
                 '</td>' + */
-                '<td>' + 
+                '<td class="position-relative">' + 
                     '<div class="d-flex px-3 py-1 justify-content-center">' +
-                        '<span class="mb-0 text-sm">' + specie['NOMBRE COMUN'] + '</span>' +
+                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
@@ -519,7 +519,7 @@ function asociationSpecies(specie) {
                     '<input class="multisteps-form__input form-control" type="text" placeholder="eg. Off-White" onfocus="focused(this)" onfocusout="defocused(this)">' +
                 '</td>' +
 
-                '<td>' +
+                /* '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
                             '<div onclick="selectLights(this)" >' +
@@ -532,7 +532,7 @@ function asociationSpecies(specie) {
                     
                         '</div>' +
                     '</div>' +
-                '</td>' +
+                '</td>' + */
                 /* '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
                         '<i class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -689,7 +689,7 @@ $(document).ready(function() {
                 '<thead class="thead-light">' +
                     '<tr>' +
                         '<th> Especies </th>' +
-                        '<th> IVIM </th>' +
+                        /* '<th> IVIM </th>' + */
                         '<th> Seleccione </th>' +
                     '</tr>' +
                 '</thead>' +
@@ -707,7 +707,7 @@ $(document).ready(function() {
 
         $.getScript("/static/assets/js/plugins/datatables.js");
 
-        /* const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
+        const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
             searchable: true,
             fixedHeight: true,
             perPageSelect: false,
@@ -729,7 +729,7 @@ $(document).ready(function() {
 
                 dataTableSearch.export(data);
             });
-        }); */
+        });
 
 
         
