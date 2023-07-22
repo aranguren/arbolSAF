@@ -14,7 +14,7 @@ from django.shortcuts import render, redirect
 
 @login_required(login_url="/login/")
 def index(request):
-    return redirect(reverse_lazy("arbolsaf:species_list", kwargs={}))
+    return redirect(reverse_lazy("arbolsaf:homepage", kwargs={}))
     #context = {'segment': 'index'}
 
     #html_template = loader.get_template('home/index.html')

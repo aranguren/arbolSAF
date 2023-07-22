@@ -1,0 +1,122 @@
+{% extends 'layouts/base-fullscreen.html' %}
+{% load static %}
+{% block title %}
+  Herramienta
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style type="text/css">
+
+  .letra {
+    font-size: 24px;
+  }
+
+</style>
+
+{% endblock stylesheets %}
+{% block body_class %}error-page{% endblock %}
+{% block content %}
+  <!-- Navbar -->
+  <nav class="card top-0 rounded-0">
+    <div class="w-100 object-fit-cover">
+      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
+           class="w-100">
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <main class="main-content mt-2">
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+          <div class="card card-body">
+            <h1>¿Cómo funciona?<h2>
+            <p class="text-left letra mt-5">
+              ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
+            </p>
+            <div></div>
+            <div class="d-flex justify-content-end mt-5">
+              <a href="{% url 'arbolsaf:homepage' %}"
+              class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar</a>
+              <a href="{% url 'arbolsaf:tool_part1' %}"
+              class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Continuar&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+        </div>
+      </div>
+      {% comment %} {% include "includes/footer.html" %} {% endcomment %}
+    </div>
+  </main>
+  {% include "includes/footer-tool.html" %}
+  {#% include "includes/footer-auth.html" %#}
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+  <!--script src="/static/assets/js/plugins/datatables.js"></script-->
+  <script src="{% static 'assets/js/tool_arbolsaf.js' %}"></script>
+  <script src="/static/assets/js/plugins/multistep-form.js"></script>
+  <script src="/static/assets/js/plugins/choices.min.js"></script>
+  <script src="/static/assets/js/plugins/datatables.js"></script>
+  {% comment %} <script>
+      if (document.getElementById('table-conditions')) {
+        const dataTableSearch = new simpleDatatables.DataTable("#table-conditions", {
+          searchable: true,
+          fixedHeight: false,
+          perPage: 7
+        });
+  
+        document.querySelectorAll(".export").forEach(function(el) {
+          el.addEventListener("click", function(e) {
+            var type = el.dataset.type;
+  
+            var data = {
+              type: type,
+              filename: "soft-ui-" + type,
+            };
+  
+            if (type === "csv") {
+              data.columnDelimiter = "|";
+            }
+  
+            dataTableSearch.export(data);
+          });
+        });
+      };
+  </script> {% endcomment %}
+  {% comment %} $(document).ready(function() {
+      $('input').on( 'change', function() {
+        if( $(this).is(':checked') ) {
+            console.log('parentSel', $(this));  
+
+            alert("El checkbox con valor " + $(this).val() + " ha sido seleccionado");
+        } else {
+            // Hacer algo si el checkbox ha sido deseleccionado
+            alert("El checkbox con valor " + $(this).val() + " ha sido deseleccionado");
+        }
+      });
+  }); {% endcomment %}
+  {% comment %} let count;
+    $('input').click(function (e) { 
+        e.preventDefault();
+        
+/*         let parentSel = $(this).prev();
+        parentSel.append(parentSel.clone()).;*/
+
+        console.log('parentSel', $(this)); 
+
+        let prevSel = $(this).prev();
+        let id = parseInt(prevSel.attr("id"))+1;
+        let prevClone = prevSel.clone()
+        prevClone.attr("id", id );
+        
+        prevSel.after(prevClone);
+        console.log('prevSel', prevSel); 
+        console.log('parentSel', id); 
+        $('#'+prevClone.attr('id')+' label').text('Tema ' + id);
+        count++
+  }); {% endcomment %}
+  </script>
+{% endblock javascripts %}

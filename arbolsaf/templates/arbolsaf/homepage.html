@@ -1,0 +1,127 @@
+{% extends 'layouts/base-fullscreen.html' %}
+{% load static %}
+{% block title %}
+  Herramienta
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style type="text/css">
+
+  .letra {
+    font-size: 24px;
+  }
+
+</style>
+
+{% endblock stylesheets %}
+{% block body_class %}error-page{% endblock %}
+{% block content %}
+  <!-- Navbar -->
+  <nav class="card top-0 rounded-0">
+    <div class="w-100 object-fit-cover">
+      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
+           class="w-100">
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <main class="main-content mt-2">
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+          <div class="card card-body">
+            <p class="text-left letra">
+              ÁrbolSAF forma parte de un conjunto de herramientas que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones.
+            </p>
+            <p class="text-left letra">
+              Esta herramienta guía y acompaña al técnico/agricultor/investigador a seleccionar las especies de árboles más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá y los requerimientos de clima y suelo, características morfológicas y funcionales de las especies de árboles.
+            </p>
+            <p class="text-left letra">
+              El enfoque de ÁrbolSAF no es dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas sobre los árboles que podrían ser parte de su opción agroforestal.
+            </p>
+            <div></div>
+            <div class="d-flex justify-content-end mt-5">
+              <a href="{% url 'login' %}"
+              class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Plataforma de datos</a>
+              <a href="{% url 'arbolsaf:tool_part0' %}"
+              class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Ir a herramienta&nbsp;&nbsp;<i class="fa fa-tools"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+        </div>
+      </div>
+      {% comment %} {% include "includes/footer.html" %} {% endcomment %}
+    </div>
+  </main>
+  {% include "includes/footer-tool.html" %}
+  {#% include "includes/footer-auth.html" %#}
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+  <!--script src="/static/assets/js/plugins/datatables.js"></script-->
+  <script src="{% static 'assets/js/tool_arbolsaf.js' %}"></script>
+  <script src="/static/assets/js/plugins/multistep-form.js"></script>
+  <script src="/static/assets/js/plugins/choices.min.js"></script>
+  <script src="/static/assets/js/plugins/datatables.js"></script>
+  {% comment %} <script>
+      if (document.getElementById('table-conditions')) {
+        const dataTableSearch = new simpleDatatables.DataTable("#table-conditions", {
+          searchable: true,
+          fixedHeight: false,
+          perPage: 7
+        });
+  
+        document.querySelectorAll(".export").forEach(function(el) {
+          el.addEventListener("click", function(e) {
+            var type = el.dataset.type;
+  
+            var data = {
+              type: type,
+              filename: "soft-ui-" + type,
+            };
+  
+            if (type === "csv") {
+              data.columnDelimiter = "|";
+            }
+  
+            dataTableSearch.export(data);
+          });
+        });
+      };
+  </script> {% endcomment %}
+  {% comment %} $(document).ready(function() {
+      $('input').on( 'change', function() {
+        if( $(this).is(':checked') ) {
+            console.log('parentSel', $(this));  
+
+            alert("El checkbox con valor " + $(this).val() + " ha sido seleccionado");
+        } else {
+            // Hacer algo si el checkbox ha sido deseleccionado
+            alert("El checkbox con valor " + $(this).val() + " ha sido deseleccionado");
+        }
+      });
+  }); {% endcomment %}
+  {% comment %} let count;
+    $('input').click(function (e) { 
+        e.preventDefault();
+        
+/*         let parentSel = $(this).prev();
+        parentSel.append(parentSel.clone()).;*/
+
+        console.log('parentSel', $(this)); 
+
+        let prevSel = $(this).prev();
+        let id = parseInt(prevSel.attr("id"))+1;
+        let prevClone = prevSel.clone()
+        prevClone.attr("id", id );
+        
+        prevSel.after(prevClone);
+        console.log('prevSel', prevSel); 
+        console.log('parentSel', id); 
+        $('#'+prevClone.attr('id')+' label').text('Tema ' + id);
+        count++
+  }); {% endcomment %}
+  </script>
+{% endblock javascripts %}
