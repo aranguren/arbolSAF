@@ -85,9 +85,13 @@ body {
     width: auto;
 }
 
-.table th > a {
+.table thead tr th > a {
     text-align: center;
+}
 
+
+.table thead tr th:first-child > a {
+    text-align: start;
 }
 
 .table td, .table th {    
@@ -215,9 +219,19 @@ body {
 }
 
 
+.active-green {
+    background: #064728;
+}
+
+.active-red {
+    background: #931010;
+}
 
 
-@media only screen and (min-width: 992px) {
+
+/* @media only screen and (min-width: 992px) and (max-width: 1599px) { */
+@media only screen and (max-width: 1599px) {
+
     .image-arbol {
         display: none;
     }

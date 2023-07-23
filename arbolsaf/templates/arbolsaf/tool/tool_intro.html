@@ -7,8 +7,15 @@
 {% block stylesheets %}
 <style type="text/css">
 
-  .letra {
-    font-size: 24px;
+  .intro-bubble {
+    width: 80px; 
+    height: 50px; 
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border: 1px solid #67748e;
+    border-radius: 50%;
+    background-color: rgba(0, 164, 77, 0.3);
+    {% comment %} color: #f0f0f0; {% endcomment %}
   }
 
 </style>
@@ -26,16 +33,43 @@
   <!-- End Navbar -->
   <main class="main-content mt-2">
     <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-2">
-        </div>
-        <div class="col-8">
+      <div class="row justify-content-center">
+        {% comment %} <div class="col-2"></div> {% endcomment %}
+        <div class="col-11">
           <div class="card card-body">
-            <h1>¿Cómo funciona?<h2>
-            <p class="text-left letra mt-5">
-              ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
-            </p>
-            <div></div>
+            <h2>¿Cómo funciona?<h2>
+            <div class="row justify-content-between">
+              <div class="col-6 mt-5">
+                <p class="text-left">
+                  ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
+                </p>
+              </div>
+              <div class="col-6 mt-5 object-fit-cover">
+                <img src="/static/assets/img/herramienta/image_intro.png" class="w-100">
+              </div>
+            </div>
+            <div class="mt-8 row d-flex justify-content-between">
+              <div class="col-2 d-flex flex-column align-items-center">
+                <div class="d-flex intro-bubble"><p class="m-auto"> Paso 1 </p></div>
+                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+              </div>
+              <div class="col-2 d-flex flex-column align-items-center">
+                <div class="d-flex intro-bubble"><p class="m-auto"> Paso 2 </p></div>
+                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+              </div>
+              <div class="col-2 d-flex flex-column align-items-center">
+                <div class="d-flex intro-bubble"><p class="m-auto"> Paso 3 </p></div>
+                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+              </div>
+              <div class="col-2 d-flex flex-column align-items-center">
+                <div class="d-flex intro-bubble"><p class="m-auto"> Paso 4 </p></div>
+                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+              </div>
+              <div class="col-2 d-flex flex-column align-items-center">
+                <div class="d-flex intro-bubble"><p class="m-auto"> Paso 5 </p></div>
+                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+              </div>
+            </div>
             <div class="d-flex justify-content-end mt-5">
               <a href="{% url 'arbolsaf:homepage' %}"
               class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar</a>
@@ -44,8 +78,7 @@
             </div>
           </div>
         </div>
-        <div class="col-2">
-        </div>
+        {% comment %} <div class="col-2"></div> {% endcomment %}
       </div>
       {% comment %} {% include "includes/footer.html" %} {% endcomment %}
     </div>
