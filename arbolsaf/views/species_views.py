@@ -375,7 +375,7 @@ def species_list_json(request):
             v81_precipitacion_max = ""
         valores_especie['v81_precipitacion_max'] = v81_precipitacion_max
 
-        v82_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v81').first()
+        v82_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v82').first()
         if v82_instance:
             rango_inferior= v82_instance.rango_inferior or 0.0
             rango_inferior= v82_instance.rango_inferior or 0.0
@@ -619,7 +619,7 @@ def species_list_json(request):
 
         # gremio ecologico
 
-        v73_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v7').first()
+        v73_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v73').first()
         if v73_instance:
             valores = v73_instance.valores_cualitativos.all()
             nombres_valores_v73 = [valor.nombre for valor in valores]

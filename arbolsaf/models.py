@@ -522,37 +522,37 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         
         v114_instance = self.variables.filter(tipo_variable__cod_var__iexact='v114').first()
         if v114_instance:
-            v114 = v114_instance.valor_boolean or False
+            v114 = 1 if v114_instance.valor_boolean else 0
         else:
-            v114 = False
+            v114 = 0
 
         v115_instance = self.variables.filter(tipo_variable__cod_var__iexact='v115').first()
         if v115_instance:
             valores = v115_instance.valores_cualitativos.all()
             nombres_valores_v115 = [valor.nombre for valor in valores]
             if 'bacterias' in nombres_valores_v115:
-                v115 =True
+                v115 =1
             else:
-                v115 =False
+                v115 =0
         else:
-            v115 =False
+            v115 =0
 
         v116_instance = self.variables.filter(tipo_variable__cod_var__iexact='v116').first()
         if v116_instance:
-            v116 = v116_instance.valor_boolean or False
+            v116 = 1 if v116_instance.valor_boolean else 0
         else:
-            v116 = False
+            v116 = 0
 
         v37_instance = self.variables.filter(tipo_variable__cod_var__iexact='v37').first()
         if v37_instance:
             valores = v37_instance.valores_cualitativos.all()
             nombres_valores_v37 = [valor.nombre for valor in valores]
             if 'caducifolio' in nombres_valores_v37 or 'semicaducifolio' in nombres_valores_v37:
-                v37 =True
+                v37 =1
             else:
-                v37 =False
+                v37 =0
         else:
-            v37 =False
+            v37 =0
 
 
         v71_instance = self.variables.filter(tipo_variable__cod_var__iexact='v71').first()
@@ -560,31 +560,34 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
             valores = v71_instance.valores_cualitativos.all()
             nombres_valores_v71 = [valor.nombre for valor in valores]
             if 'leguminosa' in nombres_valores_v71:
-                v71 =True
+                v71 =1
             else:
-                v71 =False
+                v71 =0
         else:
-            v71 =False
+            v71 =0
 
         v95_instance = self.variables.filter(tipo_variable__cod_var__iexact='v95').first()
         if v95_instance:
             valores = v95_instance.valores_cualitativos.all()
             nombres_valores_v95 = [valor.nombre for valor in valores]
             if 'fertilidad del suelo' in nombres_valores_v95 or 'recuperacion de suelo' in nombres_valores_v95:
-                v95 =True
+                v95 =1
             else:
-                v95 =False
+                v95 =0
         else:
-            v95 =False
-
-        if v115 and v71 and v95:
-            return 3
-        elif v114 and v115 and v116:
-            return 2
-        elif v115 and v37:
-            return 1
+            v95 =0
         
-        return 0
+        suma = v114 + v115 + v116 + v37 + v71 + v95
+
+        if suma>=5:
+            return 3
+        elif suma>=3:
+            return 2
+        elif suma>=1:
+            return 1
+        else:
+            return 0
+
     
     @computed(models.CharField(_("Valor para Madera"), max_length=50, 
                                choices=VALUES_CHOICES, default='ninguno'),
