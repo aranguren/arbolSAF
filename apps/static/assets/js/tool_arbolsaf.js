@@ -8,6 +8,16 @@
         // $('.dataTable-table tbody')
     ); */
 
+/* $.ajax({
+    url: "/static/assets/db/arbolsaf_especies.json",
+    dataType: "json",
+    success: function(data) {
+        console.log(data);
+        data_species = data;
+        createTable(data_species);
+    }
+}); */
+
 let data_species,
     species_selected = [];
 
@@ -22,17 +32,6 @@ $.ajax({
     }
 });
 
-
-/* $.ajax({
-    url: "/static/assets/db/arbolsaf_especies.json",
-    dataType: "json",
-    success: function(data) {
-        console.log(data);
-        data_species = data;
-        createTable(data_species);
-    }
-}); */
-
 var target = document.querySelector('#datatable-search tbody');
 // var target = document.querySelector('.multisteps-form__panel');
 
@@ -40,16 +39,10 @@ var target = document.querySelector('#datatable-search tbody');
 // Crea una instancia de observer
 var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-        // console.log('MUTATION', mutation);
         if (mutation['addedNodes'].length === 0) {
-            checkRemoveSpecies();
-            
+            checkRemoveSpecies();            
         }
-        // console.log("mutation['addedNodes']", mutation['addedNodes'].length);
-    }); 
-    
-    // removeSpecies();
-    
+    });
 });
 
 // Configura el observer:
@@ -60,9 +53,6 @@ observer.observe(target, config);
 
 // Posteriormente, puede detener la observacion
 // observer.disconnect();
-/* function ShowN() {
-    console.log('SHOWWWW');
-} */
 
 
 function createTable(data) {
@@ -260,7 +250,14 @@ function removeSpecies(item=false) {
     } */
 
     let tr_id = $(item).closest("tr").prop('id');
-    $(item).closest("tr").remove();
+    // $(item).closest("tr").remove();
+
+    // console.log('$("#tbody-species-selected")"', $("#tbody-species-selected tr[id='" + tr_id + "'"));
+
+    $("#tbody-species-selected tr[id='" + tr_id + "'").remove();
+    $("#tbody-conditions tr[id='" + tr_id + "'").remove();
+    $("#tbody-conditions2 tr[id='" + tr_id + "'").remove();
+    $("#tbody-asociations tr[id='" + tr_id + "'").remove();
 
     // $('.table.table-flush input[value=' + tr_id).prop("checked", false);
     $('#datatable-search input[value=' + tr_id).prop("checked", false);
