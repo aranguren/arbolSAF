@@ -611,10 +611,14 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
                                 depends=[('self', ['valor_fruta'])])
     def valor_fruta_category(self):
 
-        if self.valor_fruta==3:
-            valor = 'alto' 
-        else:
-            valor = 'ninguno'
+        if self.valor_fruta == 0:
+            valor = 'ninguno' 
+        elif self.valor_fruta == 1:
+            valor = 'bajo'
+        elif self.valor_fruta == 2:
+            valor = 'medio'
+        elif self.valor_fruta == 3:
+            valor = 'alto'
 
         return valor
     
@@ -623,13 +627,13 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
                                 depends=[('self', ['valor_otros_usos'])])
     def valor_otros_usos_category(self):
 
-        if self.valor_otros_usos==0:
+        if self.valor_otros_usos == 0:
             valor = 'ninguno' 
-        elif self.valor_otros_usos<=2:
+        elif self.valor_otros_usos == 1:
             valor = 'bajo'
-        elif self.valor_otros_usos<=4:
+        elif self.valor_otros_usos == 2:
             valor = 'medio'
-        elif self.valor_otros_usos>=5:
+        elif self.valor_otros_usos == 3:
             valor = 'alto'
 
         return valor
@@ -639,13 +643,14 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
                                 depends=[('self', ['valor_biodiversidad'])])
     def valor_biodiversidad_category(self):
 
-        if self.valor_biodiversidad==0:
+
+        if self.valor_biodiversidad == 0:
             valor = 'ninguno' 
-        elif self.valor_biodiversidad<=2:
+        elif self.valor_biodiversidad == 1:
             valor = 'bajo'
-        elif self.valor_biodiversidad<=4:
+        elif self.valor_biodiversidad == 2:
             valor = 'medio'
-        elif self.valor_biodiversidad>=5:
+        elif self.valor_biodiversidad == 3:
             valor = 'alto'
 
         return valor
@@ -655,10 +660,15 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
                                 depends=[('self', ['valor_microclima'])])
     def valor_microclima_category(self):
 
-        if self.valor_microclima==3:
-            valor = 'alto' 
-        else:
-            valor = 'ninguno'
+
+        if self.valor_microclima == 0:
+            valor = 'ninguno' 
+        elif self.valor_microclima == 1:
+            valor = 'bajo'
+        elif self.valor_microclima == 2:
+            valor = 'medio'
+        elif self.valor_microclima == 3:
+            valor = 'alto'
 
         return valor
 
@@ -667,7 +677,14 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
                 depends=[('self', ['valor_suelo'])])
     def valor_suelo_category(self):
 
-        valor = 'ninguno'
+        if self.valor_suelo == 0:
+            valor = 'ninguno' 
+        elif self.valor_suelo == 1:
+            valor = 'bajo'
+        elif self.valor_suelo == 2:
+            valor = 'medio'
+        elif self.valor_suelo == 3:
+            valor = 'alto'
 
         return valor
 
