@@ -292,46 +292,46 @@ function conditionSpecies(specie) {
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v100_temperatura_max'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v100_temperatura_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v101_temperatura_min'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v101_temperatura_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v157_elevacion_min'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v157_elevacion_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v158_elevacion_max'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v158_elevacion_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v161_tolerancia_condiciones'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v81_precipitacion_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v81_precipitacion_max'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v82_precipitacion_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v82_precipitacion_min'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v161_tolerancia_condiciones'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
-                            '<div onclick="activeGreen(this)" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<div onclick="activeRed(this)" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
                             '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -385,56 +385,56 @@ function conditionSpeciesTwo(specie) {
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v106_tipo_suelo_optimo'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v106_tipo_suelo_optimo'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v108_tolerancia_acidez'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v68_exigencia_suelos_fertiles'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v109_tolerancia_salinidad'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v108_tolerancia_acidez'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v152_desarrollo_suelos_rocosos'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v109_tolerancia_salinidad'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v153_desarrollo_suelos_drenados'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v83_preferencia_ph_suelo'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v159_ph_max'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v159_ph_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v160_ph_min'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v160_ph_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v68_exigencia_suelos_fertiles'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v152_desarrollo_suelos_rocosos'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v83_preferencia_ph_suelo'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v153_desarrollo_suelos_drenados'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
-                            '<div onclick="activeGreen(this)" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<div onclick="activeRed(this)" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
                             '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -474,57 +474,57 @@ function asociationSpecies(specie) {
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v1_altura_copa'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v73_gremio_ecologico'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v118_tipo_raiz'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v37_fenologia_hojas'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v119_capacidad_regeneracion'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v118_tipo_raiz'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v13_tipo_ramificacion_copa'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v143_forma_corteza'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v143_forma_corteza'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v119_capacidad_regeneracion'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v2_ancho_potencial_copa'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v7_forma_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v37_fenologia_hojas'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v4_densidad_promedio_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v4_densidad_promedio_copa'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v6_follage'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v6_follage'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v1_altura_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v7_forma_copa'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v2_ancho_potencial_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                    '<span class="my-2 text-sm">' + specie['v73_gremio_ecologico'] + '</span>' +
+                        '<span class="my-2 text-sm">' + specie['v13_tipo_ramificacion_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
@@ -572,19 +572,21 @@ function selectLights (item) {
 };
 
 function activeGreen (item) {
-    // console.log('SELECTED', $(item).closest('.dropbtn'));
     $(item).toggleClass( "active-green" );
-    $(".active-red").toggleClass( "active-red" );
+    // $(".active-red").toggleClass( "active-red" );
 
-    // $(item).closest("div").find(".active-red").toggleClass( "active-red" );
+    $(item).parent("div").find("#red-light").removeClass( "active-red" );
+
+    console.log('SELECTED', $(item).parent("div").find(".active-red"));
+
 };
 
 function activeRed (item) {
     // console.log('SELECTED', $(item).closest('.dropbtn'));
     $(item).toggleClass( "active-red" );
-    $(".active-green").toggleClass( "active-green" );
+    // $(".active-green").toggleClass( "active-green" );
 
-    // $(item).closest("div").find(".active-green").toggleClass( ".active-green" );
+    $(item).parent("div").find("#green-light").removeClass( "active-green" );
 
 };
 

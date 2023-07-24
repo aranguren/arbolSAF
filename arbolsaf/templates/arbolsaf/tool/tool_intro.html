@@ -18,6 +18,41 @@
     {% comment %} color: #f0f0f0; {% endcomment %}
   }
 
+  .intro-text {
+    font-size: 1rem;
+  }
+
+
+  @media only screen and (min-width: 1024px) {
+
+    .intro-text {
+      font-size: 1.2rem;
+    }    
+  }
+
+  @media only screen and (min-width: 1428px) {
+
+    .intro-text {
+      font-size: 1.5rem;
+    }    
+    {% comment %} .intro-image {
+      width: 90%;
+    } {% endcomment %}
+  }
+
+  @media only screen and (min-width: 1800px) {
+
+    .intro-text {
+      font-size: 1.8rem;
+    }    
+    .intro-image img {
+      width: 80%;
+    }
+    .step-text {
+      font-size: 1.2rem;
+    }
+  }
+
 </style>
 
 {% endblock stylesheets %}
@@ -36,38 +71,38 @@
       <div class="row justify-content-center">
         {% comment %} <div class="col-2"></div> {% endcomment %}
         <div class="col-11">
-          <div class="card card-body">
+          <div class="card card-body p-5">
             <h2>¿Cómo funciona?<h2>
             <div class="row justify-content-between">
-              <div class="col-6 mt-5">
-                <p class="text-left">
+              <div class="col-12 col-md-6 mt-5">
+                <p class="text-left intro-text">
                   ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
                 </p>
               </div>
-              <div class="col-6 mt-5 object-fit-cover">
+              <div class="intro-image col-12 col-md-6 mt-5 d-flex justify-content-center object-fit-cover">
                 <img src="/static/assets/img/herramienta/image_intro.png" class="w-100">
               </div>
             </div>
             <div class="mt-8 row d-flex justify-content-between">
               <div class="col-2 d-flex flex-column align-items-center">
                 <div class="d-flex intro-bubble"><p class="m-auto"> Paso 1 </p></div>
-                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+                <p class="step-text mt-3 text-center"> Arma tu lista preliminar de árboles </p>
               </div>
               <div class="col-2 d-flex flex-column align-items-center">
                 <div class="d-flex intro-bubble"><p class="m-auto"> Paso 2 </p></div>
-                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+                <p class="step-text mt-3 text-center"> Revisa los requerimientos climáticos de tu lista de especies </p>
               </div>
               <div class="col-2 d-flex flex-column align-items-center">
                 <div class="d-flex intro-bubble"><p class="m-auto"> Paso 3 </p></div>
-                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+                <p class="step-text mt-3 text-center"> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </p>
               </div>
               <div class="col-2 d-flex flex-column align-items-center">
                 <div class="d-flex intro-bubble"><p class="m-auto"> Paso 4 </p></div>
-                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+                <p class="step-text mt-3 text-center"> Toma en cuenta las características morfológicas para tu diseño </p>
               </div>
               <div class="col-2 d-flex flex-column align-items-center">
                 <div class="d-flex intro-bubble"><p class="m-auto"> Paso 5 </p></div>
-                <p class="mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+                <p class="step-text mt-3 text-center"> Llena un formulario e imprime tu reporte </p>
               </div>
             </div>
             <div class="d-flex justify-content-end mt-5">
