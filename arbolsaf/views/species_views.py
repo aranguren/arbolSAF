@@ -454,7 +454,7 @@ def species_list_json(request):
             v160_ph_min = ""
         valores_especie['v160_ph_min'] = v160_ph_min
 
-        especies_dict_list.append(valores_especie)
+        
 
         # exigencia de suelos fértiles
         v68_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v68').first()
@@ -554,14 +554,11 @@ def species_list_json(request):
 
         v2_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v2').first()
         if v2_instance:
-            valores = v2_instance.valores_cualitativos.all()
-            nombres_valores_v143 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v143)>0:
-                v2_ancho_potencial_copa = ','.join(nombres_valores_v143)
-            else:
-                v2_ancho_potencial_copa = ""
+            rango_inferior= v2_instance.rango_inferior or 0.0
+            rango_inferior= v2_instance.rango_inferior or 0.0
+            v2_ancho_potencial_copa= f"{rango_inferior}-{rango_inferior}"
         else:
-            v2_ancho_potencial_copa = ""
+            v159_ph_max = ""
         valores_especie['v2_ancho_potencial_copa'] = v2_ancho_potencial_copa
 
         # fenología de las hojas
@@ -634,7 +631,7 @@ def species_list_json(request):
 
 
 
-
+        especies_dict_list.append(valores_especie)
 
 
 
