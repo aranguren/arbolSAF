@@ -124,37 +124,9 @@ function selectSpecies(item) {
         
         sel_rowtable += 
             
-                    /* '<tr>' +
-                      '<td>' +
-                        '<div class="d-flex px-3 py-1">' +
-                          '<div>' +
-                            '<img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/black-mug.jpg" class="avatar me-3" alt="image">' +
-                          '</div>' +
-                          '<div class="d-flex flex-column justify-content-center">' +
-                            '<h6 class="mb-0 text-sm">Business Kit (Mug + Notebook)</h6>' +
-                            '<p class="text-sm font-weight-bold text-secondary mb-0"><span class="text-success">12.821</span> orders</p>' +
-                          '</div>' +
-                        '</div>' +
-                      '</td>' +
-                      '<td>' +
-                        '<p class="text-sm font-weight-bold mb-0">$80.250</p>' +
-                      '</td>' +
-                      '<td class="align-middle text-center text-sm">' +
-                        '<p class="text-sm font-weight-bold mb-0">$4.200</p>' +
-                      '</td>' +
-                      '<td class="align-middle text-end">' +
-                        '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                          '<p class="text-sm font-weight-bold mb-0">40</p>' +
-                          '<i class="ni ni-bold-down text-sm ms-1 mt-1 text-success"></i>' +
-                          '<button type="button" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products">' +
-                            '<i class="fas fa-info" aria-hidden="true"></i>' +
-                          '</button>' +
-                        '</div>' +
-                      '</td>' +
-                    '</tr>' */
             '<tr id=' + specie_selected[0]['CODIGO'] + '>' + 
                 '<td>' + 
-                    '<div class="d-flex px-3 py-1 justify-content-start text-start">' +
+                    '<div class="d-flex justify-content-start text-start">' +
                         '<span class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</span>' +
                         /* '<button type="button" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products">' +
                             '<i class="fas fa-info" aria-hidden="true"></i>' +
@@ -162,48 +134,60 @@ function selectSpecies(item) {
                     '</div>' +
                 '</td>' +
                 '<td>' + 
-                    '<div class="d-flex px-3 py-1 justify-content-start text-start">' +
+                    '<div class="d-flex justify-content-start text-start">' +
                         '<span class="mb-0 text-sm">' + specie_selected[0]['NOMBRE CIENTIFICO'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                        '<span ' + selectedColor(specie_selected[0]['VALOR MADERA']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +   /* selectedColor(specie_selected[0]['VALOR MADERA']) */
+                            specie_selected[0]['VALOR MADERA'] +
+                        '</span>' +    
                         
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                        '<span ' + selectedColor(specie_selected[0]['VALOR FRUTA']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
+                            specie_selected[0]['VALOR FRUTA'] +
+                        '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                        '<span ' + selectedColor(specie_selected[0]['VALOR SUELO']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
+                            specie_selected[0]['VALOR SUELO'] +
+                        '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                        '<span ' + selectedColor(specie_selected[0]['VALOR MICROCLIMA']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
+                            specie_selected[0]['VALOR MICROCLIMA'] +
+                        '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                        '<span ' + selectedColor(specie_selected[0]['VALOR BIODIVERSIDAD']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
+                            specie_selected[0]['VALOR BIODIVERSIDAD'] +
+                        '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                        '<span ' + selectedColor(specie_selected[0]['VALOR OTROS USOS']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
+                            specie_selected[0]['VALOR OTROS USOS'] +
+                        '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center text-sm font-weight-bold">' +
-                        '<span class="my-2 text-sm">' + Number(specie_selected[0]['IVIM'].toFixed(2)) + '</span>' +
+                    '<div class="d-flex justify-content-center align-items-center text-sm font-weight-bold">' +
+                        '<span style="font-size: 14px;" class="my-2 text-sm">' + Number(specie_selected[0]['IVIM'].toFixed(2)) + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
                     '</div>' +
                 '</td>' +                    
@@ -225,6 +209,10 @@ function selectSpecies(item) {
         species_selected.splice(indexForDelete, 1);
         console.log('species_selected_deleted', species_selected);
     }
+
+    let w = $("#table-species-selected th").css('width');
+    $("#table-species-selected thead tr th:nth-child(2)").css('left', w);
+    $("#table-species-selected tbody tr td:nth-child(2)").css('left', w);
 }
 
 
@@ -282,48 +270,48 @@ function conditionSpecies(specie) {
                         '<h6 class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</h6>' +
                     '</div>' +
                 '</td>' + */
-                '<td class="position-relative">' + 
-                    '<div class="d-flex px-3 py-1 justify-content-start text-start">' +
+                '<td>' +       /* class="position-relative" */ 
+                    '<div class="d-flex justify-content-start text-start">' +
                         '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +                        
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v100_temperatura_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v101_temperatura_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v157_elevacion_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v158_elevacion_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v81_precipitacion_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v82_precipitacion_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v161_tolerancia_condiciones'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center text-xs font-weight-bold ">' +
+                    '<div class="d-flex justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
                             '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
@@ -375,58 +363,58 @@ function conditionSpeciesTwo(specie) {
                         '<h6 class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</h6>' +
                     '</div>' +
                 '</td>' + */
-                '<td class="position-relative">' + 
-                    '<div class="d-flex px-3 py-1 justify-content-start text-start">' +
+                '<td>' + 
+                    '<div class="d-flex justify-content-start text-start">' +
                         '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v106_tipo_suelo_optimo'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v68_exigencia_suelos_fertiles'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v108_tolerancia_acidez'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v109_tolerancia_salinidad'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v83_preferencia_ph_suelo'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v159_ph_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v160_ph_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v152_desarrollo_suelos_rocosos'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v153_desarrollo_suelos_drenados'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center text-xs font-weight-bold ">' +
+                    '<div class="d-flex justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
                             '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
@@ -464,63 +452,63 @@ function asociationSpecies(specie) {
                         '<h6 class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</h6>' +
                     '</div>' +
                 '</td>' + */
-                '<td class="position-relative">' + 
-                    '<div class="d-flex px-3 py-1 justify-content-start text-start">' +
+                '<td>' + 
+                    '<div class="d-flex justify-content-start text-start">' +
                         '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v73_gremio_ecologico'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v37_fenologia_hojas'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v118_tipo_raiz'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v143_forma_corteza'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v119_capacidad_regeneracion'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v7_forma_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v4_densidad_promedio_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v6_follage'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v1_altura_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v2_ancho_potencial_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span class="my-2 text-sm">' + specie['v13_tipo_ramificacion_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
@@ -703,6 +691,11 @@ function treeTrunk() {
 } */
 
 $(document).ready(function() {
+
+    let w = $("#table-species-selected th").css('width');
+    $("#table-species-selected thead tr th:nth-child(2)").css('left', w);
+    $("#table-species-selected tbody tr td:nth-child(2)").css('left', w);
+    console.log('w', w);
 
     $("body").on( "click", '.circle-arbol', function() {
         

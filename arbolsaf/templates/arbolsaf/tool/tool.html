@@ -30,17 +30,23 @@
             <div class="row">
               <div class="col-12 col-lg-8 mx-auto my-3">
                 <div class="multisteps-form__progress">
-                  <button class="multisteps-form__progress-btn js-active" type="button" title="User Info">
-                    <span> Arma tu lista preliminar de árboles </span>
+                  <button class="multisteps-form__progress-btn js-active js-active-red" type="button" title="User Info">
+                    <span> <strong> Paso 0: </strong>  Como funciona </span>
+                  </button>
+                  <button class="multisteps-form__progress-btn" type="button" title="User Info">
+                    <span> <strong> Paso 1: </strong>  Arma tu lista preliminar de árboles </span>
                   </button>
                   <button class="multisteps-form__progress-btn" type="button" title="Address">
-                    <span> Revisa los requerimientos climáticos de tu lista de especies </span>
+                    <span> <strong> Paso 2: </strong> Revisa los requerimientos climáticos de tu lista de especies </span>
                   </button>
                   <button class="multisteps-form__progress-btn" type="button" title="Order Info">
-                    <span> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </span>
+                    <span> <strong> Paso 3: </strong> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </span>
                   </button>
                   <button class="multisteps-form__progress-btn" type="button" title="Order Info">
-                    <span> Toma en cuenta las características morfológicas para tu diseño </span>
+                    <span> <strong> Paso 4: </strong> Toma en cuenta las características morfológicas para tu diseño </span>
+                  </button>
+                  <button class="multisteps-form__progress-btn" type="button" title="Order Info">
+                    <span> <strong> Paso 5: </strong> Registrate e imprime </span>
                   </button>
                 </div>
               </div>
@@ -49,11 +55,72 @@
             <div class="row mt-3">
               <div class="col-12 m-auto">
                 <form class="multisteps-form__form">
-                  <!--single form panel-->
+
+                  <!-- Como funciona -->                  
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+
+                    <div class="multisteps-form__content">
+                      <div class="px-5">
+                        <div class="row text-center">
+                          <div class="col-10 mx-auto" style="width: 50%">
+                            <div class="p-2 mx-auto title-step">
+                              <h4 class="font-weight-normal"> ¿Cómo funciona la Herramienta ÁrbolSAF? </h4>
+                            </div>
+                          </div>
+                        </div>
+                          <div class="row justify-content-between">
+                            <div class="col-12 col-md-6 mt-5">
+                              <p class="text-left intro-text">
+                                ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4).
+                                En el último paso podrás imprimir tu consulta, previo registro en un formulario (paso 5).
+                              </p>
+                            </div>
+                            <div class="intro-image col-12 col-md-6 mt-5 d-flex justify-content-center">
+                              <img src="/static/assets/img/herramienta/steps_intro.png" class="w-100" style="object-fit: contain">
+                            </div>
+                          </div>
+                          <div class="mt-6 row d-flex justify-content-between">
+                            <div class="col-2 d-flex flex-column align-items-center">
+                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 1 </p></div>
+                              <p class="step-text mt-3 text-center"> Arma tu lista preliminar de árboles </p>
+                            </div>
+                            <div class="col-2 d-flex flex-column align-items-center">
+                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 2 </p></div>
+                              <p class="step-text mt-3 text-center"> Revisa los requerimientos climáticos de tu lista de especies </p>
+                            </div>
+                            <div class="col-2 d-flex flex-column align-items-center">
+                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 3 </p></div>
+                              <p class="step-text mt-3 text-center"> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </p>
+                            </div>
+                            <div class="col-2 d-flex flex-column align-items-center">
+                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 4 </p></div>
+                              <p class="step-text mt-3 text-center"> Toma en cuenta las características morfológicas para tu diseño </p>
+                            </div>
+                            <div class="col-2 d-flex flex-column align-items-center">
+                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 5 </p></div>
+                              <p class="step-text mt-3 text-center"> Llena un formulario e imprime tu reporte </p>
+                            </div>
+                          </div>
+                         {% comment %}  <div class="d-flex justify-content-end mt-5">
+                            <a href="{% url 'arbolsaf:homepage' %}"
+                            class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Regresar</a>
+                            <a href="{% url 'arbolsaf:tool_part1' %}"
+                            class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Continuar&nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+                          </div> {% endcomment %}
+                        
+                      </div>
+
+                      <div class="button-row d-flex mt-6">
+                        <button id="next1" class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Paso 1 -->
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
                       <div class="col-10 mb-7 mx-auto" style="width: 70%">
-                        <div class="mb-4 p-4 mx-auto title-step">
+                        <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
                         </div>
                       </div>
@@ -120,17 +187,27 @@
                                 <table class="table align-items-center mb-0" id="table-species-selected">
                                   <thead>
                                     <tr>
-                                      <th class="text-uppercase text-secondary text-sm text-start font-weight-bolder opacity-7"> Nombre Común </th>
-                                      <th class="text-uppercase text-secondary text-sm text-start font-weight-bolder opacity-7"> Nombre Científico </th>
-                                      {% comment %} <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Madera</th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Fruta </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Suelo </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Microclima </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Conservación </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Otros usos </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> IVIM </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Deseleccionar </th>
+                                      <th class="text-uppercase text-start font-weight-bolder opacity-7"> Nombre Común </th> {% comment %} text-secondary {% endcomment %}
+                                      <th class="text-uppercase text-start font-weight-bolder opacity-7"> Nombre Científico </th>
+                                      {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Madera</th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Fruta </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Suelo </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Microclima </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Biodiversidad </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Otros usos </th>
+                                      {% comment %} <th class="text-center text-uppercase text-sm font-weight-bolder opacity-7" id="ivim"> IVIM <span class="tool-tip-ivim"> Indice de Valor de Importancia Multifuncional: valores altos indican que esa especie brinda más servicios ecosistémicos y tiene valores altos dentro de cada servicio </span> </th> {% endcomment %}
+                                      <th>
+                                        <div class="d-flex justify-content-center">
+                                          <span class="mb-0 text-sm cursor-pointer" id="ivim">
+                                            IVIM  
+                                            <span class="tool-tip-ivim">    
+                                              Indice de Valor de Importancia Multifuncional: valores altos indican que esa especie brinda más servicios ecosistémicos y tiene valores altos dentro de cada servicio                                          
+                                            </span> 
+                                          </span>                        
+                                        </div>
+                                      </th>
+                                      <th class="text-center text-uppercase text-sm font-weight-bolder opacity-7"> Deseleccionar </th>
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-species-selected">
@@ -196,15 +273,17 @@
                       </div> 
 
                       <div class="button-row d-flex mt-6">
-                        <button id="next1" class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
+                        <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
                       </div>
                     </div>
                   </div>
+
                   <!--single form panel-->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
                       <div class="col-10 mb-7 mx-auto" style="width: 70%">
-                        <div class="mb-4 p-4 mx-auto title-step">
+                        <div class="p-4 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h4>
                         </div>
 
@@ -293,16 +372,16 @@
                                   <thead>
                                     <tr>
                                       {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
-                                      <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Nombre Común </th>
-                                      {% comment %} <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Temperatura máxima (°C) </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Temperatura mínima (°C) </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Elevación mínima <span style="text-transform: lowercase;">(m.s.n.m)</span> </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Elevación máxima <span style="text-transform: lowercase;">(m.s.n.m)</span></th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Precipitación máxima <span style="text-transform: lowercase;">(mm/año)</span></th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Precipitación mínima <span style="text-transform: lowercase;">(mm/año)</span></th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Tolerancia a condiciones extremas </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-6"> Seleccione </th>
+                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
+                                      {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Temperatura máxima (°C) </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Temperatura mínima (°C) </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Elevación mínima <span style="text-transform: lowercase;">(m.s.n.m)</span> </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Elevación máxima <span style="text-transform: lowercase;">(m.s.n.m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Precipitación máxima <span style="text-transform: lowercase;">(mm/año)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Precipitación mínima <span style="text-transform: lowercase;">(mm/año)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tolerancia a condiciones extremas </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-6"> Seleccione </th>
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-conditions">
@@ -376,7 +455,7 @@
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
                       <div class="col-10 pb-7 mx-auto" style="width: 70%">
-                        <div class="mb-4 p-4 mx-auto title-step">
+                        <div class="p-4 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h4>
                         </div>
                         
@@ -425,19 +504,19 @@
                                 <table class="table align-items-center mb-0" id="table-conditions2">
                                   <thead>
                                     <tr>
-                                      {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
-                                      <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Nombre Común </th>
-                                      {% comment %} <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Suelo preferido </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Exigencia suelos fértiles </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Tolerancia a la acidez </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Tolerancia a la salinidad </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Preferencia pH suelo </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> <span style="text-transform: initial;">pH</span> máximo suelo </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> <span style="text-transform: initial;">pH</span> mínimo suelo </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Desarrollo en suelos rocosos </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Preferencia a suelos drenados </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-6"> Seleccione </th>
+                                      {% comment %} <th class="text-uppercase text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
+                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
+                                      {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Suelo preferido </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Exigencia suelos fértiles </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tolerancia a la acidez </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tolerancia a la salinidad </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Preferencia pH suelo </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> <span style="text-transform: initial;">pH</span> máximo suelo </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> <span style="text-transform: initial;">pH</span> mínimo suelo </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Desarrollo en suelos rocosos </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Preferencia a suelos drenados </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-6"> Seleccione </th>
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-conditions2">
@@ -516,7 +595,7 @@
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
                     <div class="row text-center">
                       <div class="col-10 mb-7 mx-auto" style="width: 70%">
-                        <div class="mb-4 p-4 mx-auto title-step">
+                        <div class="p-4 mx-auto title-step">
                           <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
                         </div>                        
                       </div>
@@ -559,20 +638,100 @@
                                   <thead>
                                     <tr>
                                       
-                                      <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7"> Nombre Común </th>
+                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
                                       
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Gremio ecológico </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Fenología </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de raíz </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de corteza </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Capacidad de regeneración de ramas </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Forma copa </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Densidad copa (%) </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Follaje copa </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Altura de copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Tipo de ramificación  </th>
-                                      <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Notas </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Gremio ecológico </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Fenología </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de raíz </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de corteza </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Capacidad de regeneración de ramas </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Forma copa </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Densidad copa (%) </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Follaje copa </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Altura de copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Tipo de ramificación  </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-5"> Notas </th>
+                                      {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
+                                    </tr>
+                                  </thead>
+                                  <tbody id="tbody-asociations">
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="button-row d-flex mt-4">
+                          <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
+                          {% comment %} <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button> {% endcomment %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
+                    <div class="row text-center">
+                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
+                        <div class="p-4 mx-auto title-step">
+                          <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
+                        </div>                        
+                      </div>
+                    </div>
+                    <div class="multisteps-form__content" style="height: 100%;">
+                      {% comment %} <div class="row text-start">
+                        <div class="col-12 col-md-8 ms-auto mt-3">
+                          <label>Street Name</label>
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Eg. Soft" />
+                        </div>
+                        <div class="col-12 col-md-4 ms-auto mt-3">
+                          <label>Street No</label>
+                          <input class="multisteps-form__input form-control" type="number" placeholder="Eg. 221" />
+                        </div>
+                        <div class="col-12 col-md-7 ms-auto mt-3">
+                          <label>City</label>
+                          <input class="multisteps-form__input form-control" type="text" placeholder="Eg. Tokyo" />
+                        </div>
+                        <div class="col-12 col-md-5 ms-auto mt-3 text-start">
+                          <label>Country</label>
+                          <select class="form-control" name="choices-country" id="choices-country">
+                            <option value="Argentina">Argentina</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="Andorra">Andorra</option>
+                            <option value="Angola">Angola</option>
+                            <option value="Brasil">Brasil</option>
+                          </select>
+                        </div>
+                      </div> {% endcomment %}
+                      <div class="row col-11 mx-auto mt-2">
+                        <div class="col-12">
+                          <div class="card mb-4">
+                            {% comment %} <div class="card-header pb-0 mb-5">
+                              <h6> Características para asociar las especies </h6>
+                            </div> {% endcomment %}
+                            <div class="card-body px-0 pt-0 pb-2">                              
+                              <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0" id="table-asociations">
+                                  <thead>
+                                    <tr>
+                                      
+                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
+                                      
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Gremio ecológico </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Fenología </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de raíz </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de corteza </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Capacidad de regeneración de ramas </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Forma copa </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Densidad copa (%) </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Follaje copa </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Altura de copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Tipo de ramificación  </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-5"> Notas </th>
                                       {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
                                     </tr>
                                   </thead>
