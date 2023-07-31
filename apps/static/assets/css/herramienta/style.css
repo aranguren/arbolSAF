@@ -9,6 +9,7 @@
 body * {
     font-family: 'Inter', 'Times New Roman', Times, serif;
     /* background-color: #f8f9fa !important; */
+    color: black !important;
 }
 
 body {
@@ -19,6 +20,57 @@ body {
 .multisteps-form__progress-btn {
     font-size: 14px;
 }
+
+.multisteps-form__progress-btn.js-active.js-active-red {
+    color: #d61111 !important;
+}
+
+.intro-bubble {
+    width: 80px; 
+    height: 50px; 
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border: 1px solid #67748e;
+    border-radius: 50%;
+    background-color: rgba(0, 164, 77, 0.3);
+    /* color: #f0f0f0; */
+  }
+
+  .intro-text {
+    font-size: 1rem;
+  }
+
+
+  @media only screen and (min-width: 1024px) {
+
+    .intro-text {
+      font-size: 1.2rem;
+    }    
+  }
+
+  @media only screen and (min-width: 1428px) {
+
+    .intro-text {
+      font-size: 1.5rem;
+    }    
+    /* .intro-image {
+      width: 90%;
+    } */
+  }
+
+  @media only screen and (min-width: 1800px) {
+
+    .intro-text {
+      font-size: 1.4rem;
+    }    
+    .intro-image img {
+      width: 80%;
+      max-height: 320px;
+    }
+    .step-text {
+      font-size: 1.2rem;
+    }
+  }
 
 .circle-arbol {
     width: 150px; 
@@ -109,19 +161,24 @@ body {
 
 .table thead tr th {
     /* color: #67748e !important; */
-    color: #566176 !important;
+    /* color: #566176 !important; */
     font-weight: 600 !important;
     opacity: 1 !important;
 }
 
 .table tbody tr td {
     /* color: #8392AB !important; */
-    color: #667286 !important;
+    /* color: #667286 !important; */
     font-weight: 600 !important;
-    opacity: 0.9 !important;
+    /* opacity: 0.9 !important; */
 }
 
-.tool-tip {
+.table td, .table th {
+    white-space: normal !important;
+  }
+
+.tool-tip,
+.tool-tip-ivim {
     position: absolute;
     z-index: 1000;
     pointer-events: none;
@@ -145,11 +202,68 @@ body {
     transition: opacity .3s ease;
 }
 
+.tool-tip-ivim {
+    top: 35%;
+    left: 80%;
+}
+
+#table-species-selected tr th #ivim:hover .tool-tip-ivim,
 #table-conditions tbody tr td #specie_name:hover .tool-tip,
 #table-conditions2 tbody tr td #specie_name:hover .tool-tip,
 #table-asociations tbody tr td #specie_name:hover .tool-tip {
     opacity: 1;
 }
+
+
+#table-species-selected,
+#table-conditions,
+#table-conditions2,
+#table-asociations {
+    /* table-layout: fixed; */
+    border-collapse: inherit;
+    
+}
+
+#table-species-selected tbody td, 
+#table-conditions tbody td,
+#table-conditions2 tbody td, 
+#table-asociations tbody td{
+    padding: 0.75rem 1.5rem !important;
+}
+
+#table-species-selected th,
+#table-species-selected td,
+#table-conditions th,
+#table-conditions td,
+#table-conditions2 th,
+#table-conditions2 td,
+#table-asociations th,
+#table-asociations td  {
+    min-width: 110px;
+    word-wrap: break-word;
+}
+
+#table-species-selected thead tr th:first-child,
+#table-species-selected tbody tr td:first-child,
+#table-conditions thead tr th:first-child,
+#table-conditions tbody tr td:first-child,
+#table-conditions2 thead tr th:first-child,
+#table-conditions2 tbody tr td:first-child,
+#table-asociations thead tr th:first-child,
+#table-asociations tbody tr td:first-child  {
+    position: sticky;
+    left: 0;
+    background-color: white;
+}
+
+#table-species-selected thead tr th:nth-child(2),
+#table-species-selected tbody tr td:nth-child(2) {
+    position: sticky;
+    /* left: 110px; */
+    background-color: white;
+}
+
+
 
 .dropbtn {
     /* background-color: #04AA6D; */

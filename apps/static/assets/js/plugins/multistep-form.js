@@ -46,12 +46,18 @@ const setActiveStep = activeStepNum => {
 
   //remove active state from all the state
   removeClasses(DOMstrings.stepsBtns, 'js-active');
+  removeClasses(DOMstrings.stepsBtns, 'js-active-red');
+
 
   //set picked items to active
   DOMstrings.stepsBtns.forEach((elem, index) => {
 
     if (index <= activeStepNum) {
       elem.classList.add('js-active');
+    }
+
+    if (index === activeStepNum) {
+      elem.classList.add('js-active-red');
     }
 
   });
