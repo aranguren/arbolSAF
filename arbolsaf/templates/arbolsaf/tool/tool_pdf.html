@@ -1,0 +1,99 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha</title>
+
+
+  <!--link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <style>
+
+
+
+    .margin-custom {
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+
+
+
+
+
+    .blue-label {
+      color: #237bb1;
+    }
+    .row-head {
+      background-color: #237bb1;
+      color: white;
+    }
+    .full-border{
+      border:3px solid black;
+    }
+    
+    .table-bottom-border{
+      border-bottom:5px solid black;
+    }
+
+
+    
+    #map { height: 180px; }
+
+    .pagebreak{page-break-inside: avoid!important;}
+    
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      .break-before {
+    page-break-before: always;
+}
+
+.color-background{
+  background-color: red;
+}
+
+.main-img {
+  max-width: 800px;
+}
+
+
+  
+  .texto-normal {  
+    font-size: 20px;  
+  }  
+  .texto-resaltado {  
+    font-size: 18px;  
+  }  
+
+  ul {
+    margin: 0;
+  }
+  ul.dashed {
+    list-style-type: none;
+  }
+  ul.dashed > li {
+    text-indent: -20px;
+  }
+  ul.dashed > li:before {
+    content: "-";
+    text-indent: -20px;
+  }
+
+
+    </style> 
+</head>
+<body>
+
+  <h1 class="text-center mt-3">Ficha ejemplo</h1>
+  <h3 class="text-center mt-1 mb-5">Subtitulo</h3>
+ 
+ 
+</body>
+</html>

@@ -66,6 +66,7 @@ urlpatterns = [
     path('herramienta/intro/', IntroToolView.as_view(), name='tool_part0'),
     path('herramienta/', ToolView.as_view(), name='tool_part1'),
 
+    path('herramienta/pdf/', ToolPDFView.as_view(), name='tool_pdf'),
 
 
 ]
