@@ -146,6 +146,10 @@ body {
     text-align: start;
 }
 
+#species-list tbody td {
+    text-align: start;
+}
+
 .table td, .table th {    
     white-space: wrap !important;
 }
@@ -205,6 +209,7 @@ body {
 .tool-tip-ivim {
     top: 35%;
     left: 80%;
+    text-transform: none;
 }
 
 #table-species-selected tr th #ivim:hover .tool-tip-ivim,

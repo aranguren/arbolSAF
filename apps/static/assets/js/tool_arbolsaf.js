@@ -32,7 +32,7 @@ $.ajax({
     }
 });
 
-var target = document.querySelector('#datatable-search tbody');
+var target = document.querySelector('#species-list tbody');
 // var target = document.querySelector('.multisteps-form__panel');
 
 
@@ -56,16 +56,38 @@ observer.observe(target, config);
 
 
 function createTable(data) {
-    rowtable = "";
+
+    $('#species-list').DataTable( {
+        data: data,
+        lengthChange: false,
+        pageLength: 8,
+        columns: [
+            { data: 'NOMBRE COMUN' },
+            { data: 'CODIGO',
+              render: function (data, type) {
+                if (type === 'display') {
+                    let rowtable = 
+                        '<div class="d-flex align-items-center justify-content-center">' +
+                            '<div class="form-check">' +
+                                '<input ' + inputSelected(data) + ' class="form-check-input" type="checkbox" id="customCheck1" value=' + data + ' onclick="selectSpecies(this)">' +
+                            '</div>' +
+                        '</div>';
+
+                    return rowtable;
+                } 
+                return data;
+            }}
+        ]
+    } );
+
+
+    /* let rowtable = "";
     data.forEach(especie => {        
         rowtable += 
             '<tr>' +
                 '<td class="text-sm text-start font-weight-bold">' +
                     '<span class="my-2 text-sm">' +  especie['NOMBRE COMUN'] + '</span>' +
                 '</td>' +
-                /* '<td class="text-sm font-weight-bold">' +
-                    '<span class="my-2 text-sm">' + especie['IVIM'] + '</span>' +
-                '</td>' + */
                 '<td>' +
                     '<div class="d-flex align-items-center justify-content-center">' +
                         '<div class="form-check">' +
@@ -75,7 +97,7 @@ function createTable(data) {
                 '</td>' +
             '</tr>'
     });
-    $(".table.table-flush").append(rowtable);
+    $(".table.table-flush").append(rowtable); */
 }
 
 function inputSelected(code) {
@@ -105,25 +127,19 @@ function selectSpecies(item) {
 
     //     $("table#table-species-selected tbody").append(sel_rowtable);
 
-    let specie_code =  $(item).val(), sel_rowtable = "";
-            let specie_selected = $.grep(data_species, function (item) {
-                return item['CODIGO'] === specie_code;            
-            }) 
-
-    // species_selected.push(specie_selected[0]);
-
-    // console.log('species_selected', species_selected);
-    // console.log('SEEEEEEEEEEEEELLLLLLLLLL', $(item).val());
+    /* let specie_code =  $(item).val(), sel_rowtable = "";
+    let specie_selected = $.grep(data_species, function (item) {
+        return item['CODIGO'] === specie_code;            
+    })  */
 
     if( $(item).is(':checked') ) {
 
         let specie_code = $(item).val(), sel_rowtable = "", cond_rowtable = "";
         let specie_selected = $.grep(data_species, function (i) {
             return i['CODIGO'] === specie_code;            
-        })  
-        
-        sel_rowtable += 
-            
+        })
+
+        sel_rowtable +=            
             '<tr id=' + specie_selected[0]['CODIGO'] + '>' + 
                 '<td>' + 
                     '<div class="d-flex justify-content-start text-start">' +
@@ -193,7 +209,10 @@ function selectSpecies(item) {
                 '</td>' +                    
             '</tr>' 
 
-        $("table#table-species-selected tbody").append(sel_rowtable);
+        // $("table#table-species-selected tbody").append(sel_rowtable);
+
+        let table = $('#table-species-selected').DataTable();
+        table.row.add($(sel_rowtable)).draw();
 
         species_selected.push(specie_selected[0]);
 
@@ -218,8 +237,8 @@ function selectSpecies(item) {
 
 function checkRemoveSpecies() {
     
-    $('#datatable-search input').prop("checked", false);
-    let tb_row = $('#datatable-search');
+    $('#species-list input').prop("checked", false);
+    let tb_row = $('#species-list');
     species_selected.forEach((species) => {
         // let CODE = tb_row.find('input[value="' + species['CODIGO'] + '"');
         tb_row.find('input[value="' + species['CODIGO'] + '"').prop("checked", true);
@@ -228,35 +247,23 @@ function checkRemoveSpecies() {
 
 function removeSpecies(item=false) {
 
-    /* if(!item) {
-        console.log('SHOWWWW');
-        let tb_row = $('#datatable-search');
-        species_selected.forEach((species) => {
-            let p = tb_row.find('input[value="' + species['CODIGO'] + '"');
-            console.log('LOOOGGGG', p);
-        })
-    } */
-
     let tr_id = $(item).closest("tr").prop('id');
-    // $(item).closest("tr").remove();
 
-    // console.log('$("#tbody-species-selected")"', $("#tbody-species-selected tr[id='" + tr_id + "'"));
-
-    $("#tbody-species-selected tr[id='" + tr_id + "'").remove();
+    /* $("#tbody-species-selected tr[id='" + tr_id + "'").remove();
     $("#tbody-conditions tr[id='" + tr_id + "'").remove();
     $("#tbody-conditions2 tr[id='" + tr_id + "'").remove();
-    $("#tbody-asociations tr[id='" + tr_id + "'").remove();
+    $("#tbody-asociations tr[id='" + tr_id + "'").remove(); */
 
-    // $('.table.table-flush input[value=' + tr_id).prop("checked", false);
-    $('#datatable-search input[value=' + tr_id).prop("checked", false);
+    $('#species-list input[value=' + tr_id).prop("checked", false);
 
     let indexForDelete = species_selected.findIndex(item => item['CODIGO'] === tr_id);
-    console.log('indexForDelete', indexForDelete);
     species_selected.splice(indexForDelete, 1);
 
-    console.log('species_selected_deleted', species_selected);
-
-
+    let table = $('#table-species-selected').DataTable();
+    table.row($("#tbody-species-selected tr[id='" + tr_id + "'")).remove().draw(false);
+    table.row($("#tbody-conditions tr[id='" + tr_id + "'")).remove().draw(false);
+    table.row($("#tbody-conditions2 tr[id='" + tr_id + "'")).remove().draw(false);
+    table.row($("#tbody-asociations tr[id='" + tr_id + "'")).remove().draw(false);
 }
 
 function conditionSpecies(specie) {
@@ -349,7 +356,9 @@ function conditionSpecies(specie) {
     // })
     
 
-    $("table#table-conditions tbody").append(cond_rowtable);   
+    // $("table#table-conditions tbody").append(cond_rowtable);
+    let table = $('#table-conditions').DataTable();
+    table.row.add($(cond_rowtable)).draw();   
 }
 
 function conditionSpeciesTwo(specie) {
@@ -437,7 +446,9 @@ function conditionSpeciesTwo(specie) {
     // })
     
 
-    $("table#table-conditions2 tbody").append(cond_rowtable);   
+    // $("table#table-conditions2 tbody").append(cond_rowtable);
+    let table = $('#table-conditions2').DataTable();
+    table.row.add($(cond_rowtable)).draw();   
 }
 
 
@@ -540,7 +551,9 @@ function asociationSpecies(specie) {
     // })
     
 
-    $("table#table-asociations tbody").append(cond_rowtable);   
+    // $("table#table-asociations tbody").append(cond_rowtable);
+    let table = $('#table-asociations').DataTable();
+    table.row.add($(cond_rowtable)).draw();   
 }
 
 
@@ -690,6 +703,107 @@ function treeTrunk() {
     });
 } */
 
+let regions = {
+    "Loreto": [
+        {"Dátem del Maranón": ["Barranca", "Cahuapanas", "Manseriche", "Morona", "Pastaza", "Andoas"]},
+        {"Loreto": ["Nauta", "Parinari", "Trompeteros", "Tigre", "Urarinas"]},
+        {"Maynas": ["Alto Nanay", "Las Amazonas", "Mazán", "Napo", "Putumayo", "Torres Causana", "Yaquerana"]},
+        {"Putumayo": ["Putumayo", "Rosa Panduro", "Yaguas", "Teniente Manuel Clavero"]},
+        {"Mariscal Ramón Castilla": ["Ramón Castilla", "Pebas", "Yavarí", "San Pablo"]},
+        {"Requena": ["Alto Tapiche", "Capelo", "Emilio San Martin", "Jenaro Herrera", "Maquia", "Puinahua", "Requena", "Saquena", "Soplin", "Tapiche", "Yaquerana"]},
+        {"Ucayali": ["Contamana", "Inahuaya", "Padre Marquez", "Pampa Hermosa", "Sarayacu", "Vargas Guerra"]}
+    ],
+    "Amazonas": [
+        {"Condorcanqui": ["El Cenepa", "Nieva", "Río Santiago"]},
+        {"Bagua": ["Bagua", "La Peca", "Aramango", "Copallín", "El Parco", "Imaza"]},
+        {"Utcubamba": ["Bagua Grande", "Cajaruro", "Cumba", "El Milagro", "Yamón"]}
+    ],
+    "Cajamarca": [
+        {"Jaén": ["Jaén", "Bellavista", "Pucará"]},
+        {"San Ignacio": ["Huarango", "Namballe"]}
+    ]
+}
+
+let region_selected, 
+    provincia_selected, 
+    register_form = {
+        "FORM DATA": {
+            "NOMBRE" : "",
+            "REGION": "",
+            "PROVINCIA": "",
+            "DISTRITO": "",
+            "TIPO DE INTERVENCION": "",
+            "TAMANO DE FINCA": "",
+            "TAMANO DE PARCELA": "",
+            "TIPO DE USUARIO": "",
+            "IDENTIDAD DE GENERO": "",
+            "EDAD DEL USUARIO": ""
+        }
+    };
+species_selected.push(register_form);
+
+function handleForm (e) {
+    // Object.defineProperty(register_form, "FORM DATA", {value: ""});
+    register_form["FORM DATA"][e.name] = e.value;   
+    console.log('species_selected >>>>>>>', species_selected);
+}
+
+function regionSelected (e) {
+    region_selected = e.value;
+    let provincia = $("select[name=PROVINCIA]")
+    provincia.empty();
+
+    regions[region_selected].forEach((value, key) => {
+        let element = Object.keys(value)[0];
+        provincia.append('<option value="' + element + '">' + element + '</option>');
+    });
+
+    register_form["FORM DATA"][e.name] = region_selected;
+    console.log('species_selected >>>>>>>', species_selected);
+}
+
+function provinciaSelected (e) {
+    provincia_selected = e.value;
+    let district = $("select[name=DISTRITO]")
+    district.empty();
+
+    let p = regions[region_selected].filter((item) => {
+        return item[provincia_selected];
+    })
+
+    p[0][provincia_selected].forEach((value, key) => {
+        // console.log(`${key}: ${value}`);
+        district.append('<option value="' + value + '">' + value + '</option>');
+    })
+
+    register_form["FORM DATA"][e.name] = provincia_selected;
+    console.log('species_selected >>>>>>>', species_selected);
+}
+
+function sendForm() {
+    $.ajax({
+        url: "/arbolsaf/herramienta/pdf/",
+        type: "GET",
+        data: species_selected,
+        dataType: "native",
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function(blob) {
+            console.log(blob.size);
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="PDFname_" + new Date() + ".pdf";
+            link.click();
+        }
+    });
+}
+
+
+
+
+
+
 $(document).ready(function() {
 
     let w = $("#table-species-selected th").css('width');
@@ -699,30 +813,35 @@ $(document).ready(function() {
 
     $("body").on( "click", '.circle-arbol', function() {
         
+        console.log('$(this)', $(this));
         let bc = $(this).css("background-color").replace(')', ', 0.3)').replace('rgb', 'rgba');
         $("#table-card").css("background-color", bc);
 
         let text_sel = $(this).text().toUpperCase();
-        $(".dataTable-wrapper").remove();
+        /* $(".dataTable-wrapper").remove();
 
         let new_table = 
             '<table class="table table-flush" id="datatable-search">' +
                 '<thead class="thead-light">' +
                     '<tr>' +
                         '<th> Especies </th>' +
-                        /* '<th> IVIM </th>' + */
                         '<th> Seleccione </th>' +
                     '</tr>' +
                 '</thead>' +
                 '<tbody></tbody>' +
             '</table>'
         
-        $("#table-card .table-responsive").append(new_table);
+        $("#table-card .table-responsive").append(new_table); */
 
         let specie_selected = $.grep(data_species, function (item) {
             let sel = 'VALOR ' + text_sel;
             return item[sel] > 0;            
         }) 
+
+        var datatable = $( "#species-list" ).DataTable();
+        datatable.destroy();
+        // datatable.rows.add(newDataArray);
+        // datatable.draw();
 
         createTable(specie_selected);
 

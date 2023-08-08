@@ -4,7 +4,9 @@
 {% block title %} Herramienta {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+{% endblock stylesheets %}
 
 {% block body_class %} error-page {% endblock %}
 
@@ -160,9 +162,9 @@
                         </div>
 
                         <div class="col-6">
-                          <div class="card h-100" id="table-card">
+                          <div class="card h-100 p-3" id="table-card">
                             <div class="table-responsive h-100">
-                              <table class="table table-flush" id="datatable-search">
+                              <table class="table table-flush" id="species-list"> {% comment %} id="datatable-search" {% endcomment %}
                                 <thead class="thead-light">
                                   <tr>
                                     <th class="text-sm"> Especies </th>
@@ -640,17 +642,17 @@
                                       
                                       <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
                                       
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Gremio ecológico </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Fenología </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de raíz </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de corteza </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Capacidad de regeneración de ramas </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Forma copa </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Densidad copa (%) </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Follaje copa </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Altura de copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Tipo de ramificación  </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Gremio ecológico </th>  {% comment %} style="background-color: rgba(253, 192, 13, 0.3)" {% endcomment %}
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Fenología </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tipo de raíz </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tipo de corteza </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Capacidad de regeneración de ramas </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Forma copa </th>  {% comment %} style="background-color: rgba(0, 164, 77, 0.3)" {% endcomment %}
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Densidad copa (%) </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Follaje copa </th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Altura copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tipo de ramificación  </th>
                                       <th class="text-center text-uppercase font-weight-bolder opacity-7 px-5"> Notas </th>
                                       {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
                                     </tr>
@@ -667,87 +669,110 @@
                       <div class="row">
                         <div class="button-row d-flex mt-4">
                           <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
-                          {% comment %} <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button> {% endcomment %}
+                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
-                    <div class="row text-center">
-                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
-                        <div class="p-4 mx-auto title-step">
-                          <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
-                        </div>                        
+
+
+                  <!-- Formulario -->
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+                    <div style="width:80%; margin:auto">
+                      <div class="row text-center">
+                        <div class="col-10 mx-auto">
+                          <h5 class="font-weight-normal"> Para imprimir el reporte con los resultados de la consulta por favor llena este formulario. </h5>
+                        </div>
                       </div>
-                    </div>
-                    <div class="multisteps-form__content" style="height: 100%;">
-                      {% comment %} <div class="row text-start">
-                        <div class="col-12 col-md-8 ms-auto mt-3">
-                          <label>Street Name</label>
-                          <input class="multisteps-form__input form-control" type="text" placeholder="Eg. Soft" />
-                        </div>
-                        <div class="col-12 col-md-4 ms-auto mt-3">
-                          <label>Street No</label>
-                          <input class="multisteps-form__input form-control" type="number" placeholder="Eg. 221" />
-                        </div>
-                        <div class="col-12 col-md-7 ms-auto mt-3">
-                          <label>City</label>
-                          <input class="multisteps-form__input form-control" type="text" placeholder="Eg. Tokyo" />
-                        </div>
-                        <div class="col-12 col-md-5 ms-auto mt-3 text-start">
-                          <label>Country</label>
-                          <select class="form-control" name="choices-country" id="choices-country">
-                            <option value="Argentina">Argentina</option>
-                            <option value="Albania">Albania</option>
-                            <option value="Algeria">Algeria</option>
-                            <option value="Andorra">Andorra</option>
-                            <option value="Angola">Angola</option>
-                            <option value="Brasil">Brasil</option>
-                          </select>
-                        </div>
-                      </div> {% endcomment %}
-                      <div class="row col-11 mx-auto mt-2">
-                        <div class="col-12">
-                          <div class="card mb-4">
-                            {% comment %} <div class="card-header pb-0 mb-5">
-                              <h6> Características para asociar las especies </h6>
-                            </div> {% endcomment %}
-                            <div class="card-body px-0 pt-0 pb-2">                              
-                              <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0" id="table-asociations">
-                                  <thead>
-                                    <tr>
-                                      
-                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
-                                      
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Gremio ecológico </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Fenología </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de raíz </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Tipo de corteza </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(253, 192, 13, 0.3)"> Capacidad de regeneración de ramas </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Forma copa </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Densidad copa (%) </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Follaje copa </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Altura de copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7" style="background-color: rgba(0, 164, 77, 0.3)"> Tipo de ramificación  </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-5"> Notas </th>
-                                      {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
-                                    </tr>
-                                  </thead>
-                                  <tbody id="tbody-asociations">
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                            
+                      <div class="multisteps-form__content">
+                        <div class="row text-start">
+                          <div class="col-12 col-md-4 ms-auto mt-3">
+                            <label> Nombre del productor </label>
+                            <input class="multisteps-form__input form-control" type="text" name="NOMBRE" placeholder="Eg. Soft" onchange="handleForm(this)" />
                           </div>
+
+                          <div class="col-12 col-md-4 ms-auto mt-3">
+                            <label> Region </label>
+                            <select class="form-control" name="REGION" id="choices-country" onchange="regionSelected(this)">
+                              <option value="Loreto">Loreto</option>
+                              <option value="Amazonas">Amazonas</option>
+                              <option value="Cajamarca">Cajamarca</option>
+                              <option value="Ucayali">Ucayali</option>
+                              <option value="San Martín">San Martín</option>
+                              <option value="Huánuco">Huánuco</option>
+                              <option value="Madre de Dios">Madre de Dios</option>
+                            </select>
+                          </div>
+  
+                          <div class="col-12 col-md-4 ms-auto mt-3 text-start">
+                            <label> Provincia </label>   
+                            <select class="form-control" name="PROVINCIA" id="choices-country" onchange="provinciaSelected(this)"></select>                         
+                          </div>
+
+                          <div class="col-12 col-md-4 ms-auto mt-3 text-start">
+                            <label> Distrito </label>
+                            <select class="form-control" name="DISTRITO" id="choices-country" onchange="handleForm(this)"></select>
+                          </div>
+  
+                          <div class="col-12 col-md-4 ms-auto mt-3 text-start">
+                            <label> Tipo de intervención </label>
+                            <select class="form-control" name="TIPO DE INTERVENCION" id="choices-country" onchange="handleForm(this)">
+                              <option value="Agroforestería con cacao"> Agroforestería con cacao </option>
+                              <option value="Agroforestería con palma aceitera"> Agroforestería con palma aceitera </option>
+                              <option value="Agroforestería con café"> Agroforestería con café </option>
+                              <option value="Plantación forestal mixta"> Plantación forestal mixta </option>
+                              <option value="Purmas mejoradas"> Purmas mejoradas </option>
+                              <option value="Huertos caseros"> Huertos caseros </option>
+                              <option value="Otros"> Otros </option>
+                            </select>
+                          </div>
+
+                          <div class="col-12 col-md-4 ms-auto mt-3">
+                            <label> Tamaño de la finca </label>
+                            <input class="multisteps-form__input form-control" name="TAMANO DE FINCA" type="number" onchange="handleForm(this)"/>
+                          </div>
+
+                          <div class="col-12 col-md-4 ms-auto mt-3">
+                            <label> Tamaño de la parcela </label>
+                            <input class="multisteps-form__input form-control" name="TAMANO DE PARCELA" type="number" onchange="handleForm(this)"/>
+                          </div>
+  
+                          <div class="col-12 col-md-4 ms-auto mt-3 text-start">
+                            <label> Tipo de usuario </label>
+                            <select class="form-control" name="TIPO DE USUARIO" id="choices-country" onchange="handleForm(this)">
+                              <option value="Técnico"> Técnico </option>
+                              <option value="Agricultor"> Agricultor </option>
+                              <option value="Investigador"> Investigador </option>
+                              <option value="Otro"> Otro </option>
+                            </select>
+                          </div>
+
+                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
+                            <label> Identidad de género </label>
+                            <select class="form-control" name="IDENTIDAD DE GENERO" id="choices-country" onchange="handleForm(this)">
+                              <option value="Hombre"> Hombre </option>
+                              <option value="Mujer"> Mujer </option>
+                              <option value="Prefiero no decirlo"> Prefiero no decirlo </option>
+                            </select>
+                          </div>
+  
+                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
+                            <label> Edad del usuario </label>
+                            <select class="form-control" name="EDAD DEL USUARIO" id="choices-country" onchange="handleForm(this)">
+                              <option value="18-30"> 18-30 </option>
+                              <option value="31-40"> 31-40 </option>
+                              <option value="41-50"> 41-50 </option>
+                              <option value="51-60"> 51-60 </option>
+                              <option value="Mayor a 60"> Mayor a 60 </option>
+                            </select>
+                          </div>  
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="button-row d-flex mt-4">
-                          <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
-                          {% comment %} <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button> {% endcomment %}
+
+                        <div class="row">
+                          <div class="button-row d-flex mt-4 col-12">
+                            <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
+                            <button class="btn bg-gradient-dark ms-auto mb-0" type="button" title="Send" onclick="sendForm()"> Imprimir </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -928,8 +953,9 @@
 <!-- Specific JS goes HERE --> 
 {% block javascripts %}
 
-<!--script src="/static/assets/js/plugins/datatables.js"></script-->
-
+  <!--script src="/static/assets/js/plugins/datatables.js"></script-->
+  
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 
   <script src="{% static 'assets/js/tool_arbolsaf.js' %}"></script>
 
