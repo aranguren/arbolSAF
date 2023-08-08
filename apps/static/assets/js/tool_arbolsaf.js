@@ -26,6 +26,7 @@ $.ajax({
     type: "GET",
     dataType: "json",
     success: function(data) {
+        $(".spinner-loading").css("visibility", "hidden");
         console.log('GET DATA', data);
         data_species = data;
         createTable(data_species);
@@ -54,6 +55,65 @@ observer.observe(target, config);
 // Posteriormente, puede detener la observacion
 // observer.disconnect();
 
+$('#table-species-selected').DataTable({
+    lengthChange: false,
+    searching: false,
+    paging: false,
+    columns: [
+        { orderable: false },
+        { orderable: false },
+        { orderable: false },
+        { orderable: false },
+        { orderable: false },
+        { orderable: false },
+        { orderable: false },
+        { orderable: false },
+        { orderable: true },
+        { orderable: false },
+    ],
+    language: {
+        "emptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "infoEmpty": "",        
+    }
+});
+
+$('#table-conditions').DataTable({
+    lengthChange: false,
+    searching: false,
+    paging: false,
+    ordering: false,
+    language: {
+        "emptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "infoEmpty": "",        
+    }
+});
+
+$('#table-conditions2').DataTable({
+    lengthChange: false,
+    searching: false,
+    paging: false,
+    ordering: false,
+    language: {
+        "emptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "infoEmpty": "",        
+    }
+});
+
+$('#table-asociations').DataTable({
+    lengthChange: false,
+    searching: false,
+    paging: false,
+    ordering: false,
+    language: {
+        "emptyTable": "No hay datos disponibles en la tabla",
+        "info": "",
+        "infoEmpty": "",        
+    }
+});
+
 
 function createTable(data) {
 
@@ -77,7 +137,20 @@ function createTable(data) {
                 } 
                 return data;
             }}
-        ]
+        ],
+        language: {
+            "info":           "Mostrando _START_ to _END_ de _TOTAL_ entradas",
+            "infoEmpty":      "Mostrando 0 to 0 of 0 entradas",
+            "search":         "Buscar:",
+            "zeroRecords":    "No se encontraron registros coincidentes",
+            "loadingRecords": "Please wait - loading...",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Próximo",
+                "previous":   "Anterior"
+            },
+        }
     } );
 
 
@@ -845,31 +918,7 @@ $(document).ready(function() {
 
         createTable(specie_selected);
 
-        $.getScript("/static/assets/js/plugins/datatables.js");
-
-        const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
-            searchable: true,
-            fixedHeight: true,
-            perPageSelect: false,
-            perPage: 5
-            });
-
-        document.querySelectorAll(".export").forEach(function(el) {
-            el.addEventListener("click", function(e) {
-                var type = el.dataset.type;
-
-                var data = {
-                type: type,
-                filename: "soft-ui-" + type,
-                };
-
-                if (type === "csv") {
-                data.columnDelimiter = "|";
-                }
-
-                dataTableSearch.export(data);
-            });
-        });
+        
 
 
         

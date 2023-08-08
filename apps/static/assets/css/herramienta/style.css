@@ -150,11 +150,6 @@ body {
     text-align: start;
 }
 
-.table td, .table th {    
-    white-space: wrap !important;
-}
-
-
 .dataTable-wrapper .dataTable-bottom {
     margin-top: 1.5rem !important;
 }
