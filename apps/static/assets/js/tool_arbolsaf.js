@@ -854,10 +854,19 @@ function provinciaSelected (e) {
 }
 
 function sendForm() {
+    console.log(species_selected);
+    var element = $("form[name='form-herramienta'] input[name='csrfmiddlewaretoken']");
+    console.log(element[0]);
+    var token = element[0].value
+    console.log(token)
+    
     $.ajax({
         url: "/arbolsaf/herramienta/pdf/",
-        type: "GET",
-        data: species_selected,
+        type: "POST",
+        headers: {"X-CSRFToken": token},
+        data: {
+            'especies': JSON.stringify(species_selected),
+        },
         dataType: "native",
         xhrFields: {
             responseType: 'blob'

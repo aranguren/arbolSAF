@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from wkhtmltopdf.views import PDFTemplateResponse
+import json
 
 class ToolView(TemplateView):
     template_name = "arbolsaf/tool/tool.html"
@@ -55,16 +56,37 @@ def get_tool_pdf_response(request):
                                     )
     """
     return response
+from django.views.decorators.csrf import csrf_exempt
+
 
 class ToolPDFView(View):
     #template_parcela ='agrimensuras/project_pdf_parcela.html' # the template 
     #template_lotificacion ='agrimensuras/project_pdf_lotificacion.html' 
     #template_header ='agrimensuras/project_pdf_header.html' 
     #template_footer ='agrimensuras/project_pdf_footer.html' 
-    
-    def get(self, request):
 
-        
+    def post(self, request, **kw):
+
+        especies = request.POST.get('especies', None)
+
+        especies_obj = json.loads(especies)
+        print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
+        print("-------------------------------------------------------------------------------------------------------------------")
+        print(request.POST)
+        print("-------------------------------------------------------------------------------------------------------------------")
 
         response = get_tool_pdf_response(request)
         return response
+
+@csrf_exempt
+def tool_print_pdf_view(request):
+    especies = request.POST.get('especies', None)
+    if especies:
+        especies_obj = json.loads(especies)
+    print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
+    print("-------------------------------------------------------------------------------------------------------------------")
+    print(request.POST)
+    print("-------------------------------------------------------------------------------------------------------------------")
+
+    response = get_tool_pdf_response(request)
+    return response
