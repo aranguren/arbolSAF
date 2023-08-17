@@ -302,10 +302,6 @@ function selectSpecies(item) {
         species_selected.splice(indexForDelete, 1);
         console.log('species_selected_deleted', species_selected);
     }
-
-    // let w = $("#table-species-selected th").css('width');
-    $("#table-species-selected thead tr th:nth-child(2)").css('left', w);
-    $("#table-species-selected tbody tr td:nth-child(2)").css('left', w);
 }
 
 
@@ -939,9 +935,19 @@ $(document).ready(function() {
         });
     })
 
-    $("#next-button").on("click", function () {
-        $("body").scrollTop();
+    $(document).on("click", "#next-button", function () {
+        // $("body").scrollTop();
 
-        console.log("scrooll", $("body").scrollTop());
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+
+        console.log("scrooll", $(document).scrollTop());
+    });
+
+    $(document).on("click", "#prev-button", function () {
+        // $("body").scrollTop();
+
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+
+        console.log("scrooll", $(document).scrollTop());
     });
 });
