@@ -56,16 +56,16 @@
             <!--form panels-->
             <div class="row mt-3">
               <div class="col-12 m-auto">
-                <form class="multisteps-form__form" name="form-herramienta">
+                <form class="multisteps-form__form" name="form-herramienta" id="form-tool">
                   {% csrf_token %}
 
                   <!-- Como funciona -->                  
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
 
                     <div class="multisteps-form__content">
-                      <div class="px-5">
+                      <div class="px-2">
                         <div class="row text-center">
-                          <div class="col-10 mx-auto" style="width: 50%">
+                          <div class="col-10 mx-auto w-auto">
                             <div class="p-2 mx-auto title-step">
                               <h4 class="font-weight-normal"> ¿Cómo funciona la Herramienta ÁrbolSAF? </h4>
                             </div>
@@ -83,23 +83,23 @@
                             </div>
                           </div>
                           <div class="mt-6 row d-flex justify-content-between">
-                            <div class="col-2 d-flex flex-column align-items-center">
+                            <div class="col-6 col-md-2 d-flex flex-column align-items-center">
                               <div class="d-flex intro-bubble"><p class="m-auto"> Paso 1 </p></div>
                               <p class="step-text mt-3 text-center"> Arma tu lista preliminar de árboles </p>
                             </div>
-                            <div class="col-2 d-flex flex-column align-items-center">
+                            <div class="col-6 col-md-2 d-flex flex-column align-items-center">
                               <div class="d-flex intro-bubble"><p class="m-auto"> Paso 2 </p></div>
                               <p class="step-text mt-3 text-center"> Revisa los requerimientos climáticos de tu lista de especies </p>
                             </div>
-                            <div class="col-2 d-flex flex-column align-items-center">
+                            <div class="col-6 col-md-2 d-flex flex-column align-items-center">
                               <div class="d-flex intro-bubble"><p class="m-auto"> Paso 3 </p></div>
                               <p class="step-text mt-3 text-center"> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </p>
                             </div>
-                            <div class="col-2 d-flex flex-column align-items-center">
+                            <div class="col-6 col-md-2 d-flex flex-column align-items-center">
                               <div class="d-flex intro-bubble"><p class="m-auto"> Paso 4 </p></div>
                               <p class="step-text mt-3 text-center"> Toma en cuenta las características morfológicas para tu diseño </p>
                             </div>
-                            <div class="col-2 d-flex flex-column align-items-center">
+                            <div class="col-6 col-md-2 d-flex flex-column align-items-center">
                               <div class="d-flex intro-bubble"><p class="m-auto"> Paso 5 </p></div>
                               <p class="step-text mt-3 text-center"> Llena un formulario e imprime tu reporte </p>
                             </div>
@@ -114,7 +114,7 @@
                       </div>
 
                       <div class="button-row d-flex mt-6">
-                        <button id="next1" class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
+                        <button id="next-button" class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
                       </div>
                     </div>
                   </div>
@@ -122,48 +122,69 @@
                   <!-- Paso 1 -->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
+                      <div class="col-10 mb-3 mb-md-5  mx-auto w-auto">
                         <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
                         </div>
                       </div>
                     </div>
                     <div class="multisteps-form__content">
-                      <div class="row mt-3 mb-8" style="height: 500px;">
-                        <div class="col-6">
-                          <div class="row arbol-container h-100" style="margin-top: 7rem; position: relative;">
-                            <div style="position: relative;" class="image-arbol">
-                              {% comment %} <img src="{% static 'assets/img/herramienta/imagen_paso1.jpg' %}" class="border-radius-md" style="width: 350px; margin-top: 8rem; position: absolute; right: 20rem; top: -5rem" alt="arbol"> {% endcomment %}
-                            </div>
-                            <div class="col-6 d-flex flex-column justify-content-between">
-                              <div class="circle-container" style="position: relative; width: 100%;">
-                                <div class="circle-arbol d-flex" style="position: absolute; top: 0rem; right: 10rem; background-color: #aa4207"><span class="m-auto text-uppercase font-weight-bold">Suelo</span></div>
+                      <div class="row mt-3 mb-8" > {% comment %} style="height: 500px;" {% endcomment %}
+                        <div class="col-12 col-lg-6">
+                          <div class="row arbol-container h-100" style="position: relative;">                            
+                            <div class="row-circle mb-2">
+                              <div class="col-12 row d-flex flex-row justify-content-between row-one">                               
+                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #aa4207; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Suelo</span></div>
+                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #85604b; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Madera</span></div>
+                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #806377; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Fruta</span></div>
                               </div>
-                              <div class="circle-container" style="position: relative; width: 100%;">
-                                <div class="circle-arbol d-flex" style="position: absolute; top: -20rem; right: 12rem; background-color: #85604b"><span class="m-auto text-uppercase font-weight-bold">Madera</span></div>
-                              </div>
-                              <div class="circle-container" style="position: relative; width: 100%;">
-                                <div class="circle-arbol d-flex" style="position: absolute; top: -38rem; right: 4rem; background-color: #806377"><span class="m-auto text-uppercase font-weight-bold">Fruta</span></div>
-                              </div>
-                            </div>
-                            
-                            <div class="col-6 d-flex flex-column justify-content-between">
-                              <div class="circle-container" style="position: relative; width: 100%;">
-                                <div class="circle-arbol d-flex" style="position: absolute; top: -22.3rem; right: 20rem; background-color: #006d70"><span class="m-auto text-uppercase font-weight-bold">Microclima</span></div>
-                              </div>
-                              <div class="circle-container" style="position: relative; width: 100%;">
-                                <div class="circle-arbol d-flex" style="position: absolute; top: -20rem; right: 11rem; background-color: #00a44d"><span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span></div>
-                              </div>
-                              <div class="circle-container" style="position: relative; width: 100%;">
-                                <div class="circle-arbol d-flex" style="position: absolute; top: -15.5rem; right: 13rem; background-color: #fdc00d"><span class="m-auto text-uppercase font-weight-bold">Otros usos</span></div>
+                              
+                              <div class="col-12 row d-flex flex-row justify-content-between flex-wrap row-two">
+                                <div class="rec-arbol options-arbol d-flex col-5 mb-2" style="background-color: #006d70; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Microclima</span></div>
+                                <div class="rec-arbol options-arbol d-flex col-5 mb-2" style="background-color: #00a44d; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Biodiversidad</span></div>
+                                <div class="rec-arbol options-arbol d-flex col-12 mb-2" style="background-color: #fdc00d; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Otros usos</span></div>
                               </div>
                             </div>
-                            
+
+                            <div class="col-circle"> 
+                              
+                              <div class="col-6 d-flex flex-column justify-content-between col-one">
+                                <div class="image-arbol">
+                                  <img src="{% static 'assets/img/herramienta/imagen_paso1.jpg' %}" class="border-radius-md" style="width: 280px; position: absolute; right: -9.5rem; top: 14rem" alt="arbol">
+                                </div>
+                                
+                                <div class="circle-container" style="position: relative; width: 100%;">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.2rem; right: 2rem; background-color: #806377"><span class="m-auto text-uppercase font-weight-bold">Fruta</span></div>
+                                </div>
+                                
+                                <div class="circle-container" style="position: relative; width: 100%;">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.6rem; right: 8rem; background-color: #85604b"><span class="m-auto text-uppercase font-weight-bold">Madera</span></div>
+                                </div>                                
+
+                                <div class="circle-container" style="position: relative; width: 100%;">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; right: 5rem; background-color: #aa4207"><span class="m-auto text-uppercase font-weight-bold">Suelo</span></div>
+                                </div>
+                              </div>
+                              
+                              <div class="col-6 d-flex flex-column justify-content-between col-two">
+                                <div class="circle-container" style="position: relative; width: 100%;">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: 4rem; left: 2rem; background-color: #006d70"><span class="m-auto text-uppercase font-weight-bold">Microclima</span></div>
+                                </div>
+
+                                <div class="circle-container" style="position: relative; width: 100%;">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d"><span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span></div>
+                                </div>
+
+                                <div class="circle-container" style="position: relative; width: 100%;">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; left: 5rem; background-color: #fdc00d"><span class="m-auto text-uppercase font-weight-bold">Otros usos</span></div>
+                                </div>
+                              </div>
+                            </div>
                           </div> 
                         </div>
 
-                        <div class="col-6">
-                          <div class="card h-100 p-3" id="table-card">
+                        <div class="col-12 col-lg-6">
+                          <div class="card p-3" id="table-card">
                             <div class="table-responsive h-100">
                               <table class="table table-flush" id="species-list"> {% comment %} id="datatable-search" {% endcomment %}
                                 <thead class="thead-light">
@@ -190,9 +211,9 @@
                             <div class="card-header pb-0 mb-5">
                               <h6> Especies seleccionadas </h6>
                             </div>
-                            <div class="card-body px-0 pt-0 pb-2">
-                              <div class="table-responsive p-3">
-                                <table class="table align-items-center mb-0 row-border compact stripe" id="table-species-selected">
+                            <div class="card-body px-3 pt-0 pb-3">
+                              <div class="table-responsive">
+                                <table class="table align-items-center mb-0 row-border compact stripe table-species" id="table-species-selected">
                                   <thead>
                                     <tr>
                                       <th class="text-uppercase text-start font-weight-bolder opacity-7"> Nombre Común </th> {% comment %} text-secondary {% endcomment %}
@@ -228,7 +249,7 @@
 
                       <div class="button-row d-flex mt-6">
                         <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
-                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next"> Siguiente </button>
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next" id="next-button"> Siguiente </button>
                       </div>
                     </div>
                   </div>
@@ -236,8 +257,8 @@
                   <!--single form panel-->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
-                        <div class="p-4 mx-auto title-step">
+                      <div class="col-10 mb-7 mx-auto w-auto">
+                        <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h4>
                         </div>
 
@@ -254,8 +275,8 @@
                       <div class="row col-11 mx-auto mt-2">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <div class="card-body px-0 pt-0 pb-2">
-                              <div class="table-responsive p-3">
+                            <div class="card-body px-3 pt-0 pb-3">
+                              <div class="table-responsive">
                                 <table class="table align-items-center mb-0 row-border compact stripe" id="table-conditions">
                                   <thead>
                                     <tr>
@@ -288,8 +309,8 @@
                   <!--single form panel-->
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 pb-7 mx-auto" style="width: 70%">
-                        <div class="p-4 mx-auto title-step">
+                      <div class="col-10 pb-7 mx-auto w-auto">
+                        <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h4>
                         </div>
                         
@@ -305,8 +326,8 @@
                       <div class="row col-11 mx-auto mt-2">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <div class="card-body px-0 pt-0 pb-2">
-                              <div class="table-responsive p-3">
+                            <div class="card-body px-3 pt-0 pb-3">
+                              <div class="table-responsive">
                                 <table class="table align-items-center mb-0 row-border compact stripe" id="table-conditions2">
                                   <thead>
                                     <tr>
@@ -342,8 +363,8 @@
                   </div>
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
                     <div class="row text-center">
-                      <div class="col-10 mb-7 mx-auto" style="width: 70%">
-                        <div class="p-4 mx-auto title-step">
+                      <div class="col-10 mb-7 mx-auto w-auto">
+                        <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
                         </div>                        
                       </div>
@@ -352,8 +373,8 @@
                       <div class="row col-11 mx-auto mt-2">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <div class="card-body px-0 pt-0 pb-2">                              
-                              <div class="table-responsive p-3">
+                            <div class="card-body px-3 pt-0 pb-3">                              
+                              <div class="table-responsive">
                                 <table class="table align-items-center mb-0 row-border compact stripe" id="table-asociations">
                                   <thead>
                                     <tr>                                      
@@ -487,7 +508,7 @@
                         <div class="row">
                           <div class="button-row d-flex mt-4 col-12">
                             <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev"> Anterior </button>
-                            <button class="btn bg-gradient-dark ms-auto mb-0" type="button" title="Send" onclick="sendForm()"> Imprimir </button>
+                            <button class="btn bg-gradient-dark ms-auto mb-0" style="color: white !important" type="submit" title="Send"> Imprimir </button>  {% comment %} onclick="sendForm(e)" {% endcomment %}
                           </div>
                         </div>
                       </div>

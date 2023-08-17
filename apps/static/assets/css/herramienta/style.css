@@ -40,6 +40,9 @@ body {
     font-size: 1rem;
   }
 
+.js-btn-next {
+    color: white !important;
+}
 
   @media only screen and (min-width: 1024px) {
 
@@ -72,6 +75,18 @@ body {
     }
   }
 
+.col-circle {
+    display: none !important;
+}
+
+.rec-arbol {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border: 1px solid #67748e;
+    border-radius: 10px;
+    color: #f0f0f0;
+}
+
 .circle-arbol {
     width: 150px; 
     height: 150px; 
@@ -83,7 +98,7 @@ body {
     /* background: -webkit-linear-gradient(-225deg, rgba(126,211,166, 0.8) 0, rgba(0,164,77, 0.8) 100%);
     background: -moz-linear-gradient(315deg, rgba(126,211,166, 0.8) 0, rgba(0,164,77, 0.8) 100%);
     background: linear-gradient(315deg, rgba(126,211,166, 0.8) 0, rgba(0,164,77, 0.8) 100%); */
-    position: relative;
+    position: absolute;
 
     -webkit-box-shadow: 2px 4px 7px 2px rgba(0,0,0,0.2) ;
   box-shadow: 3px 5px 8px 3px rgba(0,0,0,0.2) ;
@@ -135,6 +150,16 @@ body {
     border-radius: 1rem;
     box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05); */
     width: auto;
+}
+
+.table-species {
+    table-layout: fixed;
+    width: 1625px !important;
+}
+
+.table-species th, td {
+    /* width: 184px !important; */
+    word-wrap: break-word;
 }
 
 .table thead tr th > a {
@@ -194,7 +219,7 @@ body {
     font-size: 0.8rem;
     border-radius: 5px;
 
-    top: 65%;
+    top: 40%;
     left: 12.5%;
 
     opacity: 0;
@@ -202,8 +227,8 @@ body {
 }
 
 .tool-tip-ivim {
-    top: 35%;
-    left: 80%;
+    top: 80%;
+    left: -20%;
     text-transform: none;
 }
 
@@ -231,7 +256,7 @@ body {
     padding: 0.75rem 1.5rem !important;
 }
 
-#table-species-selected th,
+/* #table-species-selected th,
 #table-species-selected td,
 #table-conditions th,
 #table-conditions td,
@@ -241,7 +266,7 @@ body {
 #table-asociations td  {
     min-width: 110px;
     word-wrap: break-word;
-}
+} */
 
 #table-species-selected thead tr th:first-child,
 #table-species-selected tbody tr td:first-child,
@@ -257,10 +282,11 @@ body {
 }
 
 #table-species-selected thead tr th:nth-child(2),
-#table-species-selected tbody tr td:nth-child(2) {
+#table-species-selected tbody tr td:nth-child(2){
     position: sticky;
-    /* left: 110px; */
+    left: 162.5px !important;
     background-color: white;
+    z-index: 1;
 }
 
 
@@ -344,30 +370,76 @@ body {
 
 
 /* @media only screen and (min-width: 992px) and (max-width: 1599px) { */
-@media only screen and (max-width: 1599px) {
+@media only screen and (min-width: 992px) {
 
     .image-arbol {
         display: none;
     }
 
     .circle-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .circle-arbol {
+        width: 120px;
+        height: 120px;
         position: initial !important;
     }
 
-    .circle-container div {
-        position: initial !important;
+    .circle-arbol span {
+        font-size: 0.875rem !important;
     }
 
-    .arbol-container {
-        margin-top: 0px !important;
-        /* background: center/cover url("/static/assets/img/herramienta/imagen_paso1.jpg") no-repeat; */
-        /* opacity: 0.5; */
+    #table-card {
+        height: 650px;
+    }
+
+    
+}
+
+@media only screen and (min-width: 1300px) {
+    .image-arbol {
+        display: block;
+        position: relative;
+    }
+
+    .circle-container {
+        display: block !important;
+        position: relative !important;
     }
 
     .circle-arbol {
         width: 130px;
         height: 130px;
+        position: absolute !important;
     }
 
-    
+    #table-card {
+        height: 580px;
+    }
+}
+
+@media only screen and (min-width: 670px) {
+    .row-circle .row-two div {
+        flex: 0 0 auto;
+        width: 25%;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .row-circle {
+        display: none;
+    }
+
+    .col-circle {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: space-around;
+        height: 540px;
+    }
+
+    #table-card {
+        height: 540px;
+    }
 }

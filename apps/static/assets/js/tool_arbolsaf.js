@@ -71,6 +71,7 @@ $('#table-species-selected').DataTable({
         { orderable: true },
         { orderable: false },
     ],
+    order: [[8, 'desc']],
     language: {
         "emptyTable": "No hay datos disponibles en la tabla",
         "info": "",
@@ -277,7 +278,7 @@ function selectSpecies(item) {
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
+                        '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
                     '</div>' +
                 '</td>' +                    
             '</tr>' 
@@ -302,7 +303,7 @@ function selectSpecies(item) {
         console.log('species_selected_deleted', species_selected);
     }
 
-    let w = $("#table-species-selected th").css('width');
+    // let w = $("#table-species-selected th").css('width');
     $("#table-species-selected thead tr th:nth-child(2)").css('left', w);
     $("#table-species-selected tbody tr td:nth-child(2)").css('left', w);
 }
@@ -332,11 +333,17 @@ function removeSpecies(item=false) {
     let indexForDelete = species_selected.findIndex(item => item['CODIGO'] === tr_id);
     species_selected.splice(indexForDelete, 1);
 
-    let table = $('#table-species-selected').DataTable();
-    table.row($("#tbody-species-selected tr[id='" + tr_id + "'")).remove().draw(false);
-    table.row($("#tbody-conditions tr[id='" + tr_id + "'")).remove().draw(false);
-    table.row($("#tbody-conditions2 tr[id='" + tr_id + "'")).remove().draw(false);
-    table.row($("#tbody-asociations tr[id='" + tr_id + "'")).remove().draw(false);
+    let tss = $('#table-species-selected').DataTable();
+    tss.row($("#tbody-species-selected tr[id='" + tr_id + "'")).remove().draw(false);
+
+    let tc = $('#table-conditions').DataTable();
+    tc.row($("#tbody-conditions tr[id='" + tr_id + "'")).remove().draw(false);
+
+    let tctwo = $('#table-conditions2').DataTable();
+    tctwo.row($("#tbody-conditions2 tr[id='" + tr_id + "'")).remove().draw(false);
+
+    let ta = $('#table-asociations').DataTable();
+    ta.row($("#tbody-asociations tr[id='" + tr_id + "'")).remove().draw(false);
 }
 
 function conditionSpecies(specie) {
@@ -399,7 +406,7 @@ function conditionSpecies(specie) {
                             '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
+                            '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
                             
                         '</div>' +
                     
@@ -504,7 +511,7 @@ function conditionSpeciesTwo(specie) {
                             '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary delete_item" style="font-size: 18px;" id="delete_item"></i>' +
+                            '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
                     
                 '       </div>' +
                     '</div>' +
@@ -629,17 +636,12 @@ function asociationSpecies(specie) {
     table.row.add($(cond_rowtable)).draw();   
 }
 
-
-
-
 function selectLights (item) {
     // console.log('SELECTED', $(item).closest('.dropbtn'));
     let child = $(item).clone();
     console.log('SELECTED', $(item).closest('.dropdown').find('.dropbtn'));
 
-    $(item).closest('.dropdown').find('.dropbtn').html(child);
-
-    
+    $(item).closest('.dropdown').find('.dropbtn').html(child);    
 };
 
 function activeGreen (item) {
@@ -649,7 +651,6 @@ function activeGreen (item) {
     $(item).parent("div").find("#red-light").removeClass( "active-red" );
 
     console.log('SELECTED', $(item).parent("div").find(".active-red"));
-
 };
 
 function activeRed (item) {
@@ -658,10 +659,7 @@ function activeRed (item) {
     // $(".active-green").toggleClass( "active-green" );
 
     $(item).parent("div").find("#green-light").removeClass( "active-green" );
-
 };
-
-
 
 function treeTop() {
     $("#container-treetrunk-asociations").css("visibility", "hidden");
@@ -853,67 +851,46 @@ function provinciaSelected (e) {
     console.log('species_selected >>>>>>>', species_selected);
 }
 
-function sendForm() {
-    console.log(species_selected);
-    var element = $("form[name='form-herramienta'] input[name='csrfmiddlewaretoken']");
-    console.log(element[0]);
-    var token = element[0].value
-    console.log(token)
-    
-    $.ajax({
-        url: "/arbolsaf/herramienta/pdf/",
-        type: "POST",
-        headers: {"X-CSRFToken": token},
-        data: {
-            'especies': JSON.stringify(species_selected),
-        },
-        dataType: "native",
-        xhrFields: {
-            responseType: 'blob'
-        },
-        success: function(blob) {
-            console.log(blob.size);
-            var link=document.createElement('a');
-            link.href=window.URL.createObjectURL(blob);
-            link.download="PDFname_" + new Date() + ".pdf";
-            link.click();
-        }
-    });
-}
-
-
-
-
-
-
 $(document).ready(function() {
 
-    let w = $("#table-species-selected th").css('width');
-    $("#table-species-selected thead tr th:nth-child(2)").css('left', w);
-    $("#table-species-selected tbody tr td:nth-child(2)").css('left', w);
-    console.log('w', w);
+    // $( window ).on( "resize", function() {
+        /* function myFunction(x) {
+            if (x.matches) { // If media query matches
+                $(".col-one .circle-arbol").each(function(index) {
+                    console.log('THIS', $(this));
+                    let rcss =  $(this).css('right');
+                    
+                    console.log('rcss', rcss);
+                    console.log('rcss plus',  parseInt(rcss.replace(/px/,""))+4);
 
-    $("body").on( "click", '.circle-arbol', function() {
-        
-        console.log('$(this)', $(this));
+                    $(this).css('right', (parseInt(rcss.replace(/px/,"")) - 50) + "px");
+                })
+
+                $(".col-two .circle-arbol").each(function(index) {
+                    console.log('THIS', $(this));
+                    let rcss =  $(this).css('right');
+                    
+                    console.log('rcss', rcss);
+                    console.log('rcss plus',  parseInt(rcss.replace(/px/,""))+4);
+
+                    $(this).css('right', (parseInt(rcss.replace(/px/,"")) + 50) + "px");
+                })
+
+
+            //   $(".circle-arbol").css('right', parseInt(rcss.replace(/px/,""))+4)+"px";
+            } else {
+            //   document.body.style.backgroundColor = "pink";
+            }
+        } */
+          
+        /* var x = window.matchMedia("(min-width: 1024px)")
+        myFunction(x) */
+    // } );
+
+    $("body").on( "click", '.options-arbol', function() {        
         let bc = $(this).css("background-color").replace(')', ', 0.3)').replace('rgb', 'rgba');
         $("#table-card").css("background-color", bc);
-
         let text_sel = $(this).text().toUpperCase();
-        /* $(".dataTable-wrapper").remove();
-
-        let new_table = 
-            '<table class="table table-flush" id="datatable-search">' +
-                '<thead class="thead-light">' +
-                    '<tr>' +
-                        '<th> Especies </th>' +
-                        '<th> Seleccione </th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody></tbody>' +
-            '</table>'
-        
-        $("#table-card .table-responsive").append(new_table); */
 
         let specie_selected = $.grep(data_species, function (item) {
             let sel = 'VALOR ' + text_sel;
@@ -922,15 +899,49 @@ $(document).ready(function() {
 
         var datatable = $( "#species-list" ).DataTable();
         datatable.destroy();
-        // datatable.rows.add(newDataArray);
-        // datatable.draw();
 
-        createTable(specie_selected);
-
-        
-
-
-        
-    
+        createTable(specie_selected);  
     });   
+
+
+    $('#form-tool').on('submit', function(e){
+        e.preventDefault();
+
+        console.log(species_selected);
+        var element = $("form[name='form-herramienta'] input[name='csrfmiddlewaretoken']");
+        console.log(element[0]);
+        var token = element[0].value
+        console.log(token)
+        
+        $.ajax({
+            url: "/arbolsaf/herramienta/pdf/",
+            type: "POST",
+            headers: {"X-CSRFToken": token},
+            data: {
+                'especies': JSON.stringify(species_selected),
+            },
+            /* dataType:'json',
+            contentType:'application/pdf', */
+            
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(blob) {
+                console.log(blob.size);
+                var link=document.createElement('a');
+                link.href=window.URL.createObjectURL(blob);
+                link.download="PDFname_" + new Date() + ".pdf";
+                link.click();
+            },
+            error: function( jqXHR, textStatus, errorThrown ) {
+                console.log('error', errorThrown);
+            }
+        });
+    })
+
+    $("#next-button").on("click", function () {
+        $("body").scrollTop();
+
+        console.log("scrooll", $("body").scrollTop());
+    });
 });
