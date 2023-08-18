@@ -44,6 +44,11 @@ body {
     color: white !important;
 }
 
+.intro-image img {
+    width: 80%;
+    max-height: 320px;
+  }
+
   @media only screen and (min-width: 1024px) {
 
     .intro-text {
@@ -365,6 +370,10 @@ body {
 
 .active-red {
     background: #931010;
+}
+
+.choices__list.choices__list--dropdown.is-active {
+    z-index: 10;
 }
 
 

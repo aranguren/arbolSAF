@@ -817,13 +817,17 @@ function handleForm (e) {
 
 function regionSelected (e) {
     region_selected = e.value;
-    let provincia = $("select[name=PROVINCIA]")
-    provincia.empty();
+    let provincia = $("select[name=PROVINCIA]");
+    provincia.empty();    
 
-    regions[region_selected].forEach((value, key) => {
-        let element = Object.keys(value)[0];
-        provincia.append('<option value="' + element + '">' + element + '</option>');
-    });
+    if (region_selected) {
+        provincia.append('<option value=""> -- Seleccione -- </option>');
+        
+        regions[region_selected].forEach((value, key) => {
+            let item = Object.keys(value)[0];
+            provincia.append('<option value="' + item + '">' + item + '</option>');
+        });
+    }
 
     register_form["FORM DATA"][e.name] = region_selected;
     console.log('species_selected >>>>>>>', species_selected);
@@ -834,14 +838,18 @@ function provinciaSelected (e) {
     let district = $("select[name=DISTRITO]")
     district.empty();
 
-    let p = regions[region_selected].filter((item) => {
-        return item[provincia_selected];
-    })
-
-    p[0][provincia_selected].forEach((value, key) => {
-        // console.log(`${key}: ${value}`);
-        district.append('<option value="' + value + '">' + value + '</option>');
-    })
+    if (provincia_selected) {
+        district.append('<option value=""> -- Seleccione -- </option>');
+    
+        let p = regions[region_selected].filter((item) => {
+            return item[provincia_selected];
+        })
+    
+        p[0][provincia_selected].forEach((value, key) => {
+            // console.log(`${key}: ${value}`);
+            district.append('<option value="' + value + '">' + value + '</option>');
+        })        
+    }
 
     register_form["FORM DATA"][e.name] = provincia_selected;
     console.log('species_selected >>>>>>>', species_selected);
@@ -915,6 +923,16 @@ $(document).ready(function() {
             headers: {"X-CSRFToken": token},
             data: {
                 'especies': JSON.stringify(species_selected),
+                "NOMBRE": register_form["FORM DATA"]["NOMBRE"],
+                "REGION": register_form["FORM DATA"]["REGION"],
+                "PROVINCIA": register_form["FORM DATA"]["PROVINCIA"],
+                "DISTRITO": register_form["FORM DATA"]["DISTRITO"],
+                "TIPO DE INTERVENCION": register_form["FORM DATA"]["TIPO DE INTERVENCION"],
+                "TAMANO DE FINCA": register_form["FORM DATA"]["TAMANO DE FINCA"],
+                "TAMANO DE PARCELA": register_form["FORM DATA"]["TAMANO DE PARCELA"],
+                "TIPO DE USUARIO": register_form["FORM DATA"]["TIPO DE USUARIO"],
+                "IDENTIDAD DE GENERO": register_form["FORM DATA"]["IDENTIDAD DE GENERO"],
+                "EDAD DEL USUARIO": register_form["FORM DATA"]["EDAD DEL USUARIO"]
             },
             /* dataType:'json',
             contentType:'application/pdf', */
