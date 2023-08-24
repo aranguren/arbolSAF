@@ -285,7 +285,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
     link_cifor_icraf = models.URLField(_("Link CIFOR-ICRAF"), max_length=200, null=True, blank=True)
     imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie",
-                                                null=True, blank=False)
+                                                null=True, blank=True)
 
     #campos calculados
     @computed(models.IntegerField(_("Valor para  Madera"), default=0),
