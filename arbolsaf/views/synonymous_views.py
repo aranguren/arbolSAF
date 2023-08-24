@@ -10,11 +10,12 @@ from django.urls import reverse_lazy, reverse
 import json
 from ..models import SynonymousModel, SpeciesModel
 from ..forms import SynonymousForm
-
+from ..permissions import GroupRequiredMixin, group_required
 
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def sinonimo_delete(request):
     resp = {}
     query = {'id': request.GET.get('id', None)}
@@ -39,7 +40,8 @@ def sinonimo_delete(request):
 
 
 
-class Synonymous2MCreateView(LoginRequiredMixin, CreateView):
+class Synonymous2MCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateView):
+    group_required = [u'editor']
     model = SynonymousModel
     context_object_name = 'sinonimo'
     template_name = 'arbolsaf/synonimous/synonimous_o2m_form.html'
@@ -78,6 +80,7 @@ class Synonymous2MCreateView(LoginRequiredMixin, CreateView):
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def create_sinonimo(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':

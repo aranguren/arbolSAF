@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-
+{% load user_has_group %}
 {% block title %} Formulario Variable {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
@@ -36,23 +36,23 @@
                   <div class="d-flex justify-content-end">
                       <a href="{{species_url}}"
                       class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
-                  <a href="{% url 'arbolsaf:species_create_variable' variable.especie.id %}"
-                      class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
-                  {% if not variable.chequeo %}
-                  
-\
-                 
-                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"
-                      class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
-                  <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
-                  <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
-                          id="eliminarB"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteModal"
-                          value="{{ variable.id }} ">
-                    <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
-                  </button>
-                  {% endif %}
+                        {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+                          <a href="{% url 'arbolsaf:species_create_variable' variable.especie.id %}"
+                          class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+                          {% if not variable.chequeo %}
+                                  
+                            <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"
+                                class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
+                            <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
+                            <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
+                                    id="eliminarB"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
+                                    value="{{ variable.id }} ">
+                              <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
+                            </button>
+                          {% endif %}
+                      {% endif %}
                 </div>
               </div>
 

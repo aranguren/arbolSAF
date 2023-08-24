@@ -9,12 +9,14 @@ from django.db import connection
 import json
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel
 from ..forms import SpeciesForm
+from ..permissions import GroupRequiredMixin, group_required
 
 
 
 
-class SpeciesListView(LoginRequiredMixin, ListView):
+class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
     model = SpeciesModel
+    group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/species/species_list.html'
     context_object_name = 'species'
     paginate_by = 10
@@ -193,8 +195,9 @@ class SpeciesListView(LoginRequiredMixin, ListView):
 
         return query_result
 
-class SpeciesDetailView(LoginRequiredMixin, DetailView):
+class SpeciesDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
     model = SpeciesModel
+    group_required = [u'visualizador', u'editor']
     #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
     context_object_name = 'specie'
     template_name = 'arbolsaf/species/species_detail.html'
@@ -209,8 +212,9 @@ class SpeciesDetailView(LoginRequiredMixin, DetailView):
         """
         return context
 
-class SpeciesCreateView(LoginRequiredMixin, CreateView):
+class SpeciesCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateView):
     model = SpeciesModel
+    group_required = [u'editor']
     context_object_name = 'specie'
     template_name = 'arbolsaf/species/species_form.html'
     form_class = SpeciesForm
@@ -246,8 +250,9 @@ class SpeciesCreateView(LoginRequiredMixin, CreateView):
         #(#"cualitativo", "Cualitativo"),
         #("boolean", "Boolean"),
 
-class SpeciesUpdateView(LoginRequiredMixin, UpdateView):
+class SpeciesUpdateView(LoginRequiredMixin, GroupRequiredMixin, UpdateView):
     model = SpeciesModel
+    group_required = [u'editor']
     context_object_name = 'specie'
     template_name = 'arbolsaf/species/species_form.html'
     form_class = SpeciesForm
@@ -271,6 +276,7 @@ class SpeciesUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def species_delete(request):
     resp = {}
     query = {'id': request.GET.get('id', None)}
@@ -319,8 +325,9 @@ def species_list_json(request):
         v100_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v100').first()
         if v100_instance:
             rango_inferior= v100_instance.rango_inferior or 0.0
-            rango_inferior= v100_instance.rango_inferior or 0.0
-            v100_temperatura_max = f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v100_instance.rango_superior or 0.0
+            v100_temperatura_max_promedio = (rango_inferior+rango_superior)/2
+            v100_temperatura_max =  str(v100_temperatura_max_promedio)
         else:
             v100_temperatura_max = ""
         valores_especie['v100_temperatura_max'] = v100_temperatura_max
@@ -329,8 +336,9 @@ def species_list_json(request):
         v101_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v101').first()
         if v101_instance:
             rango_inferior= v101_instance.rango_inferior or 0.0
-            rango_inferior= v101_instance.rango_inferior or 0.0
-            v101_temperatura_min = f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v101_instance.rango_superior or 0.0
+            v101_temperatura_min_promedio = (rango_inferior+rango_superior)/2
+            v101_temperatura_min = v101_temperatura_min_promedio
         else:
             v101_temperatura_min = ""
         valores_especie['v101_temperatura_min']=v101_temperatura_min
@@ -338,8 +346,8 @@ def species_list_json(request):
         v157_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v157').first()
         if v157_instance:
             rango_inferior= v157_instance.rango_inferior or 0.0
-            rango_inferior= v157_instance.rango_inferior or 0.0
-            v157_elevacion_min = f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v157_instance.rango_superior or 0.0
+            v157_elevacion_min = f"{rango_inferior}-{rango_superior}"
         else:
             v157_elevacion_min = ""
         valores_especie['v157_elevacion_min'] = v157_elevacion_min
@@ -348,8 +356,8 @@ def species_list_json(request):
         v158_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v158').first()
         if v158_instance:
             rango_inferior= v158_instance.rango_inferior or 0.0
-            rango_inferior= v158_instance.rango_inferior or 0.0
-            v158_elevacion_max = f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v158_instance.rango_superior or 0.0
+            v158_elevacion_max = f"{rango_inferior}-{rango_superior}"
         else:
             v158_elevacion_max = ""
         valores_especie['v158_elevacion_max'] = v158_elevacion_max
@@ -369,8 +377,8 @@ def species_list_json(request):
         v81_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v81').first()
         if v81_instance:
             rango_inferior= v81_instance.rango_inferior or 0.0
-            rango_inferior= v81_instance.rango_inferior or 0.0
-            v81_precipitacion_max= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v81_instance.rango_superior or 0.0
+            v81_precipitacion_max= f"{rango_inferior}-{rango_superior}"
         else:
             v81_precipitacion_max = ""
         valores_especie['v81_precipitacion_max'] = v81_precipitacion_max
@@ -378,8 +386,8 @@ def species_list_json(request):
         v82_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v82').first()
         if v82_instance:
             rango_inferior= v82_instance.rango_inferior or 0.0
-            rango_inferior= v82_instance.rango_inferior or 0.0
-            v82_precipitacion_min= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v82_instance.rango_superior or 0.0
+            v82_precipitacion_min= f"{rango_inferior}-{rango_superior}"
         else:
             v82_precipitacion_min = ""
         valores_especie['v82_precipitacion_min'] = v82_precipitacion_min
@@ -438,8 +446,8 @@ def species_list_json(request):
         v159_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v159').first()
         if v159_instance:
             rango_inferior= v159_instance.rango_inferior or 0.0
-            rango_inferior= v159_instance.rango_inferior or 0.0
-            v159_ph_max= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v159_instance.rango_superior or 0.0
+            v159_ph_max= f"{rango_inferior}-{rango_superior}"
         else:
             v159_ph_max = ""
         valores_especie['v159_ph_max'] = v159_ph_max
@@ -448,8 +456,8 @@ def species_list_json(request):
         v160_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v160').first()
         if v160_instance:
             rango_inferior= v160_instance.rango_inferior or 0.0
-            rango_inferior= v160_instance.rango_inferior or 0.0
-            v160_ph_min= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v160_instance.rango_superior or 0.0
+            v160_ph_min= f"{rango_inferior}-{rango_superior}"
         else:
             v160_ph_min = ""
         valores_especie['v160_ph_min'] = v160_ph_min
@@ -491,8 +499,9 @@ def species_list_json(request):
         v1_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v1').first()
         if v1_instance:
             rango_inferior= v1_instance.rango_inferior or 0.0
-            rango_inferior= v1_instance.rango_inferior or 0.0
-            v1_altura_copa= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v1_instance.rango_superior or 0.0
+            v1_altura_copa_promedio=(rango_inferior+rango_superior)/2
+            v1_altura_copa= str(v1_altura_copa_promedio)
         else:
             v1_altura_copa = ""
         valores_especie['v1_altura_copa'] = v1_altura_copa
@@ -555,8 +564,9 @@ def species_list_json(request):
         v2_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v2').first()
         if v2_instance:
             rango_inferior= v2_instance.rango_inferior or 0.0
-            rango_inferior= v2_instance.rango_inferior or 0.0
-            v2_ancho_potencial_copa= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v2_instance.rango_superior or 0.0
+            v2_ancho_potencial_copa_promedio=(rango_inferior+rango_superior)/2
+            v2_ancho_potencial_copa= str(v2_ancho_potencial_copa_promedio)
         else:
             v159_ph_max = ""
         valores_especie['v2_ancho_potencial_copa'] = v2_ancho_potencial_copa
@@ -580,8 +590,8 @@ def species_list_json(request):
         v5_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v5').first()
         if v5_instance:
             rango_inferior= v5_instance.rango_inferior or 0.0
-            rango_inferior= v5_instance.rango_inferior or 0.0
-            v5_densidad_promedio_copa= f"{rango_inferior}-{rango_inferior}"
+            rango_superior= v5_instance.rango_superior or 0.0
+            v5_densidad_promedio_copa= f"{rango_inferior}-{rango_superior}"
         else:
             v5_densidad_promedio_copa = ""
         valores_especie['v4_densidad_promedio_copa'] = v5_densidad_promedio_copa

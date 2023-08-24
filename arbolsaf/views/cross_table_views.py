@@ -6,10 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel, VariableModel
 from ..forms import VariableSpeciesForm
 from django.urls import reverse_lazy
+from ..permissions import GroupRequiredMixin, group_required
 
 
-class CrossTableListView(LoginRequiredMixin, ListView):
+class CrossTableListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
     model = SpeciesModel
+    group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/cross_table/cross_table_list.html'
     context_object_name = 'cross_table'
     paginate_by = 10
@@ -152,7 +154,8 @@ class CrossTableListView(LoginRequiredMixin, ListView):
         return query_result
 
 
-class ExportCsvView(LoginRequiredMixin, View):
+class ExportCsvView(LoginRequiredMixin, GroupRequiredMixin, View):
+    group_required = [u'visualizador', u'editor']
 
     def get(self, request):
         query = {
@@ -185,8 +188,10 @@ class ExportCsvView(LoginRequiredMixin, View):
 
         for item in query_result:
             especie = item.especie
+            valor_general = item.get_valor_general
+
             writer.writerow([especie.nombre_comun, especie.nombre_cientifico, item.tipo_variable,
-                            item.referencia, item.valor_general])
+                            item.referencia, valor_general])
 
         return response
 

@@ -12,7 +12,6 @@ from django.shortcuts import render, redirect
 
 
 
-@login_required(login_url="/login/")
 def index(request):
     return redirect(reverse_lazy("arbolsaf:homepage", kwargs={}))
     #context = {'segment': 'index'}

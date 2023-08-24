@@ -10,11 +10,12 @@ import json
 from ..models import ReferenceModel
 from ..forms import ReferenceForm
 
+from ..permissions import GroupRequiredMixin, group_required
 
 
-
-class ReferenceListView(LoginRequiredMixin, ListView):
+class ReferenceListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
     model = ReferenceModel
+    group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/reference/reference_list.html'
     context_object_name = 'references'
     paginate_by = 10
@@ -128,8 +129,9 @@ class ReferenceListView(LoginRequiredMixin, ListView):
         return query_result
 
 
-class ReferenceDetailView(LoginRequiredMixin, DetailView):
+class ReferenceDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
     model = ReferenceModel
+    group_required = [u'visualizador', u'editor']    
     #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
     context_object_name = 'reference'
     template_name = 'arbolsaf/reference/reference_detail.html'
@@ -141,8 +143,9 @@ class ReferenceDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class ReferenceCreateView(LoginRequiredMixin, CreateView):
+class ReferenceCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateView):
     model = ReferenceModel
+    group_required = [u'editor']
     context_object_name = 'reference'
     template_name = 'arbolsaf/reference/reference_form.html'
     form_class = ReferenceForm
@@ -171,8 +174,9 @@ class ReferenceCreateView(LoginRequiredMixin, CreateView):
         #return HttpResponseRedirect(self.get_success_url())
     
 
-class ReferenceUpdateView(LoginRequiredMixin, UpdateView):
+class ReferenceUpdateView(LoginRequiredMixin, GroupRequiredMixin, UpdateView):
     model = ReferenceModel
+    group_required = [u'editor']
     context_object_name = 'reference'
     template_name = 'arbolsaf/reference/reference_form.html'
     form_class = ReferenceForm
@@ -199,6 +203,7 @@ class ReferenceUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def reference_delete(request):
     resp = {}
     query = {'id': request.GET.get('id', None)}

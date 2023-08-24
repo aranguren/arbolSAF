@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load user_has_group %}
 {% load l10n %}
 {% load i18n %}
 {% block title %}
@@ -28,8 +29,10 @@ Listado Referencias
             <h3 class="mb-1">Listado de fuentes</h3>
             <hr class="horizontal dark my-2">
             <div class="d-flex justify-content-left">
+              {% if request.user|has_group:"editor" or request.user.is_superuser %} 
               <a href="{% url 'arbolsaf:reference_create' %}"
                  class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+                {% endif %}
               <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"
                       id="filtroB"
                       data-bs-toggle="modal"

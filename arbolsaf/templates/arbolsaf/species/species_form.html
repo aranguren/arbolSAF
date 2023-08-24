@@ -167,6 +167,35 @@
                   <div class="form-check">{{ form.nativa }}</div>
                 </div>
               </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <h6>
+                    {{ form.link_cifor_icraf.label }}
+                    {% if form.link_cifor_icraf.field.required %}<span>*</span>{% endif %}
+                  </h6>
+                  {{ form.link_cifor_icraf }}
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <h6>{{ form.imagen.label }} {% if form.imagen.field.required %}{% endif %}</h6>
+                  {{ form.imagen }}
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <h6>
+                    {{ form.notas.label }}
+                    {% if form.notas.field.required %}<span>*</span>{% endif %}
+                  </h6>
+                  {{ form.notas }}
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>
