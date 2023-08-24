@@ -430,7 +430,8 @@
 
                           <div class="col-12 col-md-6 ms-auto mt-3">
                             <label> Region </label>
-                            <select class="form-control" name="REGION" id="choices-country" onchange="regionSelected(this)">
+                            <select class="form-control" name="REGION" id="choices-region" onchange="regionSelected(this)">
+                              <option value="">-- Seleccione -- </option>
                               <option value="Loreto">Loreto</option>
                               <option value="Amazonas">Amazonas</option>
                               <option value="Cajamarca">Cajamarca</option>
@@ -443,17 +444,18 @@
   
                           <div class="col-12 col-md-6 ms-auto mt-3 text-start">
                             <label> Provincia </label>   
-                            <select class="form-control" name="PROVINCIA" id="choices-country" onchange="provinciaSelected(this)"></select>                         
+                            <select class="form-control" name="PROVINCIA" id="choices-province" onchange="provinciaSelected(this)"></select>                         
                           </div>
 
                           <div class="col-12 col-md-6 ms-auto mt-3 text-start">
                             <label> Distrito </label>
-                            <select class="form-control" name="DISTRITO" id="choices-country" onchange="handleForm(this)"></select>
+                            <select class="form-control" name="DISTRITO" id="choices-district" onchange="handleForm(this)"></select>
                           </div>
   
                           <div class="col-12 col-md-6 ms-auto mt-3 text-start">
                             <label> Tipo de intervención </label>
-                            <select class="form-control" name="TIPO DE INTERVENCION" id="choices-country" onchange="handleForm(this)">
+                            <select class="form-control" name="TIPO DE INTERVENCION" id="choices-intervention" onchange="handleForm(this)">
+                              <option value="">-- Seleccione -- </option>
                               <option value="Agroforestería con cacao"> Agroforestería con cacao </option>
                               <option value="Agroforestería con palma aceitera"> Agroforestería con palma aceitera </option>
                               <option value="Agroforestería con café"> Agroforestería con café </option>
@@ -476,7 +478,8 @@
   
                           <div class="col-12 col-md-6 ms-auto mt-3 text-start">
                             <label> Tipo de usuario </label>
-                            <select class="form-control" name="TIPO DE USUARIO" id="choices-country" onchange="handleForm(this)">
+                            <select class="form-control" name="TIPO DE USUARIO" id="choices-user" onchange="handleForm(this)">
+                              <option value="">-- Seleccione -- </option>
                               <option value="Técnico"> Técnico </option>
                               <option value="Agricultor"> Agricultor </option>
                               <option value="Investigador"> Investigador </option>
@@ -486,7 +489,8 @@
 
                           <div class="col-12 col-md-6 ms-auto mt-3 text-start">
                             <label> Identidad de género </label>
-                            <select class="form-control" name="IDENTIDAD DE GENERO" id="choices-country" onchange="handleForm(this)">
+                            <select class="form-control" name="IDENTIDAD DE GENERO" id="choices-gender" onchange="handleForm(this)">
+                              <option value="">-- Seleccione -- </option>
                               <option value="Hombre"> Hombre </option>
                               <option value="Mujer"> Mujer </option>
                               <option value="Prefiero no decirlo"> Prefiero no decirlo </option>
@@ -495,7 +499,8 @@
   
                           <div class="col-12 col-md-6 ms-auto mt-3 text-start">
                             <label> Edad del usuario </label>
-                            <select class="form-control" name="EDAD DEL USUARIO" id="choices-country" onchange="handleForm(this)">
+                            <select class="form-control" name="EDAD DEL USUARIO" id="choices-age" onchange="handleForm(this)">
+                              <option value="">-- Seleccione -- </option>
                               <option value="18-30"> 18-30 </option>
                               <option value="31-40"> 31-40 </option>
                               <option value="41-50"> 41-50 </option>
@@ -568,117 +573,41 @@
   <script src="/static/assets/js/plugins/choices.min.js"></script>
 
   {% comment %} <script>
-    if (document.getElementById('choices-country')) {
-      var country = document.getElementById('choices-country');
+    if (document.getElementById('choices-region')) {
+      var country = document.getElementById('choices-region');
       const example = new Choices(country);
     }
 
-    var openFile = function(event) {
-      var input = event.target;
+    if (document.getElementById('choices-province')) {
+      var country = document.getElementById('choices-province');
+      const example = new Choices(country);
+    }
 
-      // Instantiate FileReader
-      var reader = new FileReader();
-      reader.onload = function() {
-        imageFile = reader.result;
+    if (document.getElementById('choices-district')) {
+      var country = document.getElementById('choices-district');
+      const example = new Choices(country);
+    }
 
-        document.getElementById("imageChange").innerHTML = '<img width="200" src="' + imageFile + '" class="rounded-circle w-100 shadow" />';
-      };
-      reader.readAsDataURL(input.files[0]);
-    };
-  </script>
+    if (document.getElementById('choices-intervention')) {
+      var country = document.getElementById('choices-intervention');
+      const example = new Choices(country);
+    }
 
-  <script src="/static/assets/js/plugins/datatables.js"></script>
-  <script>
-    const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
-      searchable: true,
-      fixedHeight: true,
-      perPageSelect: false,
-      perPage: 5
-    });
+    if (document.getElementById('choices-user')) {
+      var country = document.getElementById('choices-user');
+      const example = new Choices(country);
+    }
 
-    document.querySelectorAll(".export").forEach(function(el) {
-      el.addEventListener("click", function(e) {
-        var type = el.dataset.type;
+    if (document.getElementById('choices-gender')) {
+      var country = document.getElementById('choices-gender');
+      const example = new Choices(country);
+    }
 
-        var data = {
-          type: type,
-          filename: "soft-ui-" + type,
-        };
-
-        if (type === "csv") {
-          data.columnDelimiter = "|";
-        }
-
-        dataTableSearch.export(data);
-      });
-    });
-  </script> {% endcomment %}
-
-  {% comment %} <script>
-      if (document.getElementById('table-conditions')) {
-        const dataTableSearch = new simpleDatatables.DataTable("#table-conditions", {
-          searchable: true,
-          fixedHeight: false,
-          perPage: 7
-        });
+    if (document.getElementById('choices-age')) {
+      var country = document.getElementById('choices-age');
+      const example = new Choices(country);
+    }   
+  </script> {% endcomment %}  
   
-        document.querySelectorAll(".export").forEach(function(el) {
-          el.addEventListener("click", function(e) {
-            var type = el.dataset.type;
-  
-            var data = {
-              type: type,
-              filename: "soft-ui-" + type,
-            };
-  
-            if (type === "csv") {
-              data.columnDelimiter = "|";
-            }
-  
-            dataTableSearch.export(data);
-          });
-        });
-      };
-  </script> {% endcomment %}
-
-
-  
-
-    {% comment %} $(document).ready(function() { 
-      $('input').on( 'change', function() {
-        if( $(this).is(':checked') ) {
-            console.log('parentSel', $(this));  
-
-            alert("El checkbox con valor " + $(this).val() + " ha sido seleccionado");
-        } else {
-            // Hacer algo si el checkbox ha sido deseleccionado
-            alert("El checkbox con valor " + $(this).val() + " ha sido deseleccionado");
-        }
-      });
-    }); {% endcomment %}
-    
-    {% comment %} let count;
-    $('input').click(function (e) { 
-        e.preventDefault();
-        
-/*         let parentSel = $(this).prev();
-        parentSel.append(parentSel.clone()).;*/
-
-        console.log('parentSel', $(this)); 
-
-        let prevSel = $(this).prev();
-        let id = parseInt(prevSel.attr("id"))+1;
-        let prevClone = prevSel.clone()
-        prevClone.attr("id", id );
-        
-        prevSel.after(prevClone);
-        console.log('prevSel', prevSel); 
-        console.log('parentSel', id); 
-        $('#'+prevClone.attr('id')+' label').text('Tema ' + id);
-        count++
-    }); {% endcomment %}
-  
-    
-  </script>
 
 {% endblock javascripts %}
