@@ -24,7 +24,7 @@ class SpeciesForm(forms.ModelForm):
             'variedad_subespecie':forms.TextInput(attrs={'class': 'form-control'}),
             'autor':forms.TextInput(attrs={'class': 'form-control'}),
             'nativa': forms.CheckboxInput(attrs={'class': 'form-check-input '}),   
-            'link_cifor_icraf':forms.URLInput(attrs={'class': 'form-control'}),   
+            #'link_cifor_icraf':forms.URLInput(attrs={'class': 'form-control'}),   
             'notas':forms.Textarea(attrs={'class': 'form-control'}),    
             'imagen':forms.FileInput(attrs={'class': 'form-control'}),     
                                  

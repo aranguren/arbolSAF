@@ -347,7 +347,8 @@ def species_list_json(request):
         if v157_instance:
             rango_inferior= v157_instance.rango_inferior or 0.0
             rango_superior= v157_instance.rango_superior or 0.0
-            v157_elevacion_min = f"{rango_inferior}-{rango_superior}"
+            v157_elevacion_min_promedio = (rango_inferior+rango_superior)/2
+            v157_elevacion_min = str(v157_elevacion_min_promedio)
         else:
             v157_elevacion_min = ""
         valores_especie['v157_elevacion_min'] = v157_elevacion_min
@@ -357,7 +358,8 @@ def species_list_json(request):
         if v158_instance:
             rango_inferior= v158_instance.rango_inferior or 0.0
             rango_superior= v158_instance.rango_superior or 0.0
-            v158_elevacion_max = f"{rango_inferior}-{rango_superior}"
+            v158_elevacion_max_promedio = (rango_inferior+rango_superior)/2
+            v158_elevacion_max = str(v158_elevacion_max_promedio)
         else:
             v158_elevacion_max = ""
         valores_especie['v158_elevacion_max'] = v158_elevacion_max
@@ -378,7 +380,8 @@ def species_list_json(request):
         if v81_instance:
             rango_inferior= v81_instance.rango_inferior or 0.0
             rango_superior= v81_instance.rango_superior or 0.0
-            v81_precipitacion_max= f"{rango_inferior}-{rango_superior}"
+            v81_precipitacion_max_promedio = (rango_inferior+rango_superior)/2
+            v81_precipitacion_max= str(v81_precipitacion_max_promedio)
         else:
             v81_precipitacion_max = ""
         valores_especie['v81_precipitacion_max'] = v81_precipitacion_max
@@ -387,7 +390,8 @@ def species_list_json(request):
         if v82_instance:
             rango_inferior= v82_instance.rango_inferior or 0.0
             rango_superior= v82_instance.rango_superior or 0.0
-            v82_precipitacion_min= f"{rango_inferior}-{rango_superior}"
+            v82_precipitacion_min_promedio = (rango_inferior+rango_superior)/2
+            v82_precipitacion_min= str(v82_precipitacion_min_promedio)
         else:
             v82_precipitacion_min = ""
         valores_especie['v82_precipitacion_min'] = v82_precipitacion_min
@@ -447,7 +451,8 @@ def species_list_json(request):
         if v159_instance:
             rango_inferior= v159_instance.rango_inferior or 0.0
             rango_superior= v159_instance.rango_superior or 0.0
-            v159_ph_max= f"{rango_inferior}-{rango_superior}"
+            v159_ph_max_promedio = (rango_inferior+rango_superior)/2
+            v159_ph_max= str(v159_ph_max_promedio)
         else:
             v159_ph_max = ""
         valores_especie['v159_ph_max'] = v159_ph_max
@@ -457,7 +462,8 @@ def species_list_json(request):
         if v160_instance:
             rango_inferior= v160_instance.rango_inferior or 0.0
             rango_superior= v160_instance.rango_superior or 0.0
-            v160_ph_min= f"{rango_inferior}-{rango_superior}"
+            v160_ph_min_promedio = (rango_inferior+rango_superior)/2
+            v160_ph_min= str(v160_ph_min_promedio)
         else:
             v160_ph_min = ""
         valores_especie['v160_ph_min'] = v160_ph_min
@@ -591,7 +597,8 @@ def species_list_json(request):
         if v5_instance:
             rango_inferior= v5_instance.rango_inferior or 0.0
             rango_superior= v5_instance.rango_superior or 0.0
-            v5_densidad_promedio_copa= f"{rango_inferior}-{rango_superior}"
+            v5_densidad_promedio_copa_promedio=(rango_inferior+rango_superior)/2
+            v5_densidad_promedio_copa= str(v5_densidad_promedio_copa_promedio)
         else:
             v5_densidad_promedio_copa = ""
         valores_especie['v4_densidad_promedio_copa'] = v5_densidad_promedio_copa

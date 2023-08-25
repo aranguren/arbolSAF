@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from computedfields.models import ComputedFieldsModel, computed, compute
-
+import urllib.parse
 
 class BasicAuditModel(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, 
@@ -283,7 +283,18 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
     notas = models.TextField(_("Notas"), blank=True, null=True)
 
-    link_cifor_icraf = models.URLField(_("Link CIFOR-ICRAF"), max_length=200, null=True, blank=True)
+    #link_cifor_icraf = models.URLField(_("Link CIFOR-ICRAF"), max_length=200, null=True, blank=True)
+    
+    
+    @property
+    def get_link_icraf(self):
+        if not self.nombre_cientifico:
+            return False
+        url_prefix ='https://apps.worldagroforestry.org/products/switchboard/index.php/name_like/'
+        url_name = urllib.parse.quote(self.nombre_cientifico)
+        link_cifor = f"{url_prefix}{url_name}"
+        return link_cifor
+
     imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie",
                                                 null=True, blank=True)
 
@@ -787,3 +798,34 @@ class PriorityModel(BasicAuditModel):
         managed = True
         verbose_name = 'Prioridad'
         verbose_name_plural = 'Prioridad'
+
+
+class Bitacora(BasicAuditModel):
+
+
+    MODELO_CHOICES = (
+        ("especie", "Especie"),
+        ("variable", "Variable"),
+    )
+    
+    def __str__(self):
+        return f"{self.entidad_modificada} {self.asunto}"
+
+
+    entidad_modificada = models.CharField(_("Entidad"), max_length=50, choices=MODELO_CHOICES)
+    codigo_especie = models.CharField(_("Código especie"), max_length=50, blank=True, null=True)
+    codigo_variable = models.CharField(_("Código variable"), max_length=50, blank=True, null=True)
+    asunto = models.CharField(_("Asunto"), max_length=255)
+    descripcion_cambio = models.TextField(_("Descripción del cambio"))
+    class Meta:
+        db_table = 'arbolsaf_bitacora_cambios'
+        managed = True
+        verbose_name = 'Bitacora'
+        verbose_name_plural = 'Bitacora'
+
+
+class SpeciesAdminModel(SpeciesModel):
+    class Meta:
+        proxy = True
+        verbose_name = 'Categorización Especies'
+        verbose_name_plural = 'Categorización Especies'

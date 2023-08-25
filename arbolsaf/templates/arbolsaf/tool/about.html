@@ -1,0 +1,52 @@
+{% extends 'layouts/base-fullscreen.html' %}
+{% load static %}
+{% block title %}
+  Herramienta
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style type="text/css">
+
+  .letra {
+    font-size: 24px;
+  }
+
+</style>
+
+{% endblock stylesheets %}
+{% block body_class %}error-page{% endblock %}
+{% block content %}
+  <!-- Navbar -->
+  <nav class="card top-0 rounded-0">
+    <div class="w-100 object-fit-cover">
+      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
+           class="w-100">
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <main class="main-content mt-2">
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-10">
+          <div class="card card-body">
+            <p class="text-left letra">
+              ÁrbolSAF forma parte de un conjunto de soluciones digitales que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones. Consta de una base de datos digital y de una herramienta digital.
+            </p>
+          </div>
+        </div>
+        <div class="col-1">
+        </div>
+      </div>
+      {% comment %} {% include "includes/footer.html" %} {% endcomment %}
+    </div>
+  </main>
+  {% include "includes/footer-tool.html" %}
+  {#% include "includes/footer-auth.html" %#}
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+
+{% endblock javascripts %}
