@@ -295,8 +295,12 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         link_cifor = f"{url_prefix}{url_name}"
         return link_cifor
 
-    imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie",
-                                                null=True, blank=True)
+    #imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie",
+    #                                            null=True, blank=True)
+    
+    @property
+    def get_imagenes(self):
+        return self.imagenes.all()
 
     #campos calculados
     @computed(models.IntegerField(_("Valor para  Madera"), default=0),
@@ -829,3 +833,23 @@ class SpeciesAdminModel(SpeciesModel):
         proxy = True
         verbose_name = 'Categorización Especies'
         verbose_name_plural = 'Categorización Especies'
+
+
+class ImageSpecies(models.Model):
+
+    descripcion = models.CharField(_("Descripción"), max_length=255)
+    especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"), 
+                    related_name="imagenes", on_delete=models.CASCADE)
+
+    imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie")
+
+
+    def __str__(self):
+        return self.descripcion
+
+
+    class Meta:
+        db_table = 'arbolsaf_imagen_species'
+        managed = True
+        verbose_name = 'Imagen Especie'
+        verbose_name_plural = 'Imágenes Especies'

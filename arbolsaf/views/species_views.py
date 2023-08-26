@@ -646,7 +646,7 @@ def species_list_json(request):
         valores_especie['v73_gremio_ecologico'] = v73_gremio_ecologico
 
 
-
+        valores_especie['imagenes'] = [img.imagen.url for img in especie.get_imagenes]
 
         especies_dict_list.append(valores_especie)
 

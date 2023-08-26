@@ -26,7 +26,7 @@ class SpeciesForm(forms.ModelForm):
             'nativa': forms.CheckboxInput(attrs={'class': 'form-check-input '}),   
             #'link_cifor_icraf':forms.URLInput(attrs={'class': 'form-control'}),   
             'notas':forms.Textarea(attrs={'class': 'form-control'}),    
-            'imagen':forms.FileInput(attrs={'class': 'form-control'}),     
+            #'imagen':forms.FileInput(attrs={'class': 'form-control'}),     
                                  
             }
 

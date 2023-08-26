@@ -274,6 +274,11 @@ class VariableAdmin(ImportExportModelAdmin):
 admin.site.register(models.VariableModel, VariableAdmin)
 
 
+class ImageSpeciesInline(admin.TabularInline):
+    model = models.ImageSpecies
+    fields = ['descripcion','imagen']
+    extra = 5 
+
 class SpeciesResource(resources.ModelResource):
     class Meta:
         model = models.SpeciesModel
@@ -337,7 +342,7 @@ class SpeciesAdmin(ImportExportModelAdmin):
     ]
 
 
-    inlines = [SynonymousInline, MenaceInline]
+    inlines = [SynonymousInline, MenaceInline, ImageSpeciesInline]
 
     def save_model(self, request, obj, form, change):
         if change:
