@@ -55,6 +55,46 @@ observer.observe(target, config);
 // Posteriormente, puede detener la observacion
 // observer.disconnect();
 
+
+$(document).on('click', '.js-btn-step', function () {
+    let idPanelActive =  $('.multisteps-form__panel.js-active').prop("id");
+    console.log('idPanelActive', idPanelActive);
+
+    if (idPanelActive === "step-0") {
+        $('.multisteps-form__progress').parent().parent().css('display', 'none');
+    }
+    else {
+        console.log('ya no estoy en step0');
+        $('.multisteps-form__progress').parent().parent().css('display', 'flex');
+    }
+});
+
+$(document).on('click', '.js-btn-step-bar', function () {
+    let idPanelActive =  $('.multisteps-form__panel.js-active').prop("id");
+    console.log('idPanelActive', idPanelActive);
+
+    if (idPanelActive === "step-0") {
+        $('.multisteps-form__progress').parent().parent().css('display', 'none');
+    }
+    else {
+        console.log('ya no estoy en step0');
+        $('.multisteps-form__progress').parent().parent().css('display', 'flex');
+    }
+});
+
+/* $(document).on('click', '.js-btn-step-bar', function () {
+    let idPanelActive =  $('.multisteps-form__panel.js-active').prop("id");
+    console.log('idPanelActive', idPanelActive);
+
+    if (idPanelActive === "step-0") {
+        $('.multisteps-form__progress').parent().parent().css('display', 'none');
+    }
+    else {
+        console.log('ya no estoy en step0');
+        $('.multisteps-form__progress').parent().parent().css('display', 'flex');
+    }
+}); */
+
 $('#table-species-selected').DataTable({
     lengthChange: false,
     searching: false,
@@ -69,6 +109,7 @@ $('#table-species-selected').DataTable({
         { orderable: false },
         { orderable: false },
         { orderable: true },
+        { orderable: false },
         { orderable: false },
     ],
     order: [[8, 'desc']],
@@ -179,19 +220,19 @@ function inputSelected(code) {
 
     // let p = $( "#tbody-species-selected" ).find("tr").each(function (item, value) { 
     let p = $( "#tbody-species-selected tr" ).each(function (item, value) { 
-         if ($(this).prop("id") === code) {
+        if ($(this).prop("id") === code) {
             check = true;
             console.log('checked');
         }else {
             console.log('unchecked');
         };
     });
-   if (check) return "checked";
+    if (check) return "checked";
 }
 
 function selectedColor(val) {
     if (val > 0) {
-        return 'style="background: #8392AB;"';
+        return 'background: #8392AB;';
     }
     return "";
 }
@@ -208,16 +249,18 @@ function selectSpecies(item) {
 
     if( $(item).is(':checked') ) {
 
-        let specie_code = $(item).val(), sel_rowtable = "", cond_rowtable = "";
+        let specie_code = $(item).val(), 
+            sel_rowtable = "", 
+            cond_rowtable = "";
         let specie_selected = $.grep(data_species, function (i) {
             return i['CODIGO'] === specie_code;            
         })
 
-        sel_rowtable +=            
+        sel_rowtable =            
             '<tr id=' + specie_selected[0]['CODIGO'] + '>' + 
                 '<td>' + 
                     '<div class="d-flex justify-content-start text-start">' +
-                        '<span class="mb-0 text-sm">' + specie_selected[0]['NOMBRE COMUN'] + '</span>' +
+                        '<span class="mb-0 text-sm" style="font-weight: 500 !important;">' + specie_selected[0]['NOMBRE COMUN'] + '</span>' +
                         /* '<button type="button" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products">' +
                             '<i class="fas fa-info" aria-hidden="true"></i>' +
                           '</button>' + */
@@ -225,62 +268,115 @@ function selectSpecies(item) {
                 '</td>' +
                 '<td>' + 
                     '<div class="d-flex justify-content-start text-start">' +
-                        '<span class="mb-0 text-sm">' + specie_selected[0]['NOMBRE CIENTIFICO'] + '</span>' +
+                        '<span class="mb-0 text-sm font-italic" style="font-weight: 500 !important;">' + specie_selected[0]['NOMBRE CIENTIFICO'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +   /* selectedColor(specie_selected[0]['VALOR MADERA']) */
-                            specie_selected[0]['VALOR MADERA'] +
+                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR MADERA']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center cursor-inherit" data-bs-placement="bottom" title="">' +   /* selectedColor(specie_selected[0]['VALOR MADERA']) */
+                            // specie_selected[0]['VALOR MADERA'] +
                         '</span>' +    
                         
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
-                            specie_selected[0]['VALOR FRUTA'] +
+                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR FRUTA']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
+                            // specie_selected[0]['VALOR FRUTA'] +
                         '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
-                            specie_selected[0]['VALOR SUELO'] +
+                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR SUELO']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
+                            // specie_selected[0]['VALOR SUELO'] +
                         '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
-                            specie_selected[0]['VALOR MICROCLIMA'] +
+                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR MICROCLIMA']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
+                            // specie_selected[0]['VALOR MICROCLIMA'] +
                         '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
-                            specie_selected[0]['VALOR BIODIVERSIDAD'] +
+                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR BIODIVERSIDAD']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
+                            // specie_selected[0]['VALOR BIODIVERSIDAD'] +
                         '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="font-size: 14px;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-placement="bottom" title="">' +
-                            specie_selected[0]['VALOR OTROS USOS'] +
+                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR OTROS USOS']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
+                            // specie_selected[0]['VALOR OTROS USOS'] +
                         '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center text-sm font-weight-bold">' +
-                        '<span style="font-size: 14px;" class="my-2 text-sm">' + Number(specie_selected[0]['IVIM'].toFixed(2)) + '</span>' +
+                        '<span style="font-size: 14px; font-weight: 500 !important;" class="my-2 text-sm">' + Number(specie_selected[0]['IVIM'].toFixed(2)) + '</span>' +
+                    '</div>' +
+                '</td>' +
+                '<td>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span data-toggle="modal" data-target="#exampleModalCenter">' +
+                            '<i class="fas fa-eye text-secondary cursor-pointer" style="font-size: 18px;" id="see_item"></i>' +
+                        '</span>' +
+                        
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
                         '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
                     '</div>' +
-                '</td>' +                    
+                    '<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">' +
+                        '<div class="modal-dialog modal-dialog-centered" style="max-width: 80%; max-height: 80%;" role="document">' +
+                            '<div class="modal-content">' +
+                                '<div class="modal-header">' +
+                                    '<h5 class="modal-title" id="exampleModalLongTitle"> Imágenes </h5>' +
+                                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                                        '<span aria-hidden="true">&times;</span>' +
+                                    '</button>' +
+                                '</div>' +
+                                '<div class="modal-body">' +
+                                    '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">' +
+                                        '<ol class="carousel-indicators">' +
+                                            '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>' +
+                                            '<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>' +
+                                            '<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>' +
+                                        '</ol>' +
+                                        '<div class="carousel-inner">' +
+                                            '<div class="carousel-item active">' +
+                                                '<img class="d-block w-100" src="..." alt="First slide">' +
+                                            '</div>' +
+                                            '<div class="carousel-item">' +
+                                                '<img class="d-block w-100" src="..." alt="Second slide">' +
+                                            '</div>' +
+                                            '<div class="carousel-item">' +
+                                                '<img class="d-block w-100" src="..." alt="Third slide">' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">' +
+                                            '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
+                                            '<span class="sr-only">Previous</span>' +
+                                        '</a>' +
+                                        '<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">' +
+                                            '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
+                                            '<span class="sr-only">Next</span>' +
+                                        '</a>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="modal-footer">' +
+                                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>' +
+                                    // <button type="button" class="btn btn-primary">Save changes</button>
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +  
+                '</td>' + 
+                                 
             '</tr>' 
 
         // $("table#table-species-selected tbody").append(sel_rowtable);
@@ -294,9 +390,24 @@ function selectSpecies(item) {
         conditionSpeciesTwo(specie_selected[0]);
         asociationSpecies(specie_selected[0])
 
+        console.log('species_selected_added', species_selected);
+
+
     } else {
         let specie_code = $(item).val();
-        $("#" + specie_code).remove();
+        
+        let tss = $('#table-species-selected').DataTable();
+        tss.row($("#" + specie_code)).remove().draw(false);
+
+        let tc = $('#table-conditions').DataTable();
+        tc.row($("#" + specie_code)).remove().draw(false);
+
+        let tctwo = $('#table-conditions2').DataTable();
+        tctwo.row($("#" + specie_code)).remove().draw(false);
+
+        let ta = $('#table-asociations').DataTable();
+        ta.row($("#" + specie_code)).remove().draw(false);                             
+
 
         let indexForDelete = species_selected.findIndex(item => item['CODIGO'] === specie_code);
         species_selected.splice(indexForDelete, 1);
@@ -304,6 +415,11 @@ function selectSpecies(item) {
     }
 }
 
+// $('#myModal').on('shown.bs.modal', function () {
+//     $('#myInput').trigger('focus')
+// })
+
+// $('#myModal').modal('toggle')
 
 function checkRemoveSpecies() {
     
@@ -355,51 +471,51 @@ function conditionSpecies(specie) {
                 '</td>' + */
                 '<td>' +       /* class="position-relative" */ 
                     '<div class="d-flex justify-content-start text-start">' +
-                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +                        
+                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name" style="font-weight: 500 !important;">' + specie['NOMBRE COMUN'] + '<span class="tool-tip font-italic">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +                        
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v100_temperatura_max'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v101_temperatura_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v101_temperatura_min'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v100_temperatura_max'] + '</span>' +
+                    '</div>' +
+                '</td>' +                
+                '<td>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v157_elevacion_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v157_elevacion_min'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v158_elevacion_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v158_elevacion_max'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v82_precipitacion_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v81_precipitacion_max'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v81_precipitacion_max'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v82_precipitacion_min'] + '</span>' +
-                    '</div>' +
-                '</td>' +
-                '<td>' +
-                    '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v161_tolerancia_condiciones'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v161_tolerancia_condiciones'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
-                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
                             '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -450,61 +566,61 @@ function conditionSpeciesTwo(specie) {
                 '</td>' + */
                 '<td>' + 
                     '<div class="d-flex justify-content-start text-start">' +
-                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
+                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name" style="font-weight: 500 !important;">' + specie['NOMBRE COMUN'] + '<span class="tool-tip font-italic">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v106_tipo_suelo_optimo'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v106_tipo_suelo_optimo'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v68_exigencia_suelos_fertiles'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v68_exigencia_suelos_fertiles'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v108_tolerancia_acidez'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v108_tolerancia_acidez'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v109_tolerancia_salinidad'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v109_tolerancia_salinidad'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v83_preferencia_ph_suelo'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v83_preferencia_ph_suelo'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v159_ph_max'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v160_ph_min'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v160_ph_min'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v159_ph_max'] + '</span>' +
+                    '</div>' +
+                '</td>' +                
+                '<td>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v152_desarrollo_suelos_rocosos'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v152_desarrollo_suelos_rocosos'] + '</span>' +
-                    '</div>' +
-                '</td>' +
-                '<td>' +
-                    '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v153_desarrollo_suelos_drenados'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v153_desarrollo_suelos_drenados'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
-                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem;">' +
+                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
                             '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -541,62 +657,62 @@ function asociationSpecies(specie) {
                 '</td>' + */
                 '<td>' + 
                     '<div class="d-flex justify-content-start text-start">' +
-                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name">' + specie['NOMBRE COMUN'] + '<span class="tool-tip">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
+                        '<span class="mb-0 text-sm cursor-pointer" id="specie_name" style="font-weight: 500 !important;">' + specie['NOMBRE COMUN'] + '<span class="tool-tip font-italic">' + specie['NOMBRE CIENTIFICO'] + '</span> </span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v73_gremio_ecologico'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v73_gremio_ecologico'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v37_fenologia_hojas'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v37_fenologia_hojas'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v118_tipo_raiz'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v118_tipo_raiz'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v143_forma_corteza'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v143_forma_corteza'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v119_capacidad_regeneracion'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v119_capacidad_regeneracion'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v7_forma_copa'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v7_forma_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v4_densidad_promedio_copa'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v4_densidad_promedio_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v6_follage'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v6_follage'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v1_altura_copa'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v1_altura_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v2_ancho_potencial_copa'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v2_ancho_potencial_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span class="my-2 text-sm">' + specie['v13_tipo_ramificacion_copa'] + '</span>' +
+                        '<span class="text-sm" style="font-weight: 500 !important;">' + specie['v13_tipo_ramificacion_copa'] + '</span>' +
                     '</div>' +
                 '</td>' +
                 '<td>' +
@@ -656,20 +772,6 @@ function activeRed (item) {
 
     $(item).parent("div").find("#green-light").removeClass( "active-green" );
 };
-
-function treeTop() {
-    $("#container-treetrunk-asociations").css("visibility", "hidden");
-    $("#container-treetop-asociations").css("visibility", "visible");
-    console.log('treeTop');
-}
-
-function treeTrunk() {
-    $("#container-treetrunk-asociations").css("visibility", "visible");
-    $("#container-treetop-asociations").css("visibility", "hidden");
-    console.log('treeTrunk');
-
-}
-
 
 /* function selectSpecies() {
 
@@ -788,6 +890,35 @@ let regions = {
     "Cajamarca": [
         {"Jaén": ["Jaén", "Bellavista", "Pucará"]},
         {"San Ignacio": ["Huarango", "Namballe"]}
+    ],
+    "Ucayali": [
+        {"Coronel Portillo": ["Callería", "Campoverde", "Iparía", "Masisea", "Yarinacocha", "Nueva Requena", "Manantay"]},
+        {"Padre Abad":	["Padre Abad", "Huipoca", "Boquerón", "Irázola", "Curimaná", "Alexander von Humboldt", "Neshuya"]},
+        {"Atalaya":	["Raimondi", "Sepahua", "Tahuanía", "Yurúa"]},
+        {"Purús":	["Purús"]}
+    ],
+    "San Martín": [
+        {"San Martín": ["Tarapoto", "Alberto Leveau", "Cacatachi", "Chazuta", "Chipurana", "El Porvenir", "Huimbayoc", "Juan Guerra", "La Banda de Shilcayo", "Morales", "Papaplaya", "San Antonio", "Sauce", "Shapaja"]},
+        {"Moyobamba": ["Moyobamba", "Calzada", "Habana", "Jepelacio", "Soritor", "Yantaló"]},
+        {"Rioja": ["Awajun", "Elias Soplin Vargas", "Nueva Cajamarca", "Pardo Miguel", "Posic", "Rioja", "San Fernando", "Yorongos", "Yuracyacu"]},
+        {"Lamas": ["Alonso de Alvarado", "Barranquita", "Caynarachi", "Cuñumbuqui", "Lamas", "Pinto Recodo", "Rumisapa", "San Roque de Cumbaza", "Shanao", "Tabalosos", "Zapatero"]},
+        {"Tocache": ["Nuevo Progreso", "Pólvora", "Shunté", "Tocache", "Uchiza", "Santa Lucía"]},
+        {"Bellavista": ["Bellavista", "Alto Biavo", "Bajo Biavo", "Huallaga", "San Pablo", "San Rafael"]},
+        {"Mariscal Cáceres": ["Juanjuí", "Pachiza", "Huicungo", "Campanilla", "Pajarillo"]},
+        {"Picota": ["Picota", "Buenos Aires", "Caspizapa", "Pilluana", "Pucacaca", "San Cristóbal", "San Hilarión", "Shamboyacu", "Tingo de Ponasa", "Tres Unidos"]},
+        {"El Dorado": ["San José de Sisa", "Agua Blanca", "San Martín", "Santa Rosa", "Shatoja"]},
+        {"Huallaga": ["Alto Saposoa", "Saposoa", "Piscoyacu", "Eslabón", "Sacanche", "Tingo de Saposoa"]}
+    ],
+    "Huánuco": [
+        {"Leoncio Prado": ["Rupa Rupa", "José Crespo y Castillo", "Mariano Dámaso Beraún", "Padre Felipe Luyando", "Daniel Alomía Robles", "Hermilio Valdizán"]},
+        {"Puerto Inca": ["Puerto Inca", "Codo del Pozuzo", "Honoria", "Tournavista", "Yuyapichis"]},
+        {"Marañón":	["La Morada"]},
+        {"Huamalíes": ["Monzón"]},
+    ],
+    "Madre de Dios": [
+        {"Tambopata": ["Tambopata", "Inambari", "Las Piedras", "Laberinto"]},
+        {"Manu": ["Manu", "Fitzcarrald", "Madre de Dios", "Huepetue"]},
+        {"Tahuamanu": ["Iñapari", "Iberia", "Tahuamanu"]}
     ]
 }
 
@@ -818,25 +949,34 @@ function handleForm (e) {
 function regionSelected (e) {
     region_selected = e.value;
     let provincia = $("select[name=PROVINCIA]");
-    provincia.empty();    
+    provincia.empty();
+    let district = $("select[name=DISTRITO]")
+    district.empty();      
+    register_form["FORM DATA"][e.name] = region_selected;
 
     if (region_selected) {
+        console.log("region_selected >>>>>>", region_selected);
         provincia.append('<option value=""> -- Seleccione -- </option>');
         
         regions[region_selected].forEach((value, key) => {
             let item = Object.keys(value)[0];
             provincia.append('<option value="' + item + '">' + item + '</option>');
         });
+        
     }
-
-    register_form["FORM DATA"][e.name] = region_selected;
+    else {
+        register_form["FORM DATA"]['PROVINCIA'] = "";
+        register_form["FORM DATA"]['DISTRITO'] = "";
+    }    
     console.log('species_selected >>>>>>>', species_selected);
+
 }
 
 function provinciaSelected (e) {
     provincia_selected = e.value;
-    let district = $("select[name=DISTRITO]")
+    let district = $("select[name=DISTRITO]");
     district.empty();
+    register_form["FORM DATA"][e.name] = provincia_selected;
 
     if (provincia_selected) {
         district.append('<option value=""> -- Seleccione -- </option>');
@@ -848,11 +988,13 @@ function provinciaSelected (e) {
         p[0][provincia_selected].forEach((value, key) => {
             // console.log(`${key}: ${value}`);
             district.append('<option value="' + value + '">' + value + '</option>');
-        })        
-    }
+        })
 
-    register_form["FORM DATA"][e.name] = provincia_selected;
-    console.log('species_selected >>>>>>>', species_selected);
+    }
+    else {
+        register_form["FORM DATA"]['DISTRITO'] = "";
+    }
+    console.log('species_selected >>>>>>>', species_selected);    
 }
 
 $(document).ready(function() {

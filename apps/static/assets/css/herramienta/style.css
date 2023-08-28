@@ -6,15 +6,23 @@
     font-weight: normal;
 }
 
-body * {
+.tool-page * :not(i) {
     font-family: 'Inter', 'Times New Roman', Times, serif;
     /* background-color: #f8f9fa !important; */
+    /* color: black !important; */
+}
+
+.tool-page * :not(.js-btn-next, i) {
     color: black !important;
 }
 
-body {
+.tool-page {
     height: 100vh;
     /* background-color: #f8f9fa !important; */
+}
+
+.container_multisteps-form__progress {
+    display: none;
 }
 
 .multisteps-form__progress-btn {
@@ -25,6 +33,8 @@ body {
     color: #d61111 !important;
 }
 
+
+
 .intro-bubble {
     width: 80px; 
     height: 50px; 
@@ -33,12 +43,22 @@ body {
     border: 1px solid #67748e;
     border-radius: 50%;
     background-color: rgba(0, 164, 77, 0.3);
-    /* color: #f0f0f0; */
-  }
+/* color: #f0f0f0; */
+}
 
-  .intro-text {
+.intro-text {
     font-size: 1rem;
-  }
+}
+
+.step-line {
+    border-top: 1px solid black;
+    height: 2px;
+    width: 85%;
+    padding: 0;
+    margin: auto;
+    position: absolute;
+    top: 25px;
+}
 
 .js-btn-next {
     color: white !important;
@@ -47,14 +67,22 @@ body {
 .intro-image img {
     width: 80%;
     max-height: 320px;
-  }
+}
 
-  @media only screen and (min-width: 1024px) {
+.options-arbol {
+    cursor: pointer;
+}
 
+#next-button,
+#print-button {
+    background-image: linear-gradient(310deg, #919191 0%, #595959 100%) !important;
+}
+
+@media only screen and (min-width: 1024px) {
     .intro-text {
-      font-size: 1.2rem;
+        font-size: 1.2rem;
     }    
-  }
+}
 
   @media only screen and (min-width: 1428px) {
 
@@ -207,7 +235,8 @@ body {
   }
 
 .tool-tip,
-.tool-tip-ivim {
+.tool-tip-ivim,
+.tool-tip-circle {
     position: absolute;
     z-index: 1000;
     pointer-events: none;
@@ -237,13 +266,18 @@ body {
     text-transform: none;
 }
 
+.tool-tip-circle {
+    top: 60%;
+    left: 0%;
+}
+
 #table-species-selected tr th #ivim:hover .tool-tip-ivim,
 #table-conditions tbody tr td #specie_name:hover .tool-tip,
 #table-conditions2 tbody tr td #specie_name:hover .tool-tip,
-#table-asociations tbody tr td #specie_name:hover .tool-tip {
+#table-asociations tbody tr td #specie_name:hover .tool-tip,
+.circle-arbol:hover .tool-tip-circle {
     opacity: 1;
 }
-
 
 #table-species-selected,
 #table-conditions,
@@ -258,7 +292,7 @@ body {
 #table-conditions tbody td,
 #table-conditions2 tbody td, 
 #table-asociations tbody td{
-    padding: 0.75rem 1.5rem !important;
+    padding: 0.4rem 1.5rem !important;
 }
 
 /* #table-species-selected th,
@@ -289,12 +323,15 @@ body {
 #table-species-selected thead tr th:nth-child(2),
 #table-species-selected tbody tr td:nth-child(2){
     position: sticky;
-    left: 162.5px !important;
+    left: 145.5px !important;
     background-color: white;
     z-index: 1;
 }
 
-
+.carousel {
+    height: 60vh;
+    background-color: gray;
+}
 
 .dropbtn {
     /* background-color: #04AA6D; */
