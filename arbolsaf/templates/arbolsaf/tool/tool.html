@@ -6,9 +6,10 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 {% endblock stylesheets %}
 
-{% block body_class %} error-page {% endblock %}
+{% block body_class %} tool-page {% endblock %}
 
 {% block content %}
 
@@ -29,25 +30,25 @@
         <div class="col-12 text-center">
           <div class="multisteps-form mb-5">
             <!--progress bar-->
-            <div class="row">
+            <div class="row container_multisteps-form__progress">
               <div class="col-12 col-lg-8 mx-auto my-3">
                 <div class="multisteps-form__progress">
-                  <button class="multisteps-form__progress-btn js-active js-active-red" type="button" title="User Info">
-                    <span> <strong> Paso 0: </strong>  Como funciona </span>
+                  <button class="multisteps-form__progress-btn js-active js-active-red js-btn-step-bar" type="button" title="User Info">
+                    <span> Inicio </span>
                   </button>
-                  <button class="multisteps-form__progress-btn" type="button" title="User Info">
+                  <button class="multisteps-form__progress-btn js-btn-step-bar" type="button" title="User Info">
                     <span> <strong> Paso 1: </strong>  Arma tu lista preliminar de árboles </span>
                   </button>
-                  <button class="multisteps-form__progress-btn" type="button" title="Address">
+                  <button class="multisteps-form__progress-btn js-btn-step-bar" type="button" title="Address">
                     <span> <strong> Paso 2: </strong> Revisa los requerimientos climáticos de tu lista de especies </span>
                   </button>
-                  <button class="multisteps-form__progress-btn" type="button" title="Order Info">
+                  <button class="multisteps-form__progress-btn js-btn-step-bar" type="button" title="Order Info">
                     <span> <strong> Paso 3: </strong> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </span>
                   </button>
-                  <button class="multisteps-form__progress-btn" type="button" title="Order Info">
+                  <button class="multisteps-form__progress-btn js-btn-step-bar" type="button" title="Order Info">
                     <span> <strong> Paso 4: </strong> Toma en cuenta las características morfológicas para tu diseño </span>
                   </button>
-                  <button class="multisteps-form__progress-btn" type="button" title="Order Info">
+                  <button class="multisteps-form__progress-btn js-btn-step-bar" type="button" title="Order Info">
                     <span> <strong> Paso 5: </strong> Registrate e imprime </span>
                   </button>
                 </div>
@@ -60,47 +61,53 @@
                   {% csrf_token %}
 
                   <!-- Como funciona -->                  
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" id="step-0" data-animation="FadeIn">
 
                     <div class="multisteps-form__content">
                       <div class="px-2">
                         <div class="row text-center">
                           <div class="col-10 mx-auto w-auto">
                             <div class="p-2 mx-auto title-step">
-                              <h4 class="font-weight-normal"> ¿Cómo funciona la Herramienta ÁrbolSAF? </h4>
+                              <h4 class="font-weight-normal"> Herramienta ÁrbolSAF </h4>
                             </div>
                           </div>
                         </div>
-                          <div class="row justify-content-between">
-                            <div class="col-12 col-md-6 mt-5">
+                          <div class="row justify-content-center">
+                            <div class="col-12 col-md-8 mt-5">
                               <p class="text-left intro-text">
-                                ÁrbolSAF consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles conforme a los productos y servicios ambientales que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4).
+                                La herramienta ÁrbolSAF permite armar un portafolio de especies de árboles y palmeras que puedan ser parte de diferentes opciones agroforestales. 
+                                Consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles y palmeras conforme a los productos y servicios ambientales 
+                                que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo 
+                                de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
                                 En el último paso podrás imprimir tu consulta, previo registro en un formulario (paso 5).
                               </p>
                             </div>
-                            <div class="intro-image col-12 col-md-6 mt-5 d-flex justify-content-center">
+                            {% comment %} <div class="intro-image col-12 col-md-6 mt-5 d-flex justify-content-center">
                               <img src="/static/assets/img/herramienta/steps_intro.png" class="w-100" style="object-fit: contain">
-                            </div>
+                            </div> {% endcomment %}
                           </div>
-                          <div class="mt-6 row d-flex justify-content-between">
+                          <div class="mt-6 row position-relative d-flex justify-content-between">
+                            {% comment %} <div class="position-relative d-flex justify-content-center">
+                              <div class="step-line"></div>
+                            </div> {% endcomment %}
                             <div class="col-6 col-md-2 d-flex flex-column align-items-center">
-                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 1 </p></div>
+                              <div class="d-flex intro-bubble" data-step="step-1"><p class="m-auto"> Paso 1 </p></div>
                               <p class="step-text mt-3 text-center"> Arma tu lista preliminar de árboles </p>
                             </div>
                             <div class="col-6 col-md-2 d-flex flex-column align-items-center">
-                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 2 </p></div>
+                              <div class="d-flex intro-bubble" data-step="step-2"><p class="m-auto"> Paso 2 </p></div>
                               <p class="step-text mt-3 text-center"> Revisa los requerimientos climáticos de tu lista de especies </p>
                             </div>
                             <div class="col-6 col-md-2 d-flex flex-column align-items-center">
-                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 3 </p></div>
+                              <div class="d-flex intro-bubble" data-step="step-3"><p class="m-auto"> Paso 3 </p></div>
                               <p class="step-text mt-3 text-center"> Revisa los requerimientos de suelo y limitaciones de tu lista de especies </p>
                             </div>
                             <div class="col-6 col-md-2 d-flex flex-column align-items-center">
-                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 4 </p></div>
+                              <div class="d-flex intro-bubble" data-step="step-4"><p class="m-auto"> Paso 4 </p></div>
                               <p class="step-text mt-3 text-center"> Toma en cuenta las características morfológicas para tu diseño </p>
                             </div>
                             <div class="col-6 col-md-2 d-flex flex-column align-items-center">
-                              <div class="d-flex intro-bubble"><p class="m-auto"> Paso 5 </p></div>
+                              <div class="d-flex intro-bubble" data-step="step-5"><p class="m-auto"> Paso 5 </p></div>
                               <p class="step-text mt-3 text-center"> Llena un formulario e imprime tu reporte </p>
                             </div>
                           </div>
@@ -114,22 +121,28 @@
                       </div>
 
                       <div class="button-row d-flex mt-6">
-                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next" id="next-button" > Siguiente </button>
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next js-btn-step" type="button" title="Next" id="next-button" > Siguiente </button>
                       </div>
                     </div>
                   </div>
 
                   <!-- Paso 1 -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-1" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 mb-3 mb-md-5  mx-auto w-auto">
+                      <div class="col-10 mb-3 mb-md-3  mx-auto w-auto">
                         <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
+                        </div>
+
+                        <div class="p-4 mx-auto p-step">
+                          <p class="mb-0 text-start"> 1. Haz clic en el producto o servicio que deseas obtener.  </p>
+                          <p class="mb-0 text-start"> 2. Selecciona las especies de tu interés.  </p>
+                          <p class="mb-0 text-start"> 3. Puedes seleccionar otros productos y servicios y continuar seleccionando especies para crear tu lista preliminar. </p>
                         </div>
                       </div>
                     </div>
                     <div class="multisteps-form__content">
-                      <div class="row mt-3 mb-8" > {% comment %} style="height: 500px;" {% endcomment %}
+                      <div class="row mt-3 mb-7" > {% comment %} style="height: 500px;" {% endcomment %}
                         <div class="col-12 col-lg-6">
                           <div class="row arbol-container h-100" style="position: relative;">                            
                             <div class="row-circle mb-2">
@@ -154,29 +167,59 @@
                                 </div>
                                 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.2rem; right: 2rem; background-color: #806377"><span class="m-auto text-uppercase font-weight-bold">Fruta</span></div>
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.2rem; right: 2rem; background-color: #806377">
+                                    <span class="m-auto text-uppercase font-weight-bold">Fruta</span>
+                                    <span class="tool-tip-circle">    
+                                      Provee fruta
+                                    </span>
+                                  </div>
                                 </div>
                                 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.6rem; right: 8rem; background-color: #85604b"><span class="m-auto text-uppercase font-weight-bold">Madera</span></div>
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.6rem; right: 8rem; background-color: #85604b">
+                                    <span class="m-auto text-uppercase font-weight-bold">Madera</span>
+                                    <span class="tool-tip-circle">    
+                                      Provee madera
+                                    </span>
+                                  </div>
                                 </div>                                
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; right: 5rem; background-color: #aa4207"><span class="m-auto text-uppercase font-weight-bold">Suelo</span></div>
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; right: 5rem; background-color: #aa4207">
+                                    <span class="m-auto text-uppercase font-weight-bold">Suelo</span>
+                                    <span class="tool-tip-circle">    
+                                      Mejora/conserva suelo
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                               
                               <div class="col-6 d-flex flex-column justify-content-between col-two">
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: 4rem; left: 2rem; background-color: #006d70"><span class="m-auto text-uppercase font-weight-bold">Microclima</span></div>
+                                  <div class="circle-arbol options-arbol d-flex" style="top: 4rem; left: 2rem; background-color: #006d70">
+                                    <span class="m-auto text-uppercase font-weight-bold">Microclima</span>
+                                    <span class="tool-tip-circle">    
+                                      Regula microclima
+                                    </span>
+                                  </div>
                                 </div>
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d"><span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span></div>
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d">
+                                    <span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span>
+                                    <span class="tool-tip-circle">    
+                                      Conserva biodiversidad
+                                    </span>
+                                  </div>
                                 </div>
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; left: 5rem; background-color: #fdc00d"><span class="m-auto text-uppercase font-weight-bold">Otros usos</span></div>
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; left: 5rem; background-color: #fdc00d">
+                                    <span class="m-auto text-uppercase font-weight-bold">Otros usos</span>
+                                    <span class="tool-tip-circle">    
+                                      Fibra, forraje, artesanías, cosméticos/repelente, tinte/pigmentos, medicinal, combustible
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -209,22 +252,22 @@
                         <div class="col-12">
                           <div class="card mb-4">
                             <div class="card-header pb-0 mb-5">
-                              <h6> Especies seleccionadas </h6>
+                              <h6 class="text-lg"> Lista preliminar de especies seleccionadas </h6>
                             </div>
                             <div class="card-body px-3 pt-0 pb-3">
                               <div class="table-responsive">
                                 <table class="table align-items-center mb-0 row-border compact stripe table-species" id="table-species-selected">
                                   <thead>
                                     <tr>
-                                      <th class="text-uppercase text-start font-weight-bolder opacity-7"> Nombre Común </th> {% comment %} text-secondary {% endcomment %}
-                                      <th class="text-uppercase text-start font-weight-bolder opacity-7"> Nombre Científico </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th> {% comment %} text-secondary {% endcomment %}
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Científico </th>
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Madera</th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Fruta </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Suelo </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Microclima </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Biodiversidad </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Otros usos </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Madera </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Fruta </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Microclima </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Biodiversidad </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Otros usos </th>
                                       {% comment %} <th class="text-center text-uppercase text-sm font-weight-bolder opacity-7" id="ivim"> IVIM <span class="tool-tip-ivim"> Indice de Valor de Importancia Multifuncional: valores altos indican que esa especie brinda más servicios ecosistémicos y tiene valores altos dentro de cada servicio </span> </th> {% endcomment %}
                                       <th>
                                         <div class="d-flex justify-content-center">
@@ -236,7 +279,8 @@
                                           </span>                        
                                         </div>
                                       </th>
-                                      <th class="text-center text-uppercase text-sm font-weight-bolder opacity-7"> Deseleccionar </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Imágenes </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Deseleccionar </th>
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-species-selected"></tbody>
@@ -248,27 +292,26 @@
                       </div> 
 
                       <div class="button-row d-flex mt-6">
-                        <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev" id="prev-button"> Anterior </button>
-                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next" id="next-button"> Siguiente </button>
+                        <button class="btn bg-gradient-light mb-0 js-btn-prev js-btn-step" type="button" title="Prev" id="prev-button"> Anterior </button>
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next js-btn-step" type="button" title="Next" id="next-button"> Siguiente </button>
                       </div>
                     </div>
                   </div>
 
                   <!--single form panel-->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-2" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 mb-7 mx-auto w-auto">
+                      <div class="col-10 mb-5 mx-auto w-auto">
                         <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h4>
                         </div>
 
-                        <div class="mb-4 p-4 mx-auto p-step">
+                        <div class="p-4 mx-auto p-step">
                           <p class="mb-0 text-start"> 1. Resalta (clic) las celdas donde las condiciones de tu zona son muy diferentes a las que las especies necesiten. </p>
                           <p class="mb-0 text-start"> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
                           <p class="mb-0 text-start"> 3. Asigna el semáforo verde si consideras que las condiciones de tu zona no serán problema para el desarrollo de la especie. </p>
                           <p class="mb-0 text-start"> 4. Puedes eliminar la especie si consideras que no desarrollará bien en tu zona. </p>
-                        </div>
-                        
+                        </div>                        
                       </div>
                     </div>
                     <div class="multisteps-form__content">
@@ -281,16 +324,16 @@
                                   <thead>
                                     <tr>
                                       {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
-                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th>
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Temperatura máxima (°C) </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Temperatura mínima (°C) </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Elevación mínima <span style="text-transform: lowercase;">(m.s.n.m)</span> </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Elevación máxima <span style="text-transform: lowercase;">(m.s.n.m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Precipitación máxima <span style="text-transform: lowercase;">(mm/año)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Precipitación mínima <span style="text-transform: lowercase;">(mm/año)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tolerancia a condiciones extremas </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-6"> Seleccione </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Temperatura Mínima (°C) </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Temperatura Máxima (°C) </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Elevación Mínima <span style="text-transform: lowercase;">(m.s.n.m)</span> </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Elevación Máxima <span style="text-transform: lowercase;">(m.s.n.m)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Precipitación Mínima <span style="text-transform: lowercase;">(mm/año)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Precipitación Máxima <span style="text-transform: lowercase;">(mm/año)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a Condiciones Extremas </th>
+                                      <th class="text-center font-weight-bolder opacity-7 px-6" style="text-transform: initial;"> Seleccione </th>
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-conditions"></tbody>
@@ -301,20 +344,20 @@
                         </div>
                       </div> 
                       <div class="button-row d-flex mt-4">
-                        <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev" id="prev-button"> Anterior </button>
-                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next" id="next-button"> Siguiente </button>
+                        <button class="btn bg-gradient-light mb-0 js-btn-prev js-btn-step" type="button" title="Prev" id="prev-button"> Anterior </button>
+                        <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next js-btn-step" type="button" title="Next" id="next-button"> Siguiente </button>
                       </div>
                     </div>
                   </div>
                   <!--single form panel-->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-3" data-animation="FadeIn">
                     <div class="row text-center">
-                      <div class="col-10 pb-7 mx-auto w-auto">
+                      <div class="col-10 mb-5 mx-auto w-auto">
                         <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h4>
                         </div>
                         
-                        <div class="mb-4 p-4 mx-auto p-step">
+                        <div class="p-4 mx-auto p-step">
                           <p class="mb-0 text-start"> 1. Resalta (clic) las celdas donde las condiciones de tu parcela son muy diferentes a las que las especies necesiten. </p>
                           <p class="mb-0 text-start"> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
                           <p class="mb-0 text-start"> 3. Asigna el semáforo verde si consideras que las condiciones de tu parcela no serán problema para el desarrollo de la especie. </p>
@@ -332,18 +375,18 @@
                                   <thead>
                                     <tr>
                                       {% comment %} <th class="text-uppercase text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
-                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th>
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Suelo preferido </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Exigencia suelos fértiles </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tolerancia a la acidez </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tolerancia a la salinidad </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Preferencia pH suelo </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> <span style="text-transform: initial;">pH</span> máximo suelo </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> <span style="text-transform: initial;">pH</span> mínimo suelo </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Desarrollo en suelos rocosos </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Preferencia a suelos drenados </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-6"> Seleccione </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Suelo Preferido </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Exigencia Suelos Fértiles </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a la Acidez </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a la Salinidad </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Preferencia pH Suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> pH Mínimo Suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> pH Máximo Suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Desarrollo en Suelos Rocosos </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Preferencia a Suelos Drenados </th>
+                                      <th class="text-center font-weight-bolder opacity-7 px-6" style="text-transform: initial;"> Seleccione </th>
                                     </tr>
                                   </thead>
                                   <tbody id="tbody-conditions2"></tbody>
@@ -355,15 +398,15 @@
                       </div>
                       <div class="row">
                         <div class="button-row d-flex mt-4">
-                          <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev" id="prev-button"> Anterior </button>
-                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next" id="next-button"> Siguiente </button>
+                          <button class="btn bg-gradient-light mb-0 js-btn-prev js-btn-step" type="button" title="Prev" id="prev-button"> Anterior </button>
+                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next js-btn-step" type="button" title="Next" id="next-button"> Siguiente </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-4" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
                     <div class="row text-center">
-                      <div class="col-10 mb-7 mx-auto w-auto">
+                      <div class="col-10 mb-5 mx-auto w-auto">
                         <div class="p-2 mx-auto title-step">
                           <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
                         </div>                        
@@ -378,19 +421,19 @@
                                 <table class="table align-items-center mb-0 row-border compact stripe" id="table-asociations">
                                   <thead>
                                     <tr>                                      
-                                      <th class="text-start text-uppercase font-weight-bolder opacity-7"> Nombre Común </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Gremio ecológico </th>  {% comment %} style="background-color: rgba(253, 192, 13, 0.3)" {% endcomment %}
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Fenología </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tipo de raíz </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tipo de corteza </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Capacidad de regeneración de ramas </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Forma copa </th>  {% comment %} style="background-color: rgba(0, 164, 77, 0.3)" {% endcomment %}
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Densidad copa (%) </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Follaje copa </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Altura copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7"> Tipo de ramificación  </th>
-                                      <th class="text-center text-uppercase font-weight-bolder opacity-7 px-5"> Notas </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Gremio Ecológico </th>  {% comment %} style="background-color: rgba(253, 192, 13, 0.3)" {% endcomment %}
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Fenología </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de Raíz </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de Corteza </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Capacidad de Regeneración de Ramas </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Forma Copa </th>  {% comment %} style="background-color: rgba(0, 164, 77, 0.3)" {% endcomment %}
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Densidad Copa (%) </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Follaje Copa </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Altura Copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Ancho Copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de Ramificación  </th>
+                                      <th class="text-center font-weight-bolder opacity-7 px-5" style="text-transform: initial;"> Notas </th>
                                       {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
                                     </tr>
                                   </thead>
@@ -405,8 +448,8 @@
                       </div>
                       <div class="row">
                         <div class="button-row d-flex mt-4">
-                          <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev" id="prev-button"> Anterior </button>
-                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next" id="next-button"> Siguiente </button>
+                          <button class="btn bg-gradient-light mb-0 js-btn-prev js-btn-step" type="button" title="Prev" id="prev-button"> Anterior </button>
+                          <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next js-btn-step" type="button" title="Next" id="next-button"> Siguiente </button>
                         </div>
                       </div>
                     </div>
@@ -414,7 +457,7 @@
 
 
                   <!-- Formulario -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" data-animation="FadeIn">
+                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-5" data-animation="FadeIn">
                     <div style="width:70%; margin:auto">
                       <div class="row text-center">
                         <div class="col-10 mx-auto">
@@ -425,7 +468,7 @@
                         <div class="row text-start">
                           <div class="col-12 col-md-6 ms-auto mt-3">
                             <label> Nombre del productor </label>
-                            <input class="multisteps-form__input form-control" type="text" name="NOMBRE" placeholder="Eg. Soft" onchange="handleForm(this)" />
+                            <input class="multisteps-form__input form-control" type="text" name="NOMBRE" placeholder="Eg. Soft" onchange="handleForm(this)" required/>
                           </div>
 
                           <div class="col-12 col-md-6 ms-auto mt-3">
@@ -467,12 +510,12 @@
                           </div>
 
                           <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Tamaño de la finca </label>
+                            <label> Tamaño de la finca (ha) </label>
                             <input class="multisteps-form__input form-control" name="TAMANO DE FINCA" type="number" onchange="handleForm(this)"/>
                           </div>
 
                           <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Tamaño de la parcela </label>
+                            <label> Tamaño de la parcela (ha) </label>
                             <input class="multisteps-form__input form-control" name="TAMANO DE PARCELA" type="number" onchange="handleForm(this)"/>
                           </div>
   
@@ -512,8 +555,8 @@
 
                         <div class="row">
                           <div class="button-row d-flex mt-4 col-12">
-                            <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev" id="prev-button"> Anterior </button>
-                            <button class="btn bg-gradient-dark ms-auto mb-0" style="color: white !important" type="submit" title="Send"> Imprimir </button>  {% comment %} onclick="sendForm(e)" {% endcomment %}
+                            <button class="btn bg-gradient-light mb-0 js-btn-prev js-btn-step" type="button" title="Prev" id="prev-button"> Anterior </button>
+                            <button class="btn bg-gradient-dark ms-auto mb-0" style="color: white !important" type="submit" title="Send" id="print-button"> Imprimir </button>  {% comment %} onclick="sendForm(e)" {% endcomment %}
                           </div>
                         </div>
                       </div>
@@ -564,6 +607,10 @@
 {% block javascripts %}
 
   <!--script src="/static/assets/js/plugins/datatables.js"></script-->
+  
+  <!-- Bootstrap 4.0 -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 
