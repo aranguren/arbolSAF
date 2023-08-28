@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export import fields, resources
-from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportModelAdmin, ExportMixin
 # Register your models here.
 
 from . import models
@@ -274,6 +274,11 @@ class VariableAdmin(ImportExportModelAdmin):
 admin.site.register(models.VariableModel, VariableAdmin)
 
 
+class ImageSpeciesInline(admin.TabularInline):
+    model = models.ImageSpecies
+    fields = ['descripcion','imagen']
+    extra = 5 
+
 class SpeciesResource(resources.ModelResource):
     class Meta:
         model = models.SpeciesModel
@@ -337,7 +342,7 @@ class SpeciesAdmin(ImportExportModelAdmin):
     ]
 
 
-    inlines = [SynonymousInline, MenaceInline]
+    inlines = [SynonymousInline, MenaceInline, ImageSpeciesInline]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -381,7 +386,7 @@ class ReferenceResource(resources.ModelResource):
 class ReferenceAdmin(ImportExportModelAdmin):
     resource_classes = [ReferenceResource]
     #fields = ['name', 'geom']
-    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    list_display = ('cod_cita','fuente_final', 'referencia')
     search_fields = ['cod_cita','fuente_final', 'referencia']
     readonly_fields = ['created','created_by','modified','modified_by']
     fieldsets = [
@@ -411,7 +416,112 @@ class VariableTypeOptionAdmin(admin.ModelAdmin):
 
 admin.site.register(models.VariableTypeOption, VariableTypeOptionAdmin)
 
+class BitacoraAdmin(admin.ModelAdmin):
+    #fields = ['name', 'geom']
+    list_display = ('entidad_modificada','codigo_especie','codigo_variable','asunto','created','created_by','modified','modified_by')
+    readonly_fields = ['created','created_by','modified','modified_by']
+    fieldsets = [
+        #(None,               {'fields': ['question_text']}),
+         (None, {'fields': ['entidad_modificada','codigo_especie', 'codigo_variable', 'asunto', 'descripcion_cambio']}),
+         ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
+    ]
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.modified_by = request.user
+        else:
+            obj.created_by = request.user
+            obj.modified_by = request.user
+        super().save_model(request, obj, form, change)
 
+admin.site.register(models.Bitacora, BitacoraAdmin)
+
+
+
+class SpeciesExportResource(resources.ModelResource):
+    class Meta:
+        model = models.SpeciesModel
+        skip_unchanged = True
+        report_skipped = True
+        fields = ('cod_esp', 'nombre_comun', 'nombre_cientifico', 
+                                        'valor_madera', 
+                                        'valor_fruta', 
+                                        'valor_otros_usos', 
+                                        'valor_biodiversidad',
+                                        'valor_microclima' ,
+                                        'valor_suelo' ,
+                                        'indice_multiuso',
+                                        'ivim',)
+        import_id_fields = ('cod_esp',)
+
+class CategorizacionAdmin(ExportMixin, admin.ModelAdmin):
+    resource_classes = [SpeciesExportResource]
+    search_fields = ['cod_esp', 'nombre_comun', 'nombre_cientifico']
+    list_display = ['cod_esp', 'nombre_comun', 'nombre_cientifico', 
+                                        'valor_madera', 
+                                        'valor_fruta', 
+                                        'valor_otros_usos', 
+                                        'valor_biodiversidad',
+                                        'valor_microclima' ,
+                                        'valor_suelo' ,
+                                        'indice_multiuso',
+                                        'ivim',]
+    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    readonly_fields = ['created','created_by','modified','modified_by','valor_madera', 
+                                        'valor_madera_category' ,
+                                        'valor_fruta', 
+                                        'valor_fruta_category',
+                                        'valor_otros_usos', 
+                                        'valor_otros_usos_category', 
+                                        'valor_biodiversidad',
+                                        'valor_biodiversidad_category' ,
+                                        'valor_microclima' ,
+                                        'valor_microclima_category', 
+                                        'valor_suelo' ,
+                                        'valor_suelo_category', 
+                                        'indice_multiuso',
+                                        'indice_valor_uso_relativo',
+                                        'ivim'
+                                        ]
+    fieldsets = [
+        #(None,               {'fields': ['question_text']}),
+         ('Informacion variable', {'fields': ['cod_esp', 
+                                        'taxonid_wfo' ,
+                                        'nombre_comun', 
+                                        'nombre_cientifico',
+                                        'nombre_cientifico_completo', 
+                                        'familia', 
+                                        'genero',
+                                        'epiteto' ,
+                                        'variedad_subespecie' ,
+                                        'autor', 
+                                        'nativa', ]}),
+        ('Valores índices', {'fields': ['valor_madera', 
+                                        'valor_madera_category' ,
+                                        'valor_fruta', 
+                                        'valor_fruta_category',
+                                        'valor_otros_usos', 
+                                        'valor_otros_usos_category', 
+                                        'valor_biodiversidad',
+                                        'valor_biodiversidad_category' ,
+                                        'valor_microclima' ,
+                                        'valor_microclima_category', 
+                                        'valor_suelo' ,
+                                        'valor_suelo_category', 
+                                        'indice_multiuso',
+                                        'indice_valor_uso_relativo',
+                                        'ivim',
+                                        ]}),
+         ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   
+    ]
+    def has_delete_permission(self, request, obj = None):
+        return False
+    def has_change_permission(self, request, obj = None):
+        return False
+    def has_add_permission(self, request, obj = None):
+        return False
+
+
+admin.site.register(models.SpeciesAdminModel, CategorizacionAdmin)
  #inlines = [SynonymousInline,]
 
 # TODO SynonymousModel, hacerlo cono inline de especie

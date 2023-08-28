@@ -131,3 +131,9 @@ STATICFILES_DIRS = (
 
 #############################################################
 #############################################################
+
+MEDIA_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+MEDIA_ROOT = os.path.join(MEDIA_BASE_DIR, 'media')
+MEDIA_URL = '/uploaded/'

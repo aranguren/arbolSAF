@@ -9,12 +9,14 @@ from django.db import connection
 import json
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel, VariableTypeFamilyModel
 from ..forms import VariableTypeForm
+from ..permissions import GroupRequiredMixin, group_required
 
 
 
 
-class VariableTypeListView(LoginRequiredMixin, ListView):
+class VariableTypeListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
     model = VariableTypeModel
+    group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/variable_type/variable_type_list.html'
     context_object_name = 'variables'
     paginate_by = 10
@@ -163,7 +165,8 @@ class VariableTypeListView(LoginRequiredMixin, ListView):
         return query_result
 
 
-class VariableTypeDetailView(LoginRequiredMixin, DetailView):
+class VariableTypeDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
+    group_required = [u'visualizador', u'editor']
     model = VariableTypeModel
     #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
     context_object_name = 'variable'
@@ -176,8 +179,9 @@ class VariableTypeDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class VariableTypeCreateView(LoginRequiredMixin, CreateView):
+class VariableTypeCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateView):
     model = VariableTypeModel
+    group_required = [u'editor']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable_type/variable_type_form.html'
     form_class = VariableTypeForm
@@ -206,8 +210,9 @@ class VariableTypeCreateView(LoginRequiredMixin, CreateView):
         #return HttpResponseRedirect(self.get_success_url())
     
 
-class VariableTypeUpdateView(LoginRequiredMixin, UpdateView):
+class VariableTypeUpdateView(LoginRequiredMixin, GroupRequiredMixin, UpdateView):
     model = VariableTypeModel
+    group_required = [u'editor']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable_type/variable_type_form.html'
     form_class = VariableTypeForm
@@ -234,6 +239,7 @@ class VariableTypeUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def variable_type_delete(request):
     resp = {}
     query = {'id': request.GET.get('id', None)}

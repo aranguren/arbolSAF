@@ -9,7 +9,8 @@ class ToolView(TemplateView):
 class IntroToolView(TemplateView):
     template_name = "arbolsaf/tool/tool_intro.html"
 
-
+class AboutToolView(TemplateView):
+    template_name = "arbolsaf/tool/about.html"
 
 
 

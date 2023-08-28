@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load user_has_group %}
 {% load static %}
 {% block title %}
   Detalles especie
@@ -69,6 +70,8 @@
             <a href="{% url 'arbolsaf:species_list' %}"
                class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
             <a href="{% url 'arbolsaf:species_create' %}"
+
+            {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
             <a href="{% url 'arbolsaf:species_update' specie.id %}"
                class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
@@ -79,6 +82,7 @@
                     value="{{ specie.id }} ">
               <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
             </button>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -166,6 +170,47 @@
                 </div>
               </div>
             </div>
+            <div class="col-6">
+              <div class="form-group">
+                <h6>Link CIFOR-ICRAF</h6>
+                <div class="mr-2">
+                  {% if  specie.get_link_icraf%}
+                  <a href="{{specie.get_link_icraf}}" target="_blank">Abrir enlace</a>
+                  
+                  {% else %}
+                  -
+                  {% endif %}
+               
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--div class="row">
+
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Imagen</h6>
+                {% if specie.imagen %}
+                <div class="mr-2"><a href="{{specie.imagen.url }}" target="_blank">Descargar <i class="fa fa-download"></i></a></div>
+                {% else %}
+                <div class="mr-2">-</div>
+  
+                {% endif %}
+              </div>
+            </div>
+          </div-->
+          <div class="row mb-2">
+            <div class="col-12">
+              <div class="form-group">
+                <h6>Notas</h6>
+                {% if specie.notas %}
+                <div class="mr-2">{% firstof specie.notas|safe|default_if_none:"-"|linebreaks  %}</div>
+                {% else %}
+                <div class="mr-2">-</div>
+                {% endif %}
+               
+              </div>
+            </div>          
           </div>
         </div>
         <section id="sinonimosection">
@@ -179,8 +224,10 @@
                 </div>
                 <div class="col-2">
                   <div class="d-flex justify-content-end">
+                    {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                     <a href="{% url 'arbolsaf:species_create_synonymous' specie.id %}"
                        class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+                       {% endif %}
                   </div>
                 </div>
               </div>
@@ -195,6 +242,7 @@
                           {{ sinonimo }}
                         </td>
                         <td class="text-center">
+                          {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                           <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin-sinonimo"
                                   id="eliminarSinonimo"
                                   data-bs-toggle="modal"
@@ -202,6 +250,7 @@
                                   value="{{ sinonimo.id }}">
                             <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
                           </button>
+                          {% endif %}
                         </td>
                       </tr>
                     </tbody>
@@ -226,8 +275,10 @@
                 </div>
                 <div class="col-2">
                   <div class="d-flex justify-content-end">
+                    {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                     <a href="{% url 'arbolsaf:species_create_variable' specie.id %}"
                        class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+                      {% endif %}
                   </div>
                 </div>
               </div>
@@ -274,21 +325,22 @@
                    
                         <td class="text-center">
                           <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
-                          
-                          {% if not variable.chequeo %}
-                          <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
+                          {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+                            {% if not variable.chequeo %}
+                            <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
 
-                          {% else %}
-                          <i class="far fa-edit me-2 mx-2" aria-hidden="true"></i>                 
+                            {% else %}
+                            <i class="far fa-edit me-2 mx-2" aria-hidden="true"></i>                 
+                            {% endif %}
+                            <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
+                                    id="eliminarVariable"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteVariableModal"
+                                    {% if variable.chequeo %}disabled {% endif %}
+                                    value="{{ variable.id }}">
+                              <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
+                            </button>
                           {% endif %}
-                          <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
-                                  id="eliminarVariable"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#deleteVariableModal"
-                                  {% if variable.chequeo %}disabled {% endif %}
-                                  value="{{ variable.id }}">
-                            <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
-                          </button>
                         
                         </td>
                       </tr>
@@ -341,9 +393,11 @@
                     <td>
                       <b>Unidad medida</b>
                     </td>
+                    {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                     <td>
                       <b>Diligenciar</b>
                     </td>
+                    {% endif %}
                   </tr>
                   </thead>
                   <tbody>
@@ -356,10 +410,11 @@
                         <td> {% firstof variable_nd.familia|default_if_none:"-" %}</td>
                         <td> {% firstof variable_nd.unidad_medida|default_if_none:"-" %}</td>
                         
-               
+                        {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                         <td> <a href="{% url 'arbolsaf:species_diligenciar_variable' specie.id variable_nd.id %}"   data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Diligenciar"><i class="fa fa-plus mx-2" aria-hidden="true"></i></a>
                         </td> 
+                        {% endif %}
                       </tr>
                       {% endfor %}
                     </tbody>

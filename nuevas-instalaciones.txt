@@ -1,1 +1,3 @@
 pip install django-computedfields
+pip install django-simple-history
+import_export

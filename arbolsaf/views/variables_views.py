@@ -14,6 +14,7 @@ from django.http import HttpResponseServerError, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404
+from ..permissions import GroupRequiredMixin, group_required
 
 """
 class SpeciesListView(LoginRequiredMixin, ListView):
@@ -151,8 +152,9 @@ class SpeciesUpdateView(LoginRequiredMixin, UpdateView):
         return context
 """
 
-class Variable2MDetailView(LoginRequiredMixin, DetailView):
+class Variable2MDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
     model = VariableModel
+    group_required = [u'visualizador', u'editor']
     #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable/variable_o2m_detail.html'
@@ -168,6 +170,7 @@ class Variable2MDetailView(LoginRequiredMixin, DetailView):
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def create_variable_o2m(request, pk, tipo=None):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -222,8 +225,9 @@ def create_variable_o2m(request, pk, tipo=None):
 
     return render(request, 'arbolsaf/variable/variable_o2m_form.html', context)
 
-class VariableO2MCreateView(LoginRequiredMixin, CreateView):
+class VariableO2MCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateView):
     model = VariableModel
+    group_required = [u'editor']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable/variable_o2m_form.html'
     form_class = VariableO2MForm
@@ -276,8 +280,9 @@ class VariableO2MCreateView(LoginRequiredMixin, CreateView):
         return super(VariableO2MCreateView, self).form_valid(form)
 
 
-class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
+class VariableO2MUpdateView(LoginRequiredMixin, GroupRequiredMixin, UpdateView):
     model = VariableModel
+    group_required = [u'editor']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable/variable_o2m_form.html'
     form_class = VariableO2MForm
@@ -328,6 +333,7 @@ class VariableO2MUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def variable_delete(request):
     resp = {}
     query = {'id': request.GET.get('id', None)}
@@ -387,8 +393,10 @@ def variable_get_opciones(request):
     return JsonResponse(resp, status=200)
 
 
-class VariableSpeciesListView(LoginRequiredMixin, ListView):
+class VariableSpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
+    group_required = [u'visualizador', u'editor']
     model = VariableModel
+    group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/variable/variable_species_list.html'
     context_object_name = 'variables_species'
     paginate_by = 10
@@ -520,7 +528,8 @@ class VariableSpeciesListView(LoginRequiredMixin, ListView):
         return query_result
 
 
-class VariableSpeciesDetailView(LoginRequiredMixin, DetailView):
+class VariableSpeciesDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
+    group_required = [u'visualizador', u'editor']
     model = VariableModel
     #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
     context_object_name = 'variable'
@@ -534,8 +543,9 @@ class VariableSpeciesDetailView(LoginRequiredMixin, DetailView):
         return context
     
 
-class CrossTableDetailView(LoginRequiredMixin, DetailView):
+class CrossTableDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
     model = VariableModel
+    group_required = [u'visualizador', u'editor']
     #group_required = [u'Auxiliar Legal', 'Jefe de la Oficina Local', 'Jefe de la RBRP']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable/variable_species_detail.html'
@@ -547,8 +557,9 @@ class CrossTableDetailView(LoginRequiredMixin, DetailView):
         context['list_from'] ='cross_table'
         return context
     
-class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
+class VariableSpeciesCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateView):
     model = VariableModel
+    group_required = [u'editor']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable/variable_species_form.html'
     form_class = VariableSpeciesForm
@@ -577,6 +588,7 @@ class VariableSpeciesCreateView(LoginRequiredMixin, CreateView):
 
 
 @login_required(login_url='/login/')
+@group_required('editor', raise_exception=True)
 def create_variable_specie(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -619,8 +631,9 @@ def create_variable_specie(request):
     return render(request, 'arbolsaf/variable/variable_species_form.html', context)
 
 
-class VariableSpeciesUpdateView(LoginRequiredMixin, UpdateView):
+class VariableSpeciesUpdateView(LoginRequiredMixin, GroupRequiredMixin, UpdateView):
     model = VariableModel
+    group_required = [u'editor']
     context_object_name = 'variable'
     template_name = 'arbolsaf/variable/variable_species_form.html'
     form_class = VariableSpeciesForm

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from computedfields.models import ComputedFieldsModel, computed, compute
-# Create your models here.
+import urllib.parse
 
 class BasicAuditModel(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, 
@@ -25,6 +25,7 @@ class BasicAuditModel(models.Model):
         abstract = True
 
 class SynonymousModel(BasicAuditModel):
+    
 
     sinonimo = models.CharField(_("sinónimo"), max_length=255)
     especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"), 
@@ -257,6 +258,8 @@ class DistributionMenaceModel(BasicAuditModel):
 
 class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
+
+
     VALUES_CHOICES = (
         ("ninguno", "Ninguno"),
         ("bajo", "Bajo"),
@@ -277,6 +280,27 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
     autor = models.CharField(_("Autor"), max_length=255, blank=True, null=True)
 
     nativa = models.BooleanField(_("Nativa?"))
+
+    notas = models.TextField(_("Notas"), blank=True, null=True)
+
+    #link_cifor_icraf = models.URLField(_("Link CIFOR-ICRAF"), max_length=200, null=True, blank=True)
+    
+    
+    @property
+    def get_link_icraf(self):
+        if not self.nombre_cientifico:
+            return False
+        url_prefix ='https://apps.worldagroforestry.org/products/switchboard/index.php/name_like/'
+        url_name = urllib.parse.quote(self.nombre_cientifico)
+        link_cifor = f"{url_prefix}{url_name}"
+        return link_cifor
+
+    #imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie",
+    #                                            null=True, blank=True)
+    
+    @property
+    def get_imagenes(self):
+        return self.imagenes.all()
 
     #campos calculados
     @computed(models.IntegerField(_("Valor para  Madera"), default=0),
@@ -735,10 +759,10 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
     @property
     def get_variables_no_diligenciadas(self):
-        #variables = VariableTypeModel.objects.raw("""Select avt.id, avt.variable from arbolsaf_variable_type avt where avt.id not in 
-        #        (select distinct av.tipo_variable_id from arbolsaf_variable av where av.especie_id=%s)
-        #    """, [self.id])
-        variables = VariableTypeModel.objects.all()
+        variables = VariableTypeModel.objects.raw("""Select avt.id, avt.variable from arbolsaf_variable_type avt where avt.id not in 
+                (select distinct av.tipo_variable_id from arbolsaf_variable av where av.especie_id=%s)
+            """, [self.id])
+        #variables = VariableTypeModel.objects.all()
         return variables
 
 
@@ -778,3 +802,54 @@ class PriorityModel(BasicAuditModel):
         managed = True
         verbose_name = 'Prioridad'
         verbose_name_plural = 'Prioridad'
+
+
+class Bitacora(BasicAuditModel):
+
+
+    MODELO_CHOICES = (
+        ("especie", "Especie"),
+        ("variable", "Variable"),
+    )
+    
+    def __str__(self):
+        return f"{self.entidad_modificada} {self.asunto}"
+
+
+    entidad_modificada = models.CharField(_("Entidad"), max_length=50, choices=MODELO_CHOICES)
+    codigo_especie = models.CharField(_("Código especie"), max_length=50, blank=True, null=True)
+    codigo_variable = models.CharField(_("Código variable"), max_length=50, blank=True, null=True)
+    asunto = models.CharField(_("Asunto"), max_length=255)
+    descripcion_cambio = models.TextField(_("Descripción del cambio"))
+    class Meta:
+        db_table = 'arbolsaf_bitacora_cambios'
+        managed = True
+        verbose_name = 'Bitacora'
+        verbose_name_plural = 'Bitacora'
+
+
+class SpeciesAdminModel(SpeciesModel):
+    class Meta:
+        proxy = True
+        verbose_name = 'Categorización Especies'
+        verbose_name_plural = 'Categorización Especies'
+
+
+class ImageSpecies(models.Model):
+
+    descripcion = models.CharField(_("Descripción"), max_length=255)
+    especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"), 
+                    related_name="imagenes", on_delete=models.CASCADE)
+
+    imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie")
+
+
+    def __str__(self):
+        return self.descripcion
+
+
+    class Meta:
+        db_table = 'arbolsaf_imagen_species'
+        managed = True
+        verbose_name = 'Imagen Especie'
+        verbose_name_plural = 'Imágenes Especies'

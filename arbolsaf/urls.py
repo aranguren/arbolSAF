@@ -68,6 +68,8 @@ urlpatterns = [
 
     #path('herramienta/pdf/', ToolPDFView.as_view(), name='tool_pdf'),
     path('herramienta/pdf/', tool_print_pdf_view, name='tool_pdf'),
+    path('acerca-de/', AboutToolView.as_view(), name='about_page'),
+    
 
 
 ]

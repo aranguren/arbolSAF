@@ -19,26 +19,29 @@
   <!-- Navbar -->
   <nav class="card top-0 rounded-0">
     <div class="w-100 object-fit-cover">
-      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
-           class="w-100">
+      <a href="{% url 'arbolsaf:homepage' %}"><img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
+           class="w-100"></a>
     </div>
   </nav>
   <!-- End Navbar -->
   <main class="main-content mt-2">
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-2">
+        <div class="col-1">
         </div>
-        <div class="col-8">
+        <div class="col-10">
           <div class="card card-body">
             <p class="text-left letra">
-              ÁrbolSAF forma parte de un conjunto de herramientas que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones.
+              ÁrbolSAF forma parte de un conjunto de soluciones digitales que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones. Consta de una base de datos digital y de una herramienta digital.
             </p>
             <p class="text-left letra">
-              Esta herramienta guía y acompaña al técnico/agricultor/investigador a seleccionar las especies de árboles más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá y los requerimientos de clima y suelo, características morfológicas y funcionales de las especies de árboles.
+              La base de datos, de libre acceso para consulta, alimenta la herramienta e incluye una lista de especies de árboles y palmeras, una lista de 147 variables o propiedades de esas especies relativas a copa, semillas, troncos, usos, y necesidades climáticas y de suelo, además del listado de fuentes de literatura revisada. 
             </p>
             <p class="text-left letra">
-              El enfoque de ÁrbolSAF no es dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas sobre los árboles que podrían ser parte de su opción agroforestal.
+              La herramienta guía y acompaña al técnico/agricultor/investigador a seleccionar las especies de árboles y palmeras más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá y los requerimientos de clima y suelo, y características morfológicas y funcionales de las especies. 
+            </p>
+            <p class="text-left letra">
+              Siguiendo el enfoque de CIFOR-ICRAF de Opciones por Contexto aplicado a la agroforestería, ÁrbolSAF no pretende dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas sobre los árboles y palmeras que podrían ser parte de su opción agroforestal. 
             </p>
             <div></div>
             <div class="d-flex justify-content-end mt-5">
@@ -46,10 +49,12 @@
               class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Plataforma de datos</a>
               <a href="{% url 'arbolsaf:tool_part1' %}"
               class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Ir a herramienta&nbsp;&nbsp;<i class="fa fa-tools"></i></a>
+              <a href="{% url 'arbolsaf:about_page' %}"
+              class="btn btn-secondary btn-large btn-sm m-b-xm mx-1">Acerca de &nbsp;&nbsp;<i class="fa fa-tools"></i></a>
             </div>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-1">
         </div>
       </div>
       {% comment %} {% include "includes/footer.html" %} {% endcomment %}
