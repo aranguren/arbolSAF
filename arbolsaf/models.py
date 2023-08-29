@@ -308,8 +308,24 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
     def valor_madera(self):
         if len(self.get_variables)== 0:
             return 0
-     
-       
+
+        # si una especie tiene la v104 como palmera o hervacea, entonces retornar 0
+        # o sea si v104 = ('palmera','hervacea') retornar 0
+        
+        v104_instance = self.variables.filter(tipo_variable__cod_var__iexact='v104').first()
+        if v104_instance:
+            valores = v104_instance.valores_cualitativos.all()
+            nombres_valores_v104 = [valor.nombre for valor in valores]
+            if 'palmera' in nombres_valores_v104 or 'herbacea' in nombres_valores_v104:
+                v104 = True
+            else:
+                v104 = False
+        else:
+            v104 = False 
+        
+        if v104:
+            return 0
+        
         v147_instance = self.variables.filter(tipo_variable__cod_var__iexact='v147').first()
         if v147_instance:
             v147 = v147_instance.valor_boolean or False
@@ -808,6 +824,7 @@ class Bitacora(BasicAuditModel):
 
 
     MODELO_CHOICES = (
+        ("general", "General"),
         ("especie", "Especie"),
         ("variable", "Variable"),
     )

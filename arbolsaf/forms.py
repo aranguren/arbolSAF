@@ -134,7 +134,7 @@ class VariableSpeciesForm(forms.ModelForm):
             'referencia_2': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'valor_numerico':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_texto':forms.TextInput(attrs={'class': 'form-control'}),
-            'valor_boolean': forms.CheckboxInput(attrs={'class': 'form-check-input '}),    
+            'valor_boolean': forms.CheckboxInput(attrs={'class': 'form-check-input '}),      
             'rango_superior':forms.NumberInput(attrs={'class': 'form-control'}),
             'rango_inferior':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_general':forms.TextInput(attrs={'class': 'form-control'}),
