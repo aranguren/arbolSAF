@@ -160,8 +160,8 @@ class VariableSpeciesForm(forms.ModelForm):
         if self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'rango':
 
 
-            rango_superior = self.cleaned_data.get('rango_superior', 0)
-            rango_inferior = self.cleaned_data.get('rango_inferior', 0)
+            rango_superior = self.cleaned_data.get('rango_superior', 0) or 0
+            rango_inferior = self.cleaned_data.get('rango_inferior', 0) or 0
             if rango_superior<rango_inferior:
                 raise forms.ValidationError(
                     {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})

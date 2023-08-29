@@ -25,7 +25,7 @@ def login_view(request):
                 login(request, user)
                 return redirect(settings.LOGIN_REDIRECT_URL)
             else:
-                msg = 'Invalid credentials'
+                msg = 'Credenciales no válidas'
         else:
             msg = 'Error validating the form'
 

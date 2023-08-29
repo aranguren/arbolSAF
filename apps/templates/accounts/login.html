@@ -36,7 +36,7 @@
                 Autenticarse                
               </h5>
             </div>
-            <div class="mb-2 position-relative text-center">
+            <div class="mb-2 position-relative text-center {% if msg %}text-danger {% endif %}">
                 {% if msg %}
                       {{ msg | safe }}
                   {% else %}
