@@ -1,29 +1,37 @@
 {% load static %}
-
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha</title>
-
-
-  <!--link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-  <style>
-
-
-
+    <!--link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"-->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <style>
     .margin-custom {
-      margin-right: 10px;
-      margin-left: 10px;
+      margin-right: 50px;
+      margin-left: 50px;
     }
 
+    p {
+      font-size: 20px;
+    }
 
+    .font-18 {
+      font-size: 18px;
+    }
 
+    .font-32 {
+      font-size: 32px;
+    }
+
+    .text-table{
+      font-size: 12px;
+    }
 
 
     .blue-label {
@@ -87,13 +95,430 @@
   }
 
 
-    </style> 
-</head>
-<body>
+    </style>
+  </head>
+  <body>
+    <!--img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png" class="w-100 h-20"-->
 
-  <h1 class="text-center mt-3">Ficha ejemplo</h1>
-  <h3 class="text-center mt-1 mb-5">Subtitulo</h3>
- 
- 
+
+    <h2 class="text-center mt-10">Reporte de consulta de la herramienta interactiva ÁrbolSAF</h2>
+    <br/>
+    <br/>
+    <div class="margin-custom">
+        <p class="mt-5">
+          Este es el portafolio de especies de árboles y palmeras que usted ha seleccionado y las consideraciones realizadas tomando en cuenta los requerimientos de clima y suelo de las especies, y las características clave que ayudan al diseño de opciones agroforestales.  
+        </p>
+
+
+        <br/>
+        <br/>
+
+        <h4>
+          <strong>Datos del usuario</strong>
+        </h4>
+        <div class="row mt-5">
+          <div class="col-6">
+            <div class="form-group">
+              <h6>
+                <strong class="font-18">Nombre del productor</strong>
+              </h6>
+              <spam class="mr-2 font-18">Juan perez Perez</span>
+            </div>
+          </div>
+            <div class="col-6">
+              <div class="form-group">
+                <h6>
+                  <strong class="font-18">Región</strong>
+                </h6>
+                <spam class="mr-2 font-18">Región 1</span>
+              </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="form-group">
+              <h6>
+                <strong class="font-18">Provincia</strong>
+              </h6>
+              <spam class="mr-2 font-18">Matanzas</span>
+            </div>
+          </div>
+            <div class="col-6">
+              <div class="form-group">
+                <h6>
+                  <strong class="font-18">Distrito</strong>
+                </h6>
+                <spam class="mr-2 font-18">Càrdenas</span>
+              </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="form-group">
+              <h6>
+                <strong class="font-18">Tipo de intervención</strong>
+              </h6>
+              <spam class="mr-2 font-18">Plantaion</span>
+            </div>
+          </div>
+            <div class="col-6">
+              <div class="form-group">
+                <h6>
+                  <strong class="font-18">Tamaño de la Finca</strong>
+                </h6>
+                <spam class="mr-2 font-18">Càrdenas</span>
+              </div>
+            </div>
+        </div>
+        <div class="row mt-3 mb-5">
+          <div class="col-6">
+            <div class="form-group">
+              <h6>
+                <strong class="font-18">Tamaño de la parcela</strong>
+              </h6>
+              <spam class="mr-2 font-18">25 ha</span>
+            </div>
+          </div>
+            <div class="col-6">
+              <div class="form-group">
+                <h6>
+                  <strong class="font-18">Tipo de usuario</strong>
+                </h6>
+                <spam class="mr-2 font-18">viverista</span>
+              </div>
+            </div>
+        </div>
+        <h4>
+          <strong>Paso 1</strong>
+        </h4>
+        <p class="mt-5">
+          Estos son los productos y servicios que brindan las especies del portafolio que seleccionó
+        </p>
+
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-12">
+            <table class="table table-bordered table-bottom-border text-table">
+              <thead>
+                <th>Nombre commún</th>
+                <th>Nombre científico</th>
+                <th>Madera</th>
+                <th>Fruta</th>
+                <th>Suelo</th>
+                <th>Microclima</th>
+                <th>Biodiversidad</th>
+                <th>Otros usos</th>
+                <th>IVIM</th>
+              </thead>
+        
+              <tr>
+                <td>Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td>Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </td>
+              <tr>
+                <td>Achiote asdfajshd asdkhfj</td>
+                <td>Achiotirus propersus aksdjf</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </td>
+              <tr>
+                <td>Achiote asdfajshd asdkhfj</td>
+                <td>Achiotirus propersus aksdjf</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </td>
+              <tr>
+                <td>Achiote asdfajshd asdkhfj</td>
+                <td>Achiotirus propersus aksdjf</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </td>
+            
+        
+            </table>
+          </div>
+        </div>
+
+        <h4>
+          <strong>Paso 2</strong>
+        </h4>
+        <p class="mt-5">
+          Se presentan los requerimientos de clima y altitud de las especies seleccionadas y la calificación que usted le asignó (semáforo verde y rojo) considerando las condiciones del lugar donde se instalará la parcela. 
+        </p>
+        <p>
+          Semáforo verde sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
+        </p>
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-12">
+            <table class="table table-bordered table-bottom-border text-table">
+              <thead>
+                <th>Nombre commún</th>
+                <th>Temperatura mínima</th>
+                <th>Temperatura máxima</th>
+                <th>Elevación mínima</th>
+                <th>Elevación máxima</th>
+                <th>Presepitación mínima</th>
+                <th>Presepitación máxima</th>
+                <th>Tolerancia a condiciones Extremas</th>
+                <th>Seleccionada</th>
+              </thead>
+        
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </tr>
+            
+        
+            </table>
+          </div>
+        </div>
+
+
+        <h4>
+          <strong>Paso 3</strong>
+        </h4>
+        <p class="mt-5">
+          Se presentan los requerimientos de suelo de las especies seleccionadas y la calificación que usted le asignó (semáforo verde y rojo) considerando las condiciones del lugar donde se instalará la parcela.  
+        </p>
+
+        <p>
+          Semáforo verde sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
+        </p>
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-12">
+            <table class="table table-bordered table-bottom-border text-table">
+              <thead>
+                <th>Nombre commún</th>
+                <th>Suelo preferido</th>
+                <th>Tolerancia a la acidez</th>
+                <th>Tolerancia a la salinidad</th>
+                <th>Preferencia pH suelo</th>
+                <th>pH Mínimo Suelo</th>
+                <th>ph Máximo Suelo</th>
+                <th>Desarrollo en suelos rocosos</th>
+                <th>Preferencia a Suelos Drenados</th>
+                <th>Seleccione</th>
+              </thead>
+        
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+                <td class="text-center">106</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+                <td class="text-center">106</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+                <td class="text-center">106</td>
+              </tr>
+            
+        
+            </table>
+          </div>
+        </div>
+
+        <h4>
+          <strong>Paso 4</strong>
+        </h4>
+        <p class="mt-5">
+          Estas son las características morfológicas clave de las especies como una guía para decidir la densidad y la ubicación de las especies seleccionadas. Se muestran las notas que usted hizo en la columna final.  
+        </p>
+
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-12">
+            <table class="table table-bordered table-bottom-border text-table">
+              <thead>
+                <th>Nombre commún</th>
+                <th>Gremio Ecológico</th>
+                <th>Fenología</th>
+                <th>Tipo de Raiz</th>
+                <th>Tipo de Corteza</th>
+                <th>Capacidad de regeneración de ramas</th>
+                <th>Forma Copa</th>
+                <th>Altura copa</th>
+                <th>Ancho copa</th>
+                <th>Tipo de ramificación</th>
+                <th>Notas</th>
+              </thead>
+        
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-table">Achiotirus propersus aksdjf sdlfkgj sdflgj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+                <td class="text-center">2</td>
+                <td class="text-center">0</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+                <td class="text-center"> 1</td>
+                <td class="text-center">106</td>
+              </tr>
+            
+        
+            </table>
+          </div>
+        </div>
+
+
+        <h4>
+          <strong>Datos complementarios de las especies seleccionadas </strong>
+        </h4>
+        <p class="mt-5">
+          1. Estatus de conservación: V56 (UICN), V59 (CITES) <br/>
+          2. Tipo de semilla por viabilidad: V136
+        </p>
+
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-12">
+            <table class="table table-bordered table-bottom-border text-table">
+              <thead>
+                <th>Especie</th>
+                <th>Estatus de conservación UICN </th>
+                <th>Estatus de conservación CITES </th>
+                <th>Tipo de semilla por viabilidad </th>
+              </thead>
+        
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+              </tr>
+              <tr>
+                <td class="text-table">Achiote asdfajshd asdkhf sdfkgj sdfgklj</td>
+                <td class="text-center">1</td>
+                <td class="text-center">3</td>
+                <td class="text-center">2</td>
+              </tr>
+            
+        
+            </table>
+          </div>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <p><b>Este reporte fue generado por la herramienta interactiva ÁrbolSAF</b></p>
+
+        <p>
+        Carreño-Rocabado G., Quiñones L., Ramos K., Ramirez F., Visscher A, Robiglio V. 2023. Herramienta interactiva de selección de especies para el codiseño de opciones agroforestales ArbolSAF Versión Alfa 1.0. CIFOR-ICRAF. Perú.  
+
+        </p>
+
+
+</div>
+
 </body>
 </html>

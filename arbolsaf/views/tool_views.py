@@ -2,6 +2,7 @@ from django.views.generic import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from wkhtmltopdf.views import PDFTemplateResponse
 import json
+from django.conf import settings
 
 class ToolView(TemplateView):
     template_name = "arbolsaf/tool/tool.html"
@@ -19,22 +20,48 @@ def get_tool_pdf_response(request):
 
 
     template_to_use ='arbolsaf/tool/tool_pdf.html' # the template 
+    template_header ='arbolsaf/tool/tool_pdf_header.html' 
+    template_footer ='arbolsaf/tool/tool_pdf_footer.html' 
    
 
     identificador_cusaf = 1
     data = {
         'cusaf':'Cusaf00001',
+        'pdf_header':"{}{}".format(settings.STATIC_ROOT, '/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png'),
 
         #'imagen':imagen
     }
+    """
     response = PDFTemplateResponse(request=request,
                                     template=template_to_use,
                                     #header_template= template_header, 
                                     #footer_template= template_footer, 
-                                    filename="Ficha cusaf {}.pdf".format(identificador_cusaf),
+                                    filename="Reporte herramienta ÁrbolSAF.pdf",
                                     context= data,
                                     show_content_in_browser=False,
-                                    cmd_options={  'margin-top':10,
+                                    cmd_options={  'margin-top':0,
+                                    'margin-left':0,
+                                    'margin-right':0,
+                                    "zoom":1,
+                                    "viewport-size" :"1366x513",
+                                    'javascript-delay':1000,
+                                    'enable-local-file-access':True,
+                                    'footer-center' :'[page]/[topage]',
+                                    "no-stop-slow-scripts":True},
+                                    )
+    """
+    response = PDFTemplateResponse(request=request,
+                                    template=template_to_use,
+                                    header_template= template_header, 
+                                    #footer_template= template_footer, 
+                                    filename="Reporte herramienta ÁrbolSAF.pdf",
+                                    context= data,
+                                    show_content_in_browser=False,
+                                    cmd_options={  'margin-top':33,
+                                    'margin-bottom':15,
+                                    'margin-left':0,
+                                    'margin-right':0,
+                                    'header-spacing':10,
                                     "zoom":1,
                                     "viewport-size" :"1366x513",
                                     'javascript-delay':1000,
