@@ -179,7 +179,7 @@
             <div class="col-6">
               <div class="form-group">
                 <h6>
-                  <strong class="font-18">Tamaño de la Finca</strong>
+                  <strong class="font-18">Tamaño de la Finca (ha)</strong>
                 </h6>
                 <spam class="mr-2 font-18">{{tam_finca}}</span>
               </div>
@@ -189,7 +189,7 @@
           <div class="col-6">
             <div class="form-group">
               <h6>
-                <strong class="font-18">Tamaño de la parcela</strong>
+                <strong class="font-18">Tamaño de la parcela (ha)</strong>
               </h6>
               <spam class="mr-2 font-18">{{tam_parcela}}</span>
             </div>
@@ -228,15 +228,15 @@
 
               {% for especie in especies %}
                   <tr>
-                    <td class="text-table">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-center">-</td>
-                    <td class="text-table"> - </td>
-                    <td class="text-table"> - </td>
-                    <td class="text-center">{{especie.IVIM}}</td>
+                    <td>{{especie.nombre_comun }}</td>
+                    <td>{{especie.nombre_cientifico }}</td>
+                    <td class="text-center">{{especie.valor_madera }}</td>
+                    <td class="text-center">{{especie.valor_fruta }}</td>
+                    <td class="text-center">{{especie.valor_suelo }}</td>
+                    <td class="text-center">{{especie.valor_microclimea }}</td>
+                    <td class="text-center">{{especie.valor_biodiversidad }}</td>
+                    <td class="text-center">{{especie.valor_otros_usos }}</td>
+                    <td class="text-center">{{especie.IVIM|floatformat:2}}</td>
                   </tr>
               
               {% endfor %}
@@ -271,16 +271,23 @@
 
               {% for especie in especies %}
                   <tr>
-                    <td class="text-table">-</td>
+                    <td>{{especie.nombre_comun }}</td>
                     <td class="text-center">{{especie.v101_temperatura_min }}</td>
                     <td class="text-center">{{especie.v100_temperatura_max }}</td>
                     <td class="text-center">{{especie.v157_elevacion_min }}</td>
                     <td class="text-center">{{especie.v158_elevacion_max }}</td>
                     <td class="text-center">{{especie.v101_temperatura_min }}</td>
                     <td class="text-center">{{especie.v101_temperatura_min }}</td>
-                    <td class="text-table"> - </td>
+                    <td class="text-center">{{especie.v161_tolerancia_condiciones}}</td>
                     <td class="text-center">
-                        <span class="green-dot"></span>
+                      {% if  especie.SEMAFORO_PASO_2 == 'active_green'%}
+                      <span class="green-dot"></span>
+                      {% elif  especie.SEMAFORO_PASO_2 == 'active_red'%}
+                      <span class="red-dot"></span>
+                      {% else %}
+                      -
+                      {% endif %}
+                      
                     </td>
                   </tr>
               
@@ -322,7 +329,7 @@
              
               {% for especie in especies %}
                   <tr>
-                    <td class="text-table">Achiote rojo maduro</td>
+                    <td>{{especie.nombre_comun }}</td>
                     <td class="text-center">{{especie.v106_tipo_suelo_optimo }}</td>
                     <td class="text-center">{{especie.v108_tolerancia_acidez }}</td>
                     <td class="text-center">{{especie.v109_tolerancia_salinidad }}</td>
@@ -332,7 +339,13 @@
                     <td class="text-center">{{especie.v152_desarrollo_suelos_rocosos }}</td>
                     <td class="text-center">{{especie.v153_desarrollo_suelos_drenados }}</td>
                     <td class="text-center">
-                        <span class="green-dot"></span>
+                      {% if  especie.SEMAFORO_PASO_3 == 'active_green'%}
+                      <span class="green-dot"></span>
+                      {% elif  especie.SEMAFORO_PASO_3 == 'active_red'%}
+                      <span class="red-dot"></span>
+                      {% else %}
+                      -
+                      {% endif %}
                     </td>
                   </tr>
               
@@ -369,7 +382,7 @@
         
               {% for especie in especies %}
                   <tr>
-                    <td class="text-table">Achiote rojo maduro</td>
+                    <td class="text-table">{{especie.nombre_comun }}</td>
                     <td class="text-center">{{especie.v73_gremio_ecologico }}</td>
                     <td class="text-center">{{especie.v37_fenologia_hojas }}</td>
                     <td class="text-center">{{especie.v118_tipo_raiz }}</td>
@@ -380,7 +393,7 @@
                     <td class="text-center">{{especie.v2_ancho_potencial_copa }}</td>
                     <td class="text-center">{{especie.v13_tipo_ramificacion_copa }}</td>
                     <td class="text-center">
-                        Notas
+                      {{especie.NOTAS }}
                     </td>
                   </tr>
               
@@ -413,7 +426,7 @@
               {% for especie in especies %}
                   <tr>
 
-                    <td class="text-center">-</td>
+                    <td class="text-center">{{especie.nombre_comun }}</td>
                     <td class="text-center">{{especie.v56_categoria_amenaza_iucn }}</td>
                     <td class="text-center">{{especie.v59_categoria_amenaza_cites }}</td>
                     <td class="text-center">{{especie.v136_tipo_semilla_viabilidad }}</td>

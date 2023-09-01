@@ -114,25 +114,30 @@ def tool_print_pdf_view(request):
     post_data = request.POST
     print("-------------------------------------------------------------------------------------------------------------------")
     data={
-        "nombre": post_data['NOMBRE'] or '-',
-        "region": post_data['REGION'] or '-',
-        "provincia": post_data['PROVINCIA'] or '-',
-        "distrito": post_data['DISTRITO'] or '-',
-        "tipo_intervencion": post_data['TIPO DE INTERVENCION'] or '-',
-        "tam_finca": post_data['TAMANO DE FINCA'] or '-',
-        "tam_parcela": post_data['TAMANO DE PARCELA'] or '-',
-        "tipo_usuario": post_data['TIPO DE USUARIO'] or '-',
-        "genero": post_data['IDENTIDAD DE GENERO'] or '-',
-        "edad": post_data['EDAD DEL USUARIO'] or '-', 
+        "nombre": post_data['nombre'] or '-',
+        "region": post_data['region'] or '-',
+        "provincia": post_data['provincia'] or '-',
+        "distrito": post_data['distrito'] or '-',
+        "tipo_intervencion": post_data['tipo_de_intervencion'] or '-',
+        "tam_finca": post_data['tamano_de_finca'] or '-',
+        "tam_parcela": post_data['tamano_de_parcela'] or '-',
+        "tipo_usuario": post_data['tipo_de_usuario'] or '-',
+        "genero": post_data['identidad_de_genero'] or '-',
+        "edad": post_data['edad_del_usuario'] or '-', 
         "especies":especies_obj 
     }
-    cuenta = 0
+   
     for especie in especies_obj:
-         
-        if cuenta==0:
-            cuenta+=1 
-            continue
-        cuenta+=1 
+        
+        especie['nombre_comun'] = especie.get('NOMBRE COMUN','-')
+        especie['nombre_cientifico'] = especie.get('NOMBRE CIENTIFICO','')
+        especie['valor_madera'] = especie.get('VALOR MADERA','')
+        especie['valor_fruta'] = especie.get('VALOR FRUTA','')
+        especie['valor_otros_usos'] = especie.get('VALOR OTROS USOS','')
+        especie['valor_biodiversidad'] = especie.get('VALOR BIODIVERSIDAD','')
+        especie['valor_microclimea'] = especie.get('VALOR MICROCLIMA','')
+        especie['valor_suelo'] = especie.get('VALOR SUELO','')
+
   
         codigo = especie.get('CODIGO',False)
         especienodel = SpeciesModel.objects.filter(cod_esp=codigo).first()
