@@ -134,7 +134,7 @@ class VariableSpeciesForm(forms.ModelForm):
             'referencia_2': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'valor_numerico':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_texto':forms.TextInput(attrs={'class': 'form-control'}),
-            'valor_boolean': forms.CheckboxInput(attrs={'class': 'form-check-input '}),    
+            'valor_boolean': forms.CheckboxInput(attrs={'class': 'form-check-input '}),      
             'rango_superior':forms.NumberInput(attrs={'class': 'form-control'}),
             'rango_inferior':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_general':forms.TextInput(attrs={'class': 'form-control'}),
@@ -160,8 +160,8 @@ class VariableSpeciesForm(forms.ModelForm):
         if self.cleaned_data.get('tipo_variable', False) and self.cleaned_data.get('tipo_variable', '').tipo_variables == 'rango':
 
 
-            rango_superior = self.cleaned_data.get('rango_superior', 0)
-            rango_inferior = self.cleaned_data.get('rango_inferior', 0)
+            rango_superior = self.cleaned_data.get('rango_superior', 0) or 0
+            rango_inferior = self.cleaned_data.get('rango_inferior', 0) or 0
             if rango_superior<rango_inferior:
                 raise forms.ValidationError(
                     {"rango_superior": "El rango superior debe ser mayor o igual al rango inferior"})

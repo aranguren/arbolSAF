@@ -19,7 +19,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mb-2 mt-5">Sistema ArbolSAF</h1>
+            <h1 class="text-white mb-2 mt-5">Plataforma de Datos</h1>
             <p class="text-lead text-white">
               Sistema de gestión agroforestal. 
             </p>
@@ -36,7 +36,7 @@
                 Autenticarse                
               </h5>
             </div>
-            <div class="mb-2 position-relative text-center">
+            <div class="mb-2 position-relative text-center {% if msg %}text-danger {% endif %}">
                 {% if msg %}
                       {{ msg | safe }}
                   {% else %}

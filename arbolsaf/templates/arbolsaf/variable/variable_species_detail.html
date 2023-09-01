@@ -114,7 +114,11 @@
             <div class="col-3">
               <div class="form-group">
                 <h6>Verdadero? </h6>
-                <spam class="mr-2">{{variable.valor_boolean |yesno:"SI,NO,Desconocido" }}</span>
+                {% if variable.valor_boolean %}
+                SI
+              {% else %}
+                 NO
+              {% endif %}
               </div>   
             </div>
             {% elif  variable.tipo_variable.tipo_variables == 'cualitativo'%}

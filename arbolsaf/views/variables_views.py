@@ -578,11 +578,20 @@ class VariableSpeciesCreateView(LoginRequiredMixin, GroupRequiredMixin, CreateVi
         #   return reverse_lazy("ganaclima:period_detail", kwargs={"pk":self.object.id})   
     
 
-
+    
     def form_valid(self, form):
         specie = form.save(commit=False)
         #User = get_user_model()
 
+        return super(VariableSpeciesCreateView, self).form_valid(form)
+    
+    def form_valid(self, form):
+        specie = form.save(commit=False)
+        #User = get_user_model()
+
+        specie.created_by = self.request.user # use your own profile here
+         
+        specie.save()
         return super(VariableSpeciesCreateView, self).form_valid(form)
     
 
@@ -597,6 +606,10 @@ def create_variable_specie(request):
         # check whether it's valid:
         if form.is_valid():
             variable = form.save()
+            if 'valor_boolean' in request.POST:
+                variable.valor_boolean = True
+                variable.save()
+
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
