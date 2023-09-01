@@ -574,7 +574,7 @@ def species_list_json(request):
             v2_ancho_potencial_copa_promedio=(rango_inferior+rango_superior)/2
             v2_ancho_potencial_copa= str(v2_ancho_potencial_copa_promedio)
         else:
-            v159_ph_max = ""
+            v2_ancho_potencial_copa = ""
         valores_especie['v2_ancho_potencial_copa'] = v2_ancho_potencial_copa
 
         # fenología de las hojas
