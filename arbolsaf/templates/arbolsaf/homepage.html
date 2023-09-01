@@ -30,12 +30,12 @@
         <div class="col-1">
         </div>
         <div class="col-10">
-          <div class="card card-body">
+          <div class="card card-body p-5">
             <p class="text-left letra">
-              ÁrbolSAF forma parte de un conjunto de soluciones digitales que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones. Consta de una base de datos digital y de una herramienta digital.
+              ÁrbolSAF forma parte de un conjunto de soluciones digitales que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones. Consta de una plataforma de gestión de datos y de una herramienta interactiva.
             </p>
             <p class="text-left letra">
-              La base de datos, de libre acceso para consulta, alimenta la herramienta e incluye una lista de especies de árboles y palmeras, una lista de 147 variables o propiedades de esas especies relativas a copa, semillas, troncos, usos, y necesidades climáticas y de suelo, además del listado de fuentes de literatura revisada. 
+              La plataforma de gestión de datos alimenta la herramienta interactiva e incluye una lista de especies de árboles y palmeras, una lista de 162 variables o propiedades de esas especies relativas a copa, semillas, troncos, usos, y necesidades climáticas y de suelo, además del listado de fuentes de literatura revisada.
             </p>
             <p class="text-left letra">
               La herramienta guía y acompaña al técnico/agricultor/investigador a seleccionar las especies de árboles y palmeras más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá y los requerimientos de clima y suelo, y características morfológicas y funcionales de las especies. 
@@ -44,13 +44,19 @@
               Siguiendo el enfoque de CIFOR-ICRAF de Opciones por Contexto aplicado a la agroforestería, ÁrbolSAF no pretende dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas sobre los árboles y palmeras que podrían ser parte de su opción agroforestal. 
             </p>
             <div></div>
-            <div class="d-flex justify-content-end mt-5">
-              <a href="{% url 'login' %}"
-              class="btn btn-danger btn-large btn-sm m-b-xm mx-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Plataforma de datos</a>
-              <a href="{% url 'arbolsaf:tool_part1' %}"
-              class="btn btn-primary btn-large btn-sm m-b-xm mx-1">Ir a herramienta&nbsp;&nbsp;<i class="fa fa-tools"></i></a>
-              <a href="{% url 'arbolsaf:about_page' %}"
-              class="btn btn-secondary btn-large btn-sm m-b-xm mx-1">Acerca de &nbsp;&nbsp;<i class="fa fa-tools"></i></a>
+            <div class="d-flex justify-content-center mt-5">
+              <a href="{% url 'arbolsaf:about_page' %}" class="btn btn-secondary btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+                {% comment %} &nbsp;&nbsp;<i class="fa fa-tools"></i> {% endcomment %}
+                Acerca de 
+              </a>
+              <a href="{% url 'login' %}" class="btn btn-danger btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+                {% comment %} <i class="fa fa-cog"></i>&nbsp;&nbsp; {% endcomment %}
+                Plataforma de gestión de datos
+              </a>
+              <a href="{% url 'arbolsaf:tool_part1' %}" class="btn btn-primary btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+                {% comment %} &nbsp;&nbsp;<i class="fa fa-tools"></i> {% endcomment %}
+                Herramienta
+              </a>
             </div>
           </div>
         </div>

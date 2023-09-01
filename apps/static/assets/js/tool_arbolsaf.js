@@ -273,6 +273,14 @@ function selectSpecies(item) {
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
+                        '<span data-toggle="modal" data-target="#exampleModalCenter">' +
+                            '<i class="fas fa-eye text-secondary cursor-pointer" style="font-size: 18px;" id="see_item"></i>' +
+                        '</span>' +
+                        
+                    '</div>' +
+                '</td>' +
+                '<td>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR MADERA']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center cursor-inherit" data-bs-placement="bottom" title="">' +   /* selectedColor(specie_selected[0]['VALOR MADERA']) */
                             // specie_selected[0]['VALOR MADERA'] +
                         '</span>' +    
@@ -319,14 +327,7 @@ function selectSpecies(item) {
                         '<span style="font-size: 14px; font-weight: 500 !important;" class="my-2 text-sm">' + Number(specie_selected[0]['IVIM'].toFixed(2)) + '</span>' +
                     '</div>' +
                 '</td>' +
-                '<td>' +
-                    '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span data-toggle="modal" data-target="#exampleModalCenter">' +
-                            '<i class="fas fa-eye text-secondary cursor-pointer" style="font-size: 18px;" id="see_item"></i>' +
-                        '</span>' +
-                        
-                    '</div>' +
-                '</td>' +
+                
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
                         '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -375,8 +376,7 @@ function selectSpecies(item) {
                             '</div>' +
                         '</div>' +
                     '</div>' +  
-                '</td>' + 
-                                 
+                '</td>' +                                  
             '</tr>' 
 
         // $("table#table-species-selected tbody").append(sel_rowtable);
@@ -385,13 +385,17 @@ function selectSpecies(item) {
         table.row.add($(sel_rowtable)).draw();
 
         species_selected.push(specie_selected[0]);
+        species_selected = $.map(species_selected, function (item) {            
+            item['SEMAFORO_PASO_2'] = "";
+            item['SEMAFORO_PASO_3'] = "";
+            item['NOTAS'] = "";
+            return item;                     
+        })
+        console.log('species_selected', species_selected);
 
         conditionSpecies(specie_selected[0]);
         conditionSpeciesTwo(specie_selected[0]);
         asociationSpecies(specie_selected[0])
-
-        console.log('species_selected_added', species_selected);
-
 
     } else {
         let specie_code = $(item).val();
@@ -512,10 +516,10 @@ function conditionSpecies(specie) {
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
-                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
+                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem 0.75rem;" data-code="step_two">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
+                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem 0.75rem;" data-code="step_two">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
                             '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -617,10 +621,10 @@ function conditionSpeciesTwo(specie) {
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center text-xs font-weight-bold ">' +
                         '<div class="w-100 d-flex justify-content-between align-items-center">' +
-                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
+                            '<div onclick="activeGreen(this)" id="green-light" style="border-radius: 0.5rem; padding: 0.75rem 0.75rem;" data-code="step_three">' +
                                 '<span style="background: #00a44d;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
-                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.4rem 0.75rem;">' +
+                            '<div onclick="activeRed(this)" id="red-light" style="border-radius: 0.5rem; padding: 0.75rem 0.75rem;" data-code="step_three">' +
                                 '<span style="background: #ea4a4a;" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center mx-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                             '</div>' +
                             '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
@@ -716,7 +720,7 @@ function asociationSpecies(specie) {
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<input class="multisteps-form__input form-control" type="text" placeholder="ej. centro" onfocus="focused(this)" onfocusout="defocused(this)">' +
+                    '<input onchange="noteHandle(this)" class="multisteps-form__input form-control" type="text" placeholder="ej. centro" onfocus="focused(this)" onfocusout="defocused(this)">' +
                 '</td>' +
 
                 /* '<td>' +
@@ -749,7 +753,6 @@ function asociationSpecies(specie) {
 }
 
 function selectLights (item) {
-    // console.log('SELECTED', $(item).closest('.dropbtn'));
     let child = $(item).clone();
     console.log('SELECTED', $(item).closest('.dropdown').find('.dropbtn'));
 
@@ -758,20 +761,52 @@ function selectLights (item) {
 
 function activeGreen (item) {
     $(item).toggleClass( "active-green" );
-    // $(".active-red").toggleClass( "active-red" );
-
     $(item).parent("div").find("#red-light").removeClass( "active-red" );
+    let id_item = $(item).closest('tr').attr('id');
+    let data_item = $(item).data('code');
 
-    console.log('SELECTED', $(item).parent("div").find(".active-red"));
+    if ($(item).data('code') === 'step_two') {
+        $.each( species_selected, function( item, key ) {        
+            key.CODIGO === id_item ? key.SEMAFORO_PASO_2 = 'active_green' : "";
+        })
+    } else if($(item).data('code') === 'step_three') {
+        $.each( species_selected, function( item, key ) {        
+            key.CODIGO === id_item ? key.SEMAFORO_PASO_3 = 'active_green' : "";
+        })
+    }
+        // ($(item).data('code') === 'step_two') key.CODIGO === id_item ? key.SEMAFORO = 'active_green' : "";
+    
+    // console.log('species with color ligth', species_selected);
 };
 
 function activeRed (item) {
-    // console.log('SELECTED', $(item).closest('.dropbtn'));
     $(item).toggleClass( "active-red" );
-    // $(".active-green").toggleClass( "active-green" );
-
     $(item).parent("div").find("#green-light").removeClass( "active-green" );
+    let id_item = $(item).closest('tr').attr('id');
+
+    if ($(item).data('code') === 'step_two') {
+        $.each( species_selected, function( item, key ) {        
+            key.CODIGO === id_item ? key.SEMAFORO_PASO_2 = 'active_red' : "";
+        })
+    } else if($(item).data('code') === 'step_three') {
+        $.each( species_selected, function( item, key ) {        
+            key.CODIGO === id_item ? key.SEMAFORO_PASO_3 = 'active_red' : "";
+        })
+    }
+    // console.log('species with color ligth', species_selected);
 };
+
+function noteHandle (item) {  
+    let id_item = $(item).closest('tr').attr('id');
+    let item_val = $(item).val();
+    console.log('NOTAAAAAAAAAA', $(item).val());
+    $.each( species_selected, function( item, key ) {        
+        key.CODIGO === id_item ? key.NOTAS = item_val: "";
+    })
+
+    console.log('species with note', species_selected);
+
+}
 
 /* function selectSpecies() {
 
@@ -938,7 +973,7 @@ let region_selected,
             "EDAD DEL USUARIO": ""
         }
     };
-species_selected.push(register_form);
+// species_selected.push(register_form);
 
 function handleForm (e) {
     // Object.defineProperty(register_form, "FORM DATA", {value: ""});
@@ -1033,10 +1068,19 @@ $(document).ready(function() {
         myFunction(x) */
     // } );
 
-    $("body").on( "click", '.options-arbol', function() {        
+
+
+    $( window ).on( "resize", function() {
+        let w = $( "#table-species-selected thead tr th:first-child" ).css('width');
+        console.log('w', w);
+
+        $("#table-species-selected thead tr th:nth-child(2)").css('left', parseInt( w, 10 ) + 4 + "px");
+    } );
+
+    $("body").on( "click", '.circle-arbol, .options-arbol', function() {        
         let bc = $(this).css("background-color").replace(')', ', 0.3)').replace('rgb', 'rgba');
         $("#table-card").css("background-color", bc);
-        let text_sel = $(this).text().toUpperCase();
+        let text_sel = $(this).data('products');
 
         let specie_selected = $.grep(data_species, function (item) {
             let sel = 'VALOR ' + text_sel;
@@ -1086,7 +1130,8 @@ $(document).ready(function() {
                 console.log(blob.size);
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
-                link.download="PDFname_" + new Date() + ".pdf";
+                link.target = "_blank";
+                // link.download="PDFname_" + new Date() + ".pdf";
                 link.click();
             },
             error: function( jqXHR, textStatus, errorThrown ) {

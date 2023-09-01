@@ -131,7 +131,7 @@
                     <div class="row text-center">
                       <div class="col-10 mb-3 mb-md-3  mx-auto w-auto">
                         <div class="p-2 mx-auto title-step">
-                          <h4 class="font-weight-normal"> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
+                          <h4 class="font-weight-normal" style="color: white !important; "> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
                         </div>
 
                         <div class="p-4 mx-auto p-step">
@@ -167,7 +167,7 @@
                                 </div>
                                 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.2rem; right: 2rem; background-color: #806377">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.2rem; right: 2rem; background-color: #806377" data-products="FRUTA">
                                     <span class="m-auto text-uppercase font-weight-bold">Fruta</span>
                                     <span class="tool-tip-circle">    
                                       Provee fruta
@@ -176,7 +176,7 @@
                                 </div>
                                 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.6rem; right: 8rem; background-color: #85604b">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -7.6rem; right: 8rem; background-color: #85604b" data-products="MADERA">
                                     <span class="m-auto text-uppercase font-weight-bold">Madera</span>
                                     <span class="tool-tip-circle">    
                                       Provee madera
@@ -185,7 +185,7 @@
                                 </div>                                
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; right: 5rem; background-color: #aa4207">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; right: 5rem; background-color: #aa4207" data-products="SUELO">
                                     <span class="m-auto text-uppercase font-weight-bold">Suelo</span>
                                     <span class="tool-tip-circle">    
                                       Mejora/conserva suelo
@@ -196,7 +196,7 @@
                               
                               <div class="col-6 d-flex flex-column justify-content-between col-two">
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: 4rem; left: 2rem; background-color: #006d70">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: 4rem; left: 2rem; background-color: #006d70" data-products="MICROCLIMA">
                                     <span class="m-auto text-uppercase font-weight-bold">Microclima</span>
                                     <span class="tool-tip-circle">    
                                       Regula microclima
@@ -205,7 +205,7 @@
                                 </div>
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d" data-products="BIODIVERSIDAD">
                                     <span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span>
                                     <span class="tool-tip-circle">    
                                       Conserva biodiversidad
@@ -214,7 +214,7 @@
                                 </div>
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; left: 5rem; background-color: #fdc00d">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -8rem; left: 5rem; background-color: #fdc00d" data-products="OTROS USOS">
                                     <span class="m-auto text-uppercase font-weight-bold">Otros usos</span>
                                     <span class="tool-tip-circle">    
                                       Fibra, forraje, artesanías, cosméticos/repelente, tinte/pigmentos, medicinal, combustible
@@ -232,9 +232,9 @@
                               <table class="table table-flush" id="species-list"> {% comment %} id="datatable-search" {% endcomment %}
                                 <thead class="thead-light">
                                   <tr>
-                                    <th class="text-sm"> Especies </th>
+                                    <th class="text-lg"> Especies </th>
                                     {% comment %} <th class="text-sm"> IVIM </th> {% endcomment %}
-                                    <th class="text-sm"> Seleccione </th>
+                                    <th class="text-lg"> Seleccione </th>
                                   </tr>
                                 </thead>
                                 <tbody> 
@@ -261,6 +261,8 @@
                                     <tr>
                                       <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th> {% comment %} text-secondary {% endcomment %}
                                       <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Científico </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Imágenes </th>
+
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
                                       <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Madera </th>
                                       <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Fruta </th>
@@ -279,7 +281,6 @@
                                           </span>                        
                                         </div>
                                       </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Imágenes </th>
                                       <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Deseleccionar </th>
                                     </tr>
                                   </thead>
