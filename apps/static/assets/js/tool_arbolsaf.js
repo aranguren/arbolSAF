@@ -1109,16 +1109,16 @@ $(document).ready(function() {
             headers: {"X-CSRFToken": token},
             data: {
                 'especies': JSON.stringify(species_selected),
-                "NOMBRE": register_form["FORM DATA"]["NOMBRE"],
-                "REGION": register_form["FORM DATA"]["REGION"],
-                "PROVINCIA": register_form["FORM DATA"]["PROVINCIA"],
-                "DISTRITO": register_form["FORM DATA"]["DISTRITO"],
-                "TIPO DE INTERVENCION": register_form["FORM DATA"]["TIPO DE INTERVENCION"],
-                "TAMANO DE FINCA": register_form["FORM DATA"]["TAMANO DE FINCA"],
-                "TAMANO DE PARCELA": register_form["FORM DATA"]["TAMANO DE PARCELA"],
-                "TIPO DE USUARIO": register_form["FORM DATA"]["TIPO DE USUARIO"],
-                "IDENTIDAD DE GENERO": register_form["FORM DATA"]["IDENTIDAD DE GENERO"],
-                "EDAD DEL USUARIO": register_form["FORM DATA"]["EDAD DEL USUARIO"]
+                "nombre": register_form["FORM DATA"]["NOMBRE"],
+                "region": register_form["FORM DATA"]["REGION"],
+                "provincia": register_form["FORM DATA"]["PROVINCIA"],
+                "distrito": register_form["FORM DATA"]["DISTRITO"],
+                "tipo_de_intervencion": register_form["FORM DATA"]["TIPO DE INTERVENCION"],
+                "tamano_de_finca": register_form["FORM DATA"]["TAMANO DE FINCA"],
+                "tamano_de_parcela": register_form["FORM DATA"]["TAMANO DE PARCELA"],
+                "tipo_de_usuario": register_form["FORM DATA"]["TIPO DE USUARIO"],
+                "identidad_de_genero": register_form["FORM DATA"]["IDENTIDAD DE GENERO"],
+                "edad_del_usuario": register_form["FORM DATA"]["EDAD DEL USUARIO"]
             },
             /* dataType:'json',
             contentType:'application/pdf', */
