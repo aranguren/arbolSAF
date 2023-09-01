@@ -108,11 +108,7 @@ def tool_print_pdf_view(request):
     especies = request.POST.get('especies', None)
     if especies:
         especies_obj = json.loads(especies)
-    print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
-    print("-------------------------------------------------------------------------------------------------------------------")
-    print(request.POST)
     post_data = request.POST
-    print("-------------------------------------------------------------------------------------------------------------------")
     data={
         "nombre": post_data['nombre'] or '-',
         "region": post_data['region'] or '-',
@@ -128,6 +124,12 @@ def tool_print_pdf_view(request):
     }
    
     for especie in especies_obj:
+        print("-------------------------------------------------------------------------------------------------------------------")
+        
+        print(f"Mostrando especie con nombre {especie.get('NOMBRE COMUN','')}")
+        print(f"SEMAFORO_PASO_2-> {especie.get('SEMAFORO_PASO_2','')}")
+        print(f"SEMAFORO_PASO_3-> {especie.get('SEMAFORO_PASO_3','')}")
+        print(f"NOTAS-> {especie.get('NOTAS','')}")
         
         especie['nombre_comun'] = especie.get('NOMBRE COMUN','-')
         especie['nombre_cientifico'] = especie.get('NOMBRE CIENTIFICO','')
