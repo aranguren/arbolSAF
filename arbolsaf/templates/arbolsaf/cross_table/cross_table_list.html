@@ -26,7 +26,7 @@
                 <div class="card">
                     <!-- Card header -->
                     <div class="card-header">
-                        <h3 class="mb-1">Tabla Cruzada</h3>
+                        <h3 class="mb-1">Tabla cruzada</h3>
                         <hr class="horizontal dark my-2">
                         <div class="d-flex justify-content-left">
                             {#                            <a href="{% url 'arbolsaf:species_create' %}"#}
@@ -155,7 +155,7 @@
                                 <table class="table table-bordered table-hover mt-0" id="mydatatable">
                                     <thead>
                                     <tr>
-                                        <th>
+                                        <td>
                                             {% if ordenar_por == 'nombre_comun' %}
                                                 <a id="ord-nombre_comun" href="#">
                                                     <b>Nombre común</b> <i class="fa fa-angle-down"></i>
@@ -170,8 +170,8 @@
                                                 </a>
                                             {% endif %}
 
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             {% if ordenar_por == 'nombre_cientifico' %}
                                                 <a id="ord-nombre_cientifico" href="#">
                                                     <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
@@ -186,8 +186,8 @@
                                                 </a>
                                             {% endif %}
 
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             {% if ordenar_por == 'tipo_variable' %}
                                                 <a id="ord-tipo_variable" href="#">
                                                     <b>Variable</b> <i class="fa fa-angle-down"></i>
@@ -202,12 +202,12 @@
                                                 </a>
                                             {% endif %}
 
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             <b>Valor</b>
 
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             {% if ordenar_por == 'referencia' %}
                                                 <a id="ord-referencia" href="#">
                                                     <b>Fuente</b> <i class="fa fa-angle-down"></i>
@@ -222,7 +222,7 @@
                                                 </a>
                                             {% endif %}
 
-                                        </th>
+                                        </td>
 
                                     </tr>
                                     </thead>
@@ -233,8 +233,8 @@
                                             <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
 
                                             <td>{% firstof variable.especie.nombre_comun|default_if_none:"" %}</td>
-                                            <td>{% firstof variable.especie.nombre_cientifico|default_if_none:"" %}</td>
-                                            <td>{% firstof variable.tipo_variable|default_if_none:"" %}</td>
+                                            <td><i>{% firstof variable.especie.nombre_cientifico|default_if_none:"" %}</i></td>
+                                            <td>{% firstof variable.tipo_variable|default_if_none:""|capfirst %}</td>
                                             <td>{% firstof variable.get_valor_general|default_if_none:"" %}</td>
                                             <td>{% firstof variable.referencia|default_if_none:"" %}</td>
 

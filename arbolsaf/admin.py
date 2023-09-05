@@ -464,6 +464,7 @@ class CategorizacionAdmin(ExportMixin, admin.ModelAdmin):
                                         'valor_microclima' ,
                                         'valor_suelo' ,
                                         'indice_multiuso',
+                                        'indice_valor_uso_relativo',
                                         'ivim',]
     #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
     readonly_fields = ['created','created_by','modified','modified_by','valor_madera', 

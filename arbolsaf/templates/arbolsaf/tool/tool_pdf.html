@@ -32,6 +32,9 @@
     .text-table{
       font-size: 12px;
     }
+    thead{
+      background-color: #c5c7c5;
+    }
 
 
     .blue-label {
@@ -110,6 +113,34 @@
     display: inline-block;
   }
 
+  .gray-dot {
+    height: 25px;
+    width: 25px;
+    background-color: #8392AB;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .white-dot {
+    height: 25px;
+    width: 25px;
+    background-color: #F9F9F9;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    display: inline-block;
+  }
+  .green-text{
+    color: #00A44D;
+    font-size: 20px;
+  }
+  .red-text{
+    color: #EA4A4A;
+    font-size: 20px;
+ 
+  }
+
     </style>
   </head>
   <body>
@@ -179,7 +210,7 @@
             <div class="col-6">
               <div class="form-group">
                 <h6>
-                  <strong class="font-18">Tamaño de la Finca (ha)</strong>
+                  <strong class="font-18">Tamaño de la finca (ha)</strong>
                 </h6>
                 <spam class="mr-2 font-18">{{tam_finca}}</span>
               </div>
@@ -212,9 +243,9 @@
 
         <div class="row mt-5 mb-5">
           <div class="col-lg-12">
-            <table class="table table-bordered table-bottom-border text-table">
+            <table class="table table-bordered text-table">
               <thead>
-                <th>Nombre commún</th>
+                <th>Nombre común</th>
                 <th>Nombre científico</th>
                 <th>Madera</th>
                 <th>Fruta</th>
@@ -229,14 +260,50 @@
               {% for especie in especies %}
                   <tr>
                     <td>{{especie.nombre_comun }}</td>
-                    <td>{{especie.nombre_cientifico }}</td>
-                    <td class="text-center">{{especie.valor_madera }}</td>
-                    <td class="text-center">{{especie.valor_fruta }}</td>
-                    <td class="text-center">{{especie.valor_suelo }}</td>
-                    <td class="text-center">{{especie.valor_microclimea }}</td>
-                    <td class="text-center">{{especie.valor_biodiversidad }}</td>
-                    <td class="text-center">{{especie.valor_otros_usos }}</td>
-                    <td class="text-center">{{especie.IVIM|floatformat:2}}</td>
+                    <td><i>{{especie.nombre_cientifico }}</i></td>
+                    <td class="text-center">
+                      {% if  especie.valor_madera %}
+                      <span class="gray-dot"></span>
+                      {% else %}
+                      <span class="white-dot"></span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if  especie.valor_fruta %}
+                      <span class="gray-dot"></span>
+                      {% else %}
+                      <span class="white-dot"></span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if  especie.valor_suelo %}
+                      <span class="gray-dot"></span>
+                      {% else %}
+                      <span class="white-dot"></span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if  especie.valor_microclimea %}
+                      <span class="gray-dot"></span>
+                      {% else %}
+                      <span class="white-dot"></span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if  especie.valor_biodiversidad %}
+                      <span class="gray-dot"></span>
+                      {% else %}
+                      <span class="white-dot"></span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if  especie.valor_otros_usos %}
+                      <span class="gray-dot"></span>
+                      {% else %}
+                      <span class="white-dot"></span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">{{especie.IVIM|floatformat:0}}</td>
                   </tr>
               
               {% endfor %}
@@ -249,23 +316,23 @@
           <strong>Paso 2</strong>
         </h4>
         <p class="mt-5">
-          Se presentan los requerimientos de clima y altitud de las especies seleccionadas y la calificación que usted le asignó (semáforo verde y rojo) considerando las condiciones del lugar donde se instalará la parcela. 
+          Se presentan los requerimientos de clima y altitud de las especies seleccionadas y la calificación que usted le asignó semáforo verde y rojo (letras V y R) considerando las condiciones del lugar donde se instalará la parcela. 
         </p>
         <p>
-          Semáforo verde sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
+          Semáforo verde (V) sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo (R) sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
         </p>
         <div class="row mt-5 mb-5">
           <div class="col-lg-12">
-            <table class="table table-bordered table-bottom-border text-table">
+            <table class="table table-bordered text-table">
               <thead>
-                <th>Nombre commún</th>
+                <th>Nombre común</th>
                 <th>Temperatura mínima</th>
                 <th>Temperatura máxima</th>
                 <th>Elevación mínima</th>
                 <th>Elevación máxima</th>
-                <th>Presepitación mínima</th>
-                <th>Presepitación máxima</th>
-                <th>Tolerancia a condiciones Extremas</th>
+                <th>Precipitación mínima</th>
+                <th>Precipitación máxima</th>
+                <th>Tolerancia a condiciones extremas</th>
                 <th>Seleccionada</th>
               </thead>  
 
@@ -281,9 +348,9 @@
                     <td class="text-center">{{especie.v161_tolerancia_condiciones}}</td>
                     <td class="text-center">
                       {% if  especie.SEMAFORO_PASO_2 == 'active_green'%}
-                      <span class="green-dot"></span>
+                      <span class="green-text">V</span>
                       {% elif  especie.SEMAFORO_PASO_2 == 'active_red'%}
-                      <span class="red-dot"></span>
+                      <span class="red-text">R</span>
                       {% else %}
                       -
                       {% endif %}
@@ -304,23 +371,23 @@
           <strong>Paso 3</strong>
         </h4>
         <p class="mt-5">
-          Se presentan los requerimientos de suelo de las especies seleccionadas y la calificación que usted le asignó (semáforo verde y rojo) considerando las condiciones del lugar donde se instalará la parcela.  
+          Se presentan los requerimientos de suelo de las especies seleccionadas y la calificación que usted le asignó semáforo verde y rojo (letras V y R) considerando las condiciones del lugar donde se instalará la parcela.  
         </p>
 
         <p>
-          Semáforo verde sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
+          Semáforo verde (V) sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo (R) sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
         </p>
         <div class="row mt-5 mb-5">
           <div class="col-lg-12">
-            <table class="table table-bordered table-bottom-border text-table">
+            <table class="table table-bordered text-table">
               <thead>
-                <th>Nombre commún</th>
+                <th>Nombre común</th>
                 <th>Suelo preferido</th>
                 <th>Tolerancia a la acidez</th>
                 <th>Tolerancia a la salinidad</th>
                 <th>Preferencia pH suelo</th>
-                <th>pH Mínimo Suelo</th>
-                <th>ph Máximo Suelo</th>
+                <th>pH mínimo suelo</th>
+                <th>ph máximo suelo</th>
                 <th>Desarrollo en suelos rocosos</th>
                 <th>Preferencia a Suelos Drenados</th>
                 <th>Seleccione</th>
@@ -340,9 +407,9 @@
                     <td class="text-center">{{especie.v153_desarrollo_suelos_drenados }}</td>
                     <td class="text-center">
                       {% if  especie.SEMAFORO_PASO_3 == 'active_green'%}
-                      <span class="green-dot"></span>
+                      <span class="green-text">V</span>
                       {% elif  especie.SEMAFORO_PASO_3 == 'active_red'%}
-                      <span class="red-dot"></span>
+                      <span class="red-text">R</span>
                       {% else %}
                       -
                       {% endif %}
@@ -365,19 +432,19 @@
 
         <div class="row mt-5 mb-5">
           <div class="col-lg-12">
-            <table class="table table-bordered table-bottom-border text-table">
+            <table class="table table-bordered text-table">
               <thead>
-                <th>Nombre commún</th>
-                <th>Gremio Ecológico</th>
+                <th>Nombre común</th>
+                <th>Gremio ecológico</th>
                 <th>Fenología</th>
-                <th>Tipo de Raiz</th>
-                <th>Tipo de Corteza</th>
+                <th>Tipo de raiz</th>
+                <th>Tipo de corteza</th>
                 <th>Capacidad de regeneración de ramas</th>
-                <th>Forma Copa</th>
+                <th>Forma copa</th>
                 <th>Altura copa</th>
                 <th>Ancho copa</th>
                 <th>Tipo de ramificación</th>
-                <th>Notas</th>
+                <!--th>Notas</th-->
               </thead>
         
               {% for especie in especies %}
@@ -392,7 +459,34 @@
                     <td class="text-center">{{especie.v1_altura_copa }}</td>
                     <td class="text-center">{{especie.v2_ancho_potencial_copa }}</td>
                     <td class="text-center">{{especie.v13_tipo_ramificacion_copa }}</td>
-                    <td class="text-center">
+                    <!--td class="text-center">
+                      {{especie.NOTAS }}
+                    </td-->
+                  </tr>
+              
+              {% endfor %}
+            
+        
+            </table>
+          </div>
+        </div>
+
+        <p class="mt-5">
+          Notas para cada especie del paso 4 
+        </p>
+
+        <div class="row mt-5 mb-5">
+          <div class="col-lg-12">
+            <table class="table table-bordered text-table">
+              <thead>
+                <th>Nombre común</th>
+                <th>Notas</th>
+              </thead>
+        
+              {% for especie in especies %}
+                  <tr>
+                    <td>{{especie.nombre_comun }}</td>
+                    <td>
                       {{especie.NOTAS }}
                     </td>
                   </tr>
@@ -404,18 +498,13 @@
           </div>
         </div>
 
-
         <h4>
           <strong>Datos complementarios de las especies seleccionadas </strong>
         </h4>
-        <p class="mt-5">
-          1. Estatus de conservación: V56 (UICN), V59 (CITES) <br/>
-          2. Tipo de semilla por viabilidad: V136
-        </p>
 
         <div class="row mt-5 mb-5">
           <div class="col-lg-12">
-            <table class="table table-bordered table-bottom-border text-table">
+            <table class="table table-bordered text-table">
               <thead>
                 <th>Especie</th>
                 <th>Estatus de conservación UICN </th>
@@ -445,12 +534,12 @@
         <br/>
         <br/>
 
-        <p><b>Este reporte fue generado por la herramienta interactiva ÁrbolSAF</b></p>
+        <p><b>Este reporte fue generado por la herramienta interactiva ÁrbolSAF</b><br> (<a href="http://arbolsaf.cifor-icraf.org">http://arbolsaf.cifor-icraf.org</a>)</p>
 
-        <p>
+        <!--p>
         Carreño-Rocabado G., Quiñones L., Ramos K., Ramirez F., Visscher A, Robiglio V. 2023. Herramienta interactiva de selección de especies para el codiseño de opciones agroforestales ArbolSAF Versión Alfa 1.0. CIFOR-ICRAF. Perú.  
 
-        </p>
+        </p-->
 
 
 </div>

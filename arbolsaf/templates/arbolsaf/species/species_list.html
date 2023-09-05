@@ -61,21 +61,21 @@ Listado Especies
                       <td class="pt-3 pb-3">
                           {% if ordenar_por == 'cod_esp' %}
                               <a id="ord-cod_esp" href="#">
-                                  <b>Código especie</b> <i class="fa fa-angle-down"></i>
+                                  <b>Código de la especie</b> <i class="fa fa-angle-down"></i>
                               </a>
                           {% elif ordenar_por == 'cod_esp_dec' %}
                               <a id="ord-cod_esp" href="#">
-                                  <b>Código especie</b> <i class="fa fa-angle-up"></i>
+                                  <b>Código de la especie</b> <i class="fa fa-angle-up"></i>
                               </a>
                           {% else %}
                               <a id="ord-cod_esp" href="#">
-                                  <b>Código especie</b>
+                                  <b>Código de la especie</b>
                               </a>
                           {% endif %}
                         
                       </td>
                       <td class="pt-3 pb-3">
-                        <b>Taxon ID WFO</b>
+                        <b>Taxón ID WFO</b>
                       </td>
                       <td class="pt-3 pb-3">
                           {% if ordenar_por == 'nombre_comun' %}
@@ -151,12 +151,12 @@ Listado Especies
                         </td>
                         <td >{% firstof specie.taxonid_wfo|default_if_none:"" %}</td>
                         <td >{% firstof specie.nombre_comun|default_if_none:"" %}</td>
-                        <td >{% firstof specie.nombre_cientifico|default_if_none:"" %}</td>
+                        <td ><i>{% firstof specie.nombre_cientifico|default_if_none:"" %}</i></td>
                         <td >{% firstof specie.familia|default_if_none:"" %}</td>
 
                         <td class="text-center">
                           {% if specie.nativa %}
-                          SI
+                          SÍ
                           {% else %}
                           NO
                           {% endif %}
@@ -454,7 +454,7 @@ Listado Especies
                       
                         </div>
                         <div class="form-group">
-                          <label class="control-label" for="id_tipo_variable">Tipo Variable</label>
+                          <label class="control-label" for="id_tipo_variable">Tipo de Variable</label>
                           <div class=" ">
                            <select id="id_tipo_variable" class="form-select" name="tipo_variable">
                                <option></option>   

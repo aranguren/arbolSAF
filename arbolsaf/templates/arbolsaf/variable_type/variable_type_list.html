@@ -61,15 +61,15 @@ Listado Tipos Variable
                       <th style="width:10%">
                           {% if ordenar_por == 'cod_var' %}
                               <a id="ord-cod_var" href="#">
-                                  <b>Código variable</b> <i class="fa fa-angle-down"></i>
+                                  <b>Código de la variable</b> <i class="fa fa-angle-down"></i>
                               </a>
                           {% elif ordenar_por == 'cod_var_dec' %}
                               <a id="ord-cod_var" href="#">
-                                  <b>Código variable</b> <i class="fa fa-angle-up"></i>
+                                  <b>Código de la variable</b> <i class="fa fa-angle-up"></i>
                               </a>
                           {% else %}
                               <a id="ord-cod_var" href="#">
-                                  <b>Código variable</b>
+                                  <b>Código de la variable</b>
                               </a>
                           {% endif %}              
                  
@@ -92,30 +92,30 @@ Listado Tipos Variable
                       <th>
                           {% if ordenar_por == 'unidad_medida' %}
                               <a id="ord-unidad_medida" href="#">
-                                  <b>Unidad medida</b> <i class="fa fa-angle-down"></i>
+                                  <b>Unidad de medida</b> <i class="fa fa-angle-down"></i>
                               </a>
                           {% elif ordenar_por == 'unidad_medida_dec' %}
                               <a id="ord-unidad_medida" href="#">
-                                  <b>Unidad medida</b> <i class="fa fa-angle-up"></i>
+                                  <b>Unidad de medida</b> <i class="fa fa-angle-up"></i>
                               </a>
                           {% else %}
                               <a id="ord-unidad_medida" href="#">
-                                  <b>Unidad medida</b>
+                                  <b>Unidad de medida</b>
                               </a>
                           {% endif %} 
                       </th>
                       <th>
                           {% if ordenar_por == 'tipo_variable' %}
                               <a id="ord-tipo_variable" href="#">
-                                  <b>Tipo Variable</b> <i class="fa fa-angle-down"></i>
+                                  <b>Tipo de Variable</b> <i class="fa fa-angle-down"></i>
                               </a>
                           {% elif ordenar_por == 'tipo_variable_dec' %}
                               <a id="ord-tipo_variable" href="#">
-                                  <b>Tipo Variable</b> <i class="fa fa-angle-up"></i>
+                                  <b>Tipo de Variable</b> <i class="fa fa-angle-up"></i>
                               </a>
                           {% else %}
                               <a id="ord-tipo_variable" href="#">
-                                  <b>Tipo Variable</b>
+                                  <b>Tipo de Variable</b>
                               </a>
                           {% endif %} 
                       
@@ -144,10 +144,10 @@ Listado Tipos Variable
                           onclick="window.location='{% url 'arbolsaf:variable_type_detail' variable.id %}'">
                         <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
                         <td class="text-center">{% firstof variable.cod_var|default_if_none:"" %}</td>
-                        <td >{% firstof variable.variable|default_if_none:"" %}</td>
+                        <td >{% firstof variable.variable|default_if_none:""|capfirst %}</td>
                         <td >{% firstof variable.unidad_medida|default_if_none:"" %}</td>
                         <td >{% firstof variable.get_tipo_variables_display|default_if_none:"" %}</td>
-                        <td >{% firstof variable.familia|default_if_none:"" %}</td>
+                        <td >{% firstof variable.familia|default_if_none:""|capfirst %}</td>
                       
                       </tr>
                     </tbody>
@@ -433,7 +433,7 @@ Listado Tipos Variable
                       
                         </div>
                         <div class="form-group">
-                          <label class="control-label" for="id_tipo_variables">Tipo Variable</label>
+                          <label class="control-label" for="id_tipo_variables">Tipo de Variable</label>
                           <div class=" ">
                            <select id="id_tipo_variables" class="form-select" name="tipo_variables">
                                <option></option>   

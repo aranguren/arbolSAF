@@ -133,12 +133,12 @@ def tool_print_pdf_view(request):
         
         especie['nombre_comun'] = especie.get('NOMBRE COMUN','-')
         especie['nombre_cientifico'] = especie.get('NOMBRE CIENTIFICO','')
-        especie['valor_madera'] = especie.get('VALOR MADERA','')
-        especie['valor_fruta'] = especie.get('VALOR FRUTA','')
-        especie['valor_otros_usos'] = especie.get('VALOR OTROS USOS','')
-        especie['valor_biodiversidad'] = especie.get('VALOR BIODIVERSIDAD','')
-        especie['valor_microclimea'] = especie.get('VALOR MICROCLIMA','')
-        especie['valor_suelo'] = especie.get('VALOR SUELO','')
+        especie['valor_madera'] = True if especie.get('VALOR MADERA',0) >0  else False
+        especie['valor_fruta'] =  True if especie.get('VALOR FRUTA',0) >0 else False
+        especie['valor_otros_usos'] = True if especie.get('VALOR OTROS USOS',0) >0 else False
+        especie['valor_biodiversidad'] = True if especie.get('VALOR BIODIVERSIDAD',0) >0 else False
+        especie['valor_microclimea'] = True if especie.get('VALOR MICROCLIMA',0 ) >0  else False
+        especie['valor_suelo'] = True if especie.get('VALOR SUELO','') >0  else False
 
   
         codigo = especie.get('CODIGO',False)
