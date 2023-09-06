@@ -67,8 +67,8 @@
                       <div class="px-2">
                         <div class="row text-center">
                           <div class="col-10 mx-auto w-auto">
-                            <div class="p-2 mx-auto title-step">
-                              <h4 class="font-weight-normal"> Herramienta ÁrbolSAF </h4>
+                            <div class="py-2 px-4 mx-auto title-step">
+                              <h4 class="font-weight-normal m-0"> Herramienta ÁrbolSAF </h4>
                             </div>
                           </div>
                         </div>
@@ -87,9 +87,9 @@
                             </div> {% endcomment %}
                           </div>
                           <div class="mt-6 row position-relative d-flex justify-content-between">
-                            {% comment %} <div class="position-relative d-flex justify-content-center">
+                            <div class="position-relative d-none justify-content-center step-line-container">
                               <div class="step-line"></div>
-                            </div> {% endcomment %}
+                            </div>
                             <div class="col-6 col-md-2 d-flex flex-column align-items-center">
                               <div class="d-flex intro-bubble" data-step="step-1"><p class="m-auto"> Paso 1 </p></div>
                               <p class="step-text mt-3 text-center"> Arma tu lista preliminar de árboles </p>
@@ -130,8 +130,8 @@
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-1" data-animation="FadeIn">
                     <div class="row text-center">
                       <div class="col-10 mb-3 mb-md-3  mx-auto w-auto">
-                        <div class="p-2 mx-auto title-step">
-                          <h4 class="font-weight-normal" style="color: white !important; "> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
+                        <div class="py-2 px-4 mx-auto title-step">
+                          <h4 class="font-weight-normal m-0"> ¿Qué productos y servicios ambientales deseas que tu opción agroforestal te provea?  </h4>
                         </div>
 
                         <div class="p-4 mx-auto p-step">
@@ -208,7 +208,7 @@
                                   <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d" data-products="BIODIVERSIDAD">
                                     <span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span>
                                     <span class="tool-tip-circle">    
-                                      Conserva biodiversidad
+                                      Recursos para abejas, aves, murciélagos y otros grupos de fauna
                                     </span>
                                   </div>
                                 </div>
@@ -259,8 +259,8 @@
                                 <table class="table align-items-center mb-0 row-border compact stripe table-species" id="table-species-selected">
                                   <thead>
                                     <tr>
-                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th> {% comment %} text-secondary {% endcomment %}
-                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Científico </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre común </th> {% comment %} text-secondary {% endcomment %}
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre científico </th>
                                       <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Imágenes </th>
 
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
@@ -303,8 +303,8 @@
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-2" data-animation="FadeIn">
                     <div class="row text-center">
                       <div class="col-10 mb-5 mx-auto w-auto">
-                        <div class="p-2 mx-auto title-step">
-                          <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h4>
+                        <div class="py-2 px-4 mx-auto title-step">
+                          <h4 class="font-weight-normal m-0"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </h4>
                         </div>
 
                         <div class="p-4 mx-auto p-step">
@@ -325,15 +325,15 @@
                                   <thead>
                                     <tr>
                                       {% comment %} <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
-                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre común </th>
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Temperatura Mínima (°C) </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Temperatura Máxima (°C) </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Elevación Mínima <span style="text-transform: lowercase;">(m.s.n.m)</span> </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Elevación Máxima <span style="text-transform: lowercase;">(m.s.n.m)</span></th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Precipitación Mínima <span style="text-transform: lowercase;">(mm/año)</span></th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Precipitación Máxima <span style="text-transform: lowercase;">(mm/año)</span></th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a Condiciones Extremas </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Temperatura mínima (°C) </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Temperatura máxima (°C) </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Elevación mínima <span style="text-transform: lowercase;">(m.s.n.m)</span> </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Elevación máxima <span style="text-transform: lowercase;">(m.s.n.m)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Precipitación mínima <span style="text-transform: lowercase;">(mm/año)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Precipitación máxima <span style="text-transform: lowercase;">(mm/año)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a condiciones extremas </th>
                                       <th class="text-center font-weight-bolder opacity-7 px-6" style="text-transform: initial;"> Seleccione </th>
                                     </tr>
                                   </thead>
@@ -354,8 +354,8 @@
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-3" data-animation="FadeIn">
                     <div class="row text-center">
                       <div class="col-10 mb-5 mx-auto w-auto">
-                        <div class="p-2 mx-auto title-step">
-                          <h4 class="font-weight-normal"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h4>
+                        <div class="py-2 px-4 mx-auto title-step">
+                          <h4 class="font-weight-normal m-0"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones de suelo de tu parcela? </h4>
                         </div>
                         
                         <div class="p-4 mx-auto p-step">
@@ -376,17 +376,17 @@
                                   <thead>
                                     <tr>
                                       {% comment %} <th class="text-uppercase text-xxs font-weight-bolder opacity-7"> Nombre Común </th> {% endcomment %}
-                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th>
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre común </th>
                                       {% comment %} <th class="text-uppercase font-weight-bolder opacity-7 ps-2"> </th> {% endcomment %}
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Suelo Preferido </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Exigencia Suelos Fértiles </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a la Acidez </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a la Salinidad </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Preferencia pH Suelo </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> pH Mínimo Suelo </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> pH Máximo Suelo </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Desarrollo en Suelos Rocosos </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Preferencia a Suelos Drenados </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Suelo preferido </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Exigencia suelos fértiles </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a la acidez </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tolerancia a la salinidad </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Preferencia pH suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> pH mínimo suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> pH máximo suelo </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Desarrollo en suelos rocosos </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Preferencia a suelos drenados </th>
                                       <th class="text-center font-weight-bolder opacity-7 px-6" style="text-transform: initial;"> Seleccione </th>
                                     </tr>
                                   </thead>
@@ -408,8 +408,8 @@
                   <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-4" data-animation="FadeIn">  {% comment %} style="height: calc(100vh - 220px);" {% endcomment %}
                     <div class="row text-center">
                       <div class="col-10 mb-5 mx-auto w-auto">
-                        <div class="p-2 mx-auto title-step">
-                          <h4 class="font-weight-normal"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
+                        <div class="py-2 px-4 mx-auto title-step">
+                          <h4 class="font-weight-normal m-0"> Revisa las características clave de las especies para decidir la densidad y la ubicación de las especies en la opción agroforestal. Puedes escribir algunas notas en la última columna. </h5>
                         </div>                        
                       </div>
                     </div>
@@ -422,18 +422,18 @@
                                 <table class="table align-items-center mb-0 row-border compact stripe" id="table-asociations">
                                   <thead>
                                     <tr>                                      
-                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre Común </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Gremio Ecológico </th>  {% comment %} style="background-color: rgba(253, 192, 13, 0.3)" {% endcomment %}
+                                      <th class="text-start font-weight-bolder opacity-7" style="text-transform: initial;"> Nombre común </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Gremio ecológico </th>  {% comment %} style="background-color: rgba(253, 192, 13, 0.3)" {% endcomment %}
                                       <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Fenología </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de Raíz </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de Corteza </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Capacidad de Regeneración de Ramas </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Forma Copa </th>  {% comment %} style="background-color: rgba(0, 164, 77, 0.3)" {% endcomment %}
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Densidad Copa (%) </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Follaje Copa </th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Altura Copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Ancho Copa <span style="text-transform: lowercase;">(m)</span></th>
-                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de Ramificación  </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de raíz </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de corteza </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Capacidad de regeneración de ramas </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Forma copa </th>  {% comment %} style="background-color: rgba(0, 164, 77, 0.3)" {% endcomment %}
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Densidad copa (%) </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Follaje copa </th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Altura copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Ancho copa <span style="text-transform: lowercase;">(m)</span></th>
+                                      <th class="text-center font-weight-bolder opacity-7" style="text-transform: initial;"> Tipo de ramificación  </th>
                                       <th class="text-center font-weight-bolder opacity-7 px-5" style="text-transform: initial;"> Notas </th>
                                       {% comment %} <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7 px-5"> Seleccione </th> {% endcomment %}
                                     </tr>
@@ -462,7 +462,7 @@
                     <div style="width:70%; margin:auto">
                       <div class="row text-center">
                         <div class="col-10 mx-auto">
-                          <h5 class="font-weight-normal"> Para imprimir el reporte con los resultados de la consulta por favor llena este formulario. </h5>
+                          <h4 class="font-weight-normal"> Para imprimir el reporte con los resultados de la consulta por favor llena este formulario. </h4>
                         </div>
                       </div>
                       <div class="multisteps-form__content">

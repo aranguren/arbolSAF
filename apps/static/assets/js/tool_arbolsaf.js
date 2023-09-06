@@ -237,6 +237,70 @@ function selectedColor(val) {
     return "";
 }
 
+function slideCarrousel (item, id_carrousel ) {
+    let i;
+        // id_carrousel = 'carousel' + code;
+    
+    // console.log('id_carrousel', id_carrousel);
+
+    i =  '<div class="modal fade" id="modal' + id_carrousel + '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">' +
+            '<div class="modal-dialog modal-dialog-centered" style="max-width: 80%; max-height: 80%;" role="document">' +
+                '<div class="modal-content">' +
+                    '<div class="modal-header">' +
+                        '<h5 class="modal-title" id="exampleModalLongTitle"> Imágenes </h5>' +
+                        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                        '</button>' +
+                    '</div>' +
+                    '<div class="modal-body">' + 
+                        '<div id="' + id_carrousel + '" class="carousel slide" data-ride="carousel">' +
+                            '<ol class="carousel-indicators">'    
+    
+    $.each(item, function (index, value) {
+        if (index === 0) {
+            i += '<li data-target="#' + id_carrousel + '" data-slide-to="' + index + '" class="active"></li>'
+            // return i;
+        } else {
+            i += '<li data-target="#' + id_carrousel + '" data-slide-to="' + index + '"></li>'
+            // return i;
+        }
+    }); 
+
+    i += '</ol><div class="carousel-inner">';
+
+    $.each(item, function (index, value) {
+        if (index === 0) {
+            i += '<div class="carousel-item active" style="height: 60vh;">' +
+                    '<img class="d-block w-auto h-100 m-auto" src="' + value + '" alt="First slide">' +
+                '</div>'            
+        } else {
+            i += '<div class="carousel-item" style="height: 60vh;">' +
+                    '<img class="d-block w-auto h-100 m-auto" style="margin: auto;" src="' + value + '" alt="First slide">' +
+                '</div>'
+        }
+        // return images;
+    });
+
+    i += '</div>';
+    i += '<a class="carousel-control-prev" href="#' + id_carrousel + '" role="button" data-slide="prev">' +
+            '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
+            '<span class="sr-only">Previous</span>' +
+        '</a>' +
+        '<a class="carousel-control-next" href="#' + id_carrousel + '" role="button" data-slide="next">' +
+            '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
+            '<span class="sr-only">Next</span>' +
+        '</a>';
+    i += '</div>' +
+            '</div>' +
+                '<div class="modal-footer">' +
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>' +
+                    // <button type="button" class="btn btn-primary">Save changes</button>
+                '</div>' +
+            '</div>' +
+        '</div>';
+    return i;
+}
+
 
 function selectSpecies(item) {
 
@@ -247,9 +311,12 @@ function selectSpecies(item) {
         return item['CODIGO'] === specie_code;            
     })  */
 
+
+
     if( $(item).is(':checked') ) {
 
         let specie_code = $(item).val(), 
+            id_carrousel = 'carousel' + specie_code;
             sel_rowtable = "", 
             cond_rowtable = "";
         let specie_selected = $.grep(data_species, function (i) {
@@ -272,10 +339,20 @@ function selectSpecies(item) {
                     '</div>' +
                 '</td>' +
                 '<td>' +
-                    '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span data-toggle="modal" data-target="#exampleModalCenter">' +
-                            '<i class="fas fa-eye text-secondary cursor-pointer" style="font-size: 18px;" id="see_item"></i>' +
-                        '</span>' +
+                    '<div class="d-flex justify-content-center align-items-center">' +                        
+                        function () {
+                            console.log('id_carrousel >>>>>>>>>>>', id_carrousel);
+                            let i;
+                            $.isEmptyObject(specie_selected[0]['imagenes'])
+                            ?
+                            i = '<i class="fas fa-eye-slash text-secondary cursor-pointer" style="font-size: 18px;" id="see_item"></i>'
+                            :
+                            i = '<span data-toggle="modal" data-target="#modal' + id_carrousel + '">' +
+                                    '<i class="fas fa-eye text-secondary cursor-pointer" style="font-size: 18px;" id="see_item"></i>';
+                                '</span>'
+                            return i;
+                        }()
+                        +
                         
                     '</div>' +
                 '</td>' +
@@ -331,50 +408,8 @@ function selectSpecies(item) {
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
                         '<i onclick="removeSpecies(this)" class="fas fa-trash text-secondary cursor-pointer delete_item" style="font-size: 18px;" id="delete_item"></i>' +
-                    '</div>' +
-                    '<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">' +
-                        '<div class="modal-dialog modal-dialog-centered" style="max-width: 80%; max-height: 80%;" role="document">' +
-                            '<div class="modal-content">' +
-                                '<div class="modal-header">' +
-                                    '<h5 class="modal-title" id="exampleModalLongTitle"> Imágenes </h5>' +
-                                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-                                        '<span aria-hidden="true">&times;</span>' +
-                                    '</button>' +
-                                '</div>' +
-                                '<div class="modal-body">' +
-                                    '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">' +
-                                        '<ol class="carousel-indicators">' +
-                                            '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>' +
-                                            '<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>' +
-                                            '<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>' +
-                                        '</ol>' +
-                                        '<div class="carousel-inner">' +
-                                            '<div class="carousel-item active">' +
-                                                '<img class="d-block w-100" src="..." alt="First slide">' +
-                                            '</div>' +
-                                            '<div class="carousel-item">' +
-                                                '<img class="d-block w-100" src="..." alt="Second slide">' +
-                                            '</div>' +
-                                            '<div class="carousel-item">' +
-                                                '<img class="d-block w-100" src="..." alt="Third slide">' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">' +
-                                            '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
-                                            '<span class="sr-only">Previous</span>' +
-                                        '</a>' +
-                                        '<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">' +
-                                            '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
-                                            '<span class="sr-only">Next</span>' +
-                                        '</a>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<div class="modal-footer">' +
-                                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>' +
-                                    // <button type="button" class="btn btn-primary">Save changes</button>
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
+                    '</div>' +  
+                        slideCarrousel (specie_selected[0]['imagenes'], id_carrousel) +
                     '</div>' +  
                 '</td>' +                                  
             '</tr>' 
@@ -1130,7 +1165,7 @@ $(document).ready(function() {
                 console.log(blob.size);
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
-                link.target = "_blank";
+                // link.target = "_blank";
                 // link.download="PDFname_" + new Date() + ".pdf";
                 link.click();
             },

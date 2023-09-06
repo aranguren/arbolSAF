@@ -5,11 +5,40 @@
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 <style type="text/css">
 
   .letra {
-    font-size: 24px;
+    font-size: 1.4rem;
+    color: black !important;
   }
+
+  #tab-content-about * :not(h2){
+    font-size: 1.4rem;
+  }
+
+  #tab-item-about * :not(h2){
+    font-size: 1rem;
+  }
+
+  #tab-item-about *, #tab-content-about *{
+    color: black !important;
+  }
+
+  #tab-item-about-responsive * :not(.navbar-toggler){
+    color: black !important;
+  }
+
+  @media only screen and (min-width: 992px) {
+    #tab-item-about-responsive {
+      display: none;
+    }    
+
+    #tab-item-about {
+      padding: 0.5rem 1rem !important;
+    }
+}
 
 </style>
 
@@ -19,24 +48,265 @@
   <!-- Navbar -->
   <nav class="card top-0 rounded-0">
     <div class="w-100 object-fit-cover">
-      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
-           class="w-100">
+      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png" class="w-100">
     </div>
   </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light p-0" id="tab-item-about">
+    {% comment %} <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> {% endcomment %}
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="nav nav-tabs mr-auto" style="padding-bottom: 0.08rem;">
+        <li class="nav-item pe-2">
+          <a class="nav-link active" data-toggle="tab" role="tab" href="#arbolsaf">ÁrbolSAF <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item dropdown pe-2 d-flex align-items-center">
+          <a href="javascript:;" class="nav-link" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Manuales
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+            <li class="mb-2">
+              <a class="dropdown-item border-radius-md" href="javascript:;">
+                Action
+              </a>
+            </li>
+            <li class="mb-2">
+              <a class="dropdown-item border-radius-md" href="javascript:;">
+                Another action
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item border-radius-md" href="javascript:;">
+                Something else here
+              </a>
+            </li>
+          </ul>
+        </li> 
+
+        <li class="nav-item pe-2">
+          <a class="nav-link" data-toggle="tab" role="tab" href="#credits">Créditos y cita sugerida</a>
+        </li>
+
+        <li class="nav-item pe-2">
+          <a class="nav-link" data-toggle="tab" role="tab" href="#disclaimer">Descargo de responsabilidad</a>
+        </li>
+
+        <li class="nav-item pe-2">
+          <a class="nav-link" data-toggle="tab" role="tab" href="#acknowledgment">Agradecimientos</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="pos-f-t" id="tab-item-about-responsive">
+    <div class="collapse" id="navbarToggleExternalContent">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" role="tab" href="#arbolsaf">ÁrbolSAF <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item">           
+            <div class="pos-f-t">
+              <div class="collapse" id="navbarToggleManual">
+                <ul class="nav flex-column" style="background-color: #ced4da;">
+                  <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" role="tab" href="#arbolsaf"> Manual Uno <span class="sr-only">(current)</span></a>
+                  </li>
+          
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" role="tab" href="#"> Manual Uno </a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="nav navbar-dark shadow-none ps-0">
+                <a class="nav-link cursor-pointer" data-toggle="collapse" data-target="#navbarToggleManual" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                  Manual 
+                </a>
+              </nav>
+            </div>          
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" role="tab" href="#credits">Créditos y cita sugerida</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" role="tab" href="#disclaimer">Descargo de responsabilidad</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" role="tab" href="#acknowledgment">Agradecimientos</a>
+        </li>
+      </ul>
+    </div>
+    <nav class="navbar navbar-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
+    </nav>
+  </div>
+
   <!-- End Navbar -->
   <main class="main-content mt-2">
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-10">
+        <div class="col-10 mx-auto">
           <div class="card card-body">
-            <p class="text-left letra">
-              ÁrbolSAF forma parte de un conjunto de soluciones digitales que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones. Consta de una base de datos digital y de una herramienta digital.
-            </p>
+            <div class="tab-content p-4" id="tab-content-about">
+              <div class="tab-pane active" id="arbolsaf" role="tabpanel">
+                <h2> ÁrbolSAF </h2>
+                <p>
+                  El diseño y la implementación de opciones agroforestales con múltiples funciones y múltiples propósitos es un gran desafío para técnicos y agricultores. 
+                  Este proceso requiere, entre otros elementos, de un buen conocimiento de los árboles/palmeras que serán parte de estos sistemas productivos.
+                </p>
+                <p>
+                  CIFOR-ICRAF apoya el diseño y establecimiento de una gama de opciones agroforestales bajo un enfoque de trabajo conjunto con el agricultor, 
+                  lo que constituye el proceso denominado codiseño.  En este proceso se busca planear un arreglo agroforestal que satisfaga los objetivos del 
+                  agricultor en la generación de recursos económicos complementarios y su seguridad alimentaria, al mismo tiempo que la generación y el mantenimiento 
+                  de servicios ambientales necesarios para la sostenibilidad de esas opciones agroforestales.
+                </p>
+                <p>
+                  Para lograr opciones con múltiples funciones y propósitos se busca optimizar la diversidad y abundancia de los árboles/palmeras por unidad de área, 
+                  además de la productividad del cultivo principal del arreglo agroforestal. 
+                </p>
+
+                <h2 class="mt-6"> La plataforma de gestión de datos </h2>
+                <p>
+                  La plataforma de gestión de datos de ÁrbolSAF ha sido diseñada para colectar, organizar y manejar 162 tipos de datos a nivel de especie. En esta primera
+                  versión se ha trabajado en un portafolio de 63 especies entre árboles y palmeras. Para cada especie se buscó y colectó los datos de fuentes secundarias 
+                  (informes técnicos, artículos científicos, libros y páginas web) priorizando el contexto de Perú y complementando con estudios de regiones de América Latina. 
+                  Los datos están agrupados en requerimientos climáticos y edáficos de las especies, características morfológicas y funcionales, usos, manejo, interacción 
+                  ecológica e información sobre su estatus de conservación. Es importante indicar que cada dato colectado guarda el origen donde fue publicado.
+                </p>
+                <p>
+                  CIFOR-ICRAF apoya el diseño y establecimiento de una gama de opciones agroforestales bajo un enfoque de trabajo conjunto con el agricultor, 
+                  lo que constituye el proceso denominado codiseño.  En este proceso se busca planear un arreglo agroforestal que satisfaga los objetivos del 
+                  agricultor en la generación de recursos económicos complementarios y su seguridad alimentaria, al mismo tiempo que la generación y el mantenimiento 
+                  de servicios ambientales necesarios para la sostenibilidad de esas opciones agroforestales.
+                </p>
+                <p>
+                  Para lograr opciones con múltiples funciones y propósitos se busca optimizar la diversidad y abundancia de los árboles/palmeras por unidad de área, 
+                  además de la productividad del cultivo principal del arreglo agroforestal. 
+                </p>
+
+                <h2 class="mt-6"> La herramienta interactiva </h2>
+                <p>
+                  La herramienta interactiva ÁrbolSAF (Alfa 1.0) tiene un enfoque participativo de selección-informada que guía y acompaña al técnico/agricultor/investigador
+                  a encontrar las especies de árboles/palmeras más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá, 
+                  los requerimientos de clima y suelo, las características morfológicas y funcionales de las especies de árboles.
+                </p>
+                <p>
+                  El enfoque de ÁrbolSAF no es dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas 
+                  sobre los árboles que podrían ser parte de su opción agroforestal. La herramienta está vinculada a la plataforma de datos de manera que actualizaciones y 
+                  correcciones en la plataforma son inmediatamente visualizadas en la herramienta. 
+                </p>
+
+                <h2 class="mt-6"> Especies que componen la herramienta </h2>
+                <p>
+                  Las 63 especies de esta primera versión fueron seleccionadas basadas en: a) encuesta socioeconómica a las zonas de intervención de los proyectos, b) listas de 
+                  técnicos de campo de CIFOR-ICRAF y sus socios locales, c) registros en publicaciones sobre sistemas agroforestales, d) muestreo de campo en varios distritos de 
+                  la región de Ucayali y Huánuco, Perú. 
+                </p>
+
+                <h2 class="mt-6"> Categorización de especies </h2>
+                <p>
+                  Las especies fueron categorizadas según el uso y sus funciones agroecológicas, seis categorías fueron tomadas en cuenta según se detalla a continuación:
+                </p>
+                <ol>
+                  <li value="1"> 
+                    <strong>Especies maderables:</strong> se consideraron tres variables. Se asignó el valor alto (3) a las especies cuya madera es exportada y/o se usan 
+                    para fabricar muebles. Valor medio (2) especies cuya madera se usa sólo en construcción. Valor bajo (1) especies cuya madera se usa sólo para cajonería 
+                    (cajones para transportar tomates u otras frutas) y postes. Las palmeras fueron excluidas de esta categoría.  
+                  </li>
+
+                  <li value="2"> 
+                    <strong>Especies frutales:</strong> se consideraron tres variables. Se asignó un único valor alto (3) a especies citadas para el consumo humano de fruta, 
+                    semilla o frutas para la venta.  
+                  </li>
+
+                  <li value="3"> 
+                    <strong>Especies que colaboran con el microclima:</strong> se consideraron tres variables. Se asignó un único valor alto (3) a especies citadas como 
+                    colaboradoras con el microclima, captura de agua o humedad o circulación de aire. 
+                  </li>
+
+                  <li value="4"> 
+                    <strong>Especies que colaboran con el suelo:</strong> se consideraron seis variables. Se asignó el valor alto (3) a especies citadas que colaboran con 
+                    la fertilidad o la recuperación del suelo que usan la asociación de bacterias para la toma de nutrientes y que son leguminosas; valor medio (2) a 
+                    especies citadas por su capacidad de mejorar la compactación del suelo o controlar la erosión; el valor bajo (1) a especies que son caducifolias y 
+                    que usan bacterias para la toma de nutrientes.
+                  </li>
+
+                  <li value="5"> 
+                    <strong>Especies que están relacionadas con la biodiversidad:</strong> se consideraron seis variables: modo de dispersión de la semilla por animales
+                    con las categorías de mirmecocoria, ictiocoria, saurocoria, nitocoria, mamaliocoria, quiropráctica, epizoocoria; agentes polinizadores con las 
+                    categorías abeja, abejorro, mariposas, colibríes, murciélagos, escarabajos, moscas, y polillas; citado como recurso para abejas, aves, micromamíferos 
+                    y murciélagos. Se asignó el valor alto (3) cuando las especies presentaban datos para 5 o 6 variables, se asignó el valor medio (2) cuando la especie 
+                    presentaba datos para 3 o 4 variables, se asignó el valor bajo (1) cuando la especie presentó datos en 1 o 2 de las variables. 
+                  </li>
+
+                  <li value="6"> 
+                    <strong>Especies que brindan otros recursos (otros usos):</strong> se consideraron ocho variables:  uso en tintes/pigmentos, artesanías, cosméticos/repelente, 
+                    medicinal, carbón, leña, forraje y fibra. Se asignó un valor alto (3) cuando las especies presentaban datos para más de 5 variables, se asignó un valor 
+                    medio (2) cuando la especie presentaba datos para 3 o 4 variables, se asignó valor bajo (1) cuando la especie presentaba datos en 1 o 2 de las variables. 
+                  </li>
+                </ol>
+
+                <h2 class="mt-6"> Índice de valor multifuncional (IVIM) </h2>
+                <p>
+                  Se calculó el IVIM para cada especie sumando el índice de multiuso y el índice de valor de uso relativo. El índice de multiuso expresa los diferentes usos 
+                  y servicios ecosistémicos que una misma especie brinda basado en las seis categorías que las especies fueron asignadas. El índice de valor relativo es el 
+                  promedio de valor asignado a cada categoría de uso. Por lo tanto, especies con altos IVIM son aquellas que son usadas o brindan varios servicios ecosistémicos 
+                  y, además, que presentan un valor alto en cada uno de los servicios. 
+                </p>
+              </div>
+              <div class="tab-pane" id="credits" role="tabpanel"> 
+                <h2>Créditos</h2>
+                &copy Todos los derechos reservados
+                
+                <div class="mt-4">
+                  <h2>Cita sugerida</h2>
+                  <p> 
+                    CIFOR-ICRAF. <i>Herramienta interactiva de selección de especies para el codiseño de opciones agroforestales ÁrbolSAF Versión Alfa 1.0.</i> Lima, Perú.
+                  </p>
+                </div>               
+              </div>
+
+              <div class="tab-pane" id="disclaimer" role="tabpanel"> 
+                <h2> Descargo de responsabilidad </h2>
+                <p>Este sitio web/aplicación, incluidas las hojas informativas asociadas, ha sido compilado por científicos experimentados en su mayoría de información 
+                  secundaria y en una mínima parte de mediciones de campo. La identificación taxonómica de las especies fue apoyada por colectas de campo en los casos 
+                  que se consideró necesario. Con respecto al material contenido en este sitio web, las organizaciones y personas involucradas en la creación de la 
+                  herramienta interactiva ÁrbolSAF no ofrecen ninguna garantía, expresa o implícita (incluida la idoneidad para un propósito particular) y no aceptan 
+                  responsabilidad legal por la exactitud, integridad o utilidad de cualquier información, producto o proceso divulgado. El uso del material contenido 
+                  en este sitio web/aplicación es bajo su propio riesgo. 
+                </p>
+              </div>
+
+              <div class="tab-pane" id="acknowledgment" role="tabpanel"> 
+                <h2> Agradecimientos </h2>
+                <p> Agradecemos a todas aquellos proyectos, instituciones y organizaciones que han contribuido con ÁrbolSAF: </p>
+                <div class="row">
+                  <div class="col-6 d-flex justify-content-center">
+                    <img src="{% static 'assets/img/herramienta/1.png' %}" class="border-radius-md object-fit-contain" style="height: 120px;" alt="logo">
+                  </div>
+                  <div class="col-6 d-flex justify-content-center">
+                    <img src="{% static 'assets/img/herramienta/2.png' %}" class="border-radius-md object-fit-contain" style="height: 120px;" alt="logo">
+                  </div>
+                </div>
+                <div class="row mt-6">
+                  <div class="col-6 d-flex justify-content-center">
+                    <img src="{% static 'assets/img/herramienta/3.png' %}" class="border-radius-md object-fit-contain" style="height: 130px;" alt="logo">
+                  </div>
+                  <div class="col-6 d-flex justify-content-center">
+                    <img src="{% static 'assets/img/herramienta/4.png' %}" class="border-radius-md object-fit-contain" style="height: 120px;" alt="logo">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-1">
         </div>
       </div>
       {% comment %} {% include "includes/footer.html" %} {% endcomment %}
@@ -47,6 +317,7 @@
 {% endblock content %}
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
 {% endblock javascripts %}

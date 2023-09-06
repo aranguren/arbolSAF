@@ -1,31 +1,57 @@
+<style type="text/css">
+
+  .footer a, a:hover {
+    color: #67748e !important;
+  }
+
+  @media only screen and (max-width: 992px) {
+    .footer-logo {
+      margin-top: 3rem !important;
+    }   
+    
+    .footer-logo div {
+      justify-content: start !important;
+    }
+
+    .footer-logo > div div {
+      flex-wrap: wrap !important;
+    }
+
+    .footer-logo span {
+      text-align: start !important;
+    }
+}
+
+</style>
+
 <footer class="footer pt-8">
   <div class="container-fluid px-8">
     <div class="row d-flex justify-content-between">
-      <div class="col-6 d-flex flex-column align-items-start" style="font-size: 12px;">
+      <div class="col-lg-6 d-flex flex-column align-items-start" style="font-size: 12px;">
         <ul class="list-unstyled ps-0 d-flex">
           <li class="me-4">
-            <a class="social-media-link-icon--facebook externalLink" href="https://www.facebook.com/worldagroforestry" target="_blank">
+            <a class="text-decoration-none" href=" https://www.facebook.com/CIFORICRAFLAC" target="_blank">
               <span class="fa fa-facebook fa-2x"></span>
             </a>  
           </li>
           <li class="me-4">
-            <a class="social-media-link-icon--twitter externalLink" href="https://www.twitter.com/icraf" target="_blank">
+            <a class="text-decoration-none" href="https://twitter.com/CIFOR_ICRAF_LAC" target="_blank">
               <span class="fa fa-twitter fa-2x"></span>
             </a>  
           </li>          
         </ul> 
 
         <span>© 2023 CIFOR-ICRAF Todos los derechos reservados.</span>
-        <span>Contacto: latinoamerica@cifor-icraf.org</span>
-        <span>www.cifor-icraf.org</span>  
+        <a href="mailto:latinoamerica@cifor-icraf.org"><span>Contacto:</span> latinoamerica@cifor-icraf.org</a>
+        <a href="https://www.cifor-icraf.org"><span>www.cifor-icraf.org</span></a>  
       </div>
 
-      <div class="col-6 row align-items-center justify-content-end">
+      <div class="col-lg-6 row align-items-center justify-content-end footer-logo">
         <div class="d-flex justify-content-end" style="flex-direction:column">
           <span class="text-end mb-3" style="font-size: 12px;">Con el apoyo de:</span> 
           <div class="d-flex justify-content-end">
-            <img src="/static/assets/img/herramienta/Logo_ARC.png" style="width: 20%">    
-            <img src="/static/assets/img/herramienta/Logos_PPS_2023_GEF.png" style="width: 20%">
+            <img src="/static/assets/img/herramienta/Logo_ARC.png" class="h-auto" style="max-width: 160px; object-fit: contain">    
+            <img src="/static/assets/img/herramienta/Logos_PPS_2023_GEF.png" class="h-auto" style="max-width: 200px; object-fit: contain">
           </div>          
         </div>        
       </div>  

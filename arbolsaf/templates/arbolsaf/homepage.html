@@ -8,7 +8,8 @@
 <style type="text/css">
 
   .letra {
-    font-size: 24px;
+    font-size: 1.4rem;
+    color: black !important;
   }
 
 </style>
@@ -45,15 +46,15 @@
             </p>
             <div></div>
             <div class="d-flex justify-content-center mt-5">
-              <a href="{% url 'arbolsaf:about_page' %}" class="btn btn-secondary btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+              <a href="{% url 'arbolsaf:about_page' %}" class="btn btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem; background-color: #806377; color: #f8f9fa;">
                 {% comment %} &nbsp;&nbsp;<i class="fa fa-tools"></i> {% endcomment %}
                 Acerca de 
               </a>
-              <a href="{% url 'login' %}" class="btn btn-danger btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+              <a href="{% url 'login' %}" class="btn btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem; background-color: #ee685f; color: #f8f9fa;">
                 {% comment %} <i class="fa fa-cog"></i>&nbsp;&nbsp; {% endcomment %}
                 Plataforma de gestión de datos
               </a>
-              <a href="{% url 'arbolsaf:tool_part1' %}" class="btn btn-primary btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+              <a href="{% url 'arbolsaf:tool_part1' %}" class="btn btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem; background-color: #21ac8d; color: #f8f9fa;">
                 {% comment %} &nbsp;&nbsp;<i class="fa fa-tools"></i> {% endcomment %}
                 Herramienta
               </a>
