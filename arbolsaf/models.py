@@ -141,7 +141,7 @@ class VariableTypeModel(BasicAuditModel):
     tipo_variables = models.CharField(_("tipo variable"), 
                     choices=TYPE_CHOICES, max_length=50, blank=True, null=True)
     
-    unidad_medida =  models.ForeignKey("arbolsaf.MeasureUnitTypeModel", verbose_name=_("Unidad medida"), 
+    unidad_medida =  models.ForeignKey("arbolsaf.MeasureUnitTypeModel", verbose_name=_("Unidad de medida"), 
                 on_delete=models.SET_NULL, blank=True, null=True)
     
     familia =  models.ForeignKey("arbolsaf.VariableTypeFamilyModel", verbose_name=_("Grupo"),
@@ -171,7 +171,7 @@ class VariableTypeOption(models.Model):
     def __str__(self):
         return self.nombre
 
-    tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo Variable"), 
+    tipo_variable = models.ForeignKey("arbolsaf.VariableTypeModel", verbose_name=_("Tipo de Variable"), 
                 on_delete=models.RESTRICT) 
     
     nombre = models.CharField(_("Nombre"), max_length=50)
@@ -222,11 +222,11 @@ class VariableModel(BasicAuditModel):
             nombres=  [valor.nombre for valor in self.valores_cualitativos.all()]
             valor = ','.join(nombres)
         elif self.tipo_variable.tipo_variables == 'numerico': 
-            valor = f"{self.rango_inferior}:{self.rango_superior}"
+            valor = f"{self.rango_inferior};{self.rango_superior}"
         elif self.tipo_variable.tipo_variables == 'texto': 
             valor = self.valor_texto
         elif self.tipo_variable.tipo_variables == 'rango': 
-            valor = f"{self.rango_inferior}:{self.rango_superior}"
+            valor = f"{self.rango_inferior};{self.rango_superior}"
         elif self.tipo_variable.tipo_variables == 'boolean': 
             valor = "SI" if self.valor_boolean else "NO"
         return valor
@@ -268,7 +268,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
     )
         
     cod_esp = models.CharField(_("Código especie"), max_length=50, unique=True)
-    taxonid_wfo = models.CharField(_("Taxon ID WFO"), max_length=50)
+    taxonid_wfo = models.CharField(_("Taxón ID WFO"), max_length=50, unique=True)
     nombre_comun = models.CharField(_("Nombre común"), max_length=255)
     nombre_cientifico = models.CharField(_("Nombre científico"), max_length=255)
     nombre_cientifico_completo = models.CharField(_("Nombre científico completo"), max_length=255)

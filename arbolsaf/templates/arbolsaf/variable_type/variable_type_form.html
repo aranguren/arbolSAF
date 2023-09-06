@@ -37,7 +37,7 @@
                   <h3>Nuevo tipo variable</h3>
                 {% else %}
                   <h3>
-                    Actualizar tipo variable:  <span>'{% firstof variable.variable|default_if_none:"-" %}'</span>
+                    Actualizar tipo variable:  <span>'{% firstof variable.variable|default_if_none:"-"|capfirst %}'</span>
                   </h3>
                 {% endif %}
               </div>

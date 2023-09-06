@@ -27,7 +27,7 @@
           <p class="text-sm mb-0">Create new project</p-->
             <div class="row">
               <div class="col-6">
-               <h3> Detalles: <span>'{% firstof variable.variable|default_if_none:"-" %}' </span></h3>           
+               <h3> Detalles: <span>'{% firstof variable.variable|default_if_none:"-"|capfirst %}' </span></h3>           
               </div>
               <div class="col-6">
                   <div class="d-flex justify-content-end">
@@ -68,19 +68,19 @@
             <div class="col-3">
               <div class="form-group">
                 <h6>Variable </h6>
-                <span class="mr-2">{% firstof variable.variable|default_if_none:"-" %}</span>
+                <span class="mr-2">{% firstof variable.variable|default_if_none:"-"|capfirst %}</span>
               </div>
             </div>
             <div class="col-3">
               <div class="form-group">
-                <h6>Unidad medida </h6>
+                <h6>Unidad de medida </h6>
                 <span class="mr-2">{% firstof variable.unidad_medida|default_if_none:"-" %}</span>
               </div>
             </div>
             <div class="col-3">
               <div class="form-group">
-                <h6>Tipo Variable </h6>
-                <span class="mr-2">{% firstof variable.get_tipo_variables_display|default_if_none:"-" %}</span>
+                <h6>Tipo de Variable </h6>
+                <span class="mr-2">{% firstof variable.get_tipo_variables_display|default_if_none:"-"|capfirst %}</span>
               </div>
             </div>
           
@@ -90,7 +90,7 @@
             <div class="col-3">
               <div class="form-group">
                 <h6>Grupo </h6>
-                <span class="mr-2">{% firstof variable.familia|default_if_none:"-" %}</span>
+                <span class="mr-2">{% firstof variable.familia|default_if_none:"-"|capfirst %}</span>
               </div>
             </div>
             <div class="col-3">

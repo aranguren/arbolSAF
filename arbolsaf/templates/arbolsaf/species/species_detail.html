@@ -119,7 +119,7 @@
             </div>
             <div class="col-3">
               <div class="form-group">
-                <h6>Taxon ID WFO</h6>
+                <h6>Taxón ID WFO</h6>
                 {% if specie.taxonid_wfo%}
                   <a href="http://www.worldfloraonline.org/taxon/{{specie.taxonid_wfo}}" target="_blank">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</a>
                 {% else %}
@@ -166,7 +166,7 @@
               <div class="form-group">
                 <div class="form-group">
                   <h6>Nativa para Perú</h6>
-                  <div class="mr-2">{{ specie.nativa|yesno:_("SI,NO") }}</div>
+                  <div class="mr-2">{{ specie.nativa|yesno:_("SÍ,NO") }}</div>
                 </div>
               </div>
             </div>
@@ -301,7 +301,7 @@
                       <b>Valor</b>
                     </td>
                     <td>
-                      <b>Unidad medida</b>
+                      <b>Unidad de medida</b>
                     </td>
                     <td>
                       <b>Fuente</b>
@@ -385,13 +385,13 @@
                       <b>Código variable</b>
                     </td>
                     <td>
-                      <b>Tipo Variable</b>
+                      <b>Tipo de Variable</b>
                     </td>
                     <td>
                       <b>Familia</b>
                     </td>
                     <td>
-                      <b>Unidad medida</b>
+                      <b>Unidad de medida</b>
                     </td>
                     {% if request.user|has_group:"editor" or request.user.is_superuser %} 
                     <td>

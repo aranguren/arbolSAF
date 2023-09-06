@@ -108,11 +108,7 @@ def tool_print_pdf_view(request):
     especies = request.POST.get('especies', None)
     if especies:
         especies_obj = json.loads(especies)
-    print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
-    print("-------------------------------------------------------------------------------------------------------------------")
-    print(request.POST)
     post_data = request.POST
-    print("-------------------------------------------------------------------------------------------------------------------")
     data={
         "nombre": post_data['nombre'] or '-',
         "region": post_data['region'] or '-',
@@ -128,15 +124,21 @@ def tool_print_pdf_view(request):
     }
    
     for especie in especies_obj:
+        print("-------------------------------------------------------------------------------------------------------------------")
+        
+        print(f"Mostrando especie con nombre {especie.get('NOMBRE COMUN','')}")
+        print(f"SEMAFORO_PASO_2-> {especie.get('SEMAFORO_PASO_2','')}")
+        print(f"SEMAFORO_PASO_3-> {especie.get('SEMAFORO_PASO_3','')}")
+        print(f"NOTAS-> {especie.get('NOTAS','')}")
         
         especie['nombre_comun'] = especie.get('NOMBRE COMUN','-')
         especie['nombre_cientifico'] = especie.get('NOMBRE CIENTIFICO','')
-        especie['valor_madera'] = especie.get('VALOR MADERA','')
-        especie['valor_fruta'] = especie.get('VALOR FRUTA','')
-        especie['valor_otros_usos'] = especie.get('VALOR OTROS USOS','')
-        especie['valor_biodiversidad'] = especie.get('VALOR BIODIVERSIDAD','')
-        especie['valor_microclimea'] = especie.get('VALOR MICROCLIMA','')
-        especie['valor_suelo'] = especie.get('VALOR SUELO','')
+        especie['valor_madera'] = True if especie.get('VALOR MADERA',0) >0  else False
+        especie['valor_fruta'] =  True if especie.get('VALOR FRUTA',0) >0 else False
+        especie['valor_otros_usos'] = True if especie.get('VALOR OTROS USOS',0) >0 else False
+        especie['valor_biodiversidad'] = True if especie.get('VALOR BIODIVERSIDAD',0) >0 else False
+        especie['valor_microclimea'] = True if especie.get('VALOR MICROCLIMA',0 ) >0  else False
+        especie['valor_suelo'] = True if especie.get('VALOR SUELO','') >0  else False
 
   
         codigo = especie.get('CODIGO',False)

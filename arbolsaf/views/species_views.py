@@ -318,7 +318,7 @@ def species_list_json(request):
         "VALOR BIODIVERSIDAD": especie.valor_biodiversidad,
         "VALOR MICROCLIMA": especie.valor_microclima,
         "VALOR SUELO": especie.valor_suelo,
-        "IVIM": especie.ivim
+        "IVIM": round(especie.ivim, 0)
         }
         
         #temperatura máxima de su zona de distribución

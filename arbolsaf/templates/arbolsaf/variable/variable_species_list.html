@@ -58,7 +58,7 @@ Listado Variable - Especies
                 <table class="table table-bordered table-hover mt-0" id="mydatatable">
                   <thead>
                   <tr>
-                      <th>
+                      <td>
                           {% if ordenar_por == 'nombre_comun' %}
                               <a id="ord-nombre_comun" href="#">
                                   <b>Nombre común</b> <i class="fa fa-angle-down"></i>
@@ -73,8 +73,8 @@ Listado Variable - Especies
                               </a>
                           {% endif %}
 
-                      </th>
-                      <th>
+                      </td>
+                      <td>
                           {% if ordenar_por == 'nombre_cientifico' %}
                               <a id="ord-nombre_cientifico" href="#">
                                   <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
@@ -89,8 +89,8 @@ Listado Variable - Especies
                               </a>
                           {% endif %}
 
-                      </th>
-                      <th>
+                      </td>
+                      <td>
                           {% if ordenar_por == 'tipo_variable' %}
                               <a id="ord-tipo_variable" href="#">
                                   <b>Variable</b> <i class="fa fa-angle-down"></i>
@@ -105,8 +105,8 @@ Listado Variable - Especies
                               </a>
                           {% endif %}
 
-                      </th>
-                      <th>
+                      </td>
+                      <td>
                           {% if ordenar_por == 'valor' %}
                               <a id="ord-valor" href="#">
                                   <b>Valor</b> <i class="fa fa-angle-down"></i>
@@ -121,8 +121,8 @@ Listado Variable - Especies
                               </a>
                           {% endif %}
 
-                      </th>
-                      <th>
+                      </td>
+                      <td>
                           {% if ordenar_por == 'referencia' %}
                               <a id="ord-referencia" href="#">
                                   <b>Fuente</b> <i class="fa fa-angle-down"></i>
@@ -137,7 +137,7 @@ Listado Variable - Especies
                               </a>
                           {% endif %}
 
-                      </th>
+                      </td>
 
                   </tr>
                   </thead>
@@ -148,8 +148,8 @@ Listado Variable - Especies
                           <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
 
                           <td>{% firstof variable_specie.especie.nombre_comun|default_if_none:"" %}</td>
-                          <td>{% firstof variable_specie.especie.nombre_cientifico|default_if_none:"" %}</td>
-                          <td>{% firstof variable_specie.tipo_variable|default_if_none:"" %}</td>
+                          <td><i>{% firstof variable_specie.especie.nombre_cientifico|default_if_none:"" %}</i></td>
+                          <td>{% firstof variable_specie.tipo_variable|default_if_none:""|capfirst %}</td>
                           <td>{% firstof variable_specie.get_valor_general|default_if_none:"" %}</td>
                           <td>{% firstof variable_specie.referencia|default_if_none:"" %}</td>
 
