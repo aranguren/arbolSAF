@@ -210,8 +210,9 @@
 }
 
 .table-species {
-    /* table-layout: fixed; */
+    table-layout: fixed;
     width: 1625px !important;
+    max-width: none !important;
 }
 
 .table-species th, td {
@@ -346,12 +347,13 @@
     position: sticky;
     left: 0;
     background-color: white;
+    z-index: 1;
 }
 
 #table-species-selected thead tr th:nth-child(2),
 #table-species-selected tbody tr td:nth-child(2){
     position: sticky;
-    left: 145.5px !important;
+    left: 147.717px !important;
     background-color: white;
     z-index: 1;
 }

@@ -108,11 +108,11 @@ $('#table-species-selected').DataTable({
         { orderable: false },
         { orderable: false },
         { orderable: false },
+        { orderable: false },
         { orderable: true },
         { orderable: false },
-        { orderable: false },
     ],
-    order: [[8, 'desc']],
+    order: [[9, 'desc']],
     language: {
         "emptyTable": "No hay datos disponibles en la tabla",
         "info": "",
