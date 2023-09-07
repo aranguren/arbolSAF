@@ -341,7 +341,7 @@ function selectSpecies(item) {
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +                        
                         function () {
-                            console.log('id_carrousel >>>>>>>>>>>', id_carrousel);
+                            // console.log('id_carrousel >>>>>>>>>>>', id_carrousel);
                             let i;
                             $.isEmptyObject(specie_selected[0]['imagenes'])
                             ?
