@@ -28,27 +28,40 @@ Listado Especies
           <div class="card-header">
             <h3 class="mb-1">Listado de especies</h3>
             <hr class="horizontal dark my-2">
-            <div class="d-flex justify-content-left">
-              {% if request.user|has_group:"editor" or request.user.is_superuser%} 
-              <a href="{% url 'arbolsaf:species_create' %}"
-                 class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
-              {% endif %}
-              <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"
-                      id="filtroB"
-                      data-bs-toggle="modal"
-                      data-bs-target="#filterModal">
-                <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar
-              </button>
+            <div class="row">
+              <div class="col-6 d-flex justify-content-left">
+                {% if request.user|has_group:"editor" or request.user.is_superuser%} 
+                <a href="{% url 'arbolsaf:species_create' %}"
+                  class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+                {% endif %}
+                <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"
+                        id="filtroB"
+                        data-bs-toggle="modal"
+                        data-bs-target="#filterModal">
+                  <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar
+                </button>
 
-              {% if has_filters %}
-              <h6 class="mt-0">
-                <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
-                  <button type="button"
-                          onclick="window.location='{% url 'arbolsaf:species_list' %}'"
-                          class="btn-close"></button>
-                </span>
-              </h6>
-            {% endif %}
+                {% if has_filters %}
+                <h6 class="mt-0">
+                  <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
+                    <button type="button"
+                            onclick="window.location='{% url 'arbolsaf:species_list' %}'"
+                            class="btn-close"></button>
+                  </span>
+                </h6>
+                {% endif %}
+              </div>
+
+              <div class="col-6 d-flex justify-content-end">
+
+                <button class="btn btn-primary text-white btn-large btn-sm m-b-xm mx-1"
+                        id="filtroB"
+                        data-bs-toggle="modal"
+                        data-bs-target="#ActualizarModal">
+                  <i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;Actualizar Herramienta
+                </button>
+
+              </div>
             </div>
           </div>
           <div class="card-body mt-0 pt-0">
@@ -383,6 +396,134 @@ Listado Especies
               </nav>
             </div-->
 
+
+    <div class="modal fade"
+        id="ActualizarModal"
+        data-bs-backdrop="static" 
+        data-bs-keyboard="false"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Actualizar Herramienta</h5>
+          <button type="button"
+                  class="btn-close text-dark"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  id="dismissActualizar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-sm mb-0 font-weight-bold">
+            Esta acción actualizará los valores calculados de las especies presentes en la herramienta. ¿Desea continuar?
+          </p>
+          <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  id="cancelarActualizar"
+                  class="btn bg-success text-white"
+                  data-bs-dismiss="modal">Cerrar</button>
+          <form name="form-actualizar" id="form-tool">
+            {% csrf_token %}
+       
+          <button type="submit" class="btn bg-danger text-white" id="actualizarHerramienta">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinnerButton" style="display:none;"></span>
+            Aceptar</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="modal fade"
+    id="errorModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">
+        Error</span>
+      </h5>
+      <button type="button"
+              class="btn-close text-dark"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              id="closemodalerror">
+    
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div  class="row">
+        <div class="col-2 text-center text-danger">
+          <i class="fa fa-3x fa-exclamation-circle "></i>
+          </div>
+          <div class="col-10">
+          <p class="text-sm mb-0 font-weight-bold">
+              <span id="errorspan"></span>
+          </p>
+          
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn bg-success text-white" data-bs-dismiss="modal" >
+        Cerrar
+      </button>
+    </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="modal fade"
+  id="successModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Actualizacion completada</h5>
+    <button type="button"
+            class="btn-close text-dark"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            id="closemodalerror">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-2 text-center text-success">
+        <i class="fa fa-3x fa-thumbs-up"></i>
+      </div>
+      <div class="col-10">
+        <p class="text-sm mb-0 font-weight-bold">
+            Se ha realizado la actualización de los valores para todas las especies
+          
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button"
+            class="btn bg-success text-white"
+            data-bs-dismiss="modal">Cerrar</button>
+  </div>
+  </div>
+  </div>
+  </div>
+
             <div class="modal fade"
                  id="filterModal"
                  tabindex="-1"
@@ -618,6 +759,65 @@ Listado Especies
   //$(document).ready(function() {
   //    $('#mydatatable').DataTable();
   //} );
+
+
+  $('#form-tool').on('submit', function(e){
+    e.preventDefault();
+
+
+    $("#spinnerButton").show();
+    $("#actualizarHerramienta").prop('disabled', true);
+    $("#cancelarActualizar").prop('disabled', true);
+    $("#dismissActualizar").prop('disabled', true);
+
+
+    var element = $("form[name='form-actualizar'] input[name='csrfmiddlewaretoken']");
+    console.log(element[0]);
+    var token = element[0].value
+    console.log(token)
+    
+    $.ajax({
+        url: "/arbolsaf/especie/actualizar-herramienta/",
+        type: "POST",
+        headers: {"X-CSRFToken": token},
+        data: {
+            'actualizar':'ok',
+
+        },
+        /* dataType:'json',
+        contentType:'application/pdf', */
+        
+        success: function(blob) {
+          console.log("hemos actualizado la herramienta")
+          $("#ActualizarModal").modal('hide');
+          $("#spinnerButton").hide();
+          $("#actualizarHerramienta").prop('disabled', false);
+          $("#cancelarActualizar").prop('disabled', false);
+          $("#dismissActualizar").prop('disabled', false);
+          $("#successModal").modal('show');
+          
+
+        },
+        error: function (response, e) {
+          console.log(response)
+
+       
+
+          $("#ActualizarModal").modal('hide');
+          $("#spinnerButton").hide();
+          $("#actualizarHerramienta").prop('disabled', false);
+          $("#cancelarActualizar").prop('disabled', false);
+          $("#dismissActualizar").prop('disabled', false);
+
+          $('#errorModal').modal('show');
+          var errorspan = document.getElementById('errorspan');
+         
+      
+           errorspan.textContent ='Ha ocurrido un error al actualizar los valores, Contacte al Administrador';
+           
+        }
+    });
+})
 
 
 

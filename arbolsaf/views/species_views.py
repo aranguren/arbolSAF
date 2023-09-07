@@ -10,6 +10,7 @@ import json
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel
 from ..forms import SpeciesForm
 from ..permissions import GroupRequiredMixin, group_required
+import subprocess
 
 
 
@@ -654,6 +655,24 @@ def species_list_json(request):
 
     #resp = json.dumps(especies_dict_list)
     return  JsonResponse(especies_dict_list, status=200, safe=False)
+
+
+class UpdateToolValuesView(View):
+    #template_parcela ='agrimensuras/project_pdf_parcela.html' # the template 
+    #template_lotificacion ='agrimensuras/project_pdf_lotificacion.html' 
+    #template_header ='agrimensuras/project_pdf_header.html' 
+    #template_footer ='agrimensuras/project_pdf_footer.html' 
+
+    def post(self, request, **kw):
+
+
+        result = subprocess.run(["python3", "manage.py", "updatedata"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+
+        print(result.stderr.decode('ascii'))
+        print(result.stdout.decode('ascii'))
+        #return  JsonResponse( {'error':'internal server error'}, status=500, safe=False)
+        return  JsonResponse( {'status':'ok'}, status=200, safe=False)
+       
     
 
 

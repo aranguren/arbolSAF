@@ -19,6 +19,8 @@ urlpatterns = [
     path('especie/crear', SpeciesCreateView.as_view(),name='species_create'),
     path('especie/modificar/<str:pk>', SpeciesUpdateView.as_view(), name='species_update'),
     path('especie/eliminar', species_delete, name='species_delete'),
+    path('especie/actualizar-herramienta/', UpdateToolValuesView.as_view(), name='species_update_tool_fields'),
+    
     
     path('especie/<int:pk>/variable', create_variable_o2m, name='species_create_variable'),
     path('especie/<int:pk>/variable/diligenciar/<int:tipo>/', create_variable_o2m, name='species_diligenciar_variable'),
