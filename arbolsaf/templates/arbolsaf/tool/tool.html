@@ -149,23 +149,38 @@
                           <div class="row arbol-container h-100" style="position: relative;">                            
                             <div class="row-circle mb-2">
                               <div class="col-12 row d-flex flex-row justify-content-between row-one">                               
-                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #aa4207; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Suelo</span></div>
-                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #85604b; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Madera</span></div>
-                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #806377; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Fruta</span></div>
+                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #aa4207; padding: 5px !important;" data-products="SUELO">
+                                  <span class="m-auto text-uppercase text-sm font-weight-bold">Suelo</span>
+                                </div>
+
+                                <div class="rec-arbol options-arbol d-flex col-4 mb-2" style="background-color: #85604b; padding: 5px !important;" data-products="MADERA">
+                                  <span class="m-auto text-uppercase text-sm font-weight-bold">Madera</span>
+                                </div>
+                                
+                                <div class="rec-arbol options-arbol d-flex col-3 mb-2" style="background-color: #806377; padding: 5px !important;" data-products="FRUTA">
+                                  <span class="m-auto text-uppercase text-sm font-weight-bold">Fruta</span>
+                                </div>
                               </div>
                               
                               <div class="col-12 row d-flex flex-row justify-content-between flex-wrap row-two">
-                                <div class="rec-arbol options-arbol d-flex col-5 mb-2" style="background-color: #006d70; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Microclima</span></div>
-                                <div class="rec-arbol options-arbol d-flex col-5 mb-2" style="background-color: #00a44d; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Biodiversidad</span></div>
-                                <div class="rec-arbol options-arbol d-flex col-12 mb-2" style="background-color: #fdc00d; padding: 5px !important;"><span class="m-auto text-uppercase text-sm font-weight-bold">Otros usos</span></div>
+                                <div class="rec-arbol options-arbol d-flex col-5 mb-2" style="background-color: #006d70; padding: 5px !important;" data-products="MICROCLIMA">
+                                  <span class="m-auto text-uppercase text-sm font-weight-bold">Microclima</span>
+                                </div>
+
+                                <div class="rec-arbol options-arbol d-flex col-6 mb-2" style="background-color: #00a44d; padding: 5px !important;" data-products="BIODIVERSIDAD">
+                                  <span class="m-auto text-uppercase text-sm font-weight-bold">Biodiversidad</span>
+                                </div>
+
+                                <div class="rec-arbol options-arbol d-flex col-12 mb-2" style="background-color: #fdc00d; padding: 5px !important;" data-products="OTROS USOS">
+                                  <span class="m-auto text-uppercase text-sm font-weight-bold">Otros usos</span>
+                                </div>
                               </div>
                             </div>
 
-                            <div class="col-circle"> 
-                              
+                            <div class="col-circle">                              
                               <div class="col-6 d-flex flex-column justify-content-between col-one">
                                 <div class="image-arbol">
-                                  <img src="{% static 'assets/img/herramienta/imagen_paso1.jpg' %}" class="border-radius-md" style="width: 280px; position: absolute; right: -9.5rem; top: 14rem" alt="arbol">
+                                  <img src="{% static 'assets/img/herramienta/imagen_paso1.jpg' %}" class="border-radius-md" style="width: 280px; position: absolute; right: -10.5rem; top: 17rem" alt="arbol">
                                 </div>
                                 
                                 <div class="circle-container" style="position: relative; width: 100%;">
@@ -198,7 +213,7 @@
                               
                               <div class="col-6 d-flex flex-column justify-content-between col-two">
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: 4rem; left: 2rem; background-color: #006d70" data-products="MICROCLIMA">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: 5.3rem; left: 2rem; background-color: #006d70" data-products="MICROCLIMA">
                                     <span class="m-auto text-uppercase font-weight-bold">Microclima</span>
                                     <span class="tool-tip-circle">    
                                       Regula microclima
@@ -207,7 +222,7 @@
                                 </div>
 
                                 <div class="circle-container" style="position: relative; width: 100%;">
-                                  <div class="circle-arbol options-arbol d-flex" style="top: -2rem; left: 8rem; background-color: #00a44d" data-products="BIODIVERSIDAD">
+                                  <div class="circle-arbol options-arbol d-flex" style="top: -1.3rem; left: 8rem; background-color: #00a44d" data-products="BIODIVERSIDAD">
                                     <span class="m-auto text-uppercase font-weight-bold">Biodiversidad</span>
                                     <span class="tool-tip-circle">    
                                       Recursos para abejas, aves, murciélagos y otros grupos de fauna
@@ -471,11 +486,11 @@
                         <div class="row text-start">
                           <div class="col-12 col-md-6 ms-auto mt-3">
                             <label> Nombre del productor </label>
-                            <input class="multisteps-form__input form-control" type="text" name="NOMBRE" placeholder="Eg. Soft" onchange="handleForm(this)" required/>
+                            <input class="multisteps-form__input form-control" type="text" name="NOMBRE" placeholder="Ej. Juan" onchange="handleForm(this)" required/>
                           </div>
 
                           <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Region </label>
+                            <label> Región </label>
                             <select class="form-control" name="REGION" id="choices-region" onchange="regionSelected(this)">
                               <option value="">-- Seleccione -- </option>
                               <option value="Loreto">Loreto</option>

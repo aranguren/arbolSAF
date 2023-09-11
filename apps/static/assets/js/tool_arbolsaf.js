@@ -181,8 +181,8 @@ function createTable(data) {
             }}
         ],
         language: {
-            "info":           "Mostrando _START_ to _END_ de _TOTAL_ entradas",
-            "infoEmpty":      "Mostrando 0 to 0 of 0 entradas",
+            "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
             "search":         "Buscar:",
             "zeroRecords":    "No se encontraron registros coincidentes",
             "loadingRecords": "Please wait - loading...",
@@ -1105,14 +1105,14 @@ $(document).ready(function() {
 
 
 
-    $( window ).on( "resize", function() {
+    /* $( window ).on( "resize", function() {
         let w = $( "#table-species-selected thead tr th:first-child" ).css('width');
         console.log('w', w);
 
         $("#table-species-selected thead tr th:nth-child(2)").css('left', parseInt( w, 10 ) + 4 + "px");
-    } );
+    } ); */
 
-    $("body").on( "click", '.circle-arbol, .options-arbol', function() {        
+    $("body").on( "click", '.options-arbol', function() {        
         let bc = $(this).css("background-color").replace(')', ', 0.3)').replace('rgb', 'rgba');
         $("#table-card").css("background-color", bc);
         let text_sel = $(this).data('products');

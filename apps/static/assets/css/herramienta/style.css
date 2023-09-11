@@ -129,6 +129,7 @@
 
 .col-circle {
     display: none !important;
+    height: 100%;
 }
 
 .rec-arbol {
@@ -207,6 +208,11 @@
     border-radius: 1rem;
     box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05); */
     width: auto;
+}
+
+#table-card {
+    min-height: 500px;
+    height: 100%;
 }
 
 .table-species {
@@ -473,36 +479,27 @@
         font-size: 0.875rem !important;
     }
 
-    #table-card {
-        height: 650px;
-    }
+    /* #table-card {
+        height: 650px !important;
+    } */
 
     
 }
 
-@media only screen and (min-width: 1300px) {
-    .image-arbol {
-        display: block;
-        position: relative;
-    }
-
-    .circle-container {
-        display: block !important;
-        position: relative !important;
-    }
-
-    .circle-arbol {
-        width: 130px;
-        height: 130px;
-        position: absolute !important;
-    }
-
+/* @media only screen and (max-width: 385px) {
     #table-card {
-        height: 580px;
+        height: 830px;
     }
 }
 
+@media only screen and (min-width: 386px) {
+    #table-card {
+        height: 780px;
+    }
+} */
+
 @media only screen and (min-width: 670px) {
+    .row-circle .row-one div,
     .row-circle .row-two div {
         flex: 0 0 auto;
         width: 25%;
@@ -524,10 +521,52 @@
         display: flex !important;
         flex-direction: row;
         justify-content: space-around;
-        height: 540px;
+        min-height: 540px;
+    }
+
+    /* #table-card {
+        height: 560px !important;
+    } */
+}
+
+@media only screen and (min-width: 1189px) {
+    /* #table-card {
+        min-height: 600px !important;
+    } */
+    
+    .col-circle {
+        min-height: 600px;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .image-arbol {
+        display: block;
+        position: relative;
+    }
+
+    .circle-container {
+        display: block !important;
+        position: relative !important;
+    }
+
+    .circle-arbol {
+        width: 130px;
+        height: 130px;
+        position: absolute !important;
     }
 
     #table-card {
-        height: 540px;
+        min-height: 600px !important;
+    }
+}
+
+@media only screen and (min-width: 1670px) {
+    .col-circle {
+        height: 560px;
+    }
+
+    #table-card {
+        height: 560px !important;
     }
 }
