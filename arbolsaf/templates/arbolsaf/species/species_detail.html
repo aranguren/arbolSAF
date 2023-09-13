@@ -121,7 +121,7 @@
               <div class="form-group">
                 <h6>Taxón ID WFO</h6>
                 {% if specie.taxonid_wfo%}
-                  <a href="http://www.worldfloraonline.org/taxon/{{specie.taxonid_wfo}}" target="_blank">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</a>
+                  <a href="http://www.worldfloraonline.org/taxon/{{specie.taxonid_wfo}}" target="_blank">{% firstof specie.taxonid_wfo|default_if_none:"-" %} <i class="fa fa-external-link"></i></a>
                 {% else %}
                 -
                 {% endif %}
@@ -175,7 +175,7 @@
                 <h6>Switchboard de CIFOR-ICRAF</h6>
                 <div class="mr-2">
                   {% if  specie.get_link_icraf%}
-                  <a href="{{specie.get_link_icraf}}" target="_blank">Abrir enlace</a>
+                  <a href="{{specie.get_link_icraf}}" target="_blank">Abrir enlace <i class="fa fa-external-link"></i></a>
                   
                   {% else %}
                   -
