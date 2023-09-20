@@ -53,13 +53,14 @@ Listado Especies
               </div>
 
               <div class="col-6 d-flex justify-content-end">
-
+                {% if request.user.is_superuser%} 
                 <button class="btn btn-primary text-white btn-large btn-sm m-b-xm mx-1"
                         id="filtroB"
                         data-bs-toggle="modal"
                         data-bs-target="#ActualizarModal">
                   <i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;Actualizar Herramienta
                 </button>
+                {% endif %}
 
               </div>
             </div>

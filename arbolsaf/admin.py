@@ -342,7 +342,7 @@ class SpeciesAdmin(ImportExportModelAdmin):
     ]
 
 
-    inlines = [SynonymousInline, MenaceInline, ImageSpeciesInline]
+    inlines = [SynonymousInline, ImageSpeciesInline]
 
     def save_model(self, request, obj, form, change):
         if change:
