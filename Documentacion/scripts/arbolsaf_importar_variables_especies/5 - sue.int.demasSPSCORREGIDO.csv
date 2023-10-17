@@ -1,0 +1,36 @@
+V01;V02;V03;V04;V05;V00;V61;V62;V73;V79;V80;V85;V67;V72;V151;V66;V50;V53;V71;V74;V84;V88;V97;V99;V104;V154;V47;V48;V52;V89;V90;V91;V68;V83;V106;V108;V109;V152;V153
+cod.linea;numero_especie;cod.esp;species;fuente.inicial;cod.cita;dominancia en el ensamble por n£mero de individuos;dominancia por area basal;gremio ecologico;posicion en estrato vertical en bosque;grupo funcional en la sucesion;presencia en claros;estrato en practica agroforestal;flamabilidad;tolerancia al fuego;estrategia de uso recurso;altura maxima en bosque;capacidad de rebrote;fijaci?n del nitrogeno;longevidad;presencia de nectarios;produccion de hojarasca;tasa de crecimiento adulto;tejidos de protecci?n;tipo de planta;altura de ramificacion;alelopatia negativa;alelopatia positiva;atrayente de plagas;recurso para aves;recurso para micromam!feros;recurso para murcielagos;exigencia de suelos fertiles;preferencia ph suelo;tipo de suelo optimo/preferido;tolerancia a la acidez del suelo;tolerancia a la salinidad del suelo;desarrollo en suelos rocosos;desarrollo en suelos bien drenados
+;54;e43;Astrocaryum murumuru;Bezerra, 2008;c20;NA;NA;esciofita;sotobosque;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Cruz et al., 2017;c52;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;no leguminosa;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Gutierrez-Vasquez & Peralta, 2001;c90;NA;NA;NA;NA;NA;NA;NA;NA;si;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Kahn & Millan, 2013;c99;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;aguijones;NA;primer tercio;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Paniagua-Zambrana, 2005;c135;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Saldanha, 2012;c167;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Tree Functional Attributes and Ecological Database;c203;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Ureta et al., 2014;c180;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;UTP (Useful Tropical Plants), 2019;c183;NA;NA;NA;NA;NA;si;NA;NA;NA;NA;15;nulo;NA;NA;NA;NA;NA;espinas;palmera;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si
+;56;e92;Cecropia engleriana;Berg, 1978;c18;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;"10;30";NA;NA;NA;NA;NA;NA;NA;arbol;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Casallas-Pabon et al., 2017;c35;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Garcia & Araujo, 2019;c82;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;hormigas;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;ICRAF Database - Tree Species;c203;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Perez, 2021;c138;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Rodriguez & Cuellar, 2021;c157;NA;NA;heliofita;NA;pionera;si;NA;NA;NA;NA;"20;30";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si;si;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Santivanez & Cabrera, 2013;c169;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;no leguminosa;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Vela, 2019;c190;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;"20;24";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Cardenas, 2018;c32;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Cauper, 2019;c38;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;12;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Flores B, 2018;c78;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;30;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Kreibich, 2002;c100;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Lezama, 2018;c105;NA;NA;heliofita durable;NA;NA;NA;NA;NA;NA;NA;NA;NA;leguminosa;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Ministerio del Ambiente del Ecuador, 2013;c202;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Schongart et al., 2002;c170;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Campos Filho & Rodrigues Sartorelli, 2015;c28;NA;NA;NA;NA;NA;NA;NA;alto;NA;NA;NA;NA;NA;NA;NA;NA;medio;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Canavides, 2001;c31;NA;NA;heliofita durable;dosel;NA;NA;NA;NA;NA;NA;NA;NA;NA;"70;80";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;acido;NA;si;NA;NA;NA
+;51;e444;Pterocarpus rohrii;CARVALHO, 2008;c201;NA;NA;heliofita, esciofita;NA;secundaria inicial, secundaria tardia;si;NA;NA;NA;NA;32;alto;NA;NA;NA;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;CIMA, 2021;c41;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si;NA;si;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Flores B, 2018;c78;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;45;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Pena, 2021;c136;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Reynel et al., 2003;c151;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;mucho;NA;arcillo,limoso;NA;NA;si;si
+;51;e444;Pterocarpus rohrii;Reynel et al., 2016;c152;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;"20;35";NA;leguminosa;NA;NA;NA;NA;NA;arbol;segundo tercio;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Roman et al., 2012;c162;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;leguminosa,no fija;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;UTP (Useful Tropical Plants), 2019;c183;NA;NA;NA;NA;pionera;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
