@@ -180,18 +180,44 @@ class ExportCsvView(LoginRequiredMixin, GroupRequiredMixin, View):
             referencia = ReferenceModel.objects.get(pk=int(query['referencia']))
             query_result = query_result.filter(referencia=referencia)
 
-        response = HttpResponse('text/csv')
-        response['Content-Disposition'] = 'attachment; filename=tabla_cruzada.csv'
+        #response = HttpResponse('text/csv')
+        #response['Content-Disposition'] = 'attachment; filename=tabla_cruzada.csv'
+
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="tabla_cruzada.csv"'},
+            )
+        
         writer = csv.writer(response)
-        writer.writerow([])
-        writer.writerow(['Nombre Común', 'Nombre Científico', 'Tipo de variable', 'Referencia', 'Valor'])
+        writer.writerow(['ID','Código especie','Nombre Común', 'Nombre Científico','Código Variable', 'Tipo de variable', 'Código referencia', 'Referencia', 'Valor'])
 
         for item in query_result:
-            especie = item.especie
-            valor_general = item.get_valor_general
 
-            writer.writerow([especie.nombre_comun, especie.nombre_cientifico, item.tipo_variable,
-                            item.referencia, valor_general])
+            
+            especie = item.especie
+            valor=False
+            if item.tipo_variable.tipo_variables == 'cualitativo':
+                nombres=  [valor.nombre for valor in item.valores_cualitativos.all()]
+                valor = ','.join(nombres)
+            elif item.tipo_variable.tipo_variables == 'numerico': 
+                valor = f"{item.rango_inferior};{item.rango_superior}"
+            elif item.tipo_variable.tipo_variables == 'texto': 
+                valor = item.valor_texto
+            elif item.tipo_variable.tipo_variables == 'rango': 
+                valor = f"{item.rango_inferior};{item.rango_superior}"
+            elif item.tipo_variable.tipo_variables == 'boolean': 
+                valor = "SI" if item.valor_boolean else "NO"
+            else:
+                valor = item.valor_general or ""
+            
+            if not valor or valor=='':
+                valor = item.valor_general or ""
+
+
+            valor_general = valor
+
+            writer.writerow([item.id, especie.cod_esp, especie.nombre_comun, especie.nombre_cientifico, item.tipo_variable.cod_var, item.tipo_variable,
+                            item.referencia.cod_cita, item.referencia, valor_general])
 
         return response
 

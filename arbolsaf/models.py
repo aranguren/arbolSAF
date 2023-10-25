@@ -216,9 +216,9 @@ class VariableModel(BasicAuditModel):
     
     @property
     def get_valor_general(self):
-        if self.valor_general:
-            valor = self.valor_general
-        elif self.tipo_variable.tipo_variables == 'cualitativo':
+        valor=""
+
+        if self.tipo_variable.tipo_variables == 'cualitativo':
             nombres=  [valor.nombre for valor in self.valores_cualitativos.all()]
             valor = ','.join(nombres)
         elif self.tipo_variable.tipo_variables == 'numerico': 
@@ -229,6 +229,9 @@ class VariableModel(BasicAuditModel):
             valor = f"{self.rango_inferior};{self.rango_superior}"
         elif self.tipo_variable.tipo_variables == 'boolean': 
             valor = "SI" if self.valor_boolean else "NO"
+        else:
+            valor = self.valor_general or ""
+
         return valor
 
     class Meta:

@@ -169,7 +169,7 @@ class FunctionAdmin(admin.ModelAdmin):
             obj.modified_by = request.user
         super().save_model(request, obj, form, change)
 
-admin.site.register(models.FunctiomModel, FunctionAdmin)
+#admin.site.register(models.FunctiomModel, FunctionAdmin)
 
 
 
@@ -342,7 +342,7 @@ class SpeciesAdmin(ImportExportModelAdmin):
     ]
 
 
-    inlines = [SynonymousInline, MenaceInline, ImageSpeciesInline]
+    inlines = [SynonymousInline, ImageSpeciesInline]
 
     def save_model(self, request, obj, form, change):
         if change:
@@ -372,7 +372,7 @@ class PriorityAdmin(admin.ModelAdmin):
             obj.modified_by = request.user
         super().save_model(request, obj, form, change)
 
-admin.site.register(models.PriorityModel, PriorityAdmin)
+#admin.site.register(models.PriorityModel, PriorityAdmin)
 
 
 class ReferenceResource(resources.ModelResource):

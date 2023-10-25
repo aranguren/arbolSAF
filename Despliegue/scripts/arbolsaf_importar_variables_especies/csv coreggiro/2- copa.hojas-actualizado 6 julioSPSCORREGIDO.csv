@@ -1,0 +1,36 @@
+V01;V02;V03;V04;V05;V00;V1;V2;V3;V5;V205;V6;V7;V8;V9;V10;V11;V12;V13;V29;V30;V31;V32;V33;V34;V35;V36;V37;V38;V39;V40;V41;V42;V43;V44;V45;V46;V119;V164
+cod.linea;numero_especie;cod.esp;species;fuente.inicial;cod.cita;altura potencial de copa;ancho potencial de copa;brinda sombra en agroforesteria;densidad promedio de la copa;densidad promedio de la copa;follage;forma de copa;forma seg£n shademotion;frecuencia de poda;maxima densidad de copa;mes de maxima densidad de copa;mes de minima densidad de copa;tipo de ramificacion de copa;area de la hoja;area foliar espec!fica;concentracion de nitrogeno en la hoja;concentracion de nitrogeno en la hojarasca;contenido de materia seca en hojas;descomposabilidad de la hojarasca;epoca de caida de hojas;espezor de la hoja;fenolog!a de las hojas;flamabilidad de la hoja;uso como forraje;herbivoria de hojas;largo de hoja;palatabilidad hoja;relaci?n c/n hojas;tipo de hoja compuesta;tipo de hoja seg£n dureza;tipo de hoja simple;capacidad de regeneraci?n de ramas podadas;ancho de la hoja
+;54;e43;Astrocaryum murumuru;Bezerra, 2008;c20;NA;NA;si;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;si;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Cruz et al., 2017;c52;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Gutierrez-Vasquez & Peralta, 2001;c90;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Kahn & Millan, 2013;c99;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Paniagua-Zambrana, 2005;c135;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Saldanha, 2012;c167;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;"500;620";NA;NA;pinnada;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Tree Functional Attributes and Ecological Database;c203;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;perennifolio;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;Ureta et al., 2014;c180;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;54;e43;Astrocaryum murumuru;UTP (Useful Tropical Plants), 2019;c183;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;700;NA;NA;NA;NA;NA;bajo;NA
+;56;e92;Cecropia engleriana;Rodriguez & Cuellar, 2021;c157;NA;NA;;;bajo;ralo;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;perennifolio;NA;NA;NA;NA;NA;NA;NA;coriacea;NA;NA;NA
+;56;e92;Cecropia engleriana;Berg, 1978;c18;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Casallas-Pabon et al., 2017;c35;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Garcia & Araujo, 2019;c82;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;peltada;NA;NA
+;56;e92;Cecropia engleriana;ICRAF Database - Tree Species;c203;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Perez, 2021;c138;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Santivanez & Cabrera, 2013;c169;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;56;e92;Cecropia engleriana;Vela, 2019;c190;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Cardenas, 2018;c32;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Cauper, 2019;c38;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Flores B, 2018;c78;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;pinnada;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Kreibich, 2002;c100;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;"294;507";NA;2.8;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Lezama, 2018;c105;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Ministerio del Ambiente del Ecuador, 2013;c202;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;55;e443;Pterocarpus amazonum;Schongart et al., 2002;c170;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;caducifolio;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Campos Filho & Rodrigues Sartorelli, 2015;c28;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;CARVALHO, 2008;c201;NA;NA;si;NA;NA;NA;piramidal;conica;semestral;NA;NA;NA;simpodial;NA;NA;NA;NA;NA;NA;NA;NA;perennifolio;NA;NA;NA;"3;19";NA;NA;NA;coriacea;NA;alto;"7;14"
+;51;e444;Pterocarpus rohrii;CIMA, 2021;c41;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Flores B, 2018;c78;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Pena, 2021;c136;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;88.15;NA;NA;400.2;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Reynel et al., 2003;c151;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Reynel et al., 2016;c152;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;imparipinnada;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Roman et al., 2012;c162;NA;NA;;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;semicaducifolio;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;Canavides, 2001;c31;NA;NA;;;bajo;ralo;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
+;51;e444;Pterocarpus rohrii;UTP (Useful Tropical Plants), 2019;c183;"8;14";NA;;;alto;abundante;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
