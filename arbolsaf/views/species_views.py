@@ -11,7 +11,7 @@ from ..models import SpeciesModel, VariableTypeModel, ReferenceModel
 from ..forms import SpeciesForm
 from ..permissions import GroupRequiredMixin, group_required
 import subprocess
-
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 
@@ -140,6 +140,8 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
             'familia_dec': '-familia__familia',
             'nativa_peru': 'nativa',
             'nativa_peru_dec': '-nativa',
+            'habilitada_herramienta': 'habilitada_herramienta',
+            'habilitada_herramienta_dec': '-habilitada_herramienta',
 
         }
         orden = self.request.GET.get('ordenar_por', 'nombre_comun')
@@ -306,7 +308,7 @@ def species_list_json(request):
     resp = {}
 
     variables = VariableTypeModel.objects.all()
-    especies = SpeciesModel.objects.all()
+    especies = SpeciesModel.objects.filter(habilitada_herramienta=True)
     especies_dict_list = []
     for especie in especies:
         valores_especie = {
@@ -673,6 +675,28 @@ class UpdateToolValuesView(View):
         #return  JsonResponse( {'error':'internal server error'}, status=500, safe=False)
         return  JsonResponse( {'status':'ok'}, status=200, safe=False)
        
+
+class SpeciesActivateInToolView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        # <view logic>
+
+        species = get_object_or_404(SpeciesModel, pk=pk)
+        species.habilitada_herramienta = True
+        species.save()
+        redirection = reverse_lazy("arbolsaf:species_detail", kwargs={"pk": pk}) 
+        return redirect(redirection)
+    
+
+class SpeciesDeactivateInToolView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        # <view logic>
+
+        species = get_object_or_404(SpeciesModel, pk=pk)
+        species.habilitada_herramienta = False
+        species.save()
+        redirection = reverse_lazy("arbolsaf:species_detail", kwargs={"pk": pk}) 
+        return redirect(redirection)
+    
     
 
 

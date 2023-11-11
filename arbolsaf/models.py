@@ -262,6 +262,7 @@ class DistributionMenaceModel(BasicAuditModel):
 class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
 
+    habilitada_herramienta = models.BooleanField(_("Habilitada en herramienta"), default=False)
 
     VALUES_CHOICES = (
         ("ninguno", "Ninguno"),

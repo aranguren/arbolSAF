@@ -311,7 +311,9 @@ class SpeciesAdmin(ImportExportModelAdmin):
                                         ]
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
-         ('Informacion variable', {'fields': ['cod_esp', 
+         ('Informacion variable', {'fields': [
+                                        'habilitada_herramienta',
+                                        'cod_esp', 
                                         'taxonid_wfo' ,
                                         'nombre_comun', 
                                         'nombre_cientifico',

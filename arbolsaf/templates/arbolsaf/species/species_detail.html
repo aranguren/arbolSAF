@@ -6,10 +6,10 @@
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
-<style type="text/css">
+  <link rel="stylesheet"
+        type="text/css"
+        href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+  <style type="text/css">
 
 //  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
 //    background: red;
@@ -41,7 +41,7 @@
   /* W3C */
 }
 */
-</style>
+  </style>
 {% endblock stylesheets %}
 {% block body_class %}g-sidenav-show bg-gray-100{% endblock %}
 {% block content %}
@@ -70,8 +70,7 @@
             <a href="{% url 'arbolsaf:species_list' %}"
                class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
             <a href="{% url 'arbolsaf:species_create' %}"
-
-            {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+               {% if request.user|has_group:"editor" or request.user.is_superuser %}
                class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
             <a href="{% url 'arbolsaf:species_update' specie.id %}"
                class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
@@ -82,111 +81,158 @@
                     value="{{ specie.id }} ">
               <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
             </button>
-            {% endif %}
-          </div>
+          {% endif %}
         </div>
       </div>
-      <div class="col-lg-12 col-12 mx-auto">
-        <div class="card card-body mt-2">
-          <div class="row mt-4 mb-2">
-            <div class="col-6">
-              <div class="form-group">
-                <h6>Nombre común</h6>
-                <div class="mr-2">
-                  {% firstof specie.nombre_comun|default_if_none:"-" %}</dic>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="form-group">
-                <h6>Nombre científico</h6>
-                <div class="mr-2">{% firstof specie.nombre_cientifico|default_if_none:"-" %}</div>
+    </div>
+    <div class="card card-body mt-2">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3 d-flex justify-content-start mr-3">
+          {% if request.user.is_superuser %}
+          {% if specie.habilitada_herramienta %}
+            <form id="archive_form"
+                  action="{% url 'arbolsaf:species_deactivate' specie.id %}"
+                  class=""
+                  method="post"
+                  autocomplete="off">
+              {% csrf_token %}
+              <button class="btn btn-danger btn-large btn-sm mx-1 mb-0"
+                      type="submit"
+                      id="desabilitar"
+                      value="desabilitar">
+                &nbsp;&nbsp;Deshabilitar en herramienta
+              </button>
+            </form>
+          {% else %}
+            <form id="ctivate_form"
+                  action="{% url 'arbolsaf:species_activate' specie.id %}"
+                  class=""
+                  method="post"
+                  autocomplete="off">
+              {% csrf_token %}
+              <button class="btn btn-primary btn-large btn-sm mx-1 mb-0"
+                      type="submit"
+                      id="habilitar"
+                      value="habilitar">
+                &nbsp;&nbsp;Habilitar en herramienta
+              </button>
+            </form>
+          {% endif %}
+          {% endif %}
+        </div>
+        <div class="col-6">
+          <strong>Habilitado en herramienta:</strong>
+          {% if specie.habilitada_herramienta %}
+            <span class="badge badge-success">SI</span>
+          {% else %}
+            <span class="badge badge-danger">NO</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 col-12 mx-auto">
+      <div class="card card-body mt-2">
+        <div class="row mt-4 mb-2">
+          <div class="col-6">
+            <div class="form-group">
+              <h6>Nombre común</h6>
+              <div class="mr-2">
+                {% firstof specie.nombre_comun|default_if_none:"-" %}</dic>
               </div>
             </div>
           </div>
-          <div class="row mb-2">
-            <div class="col-6">
-              <div class="form-group">
-                <h6>Nombre científico completo</h6>
-                <div class="mr-2">{% firstof specie.nombre_cientifico_completo|default_if_none:"-" %}</div>
-              </div>
+          <div class="col-6">
+            <div class="form-group">
+              <h6>Nombre científico</h6>
+              <div class="mr-2">{% firstof specie.nombre_cientifico|default_if_none:"-" %}</div>
             </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Código especie</h6>
-                <div class="mr-2">{% firstof specie.cod_esp|default_if_none:"-" %}</div>
-              </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-6">
+            <div class="form-group">
+              <h6>Nombre científico completo</h6>
+              <div class="mr-2">{% firstof specie.nombre_cientifico_completo|default_if_none:"-" %}</div>
             </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Taxón ID WFO</h6>
-                {% if specie.taxonid_wfo%}
-                  <a href="http://www.worldfloraonline.org/taxon/{{specie.taxonid_wfo}}" target="_blank">{% firstof specie.taxonid_wfo|default_if_none:"-" %} <i class="fa fa-external-link"></i></a>
-                {% else %}
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Código especie</h6>
+              <div class="mr-2">{% firstof specie.cod_esp|default_if_none:"-" %}</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Taxón ID WFO</h6>
+              {% if specie.taxonid_wfo %}
+                <a href="http://www.worldfloraonline.org/taxon/{{ specie.taxonid_wfo }}"
+                   target="_blank">{% firstof specie.taxonid_wfo|default_if_none:"-" %} <i class="fa fa-external-link"></i></a>
+              {% else %}
                 -
-                {% endif %}
-                <!--div class="mr-2">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</div-->
-              </div>
+              {% endif %}
+              <!--div class="mr-2">{% firstof specie.taxonid_wfo|default_if_none:"-" %}</div-->
             </div>
           </div>
-          <div class="row mb-2">
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Variedad/Subespecie</h6>
-                <div class="mr-2">{% firstof specie.variedad_subespecie|default_if_none:"-" %}</div>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Familia</h6>
-                <div class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</div>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Género</h6>
-                <div class="mr-2">{% firstof specie.genero|default_if_none:"-" %}</div>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Epíteto</h6>
-                <div class="mr-2">{% firstof specie.epiteto|default_if_none:"-" %}</div>
-              </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Variedad/Subespecie</h6>
+              <div class="mr-2">{% firstof specie.variedad_subespecie|default_if_none:"-" %}</div>
             </div>
           </div>
-          <div class="row mb-2">
-            <div class="col-3">
-              <div class="form-group">
-                <h6>Autor</h6>
-                <div class="mr-2">{% firstof specie.autor|default_if_none:"-" %}</div>
-              </div>
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Familia</h6>
+              <div class="mr-2">{% firstof specie.familia|default_if_none:"-" %}</div>
             </div>
-            <div class="col-3">
-              <div class="form-group">
-                <div class="form-group">
-                  <h6>Nativa para Perú</h6>
-                  <div class="mr-2">{{ specie.nativa|yesno:_("SÍ,NO") }}</div>
-                </div>
-              </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Género</h6>
+              <div class="mr-2">{% firstof specie.genero|default_if_none:"-" %}</div>
             </div>
-            <div class="col-6">
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Epíteto</h6>
+              <div class="mr-2">{% firstof specie.epiteto|default_if_none:"-" %}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-3">
+            <div class="form-group">
+              <h6>Autor</h6>
+              <div class="mr-2">{% firstof specie.autor|default_if_none:"-" %}</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
               <div class="form-group">
-                <h6>Switchboard de CIFOR-ICRAF</h6>
+                <h6>Nativa para Perú</h6>
                 <div class="mr-2">
-                  {% if  specie.get_link_icraf%}
-                  <a href="{{specie.get_link_icraf}}" target="_blank">Abrir enlace <i class="fa fa-external-link"></i></a>
-                  
-                  {% else %}
-                  -
-                  {% endif %}
-               
+                  {{ specie.nativa|yesno:_("SÍ,NO") }}
                 </div>
               </div>
             </div>
           </div>
-          <!--div class="row">
-
+          <div class="col-6">
+            <div class="form-group">
+              <h6>
+                Switchboard de CIFOR-ICRAF
+              </h6>
+              <div class="mr-2">
+                {% if  specie.get_link_icraf %}
+                  <a href="{{ specie.get_link_icraf }}" target="_blank">Abrir enlace <i class="fa fa-external-link"></i></a>
+                {% else %}
+                  -
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--div class="row">
             <div class="col-3">
               <div class="form-group">
                 <h6>Imagen</h6>
@@ -199,50 +245,55 @@
               </div>
             </div>
           </div-->
-          <div class="row mb-2">
-            <div class="col-12">
-              <div class="form-group">
-                <h6>Notas</h6>
-                {% if specie.notas %}
-                <div class="mr-2">{% firstof specie.notas|safe|default_if_none:"-"|linebreaks  %}</div>
-                {% else %}
-                <div class="mr-2">-</div>
-                {% endif %}
-               
-              </div>
-            </div>          
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="form-group">
+              <h6>
+                Notas
+              </h6>
+              {% if specie.notas %}
+                <div class="mr-2">
+                  {% firstof specie.notas|safe|default_if_none:"-"|linebreaks  %}
+                </div>
+              {% else %}
+                <div class="mr-2">
+                  -
+                </div>
+              {% endif %}
+            </div>
           </div>
         </div>
-        <section id="sinonimosection">
-          <div class="card mt-4" id="geo">
-            <div class="card-header">
-              <div class="row">
-                <div class="col-10">
-                  <h5>
-                    Sinónimos
-                  </h5>
-                </div>
-                <div class="col-2">
-                  <div class="d-flex justify-content-end">
-                    {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+      </div>
+      <section id="sinonimosection">
+        <div class="card mt-4" id="geo">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-10">
+                <h5>
+                  Sinónimos
+                </h5>
+              </div>
+              <div class="col-2">
+                <div class="d-flex justify-content-end">
+                  {% if request.user|has_group:"editor" or request.user.is_superuser %}
                     <a href="{% url 'arbolsaf:species_create_synonymous' specie.id %}"
                        class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
-                       {% endif %}
-                  </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
-            <div class="card-body d-sm-flex pt-0">
-              {% if specie.get_sinonimos %}
-                <table class="table table-bordered table-hover mt-0" id="mydatatable">
-                  <tbody>
-                    {% for sinonimo in specie.get_sinonimos %}
-                      <tr>
-                        <td>
-                          {{ sinonimo }}
-                        </td>
-                        <td class="text-center">
-                          {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+          </div>
+          <div class="card-body d-sm-flex pt-0">
+            {% if specie.get_sinonimos %}
+              <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                <tbody>
+                  {% for sinonimo in specie.get_sinonimos %}
+                    <tr>
+                      <td>
+                        {{ sinonimo }}
+                      </td>
+                      <td class="text-center">
+                        {% if request.user|has_group:"editor" or request.user.is_superuser %}
                           <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin-sinonimo"
                                   id="eliminarSinonimo"
                                   data-bs-toggle="modal"
@@ -250,438 +301,486 @@
                                   value="{{ sinonimo.id }}">
                             <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
                           </button>
-                          {% endif %}
-                        </td>
-                      </tr>
-                    </tbody>
-                  {% endfor %}
-                </table>
-              {% else %}
-                <h5 style="color: red" class="text-center  float-center">
-                  No existen sinónimos
-                </h5>
-              {% endif %}
-            </div>
-          </div>
-        </section>
-        <input type="hidden" id="selectedVariable" name="selectedVariableName"/>
-        <input type="hidden" id="selectedSinonimo" name="selectedSinonimoName"/>
-        <section id="variablessection">
-          <div class="card mt-4" id="geo">
-            <div class="card-header">
-              <div class="row">
-                <div class="col-10">
-                  <h5>Variables</h5>
-                </div>
-                <div class="col-2">
-                  <div class="d-flex justify-content-end">
-                    {% if request.user|has_group:"editor" or request.user.is_superuser %} 
-                    <a href="{% url 'arbolsaf:species_create_variable' specie.id %}"
-                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
-                      {% endif %}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body pt-0">
-              {% if specie.get_variables %}
-              <div class="row">
-                <div class="col-12">
-              <div class="table-responsive">
-                <table class="table table-flush" id="datatable-variables">
-                  <thead>
-                    <tr>
-                    <td>
-                      <b>Variable</b>
-                    </td>
-                    <td>
-                      <b>Código variable</b>
-                    </td>
-                    <td>
-                      <b>Valor</b>
-                    </td>
-                    <td>
-                      <b>Unidad de medida</b>
-                    </td>
-                    <td>
-                      <b>Fuente</b>
-                    </td>
-                    <td class="text-center">
-                      <b>Acciones</b>
-                    </td>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    {% for variable in specie.get_variables %}
-                      <tr>
-                        
-                        <td>{{ variable.tipo_variable.variable }}</td>
-                        <td>{{ variable.tipo_variable.cod_var }}</td>
-                        <td>
-                          {{ variable.get_valor_general |slice:":20"}}
-                        </td>
-                        <td>{{ variable.tipo_variable.unidad_medida|default_if_none:''}}</td>
-                        <td>{{ variable.referencia }}</td>
-                   
-                        <td class="text-center">
-                          <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
-                          {% if request.user|has_group:"editor" or request.user.is_superuser %} 
-                            {% if not variable.chequeo %}
-                            <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
-
-                            {% else %}
-                            <i class="far fa-edit me-2 mx-2" aria-hidden="true"></i>                 
-                            {% endif %}
-                            <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
-                                    id="eliminarVariable"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteVariableModal"
-                                    {% if variable.chequeo %}disabled {% endif %}
-                                    value="{{ variable.id }}">
-                              <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
-                            </button>
-                          {% endif %}
-                        
-                        </td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-              
-                </table>
-              </div>
-            </div>
-          </div>
-              {% else %}
-                <h5 style="color: red" class="text-center  float-center">
-                  No existen variables
-                </h5>
-              {% endif %}
-            </div>
-          </div>
-        </section>
-
-        <section id="variablesndsection">
-          <div class="card mt-4" id="geo">
-            <div class="card-header">
-              <div class="row">
-                <div class="col-10">
-                  <h5>Variables no diligenciadas</h5>
-                </div>
-
-              </div>
-            </div>
-            <div class="card-body pt-0">
-              {% if specie.get_variables_no_diligenciadas %}
-              <div class="row">
-                <div class="col-12">
-              <div class="table-responsive">
-                <table class="table table-flush" id="datatable-variables-nd">
-                  <thead>
-                    <tr>
-                    <td>
-                      <b>Variable</b>
-                    </td>
-                    <td>
-                      <b>Código variable</b>
-                    </td>
-                    <td>
-                      <b>Tipo de Variable</b>
-                    </td>
-                    <td>
-                      <b>Familia</b>
-                    </td>
-                    <td>
-                      <b>Unidad de medida</b>
-                    </td>
-                    {% if request.user|has_group:"editor" or request.user.is_superuser %} 
-                    <td>
-                      <b>Diligenciar</b>
-                    </td>
-                    {% endif %}
-                  </tr>
-                  </thead>
-                  <tbody>
-                    {% for variable_nd in specie.get_variables_no_diligenciadas %}
-                      <tr>
-                        
-                        <td>{{ variable_nd.variable }}</td>
-                        <td>{{ variable_nd.cod_var }}</td>
-                        <td>{{ variable_nd.get_tipo_variables_display }}</td>
-                        <td> {% firstof variable_nd.familia|default_if_none:"-" %}</td>
-                        <td> {% firstof variable_nd.unidad_medida|default_if_none:"-" %}</td>
-                        
-                        {% if request.user|has_group:"editor" or request.user.is_superuser %} 
-                        <td> <a href="{% url 'arbolsaf:species_diligenciar_variable' specie.id variable_nd.id %}"   data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Diligenciar"><i class="fa fa-plus mx-2" aria-hidden="true"></i></a>
-                        </td> 
                         {% endif %}
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-              
-                </table>
-              </div>
-            </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                {% endfor %}
+              </table>
+            {% else %}
+              <h5 style="color: red" class="text-center  float-center">
+                No existen sinónimos
+              </h5>
+            {% endif %}
           </div>
-              {% else %}
-                <h5 style="color: red" class="text-center  float-center">
-                  No existen variables no diligenciadas
-                </h5>
-              {% endif %}
-            </div>
-          </div>
-        </section>
-
-        <div class="card mt-4" id="valores_calculados">
+        </div>
+      </section>
+      <input type="hidden" id="selectedVariable" name="selectedVariableName"/>
+      <input type="hidden" id="selectedSinonimo" name="selectedSinonimoName"/>
+      <section id="variablessection">
+        <div class="card mt-4" id="geo">
           <div class="card-header">
             <div class="row">
-              <div class="col-12">
-                <h5>Funciones (valores calculados)</h5>
+              <div class="col-10">
+                <h5>
+                  Variables
+                </h5>
+              </div>
+              <div class="col-2">
+                <div class="d-flex justify-content-end">
+                  {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                    <a href="{% url 'arbolsaf:species_create_variable' specie.id %}"
+                       class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
+                  {% endif %}
+                </div>
               </div>
             </div>
           </div>
           <div class="card-body pt-0">
-            <div class="row mb-2">
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Valor para madera</h6>
-                  <div class="mr-2">{% firstof specie.valor_madera_category|default_if_none:"-" %} ({{specie.valor_madera}})</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Valor para fruta</h6>
-                  <div class="mr-2">{% firstof specie.valor_fruta_category|default_if_none:"-" %} ({{specie.valor_fruta}})</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Valor para otros usos</h6>
-                  <div class="mr-2">{% firstof specie.valor_otros_usos_category|default_if_none:"-" %} ({{specie.valor_otros_usos}})</div>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Valor para biodiversidad</h6>
-                  <div class="mr-2">{% firstof specie.valor_biodiversidad_category|default_if_none:"-" %} ({{specie.valor_biodiversidad}})</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Valor para microclima</h6>
-                  <div class="mr-2">{% firstof specie.valor_microclima_category|default_if_none:"-" %} ({{specie.valor_microclima}})</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Valor para suelo</h6>
-                  <div class="mr-2">{% firstof specie.valor_suelo_category|default_if_none:"-" %} ({{specie.valor_suelo}})</div>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Índice Multiuso</h6>
-                  <div class="mr-2">{{specie.indice_multiuso}}</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>Índice de valor de uso relativo</h6>
-                  <div class="mr-2">{{specie.indice_valor_uso_relativo}}</div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <h6>IVIM</h6>
-                  <div class="mr-2">{{specie.ivim}}</div>
-                </div>
-              </div>
-            </div>        
-          </div>
-        </div>
-
- 
-
-        <div class="modal fade"
-             id="deleteModal"
-             tabindex="-1"
-             role="dialog"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Eliminar
-                </h5>
-                <button type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        id="elim">
-                  <!--span aria-hidden="true">&times;</span-->
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">
-                  Está seguro que desea eliminar la especie?
-                </p>
-              </div>
-              <div class="modal-footer">
-                <button type="button"
-                        class="btn bg-success text-white"
-                        data-bs-dismiss="modal">
-                  Cerrar
-                </button>
-                <button type="button" class="btn bg-danger text-white" id="aceptar">
-                  Aceptar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade"
-             id="deleteVariableModal"
-             tabindex="-1"
-             role="dialog"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Eliminar
-                </h5>
-                <button type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        id="elim">
-                  <!--span aria-hidden="true">&times;</span-->
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">
-                  Está seguro que desea eliminar la variable?
-                </p>
-              </div>
-              <div class="modal-footer">
-                <button type="button"
-                        class="btn bg-success text-white"
-                        data-bs-dismiss="modal">
-                  Cerrar
-                </button>
-                <button type="button"
-                        class="btn bg-danger text-white"
-                        id="aceptarDeleteVariable">
-                  Aceptar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade"
-             id="deletesinonimoModal"
-             tabindex="-1"
-             role="dialog"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Eliminar
-                </h5>
-                <button type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        id="elim">
-                  <!--span aria-hidden="true">&times;</span-->
-                </button>
-              </div>
-              <div class="modal-body">
-                <p class="text-sm mb-0 text-capitalize font-weight-bold">
-                  Está seguro que desea eliminar el sinónimoe?
-                </p>
-              </div>
-              <div class="modal-footer">
-                <button type="button"
-                        class="btn bg-success text-white"
-                        data-bs-dismiss="modal">
-                  Cerrar
-                </button>
-                <button type="button"
-                        class="btn bg-danger text-white"
-                        id="aceptarDeleteSinonimo">
-                  Aceptar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade"
-             id="createSinonimoModal"
-             tabindex="-1"
-             role="dialog"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Crear sinonimo
-                </h5>
-                <button type="button"
-                        class="btn-close text-dark"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        id="crear-close">
-                  <!--span aria-hidden="true">&times;</span-->
-                </button>
-              </div>
-              <div class="modal-body">
-                <form action="{% url 'arbolsaf:sinonimo_create' %}"
-                      enctype="multipart/form-data"
-                      method="post">
-                  {% csrf_token %}
-                  <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">
-                      Sinonimo:
-                    </label>
-                    <input type="text" class="form-control" id="sinonimo" id="sinonimo" required>
-                    <input type="hidden" id="especie" id="especie">
+            {% if specie.get_variables %}
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-flush" id="datatable-variables">
+                      <thead>
+                        <tr>
+                          <td>
+                            <b>Variable</b>
+                          </td>
+                          <td>
+                            <b>Código variable</b>
+                          </td>
+                          <td>
+                            <b>Valor</b>
+                          </td>
+                          <td>
+                            <b>Unidad de medida</b>
+                          </td>
+                          <td>
+                            <b>Fuente</b>
+                          </td>
+                          <td class="text-center">
+                            <b>Acciones</b>
+                          </td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for variable in specie.get_variables %}
+                          <tr>
+                            <td>
+                              {{ variable.tipo_variable.variable }}
+                            </td>
+                            <td>
+                              {{ variable.tipo_variable.cod_var }}
+                            </td>
+                            <td>
+                              {{ variable.get_valor_general |slice:":20" }}
+                            </td>
+                            <td>
+                              {{ variable.tipo_variable.unidad_medida|default_if_none:'' }}
+                            </td>
+                            <td>
+                              {{ variable.referencia }}
+                            </td>
+                            <td class="text-center">
+                              <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
+                              {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                                {% if not variable.chequeo %}
+                                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
+                                {% else %}
+                                  <i class="far fa-edit me-2 mx-2" aria-hidden="true"></i>
+                                {% endif %}
+                                <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
+                                        id="eliminarVariable"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteVariableModal"
+                                        {% if variable.chequeo %}disabled{% endif %}
+                                        value="{{ variable.id }}">
+                                  <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
+                                </button>
+                              {% endif %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
                   </div>
-                </form>
+                </div>
               </div>
-              <div class="modal-footer">
-                <button type="button"
-                        class="btn bg-success text-white"
-                        data-bs-dismiss="modal">
-                  Cerrar
-                </button>
-                <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1">
-                  <i class="fa fa-save"></i>&nbsp;&nbsp;Guardar
-                </button>
+            {% else %}
+              <h5 style="color: red" class="text-center  float-center">
+                No existen variables
+              </h5>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+      <section id="variablesndsection">
+        <div class="card mt-4" id="geo">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-10">
+                <h5>
+                  Variables no diligenciadas
+                </h5>
               </div>
-            </form>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            {% if specie.get_variables_no_diligenciadas %}
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-flush" id="datatable-variables-nd">
+                      <thead>
+                        <tr>
+                          <td>
+                            <b>Variable</b>
+                          </td>
+                          <td>
+                            <b>Código variable</b>
+                          </td>
+                          <td>
+                            <b>Tipo de Variable</b>
+                          </td>
+                          <td>
+                            <b>Familia</b>
+                          </td>
+                          <td>
+                            <b>Unidad de medida</b>
+                          </td>
+                          {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                            <td>
+                              <b>Diligenciar</b>
+                            </td>
+                          {% endif %}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for variable_nd in specie.get_variables_no_diligenciadas %}
+                          <tr>
+                            <td>
+                              {{ variable_nd.variable }}
+                            </td>
+                            <td>
+                              {{ variable_nd.cod_var }}
+                            </td>
+                            <td>
+                              {{ variable_nd.get_tipo_variables_display }}
+                            </td>
+                            <td>
+                              {% firstof variable_nd.familia|default_if_none:"-" %}
+                            </td>
+                            <td>
+                              {% firstof variable_nd.unidad_medida|default_if_none:"-" %}
+                            </td>
+                            {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                              <td>
+                                <a href="{% url 'arbolsaf:species_diligenciar_variable' specie.id variable_nd.id %}"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Diligenciar"><i class="fa fa-plus mx-2" aria-hidden="true"></i></a>
+                              </td>
+                            {% endif %}
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              <h5 style="color: red" class="text-center  float-center">
+                No existen variables no diligenciadas
+              </h5>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+      <div class="card mt-4" id="valores_calculados">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-12">
+              <h5>
+                Funciones (valores calculados)
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <div class="row mb-2">
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Valor para madera
+                </h6>
+                <div class="mr-2">
+                  {% firstof specie.valor_madera_category|default_if_none:"-" %} ({{ specie.valor_madera }})
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Valor para fruta
+                </h6>
+                <div class="mr-2">
+                  {% firstof specie.valor_fruta_category|default_if_none:"-" %} ({{ specie.valor_fruta }})
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Valor para otros usos
+                </h6>
+                <div class="mr-2">
+                  {% firstof specie.valor_otros_usos_category|default_if_none:"-" %} ({{ specie.valor_otros_usos }})
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Valor para biodiversidad
+                </h6>
+                <div class="mr-2">
+                  {% firstof specie.valor_biodiversidad_category|default_if_none:"-" %} ({{ specie.valor_biodiversidad }})
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Valor para microclima
+                </h6>
+                <div class="mr-2">
+                  {% firstof specie.valor_microclima_category|default_if_none:"-" %} ({{ specie.valor_microclima }})
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Valor para suelo
+                </h6>
+                <div class="mr-2">
+                  {% firstof specie.valor_suelo_category|default_if_none:"-" %} ({{ specie.valor_suelo }})
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Índice Multiuso
+                </h6>
+                <div class="mr-2">
+                  {{ specie.indice_multiuso }}
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  Índice de valor de uso relativo
+                </h6>
+                <div class="mr-2">
+                  {{ specie.indice_valor_uso_relativo }}
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <h6>
+                  IVIM
+                </h6>
+                <div class="mr-2">
+                  {{ specie.ivim }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      {% include "includes/footer.html" %}
+      <div class="modal fade"
+           id="deleteModal"
+           tabindex="-1"
+           role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Eliminar
+              </h5>
+              <button type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="elim">
+                <!--span aria-hidden="true">&times;</span-->
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">
+                Está seguro que desea eliminar la especie?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn bg-success text-white"
+                      data-bs-dismiss="modal">
+                Cerrar
+              </button>
+              <button type="button" class="btn bg-danger text-white" id="aceptar">
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade"
+           id="deleteVariableModal"
+           tabindex="-1"
+           role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Eliminar
+              </h5>
+              <button type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="elim">
+                <!--span aria-hidden="true">&times;</span-->
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">
+                Está seguro que desea eliminar la variable?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn bg-success text-white"
+                      data-bs-dismiss="modal">
+                Cerrar
+              </button>
+              <button type="button"
+                      class="btn bg-danger text-white"
+                      id="aceptarDeleteVariable">
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade"
+           id="deletesinonimoModal"
+           tabindex="-1"
+           role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Eliminar
+              </h5>
+              <button type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="elim">
+                <!--span aria-hidden="true">&times;</span-->
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">
+                Está seguro que desea eliminar el sinónimoe?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn bg-success text-white"
+                      data-bs-dismiss="modal">
+                Cerrar
+              </button>
+              <button type="button"
+                      class="btn bg-danger text-white"
+                      id="aceptarDeleteSinonimo">
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade"
+           id="createSinonimoModal"
+           tabindex="-1"
+           role="dialog"
+           aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Crear sinonimo
+              </h5>
+              <button type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="crear-close">
+                <!--span aria-hidden="true">&times;</span-->
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'arbolsaf:sinonimo_create' %}"
+                    enctype="multipart/form-data"
+                    method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">
+                    Sinonimo:
+                  </label>
+                  <input type="text" class="form-control" id="sinonimo" id="sinonimo" required>
+                  <input type="hidden" id="especie" id="especie">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn bg-success text-white"
+                      data-bs-dismiss="modal">
+                Cerrar
+              </button>
+              <button type="submit" class="btn btn-primary btn-large btn-sm m-b-xm mx-1">
+                <i class="fa fa-save"></i>&nbsp;&nbsp;Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  {% endblock content %}
-  <!-- Specific JS goes HERE -->
-  {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-    <!--script src="/static/assets/js/plugins/datatables.js"></script-->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
-    <script type="text/javascript">
-
+    {% include "includes/footer.html" %}
+  </div>
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <!--script src="/static/assets/js/plugins/datatables.js"></script-->
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+  <script type="text/javascript">
       $(document).ready(function () {
         var langes = {
               "processing": "Procesando...",
@@ -1074,5 +1173,5 @@ $("#aceptarDeleteSinonimo").on('click', function () {
 });
      
 
-    </script>
-  {% endblock javascripts %}
+  </script>
+{% endblock javascripts %}

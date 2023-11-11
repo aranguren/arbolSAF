@@ -72,6 +72,7 @@ urlpatterns = [
     path('herramienta/pdf/', tool_print_pdf_view, name='tool_pdf'),
     path('acerca-de/', AboutToolView.as_view(), name='about_page'),
     
-
+    path('species/activar/<str:pk>/', SpeciesActivateInToolView.as_view(), name='species_activate'),
+    path('species/desactivar/<str:pk>/', SpeciesDeactivateInToolView.as_view(), name='species_deactivate'),
 
 ]

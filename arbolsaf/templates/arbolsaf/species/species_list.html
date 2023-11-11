@@ -152,6 +152,22 @@ Listado Especies
                         {% endif %}
                     
                       </td>
+                      <td class="pt-3 pb-3">
+                        {% if ordenar_por == 'habilitada_herramienta' %}
+                          <a id="ord-habilitada_herramienta" href="#">
+                              <b>Habilitada herramienta</b> <i class="fa fa-angle-down"></i>
+                          </a>
+                        {% elif ordenar_por == 'habilitada_herramienta_dec' %}
+                            <a id="ord-habilitada_herramienta" href="#">
+                                <b>Habilitada herramienta</b> <i class="fa fa-angle-up"></i>
+                            </a>
+                        {% else %}
+                            <a id="ord-habilitada_herramienta" href="#">
+                                <b>Habilitada herramienta</b>
+                            </a>
+                        {% endif %}
+                    
+                      </td>
                     </tr>
                   </thead>
                   <tbody>
@@ -170,6 +186,13 @@ Listado Especies
 
                         <td class="text-center">
                           {% if specie.nativa %}
+                          SÍ
+                          {% else %}
+                          NO
+                          {% endif %}
+                        </td>
+                        <td class="text-center">
+                          {% if specie.habilitada_herramienta %}
                           SÍ
                           {% else %}
                           NO
@@ -756,6 +779,20 @@ Listado Especies
       formulario.submit();
 
   });
+
+  $('#ord-habilitada_herramienta').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "habilitada_herramienta"){
+        document.getElementById("ordenar_por").value = "habilitada_herramienta_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "habilitada_herramienta";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+});
 
   //$(document).ready(function() {
   //    $('#mydatatable').DataTable();
