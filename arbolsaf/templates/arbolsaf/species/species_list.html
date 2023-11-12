@@ -3,11 +3,10 @@
 {% load l10n %}
 {% load i18n %}
 {% block title %}
-Listado Especies
+  Listado Especies
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-
   <style>
   .clickable{
        cursor: pointer;
@@ -30,9 +29,9 @@ Listado Especies
             <hr class="horizontal dark my-2">
             <div class="row">
               <div class="col-6 d-flex justify-content-left">
-                {% if request.user|has_group:"editor" or request.user.is_superuser%} 
-                <a href="{% url 'arbolsaf:species_create' %}"
-                  class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+                {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                  <a href="{% url 'arbolsaf:species_create' %}"
+                     class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
                 {% endif %}
                 <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"
                         id="filtroB"
@@ -40,7 +39,6 @@ Listado Especies
                         data-bs-target="#filterModal">
                   <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar
                 </button>
-
                 {% if has_filters %}
                 <h6 class="mt-0">
                   <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
@@ -49,131 +47,126 @@ Listado Especies
                             class="btn-close"></button>
                   </span>
                 </h6>
-                {% endif %}
+              {% endif %}
+
               </div>
-
               <div class="col-6 d-flex justify-content-end">
-                {% if request.user.is_superuser%} 
-                <button class="btn btn-primary text-white btn-large btn-sm m-b-xm mx-1"
-                        id="filtroB"
-                        data-bs-toggle="modal"
-                        data-bs-target="#ActualizarModal">
-                  <i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;Actualizar Herramienta
-                </button>
+                {% if request.user.is_superuser %}
+                  <button class="btn btn-primary text-white btn-large btn-sm m-b-xm mx-1"
+                          id="filtroB"
+                          data-bs-toggle="modal"
+                          data-bs-target="#ActualizarModal">
+                    <i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;Actualizar Herramienta
+                  </button>
                 {% endif %}
-
               </div>
             </div>
           </div>
           <div class="card-body mt-0 pt-0">
-
             <div class="table-responsive mt-0">
               {% if species %}
                 <table class="table table-bordered table-hover mt-0" id="mydatatable">
                   <thead>
                     <tr>
                       <td class="pt-3 pb-3">
-                          {% if ordenar_por == 'cod_esp' %}
-                              <a id="ord-cod_esp" href="#">
-                                  <b>Código de la especie</b> <i class="fa fa-angle-down"></i>
-                              </a>
-                          {% elif ordenar_por == 'cod_esp_dec' %}
-                              <a id="ord-cod_esp" href="#">
-                                  <b>Código de la especie</b> <i class="fa fa-angle-up"></i>
-                              </a>
-                          {% else %}
-                              <a id="ord-cod_esp" href="#">
-                                  <b>Código de la especie</b>
-                              </a>
-                          {% endif %}
-                        
+                        {% if ordenar_por == 'cod_esp' %}
+                          <a id="ord-cod_esp" href="#">
+                            <b>Código de la especie</b> <i class="fa fa-angle-down"></i>
+                          </a>
+                        {% elif ordenar_por == 'cod_esp_dec' %}
+                          <a id="ord-cod_esp" href="#">
+                            <b>Código de la especie</b> <i class="fa fa-angle-up"></i>
+                          </a>
+                        {% else %}
+                          <a id="ord-cod_esp" href="#">
+                            <b>Código de la especie</b>
+                          </a>
+                        {% endif %}
                       </td>
                       <td class="pt-3 pb-3">
                         <b>Taxón ID WFO</b>
                       </td>
                       <td class="pt-3 pb-3">
-                          {% if ordenar_por == 'nombre_comun' %}
-                              <a id="ord-nombre_comun" href="#">
-                                  <b>Nombre común</b> <i class="fa fa-angle-down"></i>
-                              </a>
-                          {% elif ordenar_por == 'nombre_comun_dec' %}
-                              <a id="ord-nombre_comun" href="#">
-                                  <b>Nombre común</b> <i class="fa fa-angle-up"></i>
-                              </a>
-                          {% else %}
-                              <a id="ord-nombre_comun" href="#" >
-                                  <b>Nombre común</b>
-                              </a>
-                          {% endif %}
+                        {% if ordenar_por == 'nombre_comun' %}
+                          <a id="ord-nombre_comun" href="#">
+                            <b>Nombre común</b> <i class="fa fa-angle-down"></i>
+                          </a>
+                        {% elif ordenar_por == 'nombre_comun_dec' %}
+                          <a id="ord-nombre_comun" href="#">
+                            <b>Nombre común</b> <i class="fa fa-angle-up"></i>
+                          </a>
+                        {% else %}
+                          <a id="ord-nombre_comun" href="#">
+                            <b>Nombre común</b>
+                          </a>
+                        {% endif %}
                       </td>
                       <td class="pt-3 pb-3">
-                          {% if ordenar_por == 'nombre_cientifico' %}
-                              <a id="ord-nombre_cientifico" href="#">
-                                  <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
-                              </a>
-                          {% elif ordenar_por == 'nombre_cientifico_dec' %}
-                              <a id="ord-nombre_cientifico" href="#">
-                                  <b>Nombre científico</b> <i class="fa fa-angle-up"></i>
-                              </a>
-                          {% else %}
-                              <a id="ord-nombre_cientifico" href="#">
-                                  <b>Nombre científico</b>
-                              </a>
-                          {% endif %}
+                        {% if ordenar_por == 'nombre_cientifico' %}
+                          <a id="ord-nombre_cientifico" href="#">
+                            <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
+                          </a>
+                        {% elif ordenar_por == 'nombre_cientifico_dec' %}
+                          <a id="ord-nombre_cientifico" href="#">
+                            <b>Nombre científico</b> <i class="fa fa-angle-up"></i>
+                          </a>
+                        {% else %}
+                          <a id="ord-nombre_cientifico" href="#">
+                            <b>Nombre científico</b>
+                          </a>
+                        {% endif %}
                       </td>
                       <td class="pt-3 pb-3">
-                          {% if ordenar_por == 'familia' %}
-                              <a id="ord-familia" href="#">
-                                  <b>Familia</b> <i class="fa fa-angle-down"></i>
-                              </a>
-                          {% elif ordenar_por == 'familia_dec' %}
-                              <a id="ord-familia" href="#">
-                                  <b>Familia</b> <i class="fa fa-angle-up"></i>
-                              </a>
-                          {% else %}
-                              <a id="ord-familia" href="#">
-                                  <b>Familia</b>
-                              </a>
-                          {% endif %}
+                        {% if ordenar_por == 'familia' %}
+                          <a id="ord-familia" href="#">
+                            <b>Familia</b> <i class="fa fa-angle-down"></i>
+                          </a>
+                        {% elif ordenar_por == 'familia_dec' %}
+                          <a id="ord-familia" href="#">
+                            <b>Familia</b> <i class="fa fa-angle-up"></i>
+                          </a>
+                        {% else %}
+                          <a id="ord-familia" href="#">
+                            <b>Familia</b>
+                          </a>
+                        {% endif %}
                       </td>
                       <td class="pt-3 pb-3">
                         {% if ordenar_por == 'nativa_peru' %}
                           <a id="ord-nativa_peru" href="#">
-                              <b>Nativa para Perú</b> <i class="fa fa-angle-down"></i>
+                            <b>Nativa para Perú</b> <i class="fa fa-angle-down"></i>
                           </a>
                         {% elif ordenar_por == 'nativa_peru_dec' %}
-                            <a id="ord-nativa_peru" href="#">
-                                <b>Nativa para Perú</b> <i class="fa fa-angle-up"></i>
-                            </a>
+                          <a id="ord-nativa_peru" href="#">
+                            <b>Nativa para Perú</b> <i class="fa fa-angle-up"></i>
+                          </a>
                         {% else %}
-                            <a id="ord-nativa_peru" href="#">
-                                <b>Nativa para Perú</b>
-                            </a>
+                          <a id="ord-nativa_peru" href="#">
+                            <b>Nativa para Perú</b>
+                          </a>
                         {% endif %}
-                    
                       </td>
                       <td class="pt-3 pb-3">
                         {% if ordenar_por == 'habilitada_herramienta' %}
                           <a id="ord-habilitada_herramienta" href="#">
-                              <b>Habilitada herramienta</b> <i class="fa fa-angle-down"></i>
+                            <b>Habilitada herramienta</b> <i class="fa fa-angle-down"></i>
                           </a>
                         {% elif ordenar_por == 'habilitada_herramienta_dec' %}
-                            <a id="ord-habilitada_herramienta" href="#">
-                                <b>Habilitada herramienta</b> <i class="fa fa-angle-up"></i>
-                            </a>
+                          <a id="ord-habilitada_herramienta" href="#">
+                            <b>Habilitada herramienta</b> <i class="fa fa-angle-up"></i>
+                          </a>
                         {% else %}
-                            <a id="ord-habilitada_herramienta" href="#">
-                                <b>Habilitada herramienta</b>
-                            </a>
+                          <a id="ord-habilitada_herramienta" href="#">
+                            <b>Habilitada herramienta</b>
+                          </a>
                         {% endif %}
-                    
                       </td>
                     </tr>
                   </thead>
                   <tbody>
                     {% for specie in species %}
                       <tr class="clickable"
-                          onclick="window.location='{% url 'arbolsaf:species_detail' specie.id %}'">
+                        onclick="window.location='{% url 'arbolsaf:species_detail' specie.id  %}'">
                         <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
                         <td>
                           <!--b class="text-navy" >{{ center.name }}</b-->
@@ -181,35 +174,32 @@ Listado Especies
                         </td>
                         <td >{% firstof specie.taxonid_wfo|default_if_none:"" %}</td>
                         <td >{% firstof specie.nombre_comun|default_if_none:"" %}</td>
-                        <td ><i>{% firstof specie.nombre_cientifico|default_if_none:"" %}</i></td>
+                        <td >
+                          <i>{% firstof specie.nombre_cientifico|default_if_none:"" %}</i>
+                        </td>
                         <td >{% firstof specie.familia|default_if_none:"" %}</td>
-
                         <td class="text-center">
                           {% if specie.nativa %}
-                          SÍ
+                            SÍ
                           {% else %}
-                          NO
+                            NO
                           {% endif %}
                         </td>
                         <td class="text-center">
                           {% if specie.habilitada_herramienta %}
-                          SÍ
+                            SÍ
                           {% else %}
-                          NO
+                            NO
                           {% endif %}
                         </td>
-                      
                       </tr>
                     </tbody>
                   {% endfor %}
                 </table>
               {% else %}
-                <h3 style="color: red" class="text-center">
-                  {% trans 'No existen especies a mostrar' %}
-                </h3>
+                <h3 style="color: red" class="text-center">{% trans 'No existen especies a mostrar' %}</h3>
               {% endif %}
             </div>
-
             <div class="d-flex justify-content-center">
               <nav class="mt-0">
                 <ul class="pagination mt-0">
@@ -311,8 +301,7 @@ Listado Especies
                 </ul>
               </nav>
             </div>
-
-          <!--div class="d-flex justify-content-center">
+            <!--div class="d-flex justify-content-center">
               <nav>
                 <ul class="pagination">
                   {% if 'nombre_comun' in request.get_full_path %}
@@ -326,9 +315,7 @@ Listado Especies
 {#                        </a>#}
 {#                      </li>#}
                       <li class="page-item">
-                        <a class="page-link"
-                           href="{{ request.get_full_path }}&page={{ previous_page }}"
-                           aria-label="Anterior">
+                        <a class="page-link" href="{{ request.get_full_path }}&page={{ previous_page }}" aria-label="Anterior">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">{% trans 'Anterior' %}</span>
                         </a>
@@ -350,9 +337,7 @@ Listado Especies
                     {% endfor %}
                     {% if has_more_pages %}
                       <li class="page-item">
-                        <a class="page-link"
-                           href="{{ request.get_full_path }}&page={{ next_page }}"
-                           aria-label=">>">
+                        <a class="page-link" href="{{ request.get_full_path }}&page={{ next_page }}" aria-label=">>">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">>></span>
                         </a>
@@ -375,9 +360,7 @@ Listado Especies
 {#                        </a>#}
 {#                      </li>#}
                       <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.previous_page_number }}"
-                           aria-label="Anterior">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">{% trans 'Anterior' %}</span>
                         </a>
@@ -399,9 +382,7 @@ Listado Especies
                     {% endfor %}
                     {% if page_obj.has_next %}
                       <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.next_page_number }}"
-                           aria-label=">>">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label=">>">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">>></span>
                         </a>
@@ -418,138 +399,11 @@ Listado Especies
                   {% endif %}
                 </ul>
               </nav>
-            </div-->
-
-
-    <div class="modal fade"
-        id="ActualizarModal"
-        data-bs-backdrop="static" 
-        data-bs-keyboard="false"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Actualizar Herramienta</h5>
-          <button type="button"
-                  class="btn-close text-dark"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  id="dismissActualizar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p class="text-sm mb-0 font-weight-bold">
-            Esta acción actualizará los valores calculados de las especies presentes en la herramienta. ¿Desea continuar?
-          </p>
-          <br>
-        </div>
-        <div class="modal-footer">
-          <button type="button"
-                  id="cancelarActualizar"
-                  class="btn bg-success text-white"
-                  data-bs-dismiss="modal">Cerrar</button>
-          <form name="form-actualizar" id="form-tool">
-            {% csrf_token %}
-       
-          <button type="submit" class="btn bg-danger text-white" id="actualizarHerramienta">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinnerButton" style="display:none;"></span>
-            Aceptar</button>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-    <div class="modal fade"
-    id="errorModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">
-        Error</span>
-      </h5>
-      <button type="button"
-              class="btn-close text-dark"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              id="closemodalerror">
-    
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div  class="row">
-        <div class="col-2 text-center text-danger">
-          <i class="fa fa-3x fa-exclamation-circle "></i>
-          </div>
-          <div class="col-10">
-          <p class="text-sm mb-0 font-weight-bold">
-              <span id="errorspan"></span>
-          </p>
-          
-          </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn bg-success text-white" data-bs-dismiss="modal" >
-        Cerrar
-      </button>
-    </div>
-    </div>
-    </div>
-  </div>
-
-  <div class="modal fade"
-  id="successModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-  <div class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Actualizacion completada</h5>
-    <button type="button"
-            class="btn-close text-dark"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-            id="closemodalerror">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-2 text-center text-success">
-        <i class="fa fa-3x fa-thumbs-up"></i>
-      </div>
-      <div class="col-10">
-        <p class="text-sm mb-0 font-weight-bold">
-            Se ha realizado la actualización de los valores para todas las especies
-          
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button"
-            class="btn bg-success text-white"
-            data-bs-dismiss="modal">Cerrar</button>
-  </div>
-  </div>
-  </div>
-  </div>
-
+</div-->
             <div class="modal fade"
-                 id="filterModal"
+                 id="ActualizarModal"
+                 data-bs-backdrop="static"
+                 data-bs-keyboard="false"
                  tabindex="-1"
                  role="dialog"
                  aria-labelledby="exampleModalLabel"
@@ -558,116 +412,272 @@ Listado Especies
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
-                      Filtrar
+                      Actualizar Herramienta
                     </h5>
                     <button type="button"
                             class="btn-close text-dark"
                             data-bs-dismiss="modal"
                             aria-label="Close"
-                            id="elim">
+                            id="dismissActualizar">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <div class="container">
-                      <form id="filter_form"
-                            action="{% url 'arbolsaf:species_list' %}"
-                            class=""
-                            method="get"
-                            autocomplete="off">
-                        <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
-                        <div class="form-group">
-                          <label class="control-label" for="id_cod_esp">
-                            Código especie
-                          </label>
-                          <div class=" ">
-                            <input id="id_cod_esp"
-                                    type="text"
-                                    name="cod_esp"
-                                    class="form-control"
-                                    value="{{ value_cod_esp }}">
-                          </div>
-                    
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label" for="id_nombre_comun">
-                            Nombre común
-                          </label>
-                          <div class=" ">
-                            <select id="id_nombre_comun" class="form-select" name="nombre_comun">
-                              <option></option>
-                              {% for nombre in nombre_comun_values %}
-                              <option value="{{ nombre.nombre_comun }}">{{ nombre.nombre_comun }} ({{ nombre.cod_esp }})</option>
-                              {% endfor %}
-                              </select>
-                          </div>
-                    
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label" for="id_nombre_cientifico">
-                            Nombre científico
-                          </label>
-                          <div class=" ">
-                            <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
-                              <option></option>
-                              {% for nombre in nombre_cientifico_values %}
-                                   <option value="{{ nombre.nombre_cientifico }}">{{ nombre.nombre_cientifico }} ({{ nombre.cod_esp }})</option>
-                              {% endfor %}
-
-                          </select>
-                          </div>
-                      
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label" for="id_tipo_variable">Tipo de Variable</label>
-                          <div class=" ">
-                           <select id="id_tipo_variable" class="form-select" name="tipo_variable">
-                               <option></option>   
-                               {% for variable in variables %}                                       
-                               <option value="{{variable.id}}">{{variable.variable}} ({{variable.cod_var}})</option>
-                               {% endfor %}  
-                               <!--option>Desmembramiento</option>
-                               <option>Unión</option-->
-                              
-                           </select>
-                         
-                       </div>
-                          
-                       </div>
-
-                       <div class="form-group">
-                        <label class="control-label" for="id_referencia">Referencia</label>
-                        <div class=" ">
-                         <select id="id_referencia" class="form-select" name="referencia">
-                             <option></option>   
-                             {% for referencia in referencias %}                                       
-                             <option value="{{referencia.id}}">{{referencia.fuente_final}}</option>
-                             {% endfor %}  
-                             <!--option>Desmembramiento</option>
-                             <option>Unión</option-->
-                            
-                         </select>
-                       
-                     </div>
-                        
-                     </div>
-                      </form>
-                    </div>
+                    <p class="text-sm mb-0 font-weight-bold">
+                      Esta acción actualizará los valores calculados de las especies presentes en la herramienta. ¿Desea continuar?
+                    </p>
+                    <br>
                   </div>
                   <div class="modal-footer">
-                    <button id="reset_button"
-                            form="filter_form"
-                            type="button"
-                            class="btn btn-light btn-sm">
-                      <i class="fa fa-trash"></i>&nbsp;&nbsp;Limpiar filtros
-                    </button>
-                    <button form="filter_form" type="submit" class="btn btn-primary btn-sm">
-                      <i class="fa fa-filter"></i>&nbsp;&nbsp;Filtrar
-                    </button>
-                    <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="modal">
+                    <button type="button"
+                            id="cancelarActualizar"
+                            class="btn bg-success text-white"
+                            data-bs-dismiss="modal">
                       Cerrar
                     </button>
+                    <form name="form-actualizar" id="form-tool">
+                      {% csrf_token %}
+                      <button type="submit"
+                              class="btn bg-danger text-white"
+                              id="actualizarHerramienta">
+                        <span class="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                              id="spinnerButton"
+                              style="display:none"></span>
+                        Aceptar
+                      </button>
+                    </form>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade"
+                 id="errorModal"
+                 tabindex="-1"
+                 role="dialog"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                    Error</span>
+                  </h5>
+                  <button type="button"
+                          class="btn-close text-dark"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          id="closemodalerror">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-2 text-center text-danger">
+                      <i class="fa fa-3x fa-exclamation-circle "></i>
+                    </div>
+                    <div class="col-10">
+                      <p class="text-sm mb-0 font-weight-bold">
+                        <span id="errorspan"></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button"
+                          class="btn bg-success text-white"
+                          data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade"
+               id="successModal"
+               tabindex="-1"
+               role="dialog"
+               aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Actualizacion completada
+                  </h5>
+                  <button type="button"
+                          class="btn-close text-dark"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          id="closemodalerror">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-2 text-center text-success">
+                      <i class="fa fa-3x fa-thumbs-up"></i>
+                    </div>
+                    <div class="col-10">
+                      <p class="text-sm mb-0 font-weight-bold">
+                        Se ha realizado la actualización de los valores para todas las especies
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button"
+                          class="btn bg-success text-white"
+                          data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade"
+               id="filterModal"
+               tabindex="-1"
+               role="dialog"
+               aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Filtrar
+                  </h5>
+                  <button type="button"
+                          class="btn-close text-dark"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          id="elim">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="container">
+                    <form id="filter_form"
+                          action="{% url 'arbolsaf:species_list' %}"
+                          class=""
+                          method="get"
+                          autocomplete="off">
+                      <input type="hidden"
+                             name="ordenar_por"
+                             id="ordenar_por"
+                             value="{{ ordenar_por }}">
+                      <div class="form-group">
+                        <label class="control-label" for="id_cod_esp">
+                          Código especie
+                        </label>
+                        <div class=" ">
+                          <input id="id_cod_esp"
+                                 type="text"
+                                 name="cod_esp"
+                                 class="form-control"
+                                 value="{{ value_cod_esp }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label" for="id_nombre_comun">
+                          Nombre común
+                        </label>
+                        <div class=" ">
+                          <select id="id_nombre_comun" class="form-select" name="nombre_comun">
+                            <option>
+                            </option>
+                            {% for nombre in nombre_comun_values %}
+                              <option value="{{ nombre.nombre_comun }}">
+                                {{ nombre.nombre_comun }} ({{ nombre.cod_esp }})
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label" for="id_nombre_cientifico">
+                          Nombre científico
+                        </label>
+                        <div class=" ">
+                          <select id="id_nombre_cientifico"
+                                  class="form-select"
+                                  name="nombre_cientifico">
+                            <option>
+                            </option>
+                            {% for nombre in nombre_cientifico_values %}
+                              <option value="{{ nombre.nombre_cientifico }}">
+                                {{ nombre.nombre_cientifico }} ({{ nombre.cod_esp }})
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label" for="id_tipo_variable">
+                          Tipo de Variable
+                        </label>
+                        <div class=" ">
+                          <select id="id_tipo_variable" class="form-select" name="tipo_variable">
+                            <option>
+                            </option>
+                            {% for variable in variables %}
+                              <option value="{{ variable.id }}">
+                                {{ variable.variable }} ({{ variable.cod_var }})
+                              </option>
+                            {% endfor %}
+                            <!--option>Desmembramiento</option>
+<option>Unión</option-->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label" for="id_referencia">
+                          Referencia
+                        </label>
+                        <div class=" ">
+                          <select id="id_referencia" class="form-select" name="referencia">
+                            <option>
+                            </option>
+                            {% for referencia in referencias %}
+                              <option value="{{ referencia.id }}">
+                                {{ referencia.fuente_final }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label" for="id_nombre_cientifico">
+                          Habilitada en herramienta
+                        </label>
+                        <div class=" ">
+                          <select id="id_habilitada_herramienta" class="form-select" name="habilitada_herramienta">
+                            <option></option>
+                                 <option value="habilitada">Habilitada</option>
+                                 <option value="desabilitada">Desabilitada</option>
+                                 <option value="habilitada_desabilitada">Habilitada y Deshabilitada</option>
+                           
+                        </select>
+                        </div>
+                    
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button id="reset_button"
+                          form="filter_form"
+                          type="button"
+                          class="btn btn-light btn-sm">
+                    <i class="fa fa-trash"></i>&nbsp;&nbsp;Limpiar filtros
+                  </button>
+                  <button form="filter_form" type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-filter"></i>&nbsp;&nbsp;Filtrar
+                  </button>
+                  <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
                 </div>
               </div>
             </div>
@@ -675,16 +685,14 @@ Listado Especies
         </div>
       </div>
     </div>
-    
-    {% include "includes/footer.html" %}
   </div>
+  {% include "includes/footer.html" %}
+</div>
 {% endblock content %}
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
   <script>
-
-
     $(document).ready(function () {
 
       
@@ -695,7 +703,9 @@ Listado Especies
       document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
       document.getElementById("id_referencia").value = "{{value_referencia}}";
 
+      document.getElementById("id_habilitada_herramienta").value = "{{value_habilitada_herramienta}}";
 
+   
       
      
   });

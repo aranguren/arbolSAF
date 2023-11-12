@@ -66,9 +66,10 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         context['value_nombre_cientifico'] = self.request.GET.get('nombre_cientifico', '')
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
         context['value_referencia'] = self.request.GET.get('referencia', '')
+        context['value_habilitada_herramienta'] = self.request.GET.get('habilitada_herramienta', '')
 
         filtrado = context['value_cod_esp'] + context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
-                   context['value_tipo_variable'] + context['value_referencia']
+                   context['value_tipo_variable'] + context['value_referencia'] + context['value_habilitada_herramienta']
 
  
         context['ordenar_por'] = self.request.GET.get('ordenar_por', 'nombre_comun')
@@ -127,6 +128,7 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
             'nombre_cientifico': self.request.GET.get('nombre_cientifico', None),
             'tipo_variable': self.request.GET.get('tipo_variable', None),
             'referencia': self.request.GET.get('referencia', None),
+            'habilitada_herramienta': self.request.GET.get('habilitada_herramienta', None),
             }
 
         tipos_de_orden = {
@@ -157,6 +159,12 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         #    query_result = query_result.filter(cod_esp__icontains=query['cod_esp'])
         #if query['taxonid_wfo'] and query['taxonid_wfo'] != '':
         #    query_result = query_result.filter(taxonid_wfo__icontains=query['taxonid_wfo'])
+
+        if query['habilitada_herramienta'] and query['habilitada_herramienta'] != ''and  query['habilitada_herramienta']=='habilitada' :
+            query_result = query_result.filter(habilitada_herramienta=True)
+        elif query['habilitada_herramienta'] and query['habilitada_herramienta'] != ''and  query['habilitada_herramienta']=='desabilitada' :
+            query_result = query_result.filter(habilitada_herramienta=False)
+
         if query['cod_esp'] and query['cod_esp'] != '':
             query_result = query_result.filter(cod_esp__iexact=query['cod_esp'])
         if query['nombre_comun'] and query['nombre_comun'] != '':
