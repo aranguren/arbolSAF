@@ -356,10 +356,10 @@ def species_list_json(request):
 
         v157_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v157').first()
         if v157_instance:
-            rango_inferior= v157_instance.rango_inferior or 0.0
-            rango_superior= v157_instance.rango_superior or 0.0
+            rango_inferior= v157_instance.rango_inferior or 0
+            rango_superior= v157_instance.rango_superior or 0
             v157_elevacion_min_promedio = (rango_inferior+rango_superior)/2
-            v157_elevacion_min = str(v157_elevacion_min_promedio)
+            v157_elevacion_min = str(round(v157_elevacion_min_promedio))
         else:
             v157_elevacion_min = ""
         valores_especie['v157_elevacion_min'] = v157_elevacion_min
@@ -367,10 +367,10 @@ def species_list_json(request):
 
         v158_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v158').first()
         if v158_instance:
-            rango_inferior= v158_instance.rango_inferior or 0.0
-            rango_superior= v158_instance.rango_superior or 0.0
+            rango_inferior= v158_instance.rango_inferior or 0
+            rango_superior= v158_instance.rango_superior or 0
             v158_elevacion_max_promedio = (rango_inferior+rango_superior)/2
-            v158_elevacion_max = str(v158_elevacion_max_promedio)
+            v158_elevacion_max = str(round(v158_elevacion_max_promedio))
         else:
             v158_elevacion_max = ""
         valores_especie['v158_elevacion_max'] = v158_elevacion_max
@@ -606,10 +606,10 @@ def species_list_json(request):
 
         v5_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v5').first()
         if v5_instance:
-            rango_inferior= v5_instance.rango_inferior or 0.0
-            rango_superior= v5_instance.rango_superior or 0.0
+            rango_inferior= v5_instance.rango_inferior or 0
+            rango_superior= v5_instance.rango_superior or 0
             v5_densidad_promedio_copa_promedio=(rango_inferior+rango_superior)/2
-            v5_densidad_promedio_copa= str(v5_densidad_promedio_copa_promedio)
+            v5_densidad_promedio_copa= str(round(v5_densidad_promedio_copa_promedio))
         else:
             v5_densidad_promedio_copa = ""
         valores_especie['v4_densidad_promedio_copa'] = v5_densidad_promedio_copa

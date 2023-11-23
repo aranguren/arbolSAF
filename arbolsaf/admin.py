@@ -525,9 +525,64 @@ class CategorizacionAdmin(ExportMixin, admin.ModelAdmin):
 
 
 admin.site.register(models.SpeciesAdminModel, CategorizacionAdmin)
- #inlines = [SynonymousInline,]
 
-# TODO SynonymousModel, hacerlo cono inline de especie
-# TODO referencia, hacerlo como inline de variable NO ES NECESARIO
-# TODO DistributionMenaceModel tengo dudas
-# TODO variables cono lista de especies
+
+
+class SpeciesModelInline(admin.TabularInline):
+    model =  model = models.RegistroReporteHerramienta.especies.through
+    model._meta.verbose_name_plural = "Especies seleccionadas"
+    model._meta.verbose_name = "Especie seleccionada"
+    
+
+    #fields = ['cod_esp','nombre_cientifico','nombre_comun']
+  
+
+class RegistroReporteHerramientaResource(resources.ModelResource):
+    class Meta:
+        model = models.RegistroReporteHerramienta
+        
+        skip_unchanged = True
+        report_skipped = True
+        fields = ('created', 'nombre_productor', 'region', 
+                                        'provincia', 
+                                        'distrito', 
+                                        'tipo_intervencion', 
+                                        'finca_ha',
+                                        'parcela_ha' ,
+                                        'tipo_usuario' ,
+                                        'identidad_genero',
+                                        'edad_usuario',
+                                        'especies_str')
+        import_id_fields = ('nombre_productor','created')
+
+class RegistroReporteHerramientaAdmin(ExportMixin, admin.ModelAdmin):
+    resource_classes = [RegistroReporteHerramientaResource]
+    search_fields = ['cod_esp', 'nombre_comun', 'nombre_cientifico']
+    list_display = ['nombre_productor','created', 'region', 
+                                        'provincia', 
+                                        'distrito', ]
+
+    fieldsets = [
+        #(None,               {'fields': ['question_text']}),
+         ('Informacion registro', {'fields': ['created', 'nombre_productor', 'region', 
+                                        'provincia', 
+                                        'distrito', 
+                                        'tipo_intervencion', 
+                                        'finca_ha',
+                                        'parcela_ha' ,
+                                        'tipo_usuario' ,
+                                        'identidad_genero',
+                                        'edad_usuario',
+                                        'especies_str' ]}),
+    ]
+    inlines = [SpeciesModelInline,]
+    readonly_fields=['created',]
+    #def has_delete_permission(self, request, obj = None):
+    #    return False
+    def has_change_permission(self, request, obj = None):
+        return False
+    def has_add_permission(self, request, obj = None):
+        return False
+
+
+admin.site.register(models.RegistroReporteHerramienta, RegistroReporteHerramientaAdmin)

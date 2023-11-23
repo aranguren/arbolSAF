@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from wkhtmltopdf.views import PDFTemplateResponse
 import json
 from django.conf import settings
-from ..models import SpeciesModel
+from ..models import SpeciesModel, RegistroReporteHerramienta
 
 class ToolView(TemplateView):
     template_name = "arbolsaf/tool/tool.html"
@@ -122,8 +122,22 @@ def tool_print_pdf_view(request):
         "edad": post_data['edad_del_usuario'] or '-', 
         "especies":especies_obj 
     }
-   
-    for especie in especies_obj:
+    registro = RegistroReporteHerramienta(
+        nombre_productor = post_data['nombre'] or '-',
+        region = post_data['region'] or '-',
+        provincia = post_data['provincia'] or '-',
+        distrito = post_data['distrito'] or '-',
+        tipo_intervencion = post_data['tipo_de_intervencion'] or '-',
+        finca_ha = post_data['tamano_de_finca'] or '-',
+        parcela_ha = post_data['tamano_de_parcela'] or '-',
+        tipo_usuario =  post_data['tipo_de_usuario'] or '-',
+        identidad_genero =  post_data['identidad_de_genero'] or '-',
+        edad_usuario = post_data['edad_del_usuario'] or '-', 
+    )
+    registro.save()
+    especies_str = ""
+
+    for index, especie in enumerate(especies_obj):
         print("-------------------------------------------------------------------------------------------------------------------")
         
         print(f"Mostrando especie con nombre {especie.get('NOMBRE COMUN','')}")
@@ -143,6 +157,11 @@ def tool_print_pdf_view(request):
   
         codigo = especie.get('CODIGO',False)
         especienodel = SpeciesModel.objects.filter(cod_esp=codigo).first()
+        registro.especies.add(especienodel)
+        especies_str+= f"{especienodel.nombre_cientifico} ({especienodel.cod_esp})"
+
+        if index != len(especies_obj) - 1:
+            especies_str+=", "
 
         v56_instance = especienodel.variables.filter(tipo_variable__cod_var__iexact='v56').first()
         if v56_instance:
@@ -185,6 +204,8 @@ def tool_print_pdf_view(request):
             
         especie['v136_tipo_semilla_viabilidad'] = v136_tipo_semilla_viabilidad
 
-
+    registro.especies_str = especies_str
+    registro.save()
     response = get_tool_pdf_response(request, data=data)
     return response
+

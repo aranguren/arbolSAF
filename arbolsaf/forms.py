@@ -29,9 +29,13 @@ class SpeciesForm(forms.ModelForm):
             #'imagen':forms.FileInput(attrs={'class': 'form-control'}),     
                                  
             }
-
+YES_NO = (
+        ("yes", "Yes"),
+        ("no", "No")
+    )
 
 class VariableO2MForm(forms.ModelForm):
+
 
 
     class Meta:
@@ -45,6 +49,7 @@ class VariableO2MForm(forms.ModelForm):
             'referencia_2': forms.Select(attrs={'class': 'form-select form-select-lg'}),
             'valor_numerico':forms.NumberInput(attrs={'class': 'form-control'}),
             'valor_texto':forms.TextInput(attrs={'class': 'form-control'}),
+            #'valor_boolean': forms.RadioSelect(choices=YES_NO),   
             'valor_boolean': forms.CheckboxInput(attrs={'class': 'form-check-input '}),    
             'rango_superior':forms.NumberInput(attrs={'class': 'form-control'}),
             'rango_inferior':forms.NumberInput(attrs={'class': 'form-control'}),

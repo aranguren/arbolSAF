@@ -36,6 +36,7 @@ class SynonymousModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_synonymous'
         managed = True
+        ordering = ["sinonimo"]
         verbose_name = 'Sinónimo'
         verbose_name_plural = 'Sinónimo'
 
@@ -48,6 +49,7 @@ class FamilyModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_family'
         managed = True
+        ordering = ["familia"]
         verbose_name = 'Familia'
         verbose_name_plural = 'Familias'
 
@@ -61,6 +63,7 @@ class GenderModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_gender'
         managed = True
+        ordering = ["genero"]
         verbose_name = 'Género'
         verbose_name_plural = 'Género'
 
@@ -76,6 +79,7 @@ class ReferenceModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_reference'
         managed = True
+        ordering = ["fuente_final"]
         verbose_name = 'Referencia'
         verbose_name_plural = 'Referencias'
 
@@ -92,6 +96,7 @@ class MeasureUnitTypeModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_measure_unit_type'
         managed = True
+        ordering = ["abreviatura"]
         verbose_name = 'Tipo unidad de medidas'
         verbose_name_plural = 'Tipos unidad de medidas'
 
@@ -123,17 +128,18 @@ class VariableTypeFamilyModel(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_variable_type_family'
         managed = True
+        ordering = ["nombre"]
         verbose_name = 'Grupo de variable'
         verbose_name_plural = 'Grupos de variables'
 
 class VariableTypeModel(BasicAuditModel):
 
     TYPE_CHOICES = (
-        ("numerico", "Numérico"),
-        ("texto", "Texto"),
-        ("rango", "Rango"),
-        ("cualitativo", "Cualitativo"),
         ("boolean", "Boolean"),
+        ("cualitativo", "Cualitativo"),
+        ("numerico", "Numérico"),
+        ("rango", "Rango"),
+        ("texto", "Texto"),
     )
     seleccion_multiple = models.BooleanField(_("Es selección múltiple? (Aplicable solo a variables cualitativas)"), default=False)
 
@@ -845,6 +851,7 @@ class Bitacora(BasicAuditModel):
     class Meta:
         db_table = 'arbolsaf_bitacora_cambios'
         managed = True
+        ordering = ["-created"]
         verbose_name = 'Bitacora'
         verbose_name_plural = 'Bitacora'
 
@@ -874,3 +881,34 @@ class ImageSpecies(models.Model):
         managed = True
         verbose_name = 'Imagen Especie'
         verbose_name_plural = 'Imágenes Especies'
+
+class RegistroReporteHerramienta(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Fecha reporte"))
+
+    nombre_productor = models.CharField(_("Nombre del productor"), max_length=255)
+    region = models.CharField(_("Región"), max_length=50, blank=True, null=True)
+    provincia = models.CharField(_("Provincia"), max_length=50, blank=True, null=True)
+    distrito = models.CharField(_("Distrito"), max_length=50, blank=True, null=True)
+    tipo_intervencion = models.CharField(_("Tipo de intervención"), max_length=50, blank=True, null=True)
+
+    finca_ha = models.IntegerField(_("Tamaño de la finca (ha)"), blank=True, null=True)
+    parcela_ha = models.IntegerField(_("Tamaño de la parcela (ha)"), blank=True, null=True)
+    tipo_usuario = models.CharField(_("Tipo de usuario"), max_length=50, blank=True, null=True)
+    identidad_genero = models.CharField(_("Identidad de género"), max_length=50, blank=True, null=True)
+    edad_usuario = models.CharField(_("Edad del usuario"), max_length=50, blank=True, null=True)
+
+    especies_str = models.TextField(_("Especies"), blank=True, null=True)
+
+    especies = models.ManyToManyField("arbolsaf.SpeciesModel", verbose_name=_("Especies"))
+
+
+    def __str__(self):
+        return f"{self.nombre_productor} ({self.created})"
+
+    class Meta:
+        db_table = 'arbolsaf_registro_reporte'
+        managed = True
+        ordering = ["-created"]
+        verbose_name =  'Registro reporte herramienta'
+        verbose_name_plural =  'Registros reporte herramienta'
