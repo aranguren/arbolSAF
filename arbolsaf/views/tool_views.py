@@ -135,6 +135,7 @@ def tool_print_pdf_view(request):
         "edad": post_data['edad_del_usuario'] or '-', 
         "especies":especies_obj 
     }
+    """
     registro = RegistroReporteHerramienta(
         nombre_productor = post_data['nombre'] or '-',
         region = post_data['region'] or '-',
@@ -147,6 +148,32 @@ def tool_print_pdf_view(request):
         identidad_genero =  post_data['identidad_de_genero'] or '-',
         edad_usuario = post_data['edad_del_usuario'] or '-', 
     )
+    """
+    data_registro ={
+         'nombre_productor' : post_data.get('nombre', None),
+    }
+
+    if post_data.get('region', '') != '' :
+        data_registro['region'] = post_data.get('region', None)
+    if post_data.get('provincia', '') != '' :
+        data_registro['provincia'] = post_data.get('provincia', None)
+    if post_data.get('distrito','') != '' :
+        data_registro['distrito'] = post_data.get('distrito', None)
+    if post_data.get('tipo_de_intervencion', '') != '' :
+        data_registro['tipo_intervencion'] = post_data.get('tipo_de_intervencion', None)
+    if post_data.get('tamano_de_finca','') != '' :
+        data_registro['finca_ha'] = post_data.get('tamano_de_finca', None)
+    if post_data.get('tamano_de_parcela', '') != '' :
+        data_registro['parcela_ha'] = post_data.get('tamano_de_parcela', None)
+    if post_data.get('tipo_de_usuario', '') != '' :
+        data_registro['tipo_usuario'] = post_data.get('tipo_de_usuario', None)
+    if post_data.get('identidad_de_genero', '') != '' :
+        data_registro['identidad_genero'] = post_data.get('identidad_de_genero', None)
+    if post_data.get('edad_del_usuario', '') != '' :
+        data_registro['edad_usuario'] = post_data.get('edad_del_usuario', None)
+
+    
+    registro = RegistroReporteHerramienta(**data_registro)
     registro.save()
     especies_str = ""
 
