@@ -949,7 +949,7 @@ class Configuracion(SingletonModel):
     texto_seccion_arbolsaf = RichTextField("Texto pestaña Arbolsaf", default="Escriba su texto aquí")
     texto_seccion_creditos = RichTextField("Texto pestaña Créditos", default="Escriba los créditos")
     texto_seccion_descargo_responsabilidad = RichTextField("Texto pestaña Descargo de responsabilidad", default="Escriba el texto")
-    texto_seccion_agradecimientos = RichTextField("Texto pestaña Descargo de responsabilidad", default="Escriba el texto")
+    texto_seccion_agradecimientos = RichTextField("Texto pestaña Agradecimientos", default="Escriba el texto")
 
 
     class Meta:
