@@ -157,8 +157,9 @@
           <div class="card card-body">
             <div class="tab-content p-4" id="tab-content-about">
               <div class="tab-pane active" id="arbolsaf" role="tabpanel">
-                <h2> ÁrbolSAF </h2>
-                <p>
+                {{settings_arbolsaf.texto_seccion_arbolsaf|safe}}
+                 <!--h2> ÁrbolSAF </h2-->
+                <!--p>
                   El diseño y la implementación de opciones agroforestales con múltiples funciones y múltiples propósitos es un gran desafío para técnicos y agricultores. 
                   Este proceso requiere, entre otros elementos, de un buen conocimiento de los árboles/palmeras que serán parte de estos sistemas productivos.
                 </p>
@@ -260,10 +261,11 @@
                   y servicios ecosistémicos que una misma especie brinda basado en las seis categorías que las especies fueron asignadas. El índice de valor relativo es el 
                   promedio de valor asignado a cada categoría de uso. Por lo tanto, especies con altos IVIM son aquellas que son usadas o brindan varios servicios ecosistémicos 
                   y, además, que presentan un valor alto en cada uno de los servicios. 
-                </p>
+                </p-->
               </div>
               <div class="tab-pane" id="credits" role="tabpanel"> 
-                <h2>Créditos</h2>
+                {{settings_arbolsaf.texto_seccion_creditos|safe}}
+                <!--h2>Créditos</h2>
                 <p>&copy 2023 Centro para la Investigación Forestal Internacional (CIFOR) y Centro Internacional de Investigación Agroforestal (ICRAF)</p>
                 
                 <div class="mt-4">
@@ -271,11 +273,12 @@
                   <p> 
                     CIFOR-ICRAF. <i>ÁrbolSAF: herramienta interactiva de selección de especies para el codiseño de opciones agroforestales y plataforma de gestión de datos.</i> Versión Alfa 1.0. Lima, Perú. 
                   </p>
-                </div>               
+                </div-->               
               </div>
 
               <div class="tab-pane" id="disclaimer" role="tabpanel"> 
-                <h2> Descargo de responsabilidad </h2>
+                {{settings_arbolsaf.texto_seccion_descargo_responsabilidad|safe}}
+                <!--h2> Descargo de responsabilidad </h2>
                 {% comment %} <p>Este sitio web/aplicación, incluidas las hojas informativas asociadas, han sido compiladas por científicos experimentados en su mayoría de información 
                   secundaria y en una mínima parte de mediciones de campo. La identificación taxonómica de las especies fue apoyada por colectas de campo en los casos 
                   que se consideró necesario. Con respecto al material contenido en este sitio web, las organizaciones y personas involucradas en la creación de la 
@@ -291,12 +294,13 @@
                   interactiva ÁrbolSAF no hacen declaraciones o garantías de ningún tipo, expresas o implícitas (incluyendo la idoneidad para un propósito particular) y no aceptan 
                   ninguna responsabilidad legal por la exactitud, fiabilidad, adecuación, disponibilidad, integridad o utilidad de cualquier información, producto o proceso divulgado. 
                   Por lo tanto, el uso del material o la información contenidos en este sitio web o aplicación corre estrictamente por su cuenta y riesgo.
-                </p>
+                </p-->
               </div>
 
               <div class="tab-pane" id="acknowledgment" role="tabpanel"> 
-                <h2> Agradecimientos </h2>
-                <p> Agradecemos a todos aquellos proyectos, instituciones y organizaciones que han contribuido con ÁrbolSAF: </p>
+                {{settings_arbolsaf.texto_seccion_agradecimientos|safe}}
+                <!--h2> Agradecimientos </h2>
+                <p> Agradecemos a todos aquellos proyectos, instituciones y organizaciones que han contribuido con ÁrbolSAF: </p-->
                 <div class="row mt-6">
                   <div class="col-6 d-flex justify-content-center">
                     <img src="{% static 'assets/img/herramienta/1.png' %}" class="border-radius-md object-fit-contain" style="height: 120px;" alt="logo">

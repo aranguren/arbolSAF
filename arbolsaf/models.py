@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from computedfields.models import ComputedFieldsModel, computed, compute
 import urllib.parse
+from django.core.cache import cache
+from ckeditor.fields import RichTextField
 
 class BasicAuditModel(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, 
@@ -912,3 +914,46 @@ class RegistroReporteHerramienta(models.Model):
         ordering = ["-created"]
         verbose_name =  'Registro reporte herramienta'
         verbose_name_plural =  'Registros reporte herramienta'
+
+
+
+class SingletonModel(models.Model):
+
+    class Meta:
+        abstract = True
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    def set_cache(self):
+        cache.set(self.__class__.__name__, self)
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonModel, self).save(*args, **kwargs)
+
+        self.set_cache()
+
+    @classmethod
+    def load(cls):
+        if cache.get(cls.__name__) is None:
+            obj, created = cls.objects.get_or_create(pk=1)
+            if not created:
+                obj.set_cache()
+        return cache.get(cls.__name__)
+    
+
+class Configuracion(SingletonModel):
+
+    nombre = models.CharField(_("Nombre"), max_length=50, default="Configuración")
+    texto_seccion_arbolsaf = RichTextField("Texto pestaña Arbolsaf", default="Escriba su texto aquí")
+    texto_seccion_creditos = RichTextField("Texto pestaña Créditos", default="Escriba los créditos")
+    texto_seccion_descargo_responsabilidad = RichTextField("Texto pestaña Descargo de responsabilidad", default="Escriba el texto")
+    texto_seccion_agradecimientos = RichTextField("Texto pestaña Descargo de responsabilidad", default="Escriba el texto")
+
+
+    class Meta:
+        db_table = 'arbolsaf_configuracion'
+        managed = True
+        verbose_name = 'Configuración'
+        verbose_name_plural = 'Configuración Textos'

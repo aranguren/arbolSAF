@@ -389,10 +389,10 @@ def species_list_json(request):
 
         v81_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v81').first()
         if v81_instance:
-            rango_inferior= v81_instance.rango_inferior or 0.0
-            rango_superior= v81_instance.rango_superior or 0.0
+            rango_inferior= v81_instance.rango_inferior or 0
+            rango_superior= v81_instance.rango_superior or 0
             v81_precipitacion_max_promedio = (rango_inferior+rango_superior)/2
-            v81_precipitacion_max= str(v81_precipitacion_max_promedio)
+            v81_precipitacion_max= str(round(v81_precipitacion_max_promedio))
         else:
             v81_precipitacion_max = ""
         valores_especie['v81_precipitacion_max'] = v81_precipitacion_max
@@ -402,7 +402,7 @@ def species_list_json(request):
             rango_inferior= v82_instance.rango_inferior or 0.0
             rango_superior= v82_instance.rango_superior or 0.0
             v82_precipitacion_min_promedio = (rango_inferior+rango_superior)/2
-            v82_precipitacion_min= str(v82_precipitacion_min_promedio)
+            v82_precipitacion_min= str(round(v82_precipitacion_min_promedio))
         else:
             v82_precipitacion_min = ""
         valores_especie['v82_precipitacion_min'] = v82_precipitacion_min

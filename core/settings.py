@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'computedfields',
     'import_export',
+    'ckeditor',
     'arbolsaf', 
     'apps.home'  # Enable the inner home (home)
 ]
@@ -63,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #'arbolsaf.context_processors.settings',
             ],
         },
     },
@@ -76,7 +78,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME', 'arbolsaf_smart'), #arbolsaf8
+        'NAME': os.getenv('DB_NAME', 'arbolsaf'), #arbolsaf8 arbolsaf_smart
         'HOST': os.getenv('DB_HOST', '127.0.0.1'),
         'PORT': int(os.getenv('DB_PORT', 5432)),
         'USER': os.getenv('DB_USER','postgres'),

@@ -586,3 +586,19 @@ class RegistroReporteHerramientaAdmin(ExportMixin, admin.ModelAdmin):
 
 
 admin.site.register(models.RegistroReporteHerramienta, RegistroReporteHerramientaAdmin)
+
+
+class ConfiguracionAdmin(admin.ModelAdmin):
+    list_display = ['nombre',]
+    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
+    fieldsets = [
+        (None,               {'fields': ['nombre']}),
+         ('Textos Acerca de', {'fields': ['texto_seccion_arbolsaf', 'texto_seccion_creditos',
+                                        'texto_seccion_descargo_responsabilidad', 
+                                        'texto_seccion_agradecimientos', 
+ ]}),
+    ]
+
+
+
+admin.site.register(models.Configuracion, ConfiguracionAdmin)

@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from wkhtmltopdf.views import PDFTemplateResponse
 import json
 from django.conf import settings
-from ..models import SpeciesModel, RegistroReporteHerramienta
+from ..models import SpeciesModel, RegistroReporteHerramienta, Configuracion
 
 class ToolView(TemplateView):
     template_name = "arbolsaf/tool/tool.html"
@@ -13,6 +13,19 @@ class IntroToolView(TemplateView):
 
 class AboutToolView(TemplateView):
     template_name = "arbolsaf/tool/about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #settings_agrimensuras = SettinsAgrimensuras.load()
+        settings_arbolsaf = Configuracion.objects.get()
+        
+        #project = get_object_or_404(Project, id = int(kwargs['pk']))
+
+        context["settings_arbolsaf"] = settings_arbolsaf
+        
+       
+       
+        return context    
 
 
 
