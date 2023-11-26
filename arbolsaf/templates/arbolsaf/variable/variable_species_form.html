@@ -5,6 +5,8 @@
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/static/assets/css/select2-custom.css" rel="stylesheet" />
 <style type="text/css">
 
   ul.four-columns {
@@ -16,6 +18,9 @@
     -moz-columns: 4;
   
   }
+
+
+
 
 </style>
 {% endblock stylesheets %}
@@ -263,6 +268,7 @@
   <!-- Specific JS goes HERE -->
   {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
 
       function getVariableType(){
@@ -531,7 +537,7 @@
 
 
   $(document).ready(function () {
-
+    $('.js-select2-simple').select2();
 
 
 /*

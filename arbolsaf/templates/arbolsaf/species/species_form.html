@@ -4,6 +4,8 @@
 {% endblock title %}
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/static/assets/css/select2-custom.css" rel="stylesheet" />
 {% endblock stylesheets %}
 {% block body_class %}g-sidenav-show bg-gray-100{% endblock %}
 {% block content %}
@@ -203,4 +205,11 @@
   {% endblock content %}
   <!-- Specific JS goes HERE -->
   {% block javascripts %}
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script>
+  $(document).ready(function () {
+    $('.js-select2-simple').select2();
+  });
+  </script>
   {% endblock javascripts %}
