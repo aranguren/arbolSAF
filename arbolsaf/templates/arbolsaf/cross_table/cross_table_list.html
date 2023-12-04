@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load l10n %}
 {% load i18n %}
+{% load user_has_group %}
 {% block title %}
     Tabla Cruzada
 {% endblock title %}
@@ -136,6 +137,7 @@
 
                                         </div>
                                         <div class="col">
+                                            {% if request.user|has_group:"editor" or request.user.is_superuser %}
                                             <div class="form-group mt-md-4 text-end">
                                                 <button form="filter_form"
                                                         formaction="{% url 'arbolsaf:cross_table_export' %}"
@@ -143,6 +145,7 @@
                                                     <i class="fa fa-file-csv"></i>&nbsp;&nbsp;Exportar
                                                 </button>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
