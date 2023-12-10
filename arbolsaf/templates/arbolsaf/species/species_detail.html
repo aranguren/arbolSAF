@@ -419,10 +419,21 @@
         <div class="card mt-4" id="geo">
           <div class="card-header">
             <div class="row">
-              <div class="col-10">
+              <div class="col-9">
                 <h5>
                   Variables no diligenciadas
                 </h5>
+              </div>
+              <div class="col-3">
+                <div class="d-flex justify-content-end">
+                  <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1" id="filtrar-herramienta">
+                      <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Utilizadas en herramienta
+                  </button>
+                  <button class="btn btn-secondary text-white btn-large btn-sm m-b-xm mx-1" id="no-filtrar" style="display:none;">
+                    <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Mostrar todas
+                </button>
+                </div>
+
               </div>
             </div>
           </div>
@@ -434,6 +445,9 @@
                     <table class="table table-flush" id="datatable-variables-nd">
                       <thead>
                         <tr>
+                          <td>
+                            <b>Uso en la herramienta</b>
+                          </td>
                           <td>
                             <b>Variable</b>
                           </td>
@@ -458,7 +472,10 @@
                       </thead>
                       <tbody>
                         {% for variable_nd in specie.get_variables_no_diligenciadas %}
-                          <tr>
+                          <tr {% if  variable_nd.uso_herramienta%}class="text-danger" {% endif %}>
+                            <td>
+                              {{ variable_nd.uso_herramienta }}
+                            </td>
                             <td>
                               {{ variable_nd.variable }}
                             </td>
@@ -1034,19 +1051,79 @@
         //oTable.column(2).search("^"+$(this).val()+"$", true,false,true ).draw()
      
 
-        $('#datatable-variables-nd').DataTable(
+        var dtableNoDiligenciadas = $('#datatable-variables-nd').DataTable(
           {
-            language: langes
+            language: langes,
+            columnDefs: [
+            {
+                target: 0,
+                visible: false,
+                searchable: false,
+
+            }]
           }
           
         );
 
+        $('#filtrar-herramienta').on('click', function () {
+          //clear global search values
+
+          dtableNoDiligenciadas.settings()[0].aoColumns[0].bSearchable = true;
+
+          
+          dtableNoDiligenciadas.rows().invalidate();
+          dtableNoDiligenciadas
+          .columns(0)
+          .search( "True")
+          .draw();  
+          $('#filtrar-herramienta').hide();
+          $('#no-filtrar').show();
+          /*
+          for (let i = 3; i <= 59; i++) {
+              let columna = dtable.column(i);
+              columna.visible(false);
+              dtable.settings()[0].aoColumns[i].bSearchable = false;
+            } 
+            
+                      
+            dtable.rows().invalidate();
+          
+
+          dtable
+              .search( '' )
+              .columns().search( '' )
+              .draw();
+
+
+              $("#select_filtro").val("0");
+              */
+      });
+
+      $('#no-filtrar').on('click', function () {
+        //clear global search values
+
+        dtableNoDiligenciadas.settings()[0].aoColumns[0].bSearchable = false;
+
+        
+        dtableNoDiligenciadas.rows().invalidate();
+        dtableNoDiligenciadas
+        .search( '' )
+        .columns().search( '' )
+        .draw();
+        $('#no-filtrar').hide();
+        $('#filtrar-herramienta').show();
+
+    });
+
+
+
+/*
         const dataTableSearch = new simpleDatatables.DataTable("#datat", {
           
           searchable: true,
           fixedHeight: true,
 
-        });
+        });*/
       
     
     

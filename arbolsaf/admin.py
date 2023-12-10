@@ -213,7 +213,7 @@ class VariableTypeAdmin(ImportExportModelAdmin):
     fieldsets = [
         #(None,               {'fields': ['question_text']}),
          ('Informacion tipo variable', {'fields': [ 'variable','cod_var', 'familia', 'tipo_variables', 'seleccion_multiple',
-                             'unidad_medida',
+                             'unidad_medida','uso_herramienta',
                              'niveles_categoricos','descripcion', 
                             'min' ,'max',]}),
          ('Informacion registro BD', {'fields': ['created','created_by','modified','modified_by']}),   

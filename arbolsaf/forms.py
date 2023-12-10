@@ -229,7 +229,7 @@ class VariableTypeForm(forms.ModelForm):
 
     class Meta:
         model = VariableTypeModel
-        exclude = ("id",'created_by', 'modified_by')
+        exclude = ("id",'created_by', 'modified_by','uso_herramienta')
         widgets = {
             'cod_var':forms.TextInput(attrs={'class': 'form-control'}),
             'tipo_variables': forms.Select(attrs={'class': 'form-select'}),
@@ -240,6 +240,7 @@ class VariableTypeForm(forms.ModelForm):
             'descripcion':forms.Textarea(attrs={'class': 'form-control'}),
             'min':forms.NumberInput(attrs={'class': 'form-control'}),
             'max':forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'uso_herramienta': forms.CheckboxInput(attrs={'class': 'form-check-input '}),  
             }
 
 class ReferenceForm(forms.ModelForm):

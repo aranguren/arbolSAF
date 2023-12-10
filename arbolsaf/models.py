@@ -163,6 +163,8 @@ class VariableTypeModel(BasicAuditModel):
     min = models.FloatField(_("Valor mínimo"), blank=True, null=True)
     max = models.FloatField(_("Valor máximo"), blank=True, null=True)
 
+    uso_herramienta = models.BooleanField(_("Utilizada en herramienta"), default=False)
+
     def __str__(self):
         return f"{self.variable} ({self.cod_var})"
 

@@ -105,6 +105,17 @@
                 <span class="mr-2">{% firstof variable.max|default_if_none:"-" %}</span>
               </div>
             </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <div class="form-group">
+                  <h6>Utilizada en la herramienta</h6>
+                  <div class="mr-2">
+                    {{ variable.uso_herramienta|yesno:_("SÍ,NO") }}
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--div class="col-3">
               <div class="form-group">
                 <h6>Tipo Variable </h6>
@@ -124,7 +135,7 @@
           </div>
 
           <div class="row mb-2">
-            <div class="col-3">
+            <div class="col-12">
               <div class="form-group">
                 <h5>Descripción </h5>
                 <span class="mr-2">{% firstof variable.descripcion|default_if_none:"-" %}</span>
