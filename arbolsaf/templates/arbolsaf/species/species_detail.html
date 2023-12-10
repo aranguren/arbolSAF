@@ -321,17 +321,27 @@
         <div class="card mt-4" id="geo">
           <div class="card-header">
             <div class="row">
-              <div class="col-10">
+              <div class="col-6">
                 <h5>
                   Variables
                 </h5>
               </div>
-              <div class="col-2">
+              <div class="col-6">
+
                 <div class="d-flex justify-content-end">
+                  <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1" id="filtrar-herramienta-2">
+                    <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Utilizadas en herramienta
+                </button>
+                <button class="btn btn-secondary text-white btn-large btn-sm m-b-xm mx-1" id="no-filtrar-2" style="display:none;">
+                  <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Mostrar todas
+              </button>
                   {% if request.user|has_group:"editor" or request.user.is_superuser %}
                     <a href="{% url 'arbolsaf:species_create_variable' specie.id %}"
                        class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Adicionar</a>
                   {% endif %}
+                
+              
+            
                 </div>
               </div>
             </div>
@@ -344,6 +354,9 @@
                     <table class="table table-flush" id="datatable-variables">
                       <thead>
                         <tr>
+                          <td>
+                            Uso en la herramienta
+                          </td>
                           <td>
                             <b>Variable</b>
                           </td>
@@ -366,7 +379,10 @@
                       </thead>
                       <tbody>
                         {% for variable in specie.get_variables %}
-                          <tr>
+                        <tr {% if  variable.tipo_variable.uso_herramienta %}class="text-danger" {% endif %}>
+                            <td>
+                              {{ variable.tipo_variable.uso_herramienta }}
+                            </td>
                             <td>
                               {{ variable.tipo_variable.variable }}
                             </td>
@@ -1044,7 +1060,14 @@
 
           var oTable = $('#datatable-variables').DataTable(
           {
-            language: langes
+            language: langes,
+            columnDefs: [
+            {
+                target: 0,
+                visible: false,
+                searchable: false,
+
+            }]
           }
           
         );
@@ -1078,25 +1101,7 @@
           .draw();  
           $('#filtrar-herramienta').hide();
           $('#no-filtrar').show();
-          /*
-          for (let i = 3; i <= 59; i++) {
-              let columna = dtable.column(i);
-              columna.visible(false);
-              dtable.settings()[0].aoColumns[i].bSearchable = false;
-            } 
-            
-                      
-            dtable.rows().invalidate();
-          
 
-          dtable
-              .search( '' )
-              .columns().search( '' )
-              .draw();
-
-
-              $("#select_filtro").val("0");
-              */
       });
 
       $('#no-filtrar').on('click', function () {
@@ -1114,6 +1119,38 @@
         $('#filtrar-herramienta').show();
 
     });
+
+    $('#filtrar-herramienta-2').on('click', function () {
+      //clear global search values
+
+      oTable.settings()[0].aoColumns[0].bSearchable = true;
+
+      
+      oTable.rows().invalidate();
+      oTable
+      .columns(0)
+      .search( "True")
+      .draw();  
+      $('#filtrar-herramienta-2').hide();
+      $('#no-filtrar-2').show();
+
+  });
+
+  $('#no-filtrar-2').on('click', function () {
+    //clear global search values
+
+    oTable.settings()[0].aoColumns[0].bSearchable = false;
+
+    
+    oTable.rows().invalidate();
+    oTable
+    .search( '' )
+    .columns().search( '' )
+    .draw();
+    $('#no-filtrar-2').hide();
+    $('#filtrar-herramienta-2').show();
+
+});
 
 
 

@@ -67,9 +67,10 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         context['value_tipo_variable'] = self.request.GET.get('tipo_variable', '')
         context['value_referencia'] = self.request.GET.get('referencia', '')
         context['value_habilitada_herramienta'] = self.request.GET.get('habilitada_herramienta', '')
+        context['value_sinonimos'] = self.request.GET.get('sinonimos', '')
 
         filtrado = context['value_cod_esp'] + context['value_nombre_comun'] + context['value_nombre_cientifico'] + \
-                   context['value_tipo_variable'] + context['value_referencia'] + context['value_habilitada_herramienta']
+                   context['value_tipo_variable'] + context['value_referencia'] + context['value_habilitada_herramienta'] + context['value_sinonimos'] 
 
  
         context['ordenar_por'] = self.request.GET.get('ordenar_por', 'nombre_comun')
@@ -129,6 +130,8 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
             'tipo_variable': self.request.GET.get('tipo_variable', None),
             'referencia': self.request.GET.get('referencia', None),
             'habilitada_herramienta': self.request.GET.get('habilitada_herramienta', None),
+            'sinonimos': self.request.GET.get('sinonimos', None),
+
             }
 
         tipos_de_orden = {
@@ -160,6 +163,9 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         #if query['taxonid_wfo'] and query['taxonid_wfo'] != '':
         #    query_result = query_result.filter(taxonid_wfo__icontains=query['taxonid_wfo'])
 
+        if query['sinonimos'] and query['sinonimos'] != '':
+            query_result = query_result.filter(sinonimos__sinonimo__icontains=query['sinonimos'])
+
         if query['habilitada_herramienta'] and query['habilitada_herramienta'] != ''and  query['habilitada_herramienta']=='habilitada' :
             query_result = query_result.filter(habilitada_herramienta=True)
         elif query['habilitada_herramienta'] and query['habilitada_herramienta'] != ''and  query['habilitada_herramienta']=='desabilitada' :
@@ -169,6 +175,7 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
             query_result = query_result.filter(cod_esp__iexact=query['cod_esp'])
         if query['nombre_comun'] and query['nombre_comun'] != '':
             query_result = query_result.filter(nombre_comun__icontains=query['nombre_comun'])
+        
         if query['nombre_cientifico'] and query['nombre_cientifico'] != '':
             query_result = query_result.filter(nombre_cientifico__icontains=query['nombre_cientifico'])
         

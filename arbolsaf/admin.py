@@ -1,6 +1,8 @@
 from django.contrib import admin
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin, ExportMixin
+from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
 # Register your models here.
 
 from . import models
@@ -196,7 +198,8 @@ class VariableTypeResource(resources.ModelResource):
         model = models.VariableTypeModel
         skip_unchanged = True
         report_skipped = True
-        exclude = ('created','created_by','modified','modified_by',)
+        #exclude = ('created','created_by','modified','modified_by',)
+        fields = ('variable', 'cod_var', 'familia','familia__nombre', 'tipo_variables','unidad_medida','unidad_medida__abreviatura','niveles_categoricos','descripcion','min','max','seleccion_multiple','uso_herramienta') #
         import_id_fields = ('cod_var',)
 
 class VariableTypeOptionInline(admin.TabularInline):
@@ -206,6 +209,8 @@ class VariableTypeOptionInline(admin.TabularInline):
 
 class VariableTypeAdmin(ImportExportModelAdmin):
     resource_classes = [VariableTypeResource]
+
+    
     search_fields = ['cod_var', 'variable']
     #fields = ['name', 'geom']
     list_display = ('cod_var', 'variable', 'tipo_variables','familia', 'unidad_medida',)
@@ -284,11 +289,41 @@ class SpeciesResource(resources.ModelResource):
         model = models.SpeciesModel
         skip_unchanged = True
         report_skipped = True
-        exclude = ('created','created_by','modified','modified_by',)
+        #exclude = ('created','created_by','modified','modified_by',)
+        fields = ('cod_esp', 
+                'taxonid_wfo' ,
+                'nombre_comun', 
+                'nombre_cientifico',
+                'nombre_cientifico_completo', 
+                'familia__id', 
+                'familia__familia', 
+                'genero__id',
+                'genero__genero',
+                'epiteto' ,
+                'variedad_subespecie' ,
+                'autor', 
+                'nativa','habilitada_herramienta',
+                'valor_madera', 
+                'valor_madera_category' ,
+                'valor_fruta', 
+                'valor_fruta_category',
+                'valor_otros_usos', 
+                'valor_otros_usos_category', 
+                'valor_biodiversidad',
+                'valor_biodiversidad_category' ,
+                'valor_microclima' ,
+                'valor_microclima_category', 
+                'valor_suelo' ,
+                'valor_suelo_category', 
+                'indice_multiuso',
+                'indice_valor_uso_relativo',
+                'ivim',)
         import_id_fields = ('cod_esp',)
 
 class SpeciesAdmin(ImportExportModelAdmin):
     resource_classes = [SpeciesResource]
+
+    
     search_fields = ['cod_esp', 'nombre_comun', 'nombre_cientifico']
     list_display = ['cod_esp', 'nombre_comun', 'nombre_cientifico', 'familia', 
                                         'genero',]
