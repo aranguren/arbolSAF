@@ -181,13 +181,14 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         
         if query['tipo_variable'] and query['tipo_variable'] != '':
             with connection.cursor() as cursor:
-                
-                cursor.execute(""" 
-                    Select distinct as2.id from 
-                    arbolsaf_species as2 join arbolsaf_variable av on(av.especie_id=as2.id)
-                    join arbolsaf_variable_type avt on(avt.id=av.tipo_variable_id)
-                    where avt.id={}
-                """.format(int(query['tipo_variable'])))
+
+                cursor.execute("""
+                    SELECT DISTINCT as2.id FROM
+                    arbolsaf_species as2
+                    JOIN arbolsaf_variable av ON (av.especie_id=as2.id)
+                    JOIN arbolsaf_variable_type avt ON (avt.id=av.tipo_variable_id)
+                    WHERE avt.id=%s
+                """, [query['tipo_variable']])
 
                 especies = cursor.fetchall()
                 lista_variables = [x[0] for x in especies]
@@ -195,12 +196,13 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         
         if query['referencia'] and query['referencia'] != '':
             with connection.cursor() as cursor:
-                
-                cursor.execute(""" 
-                    Select distinct as2.id, as2.nombre_comun from arbolsaf_species as2 join arbolsaf_variable av on(av.especie_id=as2.id)
-                    join arbolsaf_reference ar on (av.referencia_id= ar.id) 
-                    where ar.id={}
-                """.format(int(query['referencia'])))
+
+                cursor.execute("""
+                    SELECT DISTINCT as2.id, as2.nombre_comun FROM arbolsaf_species as2
+                    JOIN arbolsaf_variable av ON (av.especie_id=as2.id)
+                    JOIN arbolsaf_reference ar ON (av.referencia_id=ar.id)
+                    WHERE ar.id=%s
+                """, [query['referencia']])
 
                 referencias = cursor.fetchall()
                 lista_referencias = [x[0] for x in referencias]

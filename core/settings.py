@@ -12,10 +12,18 @@ BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
+# Never use a default SECRET_KEY in production - this will raise an error if not set
+SECRET_KEY = config('SECRET_KEY', default='')
+if not SECRET_KEY or SECRET_KEY == 'S#perS3crEt_1122':
+    if config('DEBUG', default=False, cast=bool):
+        # Development fallback only
+        SECRET_KEY = 'dev-secret-key-change-in-production'
+    else:
+        raise ValueError("SECRET_KEY must be set in environment variables for production")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+# Default is False for security - must explicitly enable for development
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # load production server from .env
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1')]
