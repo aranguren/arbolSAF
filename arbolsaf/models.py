@@ -1,10 +1,39 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from computedfields.models import ComputedFieldsModel, computed, compute
 import urllib.parse
 from django.core.cache import cache
 from ckeditor.fields import RichTextField
+import os
+
+
+def validate_image_file(file):
+    """
+    Validate uploaded image files for security.
+
+    Checks:
+    - File size limit (5MB)
+    - Valid image extensions
+    - File name length
+    """
+    # Check file size (5MB limit)
+    if file.size > 5 * 1024 * 1024:
+        raise ValidationError(_("El archivo no puede exceder 5MB."))
+
+    # Check file extension
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+    ext = os.path.splitext(file.name)[1].lower()
+    if ext not in valid_extensions:
+        raise ValidationError(
+            _("Extensión de archivo no permitida. Use: %(extensions)s"),
+            params={'extensions': ', '.join(valid_extensions)}
+        )
+
+    # Check file name length
+    if len(file.name) > 255:
+        raise ValidationError(_("El nombre del archivo es demasiado largo."))
 
 class BasicAuditModel(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, 
@@ -870,10 +899,14 @@ class SpeciesAdminModel(SpeciesModel):
 class ImageSpecies(models.Model):
 
     descripcion = models.CharField(_("Descripción"), max_length=255)
-    especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"), 
+    especie = models.ForeignKey("arbolsaf.SpeciesModel", verbose_name=_("Especie"),
                     related_name="imagenes", on_delete=models.CASCADE)
 
-    imagen = models.ImageField(verbose_name=_("Imagen"), upload_to="imagenes_especie")
+    imagen = models.ImageField(
+        verbose_name=_("Imagen"),
+        upload_to="imagenes_especie",
+        validators=[validate_image_file]
+    )
 
 
     def __str__(self):

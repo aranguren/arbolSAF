@@ -6,11 +6,18 @@ Copyright (c) 2019 - present AppSeed.us
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django_ratelimit.decorators import ratelimit
 from .forms import LoginForm, SignUpForm
 from django.conf import settings
 
 
+@ratelimit(key='ip', rate='5/m', method='POST', block=True)
 def login_view(request):
+    """
+    Login view with rate limiting.
+
+    Rate limit: 5 attempts per minute per IP address
+    """
     form = LoginForm(request.POST or None)
 
     msg = None
@@ -32,7 +39,13 @@ def login_view(request):
     return render(request, "accounts/login.html", {"form": form, "msg": msg})
 
 
+@ratelimit(key='ip', rate='3/h', method='POST', block=True)
 def register_user(request):
+    """
+    User registration view with rate limiting.
+
+    Rate limit: 3 registrations per hour per IP address
+    """
     msg = None
     success = False
 

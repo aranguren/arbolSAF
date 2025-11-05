@@ -676,21 +676,60 @@ def species_list_json(request):
     return  JsonResponse(especies_dict_list, status=200, safe=False)
 
 
-class UpdateToolValuesView(View):
-    #template_parcela ='agrimensuras/project_pdf_parcela.html' # the template 
-    #template_lotificacion ='agrimensuras/project_pdf_lotificacion.html' 
-    #template_header ='agrimensuras/project_pdf_header.html' 
-    #template_footer ='agrimensuras/project_pdf_footer.html' 
+class UpdateToolValuesView(LoginRequiredMixin, View):
+    """
+    View to update tool values by running Django management command.
+
+    Security improvements:
+    - Requires authentication (LoginRequiredMixin)
+    - Uses Django's call_command instead of subprocess
+    - Proper error handling
+    """
 
     def post(self, request, **kw):
+        # Additional security: Check user permissions
+        if not request.user.is_staff and not request.user.is_superuser:
+            return JsonResponse(
+                {'error': 'Unauthorized. Admin access required.'},
+                status=403
+            )
 
+        try:
+            # Use Django's call_command instead of subprocess for better security
+            from django.core.management import call_command
+            from io import StringIO
+            import sys
 
-        result = subprocess.run(["python3", "manage.py", "updatedata"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+            # Capture output
+            stdout = StringIO()
+            stderr = StringIO()
 
-        print(result.stderr.decode('ascii'))
-        print(result.stdout.decode('ascii'))
-        #return  JsonResponse( {'error':'internal server error'}, status=500, safe=False)
-        return  JsonResponse( {'status':'ok'}, status=200, safe=False)
+            # Call management command directly (safer than subprocess)
+            call_command('updatedata', stdout=stdout, stderr=stderr)
+
+            # Get output
+            stdout_value = stdout.getvalue()
+            stderr_value = stderr.getvalue()
+
+            # Log output (don't print to console in production)
+            if stderr_value:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning(f"updatedata stderr: {stderr_value}")
+
+            return JsonResponse({
+                'status': 'ok',
+                'message': 'Data updated successfully'
+            }, status=200)
+
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error in updatedata: {str(e)}")
+            return JsonResponse(
+                {'error': 'Internal server error', 'status': 'error'},
+                status=500
+            )
        
 
 class SpeciesActivateInToolView(LoginRequiredMixin, View):

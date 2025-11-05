@@ -253,7 +253,7 @@
               </h6>
               {% if specie.notas %}
                 <div class="mr-2">
-                  {% firstof specie.notas|safe|default_if_none:"-"|linebreaks  %}
+                  {% firstof specie.notas|default_if_none:"-"|linebreaks  %}
                 </div>
               {% else %}
                 <div class="mr-2">
