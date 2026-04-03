@@ -1,0 +1,146 @@
+{% extends 'layouts/base-fullscreen.html' %}
+{% load static %}
+{% block title %}
+  Herramienta
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style type="text/css">
+
+  .letra {
+    font-size: 1.4rem;
+    color: black !important;
+  }
+
+</style>
+
+{% endblock stylesheets %}
+{% block body_class %}error-page{% endblock %}
+{% block content %}
+  <!-- Navbar -->
+  <nav class="card top-0 rounded-0">
+    <div class="w-100 object-fit-cover">
+      <a href="{% url 'arbolsaf:homepage' %}"><img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
+           class="w-100"></a>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <main class="main-content mt-2">
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-10">
+          <div class="card card-body p-5">
+            <p class="text-left letra">
+              ÁrbolSAF forma parte de un conjunto de soluciones digitales que CIFOR-ICRAF desarrolla para apoyar al codiseño informado de opciones agroforestales con múltiples objetivos y funciones. Consta de una plataforma de gestión de datos y de una herramienta interactiva.
+            </p>
+            <p class="text-left letra">
+              La plataforma de gestión de datos alimenta la herramienta interactiva e incluye una lista de especies de árboles y palmeras, una lista de 163 variables o propiedades de esas especies relativas a copa, semillas, troncos, usos, y necesidades climáticas y de suelo, además del listado de fuentes de literatura revisada.
+            </p>
+            <p class="text-left letra">
+              La herramienta guía y acompaña al técnico/agricultor/investigador a seleccionar las especies de árboles y palmeras más apropiadas tomando en cuenta los objetivos del agricultor, el contexto biofísico del área donde se intervendrá y los requerimientos de clima y suelo, y características morfológicas y funcionales de las especies. 
+            </p>
+            <p class="text-left letra">
+              Siguiendo el enfoque de CIFOR-ICRAF de Opciones por Contexto aplicado a la agroforestería, ÁrbolSAF no pretende dar una receta, sino facilitar y hacer accesible la información necesaria para ayudar al usuario a tomar decisiones informadas sobre los árboles y palmeras que podrían ser parte de su opción agroforestal. 
+            </p>
+            <div></div>
+            <div class="d-flex justify-content-center mt-5">
+              <a href="{% url 'arbolsaf:about_page' %}" class="btn btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem; background-color: #806377; color: #f8f9fa;">
+                {% comment %} &nbsp;&nbsp;<i class="fa fa-tools"></i> {% endcomment %}
+                Acerca de 
+              </a>
+              {% if user.is_authenticated %}
+              <a href="{% url 'arbolsaf:species_list' %}" class="btn btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem; background-color: #ee685f; color: #f8f9fa;">
+                {% comment %} <i class="fa fa-cog"></i>&nbsp;&nbsp; {% endcomment %}
+                Plataforma de gestión de datos
+              </a>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem; background-color: #ee685f; color: #f8f9fa;">
+                {% comment %} <i class="fa fa-cog"></i>&nbsp;&nbsp; {% endcomment %}
+                Plataforma de gestión de datos
+              </a>
+              {% endif %}
+              <a href="{% url 'arbolsaf:tool_part1' %}" class="btn btn-primary btn-large btn-lg m-b-xm mx-3 p-4" style="border-radius: 1rem;">
+                {% comment %} &nbsp;&nbsp;<i class="fa fa-tools"></i> {% endcomment %}
+                Herramienta
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-1">
+        </div>
+      </div>
+      {% comment %} {% include "includes/footer.html" %} {% endcomment %}
+    </div>
+  </main>
+  {% include "includes/footer-tool.html" %}
+  {#% include "includes/footer-auth.html" %#}
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+  <!--script src="/static/assets/js/plugins/datatables.js"></script-->
+  <script src="{% static 'assets/js/tool_arbolsaf.js' %}"></script>
+  <script src="/static/assets/js/plugins/multistep-form.js"></script>
+  <script src="/static/assets/js/plugins/choices.min.js"></script>
+  <script src="/static/assets/js/plugins/datatables.js"></script>
+  {% comment %} <script>
+      if (document.getElementById('table-conditions')) {
+        const dataTableSearch = new simpleDatatables.DataTable("#table-conditions", {
+          searchable: true,
+          fixedHeight: false,
+          perPage: 7
+        });
+  
+        document.querySelectorAll(".export").forEach(function(el) {
+          el.addEventListener("click", function(e) {
+            var type = el.dataset.type;
+  
+            var data = {
+              type: type,
+              filename: "soft-ui-" + type,
+            };
+  
+            if (type === "csv") {
+              data.columnDelimiter = "|";
+            }
+  
+            dataTableSearch.export(data);
+          });
+        });
+      };
+  </script> {% endcomment %}
+  {% comment %} $(document).ready(function() {
+      $('input').on( 'change', function() {
+        if( $(this).is(':checked') ) {
+            console.log('parentSel', $(this));  
+
+            alert("El checkbox con valor " + $(this).val() + " ha sido seleccionado");
+        } else {
+            // Hacer algo si el checkbox ha sido deseleccionado
+            alert("El checkbox con valor " + $(this).val() + " ha sido deseleccionado");
+        }
+      });
+  }); {% endcomment %}
+  {% comment %} let count;
+    $('input').click(function (e) { 
+        e.preventDefault();
+        
+/*         let parentSel = $(this).prev();
+        parentSel.append(parentSel.clone()).;*/
+
+        console.log('parentSel', $(this)); 
+
+        let prevSel = $(this).prev();
+        let id = parseInt(prevSel.attr("id"))+1;
+        let prevClone = prevSel.clone()
+        prevClone.attr("id", id );
+        
+        prevSel.after(prevClone);
+        console.log('prevSel', prevSel); 
+        console.log('parentSel', id); 
+        $('#'+prevClone.attr('id')+' label').text('Tema ' + id);
+        count++
+  }); {% endcomment %}
+  </script>
+{% endblock javascripts %}

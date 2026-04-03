@@ -1,0 +1,465 @@
+{% extends 'layouts/base.html' %}
+{% load l10n %}
+{% load i18n %}
+{% load user_has_group %}
+{% block title %}
+    Tabla Cruzada
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <style>
+        .clickable {
+            cursor: pointer;
+        }
+
+        .btn-close {
+            color: red;
+            opacity: 1;
+        }
+    </style>
+{% endblock stylesheets %}
+{% block body_class %}g-sidenav-show  bg-gray-100{% endblock %}
+{% block content %}
+    <div class="container-fluid py-4">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-1">Tabla cruzada</h3>
+                        <hr class="horizontal dark my-2">
+                        <div class="d-flex justify-content-left">
+                            {#                            <a href="{% url 'arbolsaf:species_create' %}"#}
+                            {#                               class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>#}
+                            {#                            <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"#}
+                            {#                                    id="filtroB"#}
+                            {#                                    data-bs-toggle="modal"#}
+                            {#                                    data-bs-target="#filterModal">#}
+                            {#                                <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar#}
+                            {#                            </button>#}
+
+                            {% if has_filters %}
+                                <h6 class="mt-0">
+                <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
+                  <button type="button"
+                          onclick="window.location='{% url 'arbolsaf:cross_table_list' %}'"
+                          class="btn-close"></button>
+                </span>
+                                </h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body mt-0 pt-0">
+                        <div class="container ps-0">
+                            <form class="row g-md-2 g-sm-1  justify-content-start " id="filter_form"
+                                  action="{% url 'arbolsaf:cross_table_list' %}"
+                                  method="get"
+                                  autocomplete="off">
+                                
+                                  <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_cod_esp">
+                                            Código especie
+                                          </label>
+                                            <input id="id_cod_esp"
+                                                    type="text"
+                                                    name="cod_esp"
+                                                    class="form-control"
+                                                    value="{{ value_cod_esp }}">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_nombre_cientifico">
+                                            Nombre científico
+                                        </label>
+                                        <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
+                                            <option></option>
+                                            {% for nombre in nombre_cientifico_values %}
+                                                <option value="{{nombre.nombre_cientifico}}">{{nombre.nombre_cientifico}} ({{ nombre.cod_esp }})</option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!--div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_cod_var">
+                                            Código variable
+                                          </label>
+                                            <input id="id_cod_var"
+                                                    type="text"
+                                                    name="cod_var"
+                                                    class="form-control"
+                                                    value="{{ value_cod_var }}">
+                                    </div>
+                                </div-->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_tipo_variable">Variable</label>
+                                        <select id="id_tipo_variable" class="form-select" name="tipo_variable">
+                                            <option></option>
+                                            {% for variable in variables %}
+                                                <option value="{{ variable.id }}">{{ variable.variable }} ({{ variable.cod_var }})</option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_referencia">Referencia</label>
+                                        <select id="id_referencia" class="form-select" name="referencia">
+                                            <option></option>
+                                            {% for referencia in referencias %}
+                                                <option value="{{ referencia.id }}">{{ referencia.fuente_final }}</option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                            <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group mt-md-4">
+                                                <button form="filter_form" type="submit"
+                                                        class="btn bg-secondary text-white btn-sm mt-2">
+                                                    <i class="fa fa-filter"></i>&nbsp;&nbsp;Filtrar
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="col">
+                                            {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                                            <div class="form-group mt-md-4 text-end">
+                                                <button form="filter_form"
+                                                        formaction="{% url 'arbolsaf:cross_table_export' %}"
+                                                        class="btn btn-primary text-white btn-sm mt-2">
+                                                    <i class="fa fa-file-csv"></i>&nbsp;&nbsp;Exportar
+                                                </button>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="table-responsive mt-0">
+                            {% if cross_table %}
+                                <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                                    <thead>
+                                    <tr>
+                                        <td>
+                                            {% if ordenar_por == 'nombre_comun' %}
+                                                <a id="ord-nombre_comun" href="#">
+                                                    <b>Nombre común</b> <i class="fa fa-angle-down"></i>
+                                                </a>
+                                            {% elif ordenar_por == 'nombre_comun_dec' %}
+                                                <a id="ord-nombre_comun" href="#">
+                                                    <b>Nombre común</b> <i class="fa fa-angle-up"></i>
+                                                </a>
+                                            {% else %}
+                                                <a id="ord-nombre_comun" href="#">
+                                                    <b>Nombre común</b>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                        <td>
+                                            {% if ordenar_por == 'nombre_cientifico' %}
+                                                <a id="ord-nombre_cientifico" href="#">
+                                                    <b>Nombre científico</b> <i class="fa fa-angle-down"></i>
+                                                </a>
+                                            {% elif ordenar_por == 'nombre_cientifico_dec' %}
+                                                <a id="ord-nombre_cientifico" href="#">
+                                                    <b>Nombre científico</b> <i class="fa fa-angle-up"></i>
+                                                </a>
+                                            {% else %}
+                                                <a id="ord-nombre_cientifico" href="#">
+                                                    <b>Nombre científico</b>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                        <td>
+                                            {% if ordenar_por == 'tipo_variable' %}
+                                                <a id="ord-tipo_variable" href="#">
+                                                    <b>Variable</b> <i class="fa fa-angle-down"></i>
+                                                </a>
+                                            {% elif ordenar_por == 'tipo_variable_dec' %}
+                                                <a id="ord-tipo_variable" href="#">
+                                                    <b>Variable</b> <i class="fa fa-angle-up"></i>
+                                                </a>
+                                            {% else %}
+                                                <a id="ord-tipo_variable" href="#">
+                                                    <b>Variable</b>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                        <td>
+                                            <b>Valor</b>
+
+                                        </td>
+                                        <td>
+                                            {% if ordenar_por == 'referencia' %}
+                                                <a id="ord-referencia" href="#">
+                                                    <b>Fuente</b> <i class="fa fa-angle-down"></i>
+                                                </a>
+                                            {% elif ordenar_por == 'referencia_dec' %}
+                                                <a id="ord-referencia" href="#">
+                                                    <b>Fuente</b> <i class="fa fa-angle-up"></i>
+                                                </a>
+                                            {% else %}
+                                                <a id="ord-referencia" href="#">
+                                                    <b>Fuente</b>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for variable in cross_table %}
+                                        <tr class="clickable"
+                                            onclick="window.location='{% url 'arbolsaf:cross_table_detail' variable.id %}'">
+                                            <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
+
+                                            <td>{% firstof variable.especie.nombre_comun|default_if_none:"" %}</td>
+                                            <td><i>{% firstof variable.especie.nombre_cientifico|default_if_none:"" %}</i></td>
+                                            <td>{% firstof variable.tipo_variable|default_if_none:""|capfirst %}</td>
+                                            <td>{% firstof variable.get_valor_general|default_if_none:"" %}</td>
+                                            <td>{% firstof variable.referencia|default_if_none:"" %}</td>
+
+                                        </tr>
+                                        </tbody>
+                                    {% endfor %}
+                                </table>
+                            {% else %}
+                                <h3 style="color: red" class="text-center">
+                                    {% trans 'No existen datos para mostrar' %}
+                                </h3>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <nav>
+                                <ul class="pagination">
+                                    {% if 'nombre_cientifico' in request.get_full_path %}
+                                        {% if has_previous_pages %}
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link"#}
+                                            {#                           href="{{ request.get_full_path }}&page={{ 1 }}"#}
+                                            {#                           aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">1</span>#}
+                                            {#                          <span class="sr-only">1...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="{{ request.get_full_path }}&page={{ previous_page }}"
+                                                   aria-label="Anterior">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">{% trans 'Anterior' %}</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% for pr in paginator_rows %}
+                                            {% if pr == actual_page %}
+                                                {#                        <li class="page-item active">#}
+                                                {#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+                                                {#                        </li>#}
+                                                <li class="me-3 ms-2 mt-1">
+                                                    <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                                                </li>
+                                            {% else %}
+                                                {#                        <li class="page-item">#}
+                                                {#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+                                                {#                        </li>#}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if has_more_pages %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="{{ request.get_full_path }}&page={{ next_page }}"
+                                                   aria-label=">>">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">>></span>
+                                                </a>
+                                            </li>
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link"#}
+                                            {#                           href="{{ request.get_full_path }}&page={{ total_pages }}"#}
+                                            {#                           aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">{{ total_pages }}</span>#}
+                                            {#                          <span class="sr-only">{{ total_pages }}...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if page_obj.has_previous %}
+                                            {#                      <li class="page-item">#}
+                                            {#                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">#}
+                                            {#                          <span aria-hidden="true">1</span>#}
+                                            {#                          <span class="sr-only">1...</span>#}
+                                            {#                        </a>#}
+                                            {#                      </li>#}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ page_obj.previous_page_number }}"
+                                                   aria-label="Anterior">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">{% trans 'Anterior' %}</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% for pr in paginator_rows %}
+                                            {% if pr == page_obj.number %}
+                                                {#                          <li class="page-item active">#}
+                                                {#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+                                                {#                          </li>#}
+                                                <li class="me-3 ms-2 mt-1">
+                                                    <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                                                </li>
+                                            {% else %}
+                                                {#                        <li class="page-item">#}
+                                                {#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+                                                {#                        </li>#}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if page_obj.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ page_obj.next_page_number }}"
+                                                   aria-label=">>">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">>></span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include "includes/footer.html" %}
+    </div>
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+
+            //document.getElementById("id_cod_var").value = "{{value_nombre_comun}}";
+            document.getElementById("id_nombre_cientifico").value = "{{value_nombre_cientifico}}";
+            document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
+            document.getElementById("id_referencia").value = "{{value_referencia}}";
+
+        });
+
+        $('#reset_button').click(function () {
+            //document.getElementById("id_cod_esp").value = "";
+            //document.getElementById("id_taxonid_wfo").value = "";
+            document.getElementById("id_nombre_comun").value = "";
+            document.getElementById("id_nombre_cientifico").value = "";
+            document.getElementById("id_tipo_variable").value = "";
+            document.getElementById("id_referencia").value = "";
+
+        });
+
+        $('#ord-nombre_comun').click(function () {
+            let ordenar = document.getElementById("ordenar_por").value;
+
+            if (ordenar == "nombre_comun"){
+                document.getElementById("ordenar_por").value = "nombre_comun_dec";
+            }else{
+                document.getElementById("ordenar_por").value = "nombre_comun";
+            }
+
+            let formulario = document.getElementById('filter_form');
+            formulario.submit();
+
+        });
+
+        $('#ord-nombre_cientifico').click(function () {
+            let ordenar = document.getElementById("ordenar_por").value;
+
+            if (ordenar == "nombre_cientifico"){
+                document.getElementById("ordenar_por").value = "nombre_cientifico_dec";
+            }else{
+                document.getElementById("ordenar_por").value = "nombre_cientifico";
+            }
+
+            let formulario = document.getElementById('filter_form');
+            formulario.submit();
+
+        });
+
+        $('#ord-tipo_variable').click(function () {
+            let ordenar = document.getElementById("ordenar_por").value;
+
+            if (ordenar == "tipo_variable"){
+                document.getElementById("ordenar_por").value = "tipo_variable_dec";
+            }else{
+                document.getElementById("ordenar_por").value = "tipo_variable";
+            }
+
+            let formulario = document.getElementById('filter_form');
+            formulario.submit();
+
+        });
+
+        $('#ord-referencia').click(function () {
+            let ordenar = document.getElementById("ordenar_por").value;
+
+            if (ordenar == "referencia"){
+                document.getElementById("ordenar_por").value = "referencia_dec";
+            }else{
+                document.getElementById("ordenar_por").value = "referencia";
+            }
+
+            let formulario = document.getElementById('filter_form');
+            formulario.submit();
+
+        });
+
+        $('#ord-valor').click(function () {
+            let ordenar = document.getElementById("ordenar_por").value;
+
+            if (ordenar == "valor"){
+                document.getElementById("ordenar_por").value = "valor_dec";
+            }else{
+                document.getElementById("ordenar_por").value = "valor";
+            }
+
+            let formulario = document.getElementById('filter_form');
+            formulario.submit();
+
+        });
+
+
+        //$(document).ready(function() {
+        //    $('#mydatatable').DataTable();
+        //} );
+
+
+    </script>
+{% endblock javascripts %}

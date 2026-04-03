@@ -1,0 +1,490 @@
+{% extends 'layouts/base.html' %}
+{% load user_has_group %}
+{% load l10n %}
+{% load i18n %}
+{% block title %}
+Listado Referencias
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+  <style>
+  .clickable{
+       cursor: pointer;
+  }
+  .btn-close {
+    color: red; 
+    opacity: 1;
+}
+  </style>
+{% endblock stylesheets %}
+{% block body_class %}g-sidenav-show  bg-gray-100{% endblock %}
+{% block content %}
+  <div class="container-fluid py-4">
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <!-- Card header -->
+          <div class="card-header">
+            <h3 class="mb-1">Listado de fuentes</h3>
+            <hr class="horizontal dark my-2">
+            <div class="d-flex justify-content-left">
+              {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+              <a href="{% url 'arbolsaf:reference_create' %}"
+                 class="btn btn-primary btn-large btn-sm m-b-xm mr-4"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+                {% endif %}
+              <button class="btn bg-secondary text-white btn-large btn-sm m-b-xm mx-1"
+                      id="filtroB"
+                      data-bs-toggle="modal"
+                      data-bs-target="#filterModal">
+                <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;Filtrar
+              </button>
+
+              {% if has_filters %}
+              <h6 class="mt-0">
+                <span class="badge badge-pill badge-large badge-danger  mt-0 ml-1 mr-0">Filtros aplicados
+                  <button type="button"
+                          onclick="window.location='{% url 'arbolsaf:reference_list' %}'"
+                          class="btn-close"></button>
+                </span>
+              </h6>
+            {% endif %}
+            </div>
+          </div>
+          <div class="card-body mt-0 pt-0">
+            <div class="table-responsive mt-0">
+              {% if references %}
+                <table class="table table-bordered table-hover mt-0" id="mydatatable">
+                  <thead>
+                    <tr>
+                      <th>
+                          {% if ordenar_por == 'cod_cita' %}
+                              <a id="ord-cod_cita" href="#">
+                                  <b>Código cita</b> <i class="fa fa-angle-down"></i>
+                              </a>
+                          {% elif ordenar_por == 'cod_cita_dec' %}
+                              <a id="ord-cod_cita" href="#">
+                                  <b>Código cita</b> <i class="fa fa-angle-up"></i>
+                              </a>
+                          {% else %}
+                              <a id="ord-cod_cita" href="#">
+                                  <b>Código cita</b>
+                              </a>
+                          {% endif %}
+                      
+                      </th>
+                      <th>
+                        {% if ordenar_por == 'cita' %}
+                        <a id="ord-cita" href="#">
+                            <b>Cita</b> <i class="fa fa-angle-down"></i>
+                        </a>
+                        {% elif ordenar_por == 'cita_dec' %}
+                            <a id="ord-cita" href="#">
+                                <b>Cita</b> <i class="fa fa-angle-up"></i>
+                            </a>
+                        {% else %}
+                            <a id="ord-cita" href="#">
+                                <b>Cita</b>
+                            </a>
+                        {% endif %}
+                      </th>
+                      <th>
+                        <b>Referencia</b>
+                      </th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for reference in references %}
+                      <tr class="clickable"
+                          onclick="window.location='{% url 'arbolsaf:reference_detail' reference.id %}'">
+                        <!--tr class="clickable" onclick="window.location='http://localhost:8000/riesgo/centro/detalles/{{center.id }}'"> -->
+                        <td >{% firstof reference.cod_cita|default_if_none:"" %}</td>
+                        <td >{% firstof reference.fuente_final|default_if_none:"" %}</td>
+                        <td >{% firstof reference.referencia|default_if_none:"" %}</td>
+
+                      
+                      </tr>
+                    </tbody>
+                  {% endfor %}
+                </table>
+              {% else %}
+                <h3 style="color: red" class="text-center">
+                  {% trans 'No existen fuentes a mostrar' %}
+                </h3>
+              {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-center">
+              <nav class="mt-0">
+                <ul class="pagination mt-0">
+                  {% if 'cod_cita' in request.get_full_path %}
+                    {% if has_previous_pages %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ 1 }}"
+                           aria-label="1...">
+                          <span aria-hidden="true">1</span>
+                          <span class="sr-only">1...</span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ previous_page }}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">{% trans 'Anterior' %}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for pr in paginator_rows %}
+                      {% if pr == actual_page %}
+                        <li class="page-item active">
+                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>
+                        </li>
+                      {% else %}
+                        <li class="page-item">
+                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if has_more_pages %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ next_page }}"
+                           aria-label=">>">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">>></span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ total_pages }}"
+                           aria-label="1...">
+                          <span aria-hidden="true">{{ total_pages }}</span>
+                          <span class="sr-only">{{ total_pages }}...</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% else %}
+                    {% if page_obj.has_previous %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">
+                          <span aria-hidden="true">1</span>
+                          <span class="sr-only">1...</span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.previous_page_number }}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">{% trans 'Anterior' %}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for pr in paginator_rows %}
+                      {% if pr == page_obj.number %}
+                        <li class="page-item active">
+                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>
+                        </li>
+                      {% else %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.next_page_number }}"
+                           aria-label=">>">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">>></span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.paginator.num_pages }}"
+                           aria-label="1...">
+                          <span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span>
+                          <span class="sr-only">{{ page_obj.paginator.num_pages }}...</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+
+          <!--div class="d-flex justify-content-center">
+              <nav>
+                <ul class="pagination">
+                  {% if 'nombre_comun' in request.get_full_path %}
+                    {% if has_previous_pages %}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ 1 }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">1</span>#}
+{#                          <span class="sr-only">1...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ previous_page }}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">{% trans 'Anterior' %}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for pr in paginator_rows %}
+                      {% if pr == actual_page %}
+{#                        <li class="page-item active">#}
+{#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+                          <li class="me-3 ms-2 mt-1">
+                          <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                        </li>
+                      {% else %}
+{#                        <li class="page-item">#}
+{#                          <a class="page-link" href="{{ request.get_full_path }}&page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+                      {% endif %}
+                    {% endfor %}
+                    {% if has_more_pages %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="{{ request.get_full_path }}&page={{ next_page }}"
+                           aria-label=">>">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">>></span>
+                        </a>
+                      </li>
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="{{ request.get_full_path }}&page={{ total_pages }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">{{ total_pages }}</span>#}
+{#                          <span class="sr-only">{{ total_pages }}...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                    {% endif %}
+                  {% else %}
+                    {% if page_obj.has_previous %}
+{#                      <li class="page-item">#}
+{#                        <a class="page-link" href="?page={{ 1 }}" aria-label="1...">#}
+{#                          <span aria-hidden="true">1</span>#}
+{#                          <span class="sr-only">1...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.previous_page_number }}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">{% trans 'Anterior' %}</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for pr in paginator_rows %}
+                      {% if pr == page_obj.number %}
+{#                          <li class="page-item active">#}
+{#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+{#                          </li>#}
+                        <li class="me-3 ms-2 mt-1">
+                          <p>{{ count_actual_rows }} de {{ total_rows }}</p>
+                        </li>
+                      {% else %}
+{#                        <li class="page-item">#}
+{#                          <a class="page-link" href="?page={{ pr }}">{{ pr }}</a>#}
+{#                        </li>#}
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ page_obj.next_page_number }}"
+                           aria-label=">>">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">>></span>
+                        </a>
+                      </li>
+{#                      <li class="page-item">#}
+{#                        <a class="page-link"#}
+{#                           href="?page={{ page_obj.paginator.num_pages }}"#}
+{#                           aria-label="1...">#}
+{#                          <span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span>#}
+{#                          <span class="sr-only">{{ page_obj.paginator.num_pages }}...</span>#}
+{#                        </a>#}
+{#                      </li>#}
+                    {% endif %}
+                  {% endif %}
+                </ul>
+              </nav>
+            </div-->
+
+            <div class="modal fade"
+                 id="filterModal"
+                 tabindex="-1"
+                 role="dialog"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Filtrar
+                    </h5>
+                    <button type="button"
+                            class="btn-close text-dark"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            id="elim">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container">
+                      <form id="filter_form"
+                            action="{% url 'arbolsaf:reference_list' %}"
+                            class=""
+                            method="get"
+                            autocomplete="off">
+                            <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}" >
+
+                        <div class="form-group">
+                          <label class="control-label" for="cod_cita">
+                            Código cita
+                          </label>
+                          <div class=" ">
+                            <input id="id_cod_cita"
+                                   type="text"
+                                   name="cod_cita"
+                                   class="form-control"
+                                   value="{{ value_cod_cita }}">
+                          </div>
+                    
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label" for="id_fuente_final">
+                            Cita
+                          </label>
+                          <div class=" ">
+                            <input id="id_fuente_final"
+                                   type="text"
+                                   name="fuente_final"
+                                   class="form-control"
+                                   value="{{ value_fuente_final }}">
+                          </div>
+                      
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label" for="id_referencia">
+                            Referencia
+                          </label>
+                          <div class=" ">
+                            <input id="id_referencia"
+                                   type="text"
+                                   name="referencia"
+                                   class="form-control"
+                                   value="{{ value_referencia }}">
+                          </div>
+                      
+                        </div>
+
+                    
+                      </form>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button id="reset_button"
+                            form="filter_form"
+                            type="button"
+                            class="btn btn-light btn-sm">
+                      <i class="fa fa-trash"></i>&nbsp;&nbsp;Limpiar filtros
+                    </button>
+                    <button form="filter_form" type="submit" class="btn btn-primary btn-sm">
+                      <i class="fa fa-filter"></i>&nbsp;&nbsp;Filtrar
+                    <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="modal">
+                      Cerrar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {% include "includes/footer.html" %}
+  </div>
+{% endblock content %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script>
+
+
+    $(document).ready(function () {
+
+
+
+      //document.getElementById("id_tipo_variable").value = "{{value_tipo_variable}}";
+      //document.getElementById("id_referencia").value = "{{value_referencia}}";
+     
+  });
+
+  $('#reset_button').click(function () {
+      //document.getElementById("id_cod_esp").value = "";
+      //document.getElementById("id_taxonid_wfo").value = "";
+      document.getElementById("id_cod_cita").value = "";
+
+      document.getElementById("id_fuente_final").value = "";
+      document.getElementById("id_tipo_variables").value = "";
+
+     
+  });
+
+
+  $('#ord-cod_cita').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "cod_cita"){
+        document.getElementById("ordenar_por").value = "cod_cita_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "cod_cita";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+
+  $('#ord-cita').click(function () {
+    let ordenar = document.getElementById("ordenar_por").value;
+
+    if (ordenar == "cita"){
+        document.getElementById("ordenar_por").value = "cita_dec";
+    }else{
+        document.getElementById("ordenar_por").value = "cita";
+    }
+
+    let formulario = document.getElementById('filter_form');
+    formulario.submit();
+
+  });
+
+
+  //$(document).ready(function() {
+  //    $('#mydatatable').DataTable();
+  //} );
+
+
+
+  </script>
+{% endblock javascripts %}

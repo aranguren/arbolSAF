@@ -1,0 +1,257 @@
+{% extends 'layouts/base.html' %}
+{% load user_has_group %}
+{% block title %} Detalles Variable - Especie {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+
+<style type="text/css">
+
+
+
+</style>
+{% endblock stylesheets %}
+
+{% block body_class %} g-sidenav-show bg-gray-100 {% endblock %}
+
+{% block content %}
+
+  <div class="container-fluid py-4">
+
+    <div class="row">
+      <div class="col-lg-12 col-12 mx-auto">
+        
+        <div class="card card-body mt-4">
+          <!--h6 class="mb-0">New Project</h6>
+          <p class="text-sm mb-0">Create new project</p-->
+            <div class="row">
+              <div class="col-6">
+               <h3> Detalles variable: <span>'{% firstof variable.tipo_variable|default_if_none:"-" %}' </span></h3>
+              
+               <h4> Especie: <span> {{variable.especie}}</span></h4>
+              
+              </div>
+              <div class="col-6">
+                
+                {% if list_from == 'variable_species' %}
+                  <div class="d-flex justify-content-end">
+                      <a href="{% url 'arbolsaf:variable_species_list' %}"
+                      class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
+                  {% else %}
+                  <div class="d-flex justify-content-end">
+                    <a href="{% url 'arbolsaf:cross_table_list' %}"
+                    class="btn btn-secondary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Atrás</a>
+
+                  {% endif %}
+                  {% if request.user|has_group:"editor" or request.user.is_superuser %} 
+                      <a href="{% url 'arbolsaf:variable_species_create' %}"
+                          class="btn btn-primary btn-large btn-sm m-b-xm mx-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Crear</a>
+                      {% if not variable.chequeo %}                 
+                      <a href="{% url 'arbolsaf:variable_species_update' variable.id %}"
+                          class="btn btn-info btn-large btn-sm m-b-xm mx-1"><i class="fa fa-edit"></i>&nbsp;&nbsp;Editar</a>
+                      <!--a class="btn btn-danger btn-large btn-sm m-b-xm"><i class="fa fa-edit"></i>&nbsp;&nbsp;Eliminar</a-->
+                      <button class="btn btn-danger btn-large btn-sm m-b-xm mx-1"
+                              id="eliminarB"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteModal"
+                              value="{{ variable.id }} ">
+                        <i class="far fa-trash-alt me-2" aria-hidden="true"></i>&nbsp;&nbsp;Eliminar
+                      </button>
+                      {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+
+          <hr class="horizontal dark my-3">
+
+
+          <div class="row mb-2">
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Especie</h6>
+                <spam class="mr-2">{% firstof variable.especie|default_if_none:"-" %}</span>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Variable</h6>
+                <spam class="mr-2">{% firstof variable.tipo_variable|default_if_none:"-" %}</span>
+              </div>
+            </div>
+            
+            {% if  variable.tipo_variable.tipo_variables == 'numerico'%}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valor numérico</h6>
+                <spam class="mr-2">{% firstof variable.valor_numerico|default_if_none:"-" %}</span>
+              </div>
+            </div>
+            {% elif  variable.tipo_variable.tipo_variables == 'texto'%}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valor texto</h6>
+                <spam class="mr-2">{% firstof variable.valor_texto|default_if_none:"-" %}</span>
+              </div>
+            </div>
+            {% elif  variable.tipo_variable.tipo_variables == 'rango'%}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Rango superior</h6>
+                <spam class="mr-2">{% firstof variable.rango_superior|default_if_none:"-" %}</span>
+              </div>   
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Rango inferior</h6>
+                <spam class="mr-2">{% firstof variable.rango_inferior|default_if_none:"-" %}</span>
+              </div>   
+            </div>
+            {% elif  variable.tipo_variable.tipo_variables == 'boolean'%}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Verdadero? </h6>
+                {% if variable.valor_boolean %}
+                SI
+              {% else %}
+                 NO
+              {% endif %}
+              </div>   
+            </div>
+            {% elif  variable.tipo_variable.tipo_variables == 'cualitativo'%}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valores cualitativos</h6>
+                <ul>
+                  {% for valor in variable.valores_cualitativos.all %}
+                      <li>{{ valor }}</li>
+                    {% endfor %}
+                  </ul>
+              </div>   
+            </div>
+            {% else %}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>No es un tipo valido</h6>
+               
+              </div>   
+            </div>
+             
+            {% endif %}
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Referencia</h6>
+                <spam class="mr-2">{% firstof variable.referencia|default_if_none:"-" %}</span>
+              </div>                
+              
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Chequeada?</h6>
+                <spam class="mr-2">{{ variable.chequeo|yesno:_("SI,NO") }}</span>
+              </div>   
+            </div>
+
+          
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Valor general</h6>
+                <spam class="mr-2">{% firstof variable.valor_general|default_if_none:"-" %}</span>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Unidad de medida</h6>
+                <spam class="mr-2">{{ variable.tipo_variable.unidad_medida|default_if_none:'Sin unidad'}}</span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+        <div class="modal fade"
+            id="deleteModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+              <button type="button"
+                      class="btn-close text-dark"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      id="elim">
+                <!--span aria-hidden="true">&times;</span-->
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Está seguro que desea eliminar la variable - especie?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-success" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn bg-danger text-white" id="aceptar">Aceptar</button>
+            </div>
+          </div>
+        </div>
+        </div>
+    {% include "includes/footer.html" %}
+    
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %} 
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script type="text/javascript">
+document.getElementById("aceptar").addEventListener('click', function(){
+
+  console.log('ACEPTAR');
+  var valor = document.getElementById('eliminarB').value;
+
+  var request = $.ajax({
+      type: "GET",
+      url: "/arbolsaf/variable/eliminar",
+      data: {
+          "id": valor
+      },
+      success: function (response) {
+          console.log(response)
+          $("#deleteModal").modal('hide');
+          {% if list_from == 'variable_species' %}
+          $(location).attr('href', "{% url 'arbolsaf:variable_species_list' %}");
+          {% else %}
+          $(location).attr('href', "{% url 'arbolsaf:cross_table_list' %}");
+
+          {% endif %}
+
+      },
+      error: function (response, e) {
+          console.log(response);
+          
+          $("#deleteVariable").modal('hide');
+          if (response.responseJSON.mensaje =='restricted'){
+               alert(response.responseJSON.error);
+          }
+          else{
+             alert('Ha ocurrido un error al eliminar, Contacte al Administrador');
+          }
+          
+          
+      }
+  });
+
+});   
+</script>
+{% endblock javascripts %}
