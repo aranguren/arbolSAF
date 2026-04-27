@@ -11,7 +11,7 @@ from django.urls import path
 app_name = 'arbolsaf'
 
 urlpatterns = [
-    path('principal', Homepage.as_view(),name='homepage'),
+    path('principal', AboutToolView.as_view(),name='homepage'),
     path('especie/listado', SpeciesListView.as_view(),name='species_list'),
     path('especie/listado/json/', species_list_json ,name='species_list_json'),
     

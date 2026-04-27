@@ -12,7 +12,8 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),          # Django admin route
     path("", include("apps.authentication.urls")), # Auth routes - login /
-    path('arbolsaf/', include('arbolsaf.urls', namespace="arbolsaf")), 
+    path('arbolsaf/', include('arbolsaf.urls', namespace="arbolsaf")),
+    path("__reload__/", include("django_browser_reload.urls")),
     path("", include("apps.home.urls"))             # UI Kits Html files
 ]
 

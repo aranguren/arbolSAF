@@ -35,8 +35,9 @@ INSTALLED_APPS = [
     'computedfields',
     'import_export',
     'ckeditor',
-    'arbolsaf', 
-    'apps.home'  # Enable the inner home (home)
+    'arbolsaf',
+    'apps.home',  # Enable the inner home (home)
+    'django_browser_reload',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'

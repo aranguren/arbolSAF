@@ -1,9 +1,9 @@
-FROM python:3.9
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.6.4
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
+
+RUN apt update -y && apt install -y python3-pip python3-dev
+RUN pip3 install --upgrade pip
+
 COPY requirements.txt /code/
-RUN apt update -y
-#RUN apt install -y gdal-bin python3-gdal libgdal-dev python3-pycurl
-#RUN pip install GDAL==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}') --global-option=build_ext --global-option="-I/usr/include/gdal"
-RUN pip install -r requirements.txt
-#COPY . /code
+RUN pip3 install -r requirements.txt
