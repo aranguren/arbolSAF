@@ -1,19 +1,6 @@
 {% load user_has_group %}
-<!--
- =========================================================
-* Soft UI Dashboard PRO - v1.0.5
-=========================================================
-
-* Product Page:  https://www.creative-tim.com/product/soft-ui-dashboard-pro 
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8" />
@@ -21,70 +8,141 @@
   <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/arbolsaf-icon.png">
   <link rel="icon" type="image/png" href="/static/assets/img/arbolsaf-icon.png">
 
-  <title>
-    ArbolSAF - {% block title %}{% endblock %} 
-  </title>
+  <title>ÁrbolSAF - {% block title %}{% endblock %}</title>
 
-  <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
   <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons 
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- CSS Files -->
   <link id="pagestyle" href="/static/assets/css/soft-ui-dashboard.css?v=1.0.5" rel="stylesheet" />
 
-  <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GKB8664E2L"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-GKB8664E2L');
-    </script>
-
-  <!-- Specific CSS goes HERE -->
-  {% block stylesheets %}{% endblock stylesheets %}
-
-</head> 
-<body class="{% block body_class %}{% endblock %}">
-
-  {% include "includes/sidebar.html" %}
-
-  <main class="main-content max-height-vh-100 h-100">
-
-    {% include "includes/navigation.html" %}
-
-    {% block content %}{% endblock content %}
-
-  </main>
-
-  {#% include "includes/fixed-plugin.html" %#}
-  
-  {% include "includes/scripts.html" %}  
-
-  <!-- Specific JS goes HERE --> 
-  {% block javascripts %}{% endblock javascripts %}
-
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GKB8664E2L"></script>
   <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GKB8664E2L');
   </script>
 
-  <!-- Github buttons -->
+  <style>
+    /* ── Reset layout sidebar ─────────────────────────────── */
+    html, body { height: 100%; }
+    body {
+      background: #f4f4f4 !important;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .main-content {
+      margin-left: 0 !important;
+      border-radius: 0 !important;
+      flex: 1;                  /* empuja el footer al fondo */
+    }
+
+    /* ── Tabs — estilo browser tab (referencia GlobalUsefulTrees) ── */
+    .arbolsaf-tabs {
+      background: #fff;
+      padding: 0.5rem 0.75rem 0 0.75rem;
+      border-bottom: 1px solid #aaa;
+    }
+    .arbolsaf-tabs__list {
+      display: flex;
+      flex-wrap: wrap;          /* permite segunda fila si no caben */
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 2px;
+      position: relative;
+      bottom: -1px;             /* tapa la línea inferior en el tab activo */
+    }
+    .arbolsaf-tabs__item {
+      position: relative;
+    }
+    .arbolsaf-tabs__item > a {
+      display: block;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: #1a6ab5;           /* azul enlace, igual que referencia */
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 4px 4px 0 0;
+      line-height: 1.4;
+      white-space: nowrap;
+      background: transparent;
+      transition: color 0.1s;
+    }
+    .arbolsaf-tabs__item > a:hover {
+      color: #0d3f6e;
+      text-decoration: underline;
+    }
+    /* Tab activo: borde en 3 lados, fondo blanco, rompe línea inferior */
+    .arbolsaf-tabs__item--active > a {
+      color: #111;
+      font-weight: 600;
+      background: #fff;
+      border-color: #aaa #aaa #fff;
+      border-width: 1px;
+    }
+
+    /* Dropdown */
+    .arbolsaf-tabs__item--dropdown:hover .arbolsaf-tabs__dropdown { display: block; }
+    .arbolsaf-tabs__dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 210px;
+      background: #fff;
+      border: 1px solid #aaa;
+      border-top: none;
+      list-style: none;
+      padding: 0.25rem 0;
+      margin: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .arbolsaf-tabs__dropdown li a {
+      display: block;
+      padding: 0.4rem 1rem;
+      font-size: 0.82rem;
+      color: #1a6ab5;
+      text-decoration: none;
+      text-align: left;
+    }
+    .arbolsaf-tabs__dropdown li a:hover {
+      background: #f0f5fb;
+      text-decoration: underline;
+    }
+    .arbolsaf-tabs__dropdown-label {
+      padding: 0.4rem 1rem 0.15rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+
+  {% block stylesheets %}{% endblock stylesheets %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+  {% include "includes/header.html" %}
+  {% include "includes/tabs.html" %}
+
+  <main class="main-content">
+    {% block content %}{% endblock content %}
+  </main>
+
+  {% block footer %}{% endblock footer %}
+
+  {% include "includes/scripts.html" %}
+  {% block javascripts %}{% endblock javascripts %}
+
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  
-  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.5"></script>
 
 </body>

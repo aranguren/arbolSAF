@@ -1,0 +1,41 @@
+<nav class="arbolsaf-tabs">
+  <ul class="arbolsaf-tabs__list">
+
+    <li class="arbolsaf-tabs__item {% if 'acerca-de' in segment %}arbolsaf-tabs__item--active{% endif %}">
+      <a href="{% url 'arbolsaf:about_page' %}">Introducción<br><span>(Acerca de)</span></a>
+    </li>
+
+    <li class="arbolsaf-tabs__item {% if 'species' in segment %}arbolsaf-tabs__item--active{% endif %}">
+      <a href="{% url 'arbolsaf:species_list' %}">Portafolio de<br>especies</a>
+    </li>
+
+    <li class="arbolsaf-tabs__item arbolsaf-tabs__item--dropdown {% if 'herramienta' in segment %}arbolsaf-tabs__item--active{% endif %}">
+      <a href="{% url 'arbolsaf:tool_part1' %}">Selección de tu lista<br>preliminar <span>(paso 1)</span></a>
+    </li>
+
+    <li class="arbolsaf-tabs__item">
+      <a href="#">Consideraciones de<br>clima y suelo <span>(paso 2)</span></a>
+    </li>
+
+    <li class="arbolsaf-tabs__item">
+      <a href="#">Consideraciones<br>morfológicas <span>(paso 3)</span></a>
+    </li>
+
+    <li class="arbolsaf-tabs__item arbolsaf-tabs__item--dropdown">
+      <a href="#">Evaluación y ajuste<br>de la lista <span>(paso 4)</span></a>
+    </li>
+
+    <li class="arbolsaf-tabs__item">
+      <a href="#">Registro y<br>reporte <span>(paso 5)</span></a>
+    </li>
+
+    <li class="arbolsaf-tabs__item {% if 'metodos' in segment %}arbolsaf-tabs__item--active{% endif %}">
+      <a href="#">Métodos y<br>créditos</a>
+    </li>
+
+    <li class="arbolsaf-tabs__item {% if 'variable-especie' in segment or 'tipos_variable' in segment or 'referencia' in segment or 'tabla_cruzada' in segment %}arbolsaf-tabs__item--active{% endif %}">
+      <a href="{% url 'arbolsaf:variable_species_list' %}">Plataforma<br>de datos</a>
+    </li>
+
+  </ul>
+</nav>

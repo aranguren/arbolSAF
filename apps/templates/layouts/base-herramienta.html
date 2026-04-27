@@ -1,0 +1,239 @@
+<!--
+  base-herramienta.html
+  Base template for ALL ArbolSAF platform pages.
+  Header: includes/header.html (banner image + overlay title)
+  Navtab: 9 tabs, Bootstrap nav-tabs style (ref: GlobalUsefulTrees Shiny app)
+  Footer: includes/footer.html (CIFOR-ICRAF, correct FA6 icons)
+-->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/arbolsaf-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/arbolsaf-icon.png">
+
+  <title>ArbolSAF{% block title %}{% endblock %}</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GKB8664E2L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GKB8664E2L');
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+
+  <!-- jQuery -->
+  <script src="/static/assets/js/plugins/jquery-3.7.0.min.js"></script>
+
+  <!-- ── ArbolSAF base styles ───────────────────────────────────────── -->
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: #fff;
+    }
+
+    /* ── Header (rendered by includes/header.html) ────────────────── */
+    header .card {
+      border-radius: 0 !important;
+      border: none;
+      margin: 0;
+    }
+    header img { width: 100%; display: block; }
+
+    /* ── Navtab — Bootstrap nav-tabs style (ref: GlobUNT app) ─────── */
+    .arbol-navtab-wrapper {
+      background: #fff;
+      border-bottom: 1px solid #dee2e6;
+      padding: 0 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      margin-top: 0.75rem
+    }
+    .arbol-navtab {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-bottom: none;
+    }
+    .arbol-navtab-item {
+      display: block;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #2d8653;           /* CIFOR-ICRAF green */
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      margin-bottom: -1px;      /* overlap the wrapper border-bottom */
+      white-space: normal;
+      text-align: center;
+      line-height: 1.35;
+      transition: color 0.12s, background 0.12s, border-color 0.12s;
+    }
+    .arbol-navtab-item:hover:not(.arbol-navtab-disabled):not(.active) {
+      color: #1a5c38;
+      background: #f5f5f5;
+      border-color: #e9ecef #e9ecef transparent;
+      text-decoration: none;
+    }
+    .arbol-navtab-item.active {
+      color: #495057;
+      background: #fff;
+      border-color: #dee2e6 #dee2e6 #fff;
+      font-weight: 600;
+    }
+    .arbol-navtab-disabled {
+      color: #adb5bd !important;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Main content ────────────────────────────────────────────── */
+    .arbol-main { min-height: 60vh; }
+
+    /* ── Multistep panel show/hide ───────────────────────────────── */
+    .multisteps-form__panel {
+      display: none !important;
+      position: static !important;
+    }
+    .multisteps-form__panel.js-active {
+      display: block !important;
+    }
+  </style>
+
+  {% block stylesheets %}{% endblock stylesheets %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+  <!-- ── Header ───────────────────────────────────────────────────── -->
+  {% include "includes/header.html" %}
+
+  <!-- ── Navtab ───────────────────────────────────────────────────── -->
+  <div class="arbol-navtab-wrapper">
+    <nav class="arbol-navtab" id="arbol-navtab">
+
+      <a class="arbol-navtab-item {% block nav_intro %}{% endblock %}"
+         href="{% url 'arbolsaf:about_page' %}">
+        Introducción<br>(Acerca de)
+      </a>
+
+      <a class="arbol-navtab-item {% block nav_portafolio %}{% endblock %}"
+         href="{% url 'arbolsaf:species_list' %}">
+        Portafolio<br>de especies
+      </a>
+
+      <a class="arbol-navtab-item {% block nav_paso1 %}{% endblock %}"
+         data-step="1"
+         href="{% url 'arbolsaf:tool_part1' %}">
+        Selección de tu lista<br>preliminar (paso 1)
+      </a>
+
+      <a class="arbol-navtab-item {% block nav_paso2 %}{% endblock %}"
+         data-step="2"
+         href="{% url 'arbolsaf:tool_part1' %}">
+        Consideraciones de<br>clima y suelo (paso 2)
+      </a>
+
+      <a class="arbol-navtab-item {% block nav_paso3 %}{% endblock %}"
+         data-step="3"
+         href="{% url 'arbolsaf:tool_part1' %}">
+        Consideraciones<br>morfológicas (paso 3)
+      </a>
+
+      <a class="arbol-navtab-item {% block nav_paso4 %}{% endblock %}"
+         data-step="4"
+         href="{% url 'arbolsaf:tool_part1' %}">
+        Evaluación y ajuste<br>de la lista (paso 4)
+      </a>
+
+      <a class="arbol-navtab-item {% block nav_paso5 %}{% endblock %}"
+         data-step="5"
+         href="{% url 'arbolsaf:tool_part1' %}">
+        Registro y<br>reporte (paso 5)
+      </a>
+
+      <span class="arbol-navtab-item arbol-navtab-disabled">
+        Métodos<br>y créditos
+      </span>
+
+      <span class="arbol-navtab-item arbol-navtab-disabled">
+        Plataforma<br>de datos
+      </span>
+
+    </nav>
+  </div>
+
+  <!-- ── Page content ─────────────────────────────────────────────── -->
+  <div class="arbol-main">
+    {% block content %}{% endblock content %}
+  </div>
+
+  <!-- ── Footer ───────────────────────────────────────────────────── -->
+  {% block footer %}
+    {% include "includes/footer.html" %}
+  {% endblock footer %}
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ── Panel navigation JS (replaces multistep-form.js) ─────────── -->
+  <script>
+  (function () {
+    'use strict';
+
+    var panels   = document.querySelectorAll('.multisteps-form__panel');
+    var navItems = document.querySelectorAll('#arbol-navtab .arbol-navtab-item');
+    var isToolPage = panels.length > 0;
+
+    function showPanel(stepId) {
+      panels.forEach(function (p) { p.classList.remove('js-active'); });
+      var target = document.getElementById('step-' + stepId);
+      if (target) { target.classList.add('js-active'); }
+    }
+
+    function setActiveNav(clickedItem) {
+      navItems.forEach(function (item) { item.classList.remove('active'); });
+      clickedItem.classList.add('active');
+    }
+
+    if (isToolPage) {
+      navItems.forEach(function (item) {
+        var step = item.dataset.step;
+        if (step === undefined) { return; }
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          showPanel(step);
+          setActiveNav(this);
+        });
+      });
+    }
+  })();
+  </script>
+
+  {% block javascripts %}{% endblock javascripts %}
+
+</body>
+</html>
