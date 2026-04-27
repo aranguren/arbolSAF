@@ -20,7 +20,10 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
     group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/species/species_list.html'
     context_object_name = 'species'
-    paginate_by = 10
+    paginate_by = None  # Show all species at once for card layout
+
+    def get_paginate_by(self, queryset):
+        return None
 
     def get_context_data(self, *args, **kwargs):
         context = super(SpeciesListView, self).get_context_data(*args, **kwargs)
@@ -117,6 +120,40 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
 
             context['paginator_rows'] = list_pages
 
+        # ── Extra data per species for card display ──────────────────
+        for specie in context['species']:
+            endemismo = False
+            amenaza_iucn = None
+            amenaza_nacional = None
+            primera_imagen = None
+
+            for var in specie.variables.all():   # uses prefetch cache
+                if not var.tipo_variable or not var.tipo_variable.cod_var:
+                    continue
+                cod = var.tipo_variable.cod_var.lower()
+                if cod == 'v64':
+                    endemismo = bool(var.valor_boolean)
+                elif cod == 'v56':
+                    quals = list(var.valores_cualitativos.all())
+                    if quals:
+                        amenaza_iucn = quals[0].nombre
+                    elif var.valor_texto:
+                        amenaza_iucn = var.valor_texto
+                elif cod == 'v59':
+                    quals = list(var.valores_cualitativos.all())
+                    if quals:
+                        amenaza_nacional = quals[0].nombre
+                    elif var.valor_texto:
+                        amenaza_nacional = var.valor_texto
+
+            imgs = list(specie.imagenes.all())
+            primera_imagen = imgs[0] if imgs else None
+
+            specie.card_endemismo = endemismo
+            specie.card_amenaza_iucn = amenaza_iucn
+            specie.card_amenaza_nacional = amenaza_nacional
+            specie.card_primera_imagen = primera_imagen
+
         return context
 
     def get_queryset(self):
@@ -211,7 +248,11 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
         else:
             query_result = query_result.order_by(tipos_de_orden['nombre_comun'])
 
-        return query_result
+        return query_result.prefetch_related(
+            'variables__tipo_variable',
+            'variables__valores_cualitativos',
+            'imagenes',
+        )
 
 class SpeciesDetailView(LoginRequiredMixin, GroupRequiredMixin, DetailView):
     model = SpeciesModel
@@ -323,7 +364,10 @@ def species_list_json(request):
     resp = {}
 
     variables = VariableTypeModel.objects.all()
-    especies = SpeciesModel.objects.filter(habilitada_herramienta=True)
+    if request.GET.get('todos', '0') == '1':
+        especies = SpeciesModel.objects.all()
+    else:
+        especies = SpeciesModel.objects.filter(habilitada_herramienta=True)
     especies_dict_list = []
     for especie in especies:
         valores_especie = {
@@ -516,6 +560,16 @@ def species_list_json(request):
         valores_especie['v83_preferencia_ph_suelo'] = v83_preferencia_ph_suelo
 
 
+        # pluviosidad de su zona de distribución
+        v281_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v281').first()
+        if v281_instance:
+            valores = v281_instance.valores_cualitativos.all()
+            nombres_valores_v281 = [valor.nombre for valor in valores]
+            v281_pluviosidad = ','.join(nombres_valores_v281) if nombres_valores_v281 else ""
+        else:
+            v281_pluviosidad = ""
+        valores_especie['v281_pluviosidad'] = v281_pluviosidad
+
         # PASO 4 ASOCIO
 
         # altura potencial de copa
@@ -526,8 +580,12 @@ def species_list_json(request):
             rango_superior= v1_instance.rango_superior or 0.0
             v1_altura_copa_promedio=(rango_inferior+rango_superior)/2
             v1_altura_copa= str(v1_altura_copa_promedio)
+            valores_especie['v1_altura_min'] = str(v1_instance.rango_inferior) if v1_instance.rango_inferior is not None else ''
+            valores_especie['v1_altura_max'] = str(v1_instance.rango_superior) if v1_instance.rango_superior is not None else ''
         else:
             v1_altura_copa = ""
+            valores_especie['v1_altura_min'] = ''
+            valores_especie['v1_altura_max'] = ''
         valores_especie['v1_altura_copa'] = v1_altura_copa
 
         # tipo raiz
@@ -591,8 +649,12 @@ def species_list_json(request):
             rango_superior= v2_instance.rango_superior or 0.0
             v2_ancho_potencial_copa_promedio=(rango_inferior+rango_superior)/2
             v2_ancho_potencial_copa= str(v2_ancho_potencial_copa_promedio)
+            valores_especie['v2_ancho_min'] = str(v2_instance.rango_inferior) if v2_instance.rango_inferior is not None else ''
+            valores_especie['v2_ancho_max'] = str(v2_instance.rango_superior) if v2_instance.rango_superior is not None else ''
         else:
             v2_ancho_potencial_copa = ""
+            valores_especie['v2_ancho_min'] = ''
+            valores_especie['v2_ancho_max'] = ''
         valores_especie['v2_ancho_potencial_copa'] = v2_ancho_potencial_copa
 
         # fenología de las hojas
@@ -664,7 +726,97 @@ def species_list_json(request):
         valores_especie['v73_gremio_ecologico'] = v73_gremio_ecologico
 
 
+        # PASO 3 MORFOLÓGICO
+
+        # V144 forma de fuste
+        v144_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v144').first()
+        if v144_instance:
+            nombres_v144 = [v.nombre for v in v144_instance.valores_cualitativos.all()]
+            v144_forma_fuste = ','.join(nombres_v144) if nombres_v144 else ''
+        else:
+            v144_forma_fuste = ''
+        valores_especie['v144_forma_fuste'] = v144_forma_fuste
+
+        # V9 frecuencia de poda
+        v9_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v9').first()
+        if v9_instance:
+            nombres_v9 = [v.nombre for v in v9_instance.valores_cualitativos.all()]
+            v9_frecuencia_poda = ','.join(nombres_v9) if nombres_v9 else ''
+        else:
+            v9_frecuencia_poda = ''
+        valores_especie['v9_frecuencia_poda'] = v9_frecuencia_poda
+
+        # V35 época de caída de hojas
+        v35_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v35').first()
+        if v35_instance:
+            nombres_v35 = [v.nombre for v in v35_instance.valores_cualitativos.all()]
+            if nombres_v35:
+                v35_epoca_caida_hojas = ','.join(nombres_v35)
+            elif v35_instance.rango_inferior is not None and v35_instance.rango_superior is not None:
+                v35_epoca_caida_hojas = str(v35_instance.rango_inferior) + '–' + str(v35_instance.rango_superior)
+            else:
+                v35_epoca_caida_hojas = ''
+        else:
+            v35_epoca_caida_hojas = ''
+        valores_especie['v35_epoca_caida_hojas'] = v35_epoca_caida_hojas
+
+        # V80 grupo funcional en la sucesión
+        v80_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v80').first()
+        if v80_instance:
+            nombres_v80 = [v.nombre for v in v80_instance.valores_cualitativos.all()]
+            v80_grupo_funcional = ','.join(nombres_v80) if nombres_v80 else ''
+        else:
+            v80_grupo_funcional = ''
+        valores_especie['v80_grupo_funcional'] = v80_grupo_funcional
+
+        # Boolean sub-use fields for category-specific tables (Paso 1)
+        bool_vars_map = {
+            'v167': 'v167_madera_muebles',          # Maderable: Muebles
+            'v163': 'v163_madera_construccion',     # Maderable: Construcción
+            'v168': 'v168_madera_postes',           # Maderable: Postes/cajonería
+            'v170': 'v170_fruta',                   # Frutales: Fruta
+            'v130': 'v130_semilla_consumo',         # Frutales: Semilla
+            'v18':  'v18_abejas',                   # Biodiversidad: Abejas
+            'v89':  'v89_aves',                     # Biodiversidad: Aves
+            'v90':  'v90_micromamiferos',           # Biodiversidad: Micromamíferos
+            'v91':  'v91_murcielagos',              # Biodiversidad: Murciélagos
+            'v142': 'v142_carbon',                  # Otros usos: Carbón
+            'v162': 'v162_lena',                    # Otros usos: Leña
+            'v39':  'v39_forraje',                  # Otros usos: Forraje ganado
+            'v113': 'v113_medicinal',               # Otros usos: Medicinal
+            'v111': 'v111_artesanias',              # Otros usos: Artesanías
+            'v112': 'v112_cosmeticos',              # Otros usos: Cosméticos/repelente
+            'v102': 'v102_tintes',                  # Otros usos: Tintes/pigmentos
+            'v70':  'v70_fibra',                    # Otros usos: Fibra
+        }
+        for cod, key in bool_vars_map.items():
+            instance = especie.variables.filter(tipo_variable__cod_var__iexact=cod).first()
+            valores_especie[key] = bool(instance.valor_boolean) if instance else False
+
         valores_especie['imagenes'] = [img.imagen.url for img in especie.get_imagenes]
+
+        # Nativa de Perú (campo del modelo)
+        valores_especie['nativa'] = bool(especie.nativa)
+
+        # v64 — Endemismo para Perú
+        v64_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v64').first()
+        valores_especie['v64_endemismo'] = bool(v64_instance.valor_boolean) if v64_instance else False
+
+        # v56 — Categoría amenaza IUCN
+        v56_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v56').first()
+        if v56_instance:
+            q56 = list(v56_instance.valores_cualitativos.all())
+            valores_especie['v56_amenaza_iucn'] = q56[0].nombre if q56 else (v56_instance.valor_texto or '')
+        else:
+            valores_especie['v56_amenaza_iucn'] = ''
+
+        # v59 — Categoría amenaza nacional (DS004)
+        v59_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v59').first()
+        if v59_instance:
+            q59 = list(v59_instance.valores_cualitativos.all())
+            valores_especie['v59_amenaza_nacional'] = q59[0].nombre if q59 else (v59_instance.valor_texto or '')
+        else:
+            valores_especie['v59_amenaza_nacional'] = ''
 
         especies_dict_list.append(valores_especie)
 

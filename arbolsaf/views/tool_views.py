@@ -8,6 +8,11 @@ from ..models import SpeciesModel, RegistroReporteHerramienta, Configuracion
 class ToolView(TemplateView):
     template_name = "arbolsaf/tool/tool.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["segment"] = ["herramienta"]
+        return context
+
 class IntroToolView(TemplateView):
     template_name = "arbolsaf/tool/tool_intro.html"
 
@@ -22,10 +27,8 @@ class AboutToolView(TemplateView):
         #project = get_object_or_404(Project, id = int(kwargs['pk']))
 
         context["settings_arbolsaf"] = settings_arbolsaf
-        
-       
-       
-        return context    
+        context["segment"] = ["acerca-de"]
+        return context
 
 
 
