@@ -12,6 +12,7 @@ app_name = 'arbolsaf'
 
 urlpatterns = [
     path('principal', AboutToolView.as_view(),name='homepage'),
+    path('portafolio', PortafolioView.as_view(), name='species_portafolio'),
     path('especie/listado', SpeciesListView.as_view(),name='species_list'),
     path('especie/listado/json/', species_list_json ,name='species_list_json'),
     
