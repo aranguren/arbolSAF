@@ -12,7 +12,7 @@
     /* color: black !important; */
 }
 
-.tool-page * :not(.js-btn-next, i, .footer *, .intro-bubble > p, .title-step *) {
+.tool-page .arbol-main * :not(.js-btn-next, i, .intro-bubble > p, .title-step *) {
     color: black !important;
 }
 
@@ -445,13 +445,213 @@
     background: #931010;
 }
 
+/* ── Tarjetas de evaluación (Paso 2 — Evaluar) ───────────────────── */
+
+.species-eval-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1rem;
+    padding: 0.25rem 0 1rem;
+}
+
+.eval-empty-msg {
+    font-size: 0.92rem;
+    padding: 3rem 1rem;
+}
+
+.species-eval-card {
+    border: 1px solid #d8e8e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+/* Header */
+.sec-header {
+    background: #e6f4ee;
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.sec-icon {
+    width: 38px;
+    height: 38px;
+    background: #21ac8d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.sec-names {
+    flex: 1;
+    min-width: 0;
+}
+
+.sec-common {
+    font-weight: 700;
+    font-size: 0.88rem;
+    line-height: 1.25;
+    color: #1a3a2a !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sec-sci {
+    font-size: 0.75rem;
+    color: #5a7a6a !important;
+}
+
+/* Semáforos */
+.sec-semaphores {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.sec-sem-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sec-sem-label {
+    font-size: 0.68rem;
+    color: #4a6a5a !important;
+    min-width: 36px;
+    text-align: right;
+}
+
+.sec-sem-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #aaa;
+    background: #e0e0e0;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.sec-sem-dot[data-state="green"] { background: #00a44d; border-color: #00a44d; }
+.sec-sem-dot[data-state="red"]   { background: #ea4a4a; border-color: #ea4a4a; }
+
+/* Tabs */
+.sec-tabs {
+    display: flex;
+    border-bottom: 1px solid #e5efe8;
+    background: #fff;
+}
+
+.sec-tab {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 0.45rem 0.2rem;
+    font-size: 0.67rem;
+    font-weight: 600;
+    color: #aaa !important;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    letter-spacing: 0.01em;
+}
+
+.sec-tab.sec-tab-active {
+    color: #21ac8d !important;
+    border-bottom-color: #21ac8d;
+}
+
+.sec-tab:hover:not(.sec-tab-active) { color: #666 !important; }
+
+/* Panels */
+.sec-panel { display: none; padding: 0.7rem 0.9rem 0.4rem; }
+.sec-panel.sec-panel-active { display: block; }
+
+.sec-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.sec-data-table td {
+    padding: 0.28rem 0;
+    vertical-align: top;
+    color: #333 !important;
+}
+
+.sec-data-table td:first-child {
+    color: #666 !important;
+    padding-right: 0.5rem;
+    width: 52%;
+}
+
+.sec-data-table td:last-child { text-align: right; }
+
+/* Notas */
+.sec-notes-wrap { padding: 0 0.9rem 0.5rem; }
+
+.sec-notes {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #d8e8e0;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    resize: none;
+    min-height: 50px;
+    color: #bbb !important;
+    background: #fafcfa;
+}
+
+.sec-notes:focus {
+    outline: none;
+    border-color: #21ac8d;
+    color: #333 !important;
+}
+
+/* Footer */
+.sec-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.9rem;
+    border-top: 1px solid #edf5f0;
+    background: #f8fbf9;
+}
+
+.sec-ivim { font-size: 0.8rem; color: #555 !important; }
+
+.sec-remove-btn {
+    border: none;
+    background: none;
+    color: #e05555 !important;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+}
+
+.sec-remove-btn:hover { color: #b00 !important; }
+
 .choices__list.choices__list--dropdown.is-active {
     z-index: 10;
 }
 
 .footer {
     position: relative;
-    bottom: -75vh;
+    /* bottom: -75vh; */
     z-index: -1;
 }
 
