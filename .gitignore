@@ -25,3 +25,7 @@ build/
 # OS
 .DS_Store
 .superpowers/
+
+staticfiles/*
+!staticfiles/.gitkeep
+.vscode/symbols.json
