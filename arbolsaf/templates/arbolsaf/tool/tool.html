@@ -3,14 +3,13 @@
 
 {% block title %} Herramienta {% endblock title %}
 
-{% block nav_paso1 %}active{% endblock %}
+{% block nav_intro %}active{% endblock %}
 
-<!-- Specific CSS goes HERE -->
 {% block stylesheets %}
   <link href="/static/assets/css/herramienta/style.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
   <style>
-    /* ── Pestañas de categoría ─────────────────────────────── */
+    /* ── Pestañas de categoría ───────────────────────────────────── */
     .category-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -47,7 +46,7 @@
     .btn-category[data-mode="otrosusos"]     { background: #fdc00d; color: rgba(0,0,0,0.75); }
     .btn-category[data-mode="preliminar"]    { background: #8392AB; }
 
-    /* Color de encabezado de tabla según modo activo */
+    /* Color de encabezado de tabla según modo activo — Paso 1 */
     #species-list.table-mode-maderable     thead th { background-color: #85604b !important; color: #fff !important; }
     #species-list.table-mode-frutales      thead th { background-color: #806377 !important; color: #fff !important; }
     #species-list.table-mode-biodiversidad thead th { background-color: #00a44d !important; color: #fff !important; }
@@ -58,46 +57,28 @@
 
     /* Encabezados compactos y con wrap */
     #species-list thead th { white-space: normal !important; text-align: center; padding: 6px 4px !important; font-size: 0.78rem; line-height: 1.2; }
-
-    /* Centrar todas las columnas excepto Especie (primera) */
     #species-list thead th:not(:first-child) { text-align: center; }
     #species-list tbody td:not(:first-child)  { text-align: center; vertical-align: middle; }
 
     /* Separación entre buscador y tabla */
     .dataTables_filter { margin-bottom: 0.75rem; }
 
-    /* Botones Clima/Suelo en step-2 — mismo alto que paso 1, estrechos y centrados */
-    #cs-tabs {
-      justify-content: center;
-      gap: 8px;
-    }
-    #cs-tabs .btn-category {
-      flex: 0 0 auto;
-      width: 140px;
-      font-size: 0.74rem;
-      padding: 7px 10px;
-    }
+    /* ── Paso 2 — Botones Clima/Suelo ───────────────────────────── */
+    #cs-tabs { justify-content: center; gap: 8px; }
+    #cs-tabs .btn-category { flex: 0 0 auto; width: 140px; font-size: 0.74rem; padding: 7px 10px; }
     #cs-tabs .btn-category[data-csmode="clima"] { background: #006d70; }
     #cs-tabs .btn-category[data-csmode="suelo"] { background: #aa4207; }
 
     /* Tabla clima/suelo (step-2) */
-    #cs-table.cs-mode-clima  thead th { background-color: #006d70 !important; color: #fff !important; }
-    #cs-table.cs-mode-suelo  thead th { background-color: #aa4207 !important; color: #fff !important; }
+    #cs-table.cs-mode-clima thead th { background-color: #006d70 !important; color: #fff !important; }
+    #cs-table.cs-mode-suelo thead th { background-color: #aa4207 !important; color: #fff !important; }
     #cs-table thead th { white-space: normal !important; text-align: center; padding: 6px 4px !important; font-size: 0.78rem; line-height: 1.2; }
     #cs-table thead th:not(:first-child) { text-align: center; }
     #cs-table tbody td:not(:first-child)  { text-align: center; vertical-align: middle; }
 
-    /* Botones Forma/Ecología en step-3 */
-    #morfo-tabs {
-      justify-content: center;
-      gap: 8px;
-    }
-    #morfo-tabs .btn-category {
-      flex: 0 0 auto;
-      width: 140px;
-      font-size: 0.74rem;
-      padding: 7px 10px;
-    }
+    /* ── Paso 3 — Botones Forma/Ecología ────────────────────────── */
+    #morfo-tabs { justify-content: center; gap: 8px; }
+    #morfo-tabs .btn-category { flex: 0 0 auto; width: 140px; font-size: 0.74rem; padding: 7px 10px; }
     #morfo-tabs .btn-category[data-morfomode="forma"]    { background: #85604b; }
     #morfo-tabs .btn-category[data-morfomode="ecologia"] { background: #00a44d; }
 
@@ -108,11 +89,110 @@
     #morfo-table thead th:not(:first-child) { text-align: center; }
     #morfo-table tbody td:not(:first-child)  { text-align: center; vertical-align: middle; }
 
-    /* Indicadores de punto en la tabla */
+    /* ── Indicadores de punto en la tabla ───────────────────────── */
     .bool-dot-yes { color: #00a44d; font-size: 1.1rem; line-height: 1; }
     .bool-dot-no  { color: #ccc;    font-size: 1.1rem; line-height: 1; }
     .val-dot-yes  { color: #555;    font-size: 1.2rem; line-height: 1; }
     .val-dot-no   { color: #ddd;    font-size: 1.2rem; line-height: 1; }
+
+    /* ── Paso 1 — responsive (solo móvil) ───────────────────────── */
+    @media (max-width: 767px) {
+      #step-1 .row.text-center > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      #step-1 ul.p-step { padding: 0.75rem 1rem !important; }
+      #step-1 .category-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+      }
+      #step-1 .category-tabs::-webkit-scrollbar { display: none; }
+      #step-1 .btn-category {
+        flex: 0 0 auto;
+        font-size: 0.68rem;
+        padding: 6px 10px;
+        white-space: nowrap;
+      }
+      #table-card { min-height: 220px !important; }
+    }
+
+    /* ── Paso 2 y 3 — responsive (solo móvil) ───────────────────── */
+    @media (max-width: 767px) {
+      #step-2 .row.text-center > div,
+      #step-3 .row.text-center > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        margin-bottom: 0.75rem !important;
+      }
+      #cs-tabs.category-tabs,
+      #morfo-tabs.category-tabs { justify-content: center; }
+      #cs-tabs .btn-category,
+      #morfo-tabs .btn-category {
+        width: auto !important;
+        flex: 1 !important;
+        font-size: 0.72rem;
+        padding: 7px 12px;
+      }
+      #cs-table thead th,
+      #morfo-table thead th { font-size: 0.68rem !important; padding: 5px 3px !important; }
+      #cs-table tbody td,
+      #morfo-table tbody td { font-size: 0.75rem !important; padding: 5px 3px !important; }
+    }
+
+    /* ── Portafolio — búsqueda y tarjetas ───────────────────────── */
+    #portafolio-search {
+      border-radius: 2rem;
+      border: 1px solid #dee2e6;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.875rem;
+      box-shadow: none;
+    }
+    #portafolio-search:focus {
+      border-color: #40916c;
+      box-shadow: 0 0 0 0.2rem rgba(64,145,108,.2);
+      outline: none;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 0.5rem 0 1rem;
+    }
+    .species-cat-card {
+      border: 1px solid #d8e8e0; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex; flex-direction: column; background: #fff;
+    }
+    .cat-header { background: #e6f4ee; padding: 0.7rem 0.9rem; display: flex; align-items: center; gap: 0.65rem; }
+    .cat-icon { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg,#1b4332 0%,#40916c 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .cat-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-icon i   { color: rgba(255,255,255,0.9); font-size: 1.1rem; }
+    .cat-names  { flex: 1; min-width: 0; }
+    .cat-common { font-weight: 700; font-size: 0.88rem; line-height: 1.25; color: #1a3a2a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cat-sci    { font-size: 0.74rem; color: #5a7a6a; }
+    .cat-body   { padding: 0.7rem 0.9rem 0.5rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+    .cat-cats   { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .cat-badge  { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.02em; padding: 0.22rem 0.55rem; border-radius: 20px; color: #fff; white-space: nowrap; }
+    .cat-b-maderable  { background: #85604b; }
+    .cat-b-fruta      { background: #806377; }
+    .cat-b-biodiv     { background: #00a44d; }
+    .cat-b-suelo      { background: #aa4207; }
+    .cat-b-microclima { background: #006d70; }
+    .cat-b-otros      { background: #fdc00d; color: #333; }
+    .cat-info-table   { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .cat-info-table td { padding: 0.2rem 0; vertical-align: top; color: #333; line-height: 1.3; }
+    .cat-info-table td:first-child { color: #666; width: 48%; padding-right: 0.4rem; }
+    .cat-info-table td:last-child  { font-weight: 600; }
+    .cat-footer { display: flex; align-items: center; gap: 6px; padding: 0.5rem 0.9rem; border-top: 1px solid #edf5f0; background: #f8fbf9; }
+    .cat-ivim-label { font-size: 0.68rem; font-weight: 600; color: #9e9e9e; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cat-ivim-val   { font-size: 0.88rem; font-weight: 700; color: #1b4332; }
   </style>
 {% endblock stylesheets %}
 
@@ -121,341 +201,26 @@
 {% block content %}
 <div class="container-fluid py-3">
   <form class="multisteps-form__form" name="form-herramienta" id="form-tool">
-                  {% csrf_token %}
+    {% csrf_token %}
 
-                  <!-- Como funciona -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-0" data-animation="FadeIn">
+    <!-- Panel: Introducción (activo por defecto) -->
+    <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" id="panel-intro">
+      {% include "arbolsaf/tool/about.html" %}
+    </div>
 
-                    <div class="multisteps-form__content">
-                      <div class="px-2">
-                        <div class="row text-center">
-                          <div class="col-10 mx-auto w-auto">
-                            <div class="py-2 px-4 mx-auto title-step">
-                              <h4 class="font-weight-normal m-0"> Herramienta ÁrbolSAF </h4>
-                            </div>
-                          </div>
-                        </div>
-                          <div class="row justify-content-center">
-                            <div class="col-12 col-md-8 mt-5">
-                              <p class="text-left intro-text">
-                                La herramienta ÁrbolSAF permite armar un portafolio de especies de árboles y palmeras que puedan ser parte de diferentes opciones agroforestales. 
-                                Consta de 5 pasos progresivos mediante los cuales podrás seleccionar especies de árboles y palmeras conforme a los productos y servicios ambientales 
-                                que una opción agroforestal puede proporcionar (paso 1), para luego evaluar si tu zona y parcela tienen las condiciones adecuadas para el desarrollo 
-                                de esas especies (pasos 2 y 3) y, por último, conocer las características morfológicos de cada especie para diseñar tu opción agroforestal (paso 4). 
-                                En el último paso podrás imprimir tu consulta, previo registro en un formulario (paso 5).
-                              </p>
-                            </div>
-                            {% comment %} <div class="intro-image col-12 col-md-6 mt-5 d-flex justify-content-center">
-                              <img src="/static/assets/img/herramienta/steps_intro.png" class="w-100" style="object-fit: contain">
-                            </div> {% endcomment %}
-                          </div>
-                      </div>
-                    </div>
-                  </div>
+    {% include "arbolsaf/tool/panels/panel_portafolio.html" %}
+    {% include "arbolsaf/tool/panels/step_1.html" %}
+    {% include "arbolsaf/tool/panels/step_2.html" %}
+    {% include "arbolsaf/tool/panels/step_3.html" %}
+    {% include "arbolsaf/tool/panels/step_4.html" %}
+    {% include "arbolsaf/tool/panels/step_5.html" %}
 
-                  <!-- Paso 1 -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" id="step-1" data-animation="FadeIn">
-                    <div class="row text-center">
-                      <div class="col-10 mb-3 mb-md-3 mx-auto w-auto px-4" style="max-width: 800px;">
-                        <p>Un SAF puede producir productos complementarios como madera o fruta y al mismo tiempo mejorar la fertilidad del suelo 
-                          o ayudar a la fauna y flora local. Estos atributos dependen de las especies de asocio que establezcas en él.
-                        </p>
-                        
-                        <ul class="p-4 mx-auto p-step">
-                          <li class="mb-0 text-start">Inicia tu lista escogiendo especies que han sido categorizadas según varios productos o servicios ambientales.</li>
-                          <li class="mb-0 text-start">Haz clic en el producto o servicio que deseas que tu SAF provea.</li>
-                          <li class="mb-0 text-start">Selecciona especies que aparecen en cada categoría.</li>
-                          <li class="mb-0 text-start">Especies con valores de 3 son más valiosas dentro de ese producto/servicio.</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="multisteps-form__content">
-                      <div class="row mt-3 mb-2">
-                        <div class="col-12">
-                          <div class="card p-3" id="table-card">
-                            <!-- Pestañas de categoría -->
-                            <div class="category-tabs mb-3">
-                              <button type="button" class="btn btn-category btn-category-active" data-mode="maderable">Maderable</button>
-                              <button type="button" class="btn btn-category" data-mode="frutales">Frutales</button>
-                              <button type="button" class="btn btn-category" data-mode="biodiversidad">Biodiversidad</button>
-                              <button type="button" class="btn btn-category" data-mode="suelo">Suelo</button>
-                              <button type="button" class="btn btn-category" data-mode="microclima">Microclima</button>
-                              <button type="button" class="btn btn-category" data-mode="otrosusos">Otros usos</button>
-                              <button type="button" class="btn btn-category" data-mode="preliminar">Lista preliminar</button>
-                            </div>
-                            <div class="table-responsive">
-                              <table class="table table-flush" id="species-list"> {% comment %} id="datatable-search" {% endcomment %}
-                                <thead class="thead-light">
-                                  <tr>
-                                    <th class="text-lg"> Especies </th>
-                                    {% comment %} <th class="text-sm"> IVIM </th> {% endcomment %}
-                                    <th class="text-lg"> Seleccione </th>
-                                  </tr>
-                                </thead>
-                                <tbody> 
-                                  <div class="d-flex justify-content-center align-items-center position-relative spinner-loading" style="top: 200px">
-                                    <strong> Cargando datos ...</strong>
-                                    <div class="spinner-border ms-3" role="status" aria-hidden="true"></div>
-                                  </div>  
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>                       
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <!-- Paso 2 — Consideraciones de clima y suelo -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-2" data-animation="FadeIn">
-                    <div class="row text-center">
-                      <div class="col-10 mb-5 mx-auto w-auto" style="max-width: 800px;">
-                          <p class="font-weight-normal m-0"> ¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona? </p>
-
-                        <div class="p-4 mx-auto p-step">
-                          <p class="mb-0 text-start"> 1. Resalta (clic) las celdas donde las condiciones de tu zona son muy diferentes a las que las especies necesiten. </p>
-                          <p class="mb-0 text-start"> 2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas. </p>
-                          <p class="mb-0 text-start"> 3. Asigna el semáforo verde si consideras que las condiciones de tu zona no serán problema para el desarrollo de la especie. </p>
-                          <p class="mb-0 text-start"> 4. Puedes eliminar la especie si consideras que no desarrollará bien en tu zona. </p>
-                        </div>                        
-                      </div>
-                    </div>
-                    <div class="multisteps-form__content">
-                      <div class="row mt-3 mb-2">
-                        <div class="col-12">
-                          <div class="card p-3">
-                            <div class="category-tabs mb-3" id="cs-tabs">
-                              <button type="button" class="btn btn-category btn-category-active" data-csmode="clima">Clima</button>
-                              <button type="button" class="btn btn-category" data-csmode="suelo">Suelo</button>
-                            </div>
-                            <div id="cs-empty-msg" class="text-center text-muted py-4" style="display:none;">
-                              <i class="fas fa-leaf fa-2x mb-2 d-block" style="color:#21ac8d;opacity:0.4;"></i>
-                              Selecciona especies en el paso 1 para verlas aquí.
-                            </div>
-                            <div class="table-responsive">
-                              <table class="table table-flush" id="cs-table">
-                                <thead class="thead-light"><tr></tr></thead>
-                                <tbody></tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Paso 3 — Consideraciones morfológicas -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-3" data-animation="FadeIn">
-                    <div class="row text-center">
-                      <div class="col-10 mb-5 mx-auto w-auto" style="max-width: 800px;">
-                        <p class="font-weight-normal m-0">Decidir la densidad y la ubicación de las especies de asocio en tu SAF dependerá algunas de sus características.</p>
-                      </div>
-                    </div>
-                    <div class="multisteps-form__content">
-                      <div class="row mt-3 mb-2">
-                        <div class="col-12">
-                          <div class="card p-3">
-                            <div class="category-tabs mb-3" id="morfo-tabs">
-                              <button type="button" class="btn btn-category btn-category-active" data-morfomode="forma">Forma</button>
-                              <button type="button" class="btn btn-category" data-morfomode="ecologia">Ecología</button>
-                            </div>
-                            <div id="morfo-empty-msg" class="text-center text-muted py-4" style="display:none;">
-                              <i class="fas fa-leaf fa-2x mb-2 d-block" style="color:#21ac8d;opacity:0.4;"></i>
-                              Selecciona especies en el paso 1 para verlas aquí.
-                            </div>
-                            <div class="table-responsive">
-                              <table class="table table-flush" id="morfo-table">
-                                <thead class="thead-light"><tr></tr></thead>
-                                <tbody></tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Paso 4 — Evaluar (tarjetas con tabs Clima / Suelo / Morfología) -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-4" data-animation="FadeIn">
-                    <div class="row text-center">
-                      <div class="col-10 mb-4 mx-auto w-auto">
-                        <div class="py-2 px-4 mx-auto title-step">
-                          <h4 class="font-weight-normal m-0"> Evalúa las condiciones de cada especie seleccionada </h4>
-                        </div>
-                        <div class="p-4 mx-auto p-step">
-                          <p class="mb-0 text-start"> 1. Usa el semáforo de cada tarjeta para indicar si la especie es adecuada para tu zona (verde) o no (rojo). </p>
-                          <p class="mb-0 text-start"> 2. Navega entre las pestañas Clima, Suelo y Morfología para revisar las características de cada especie. </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="multisteps-form__content">
-                      <div class="eval-empty-msg text-center text-muted py-5" id="eval-empty-msg">
-                        <i class="fas fa-leaf fa-2x mb-2 d-block" style="color:#21ac8d;opacity:0.4;"></i>
-                        Selecciona especies en el paso 1 para verlas aquí.
-                      </div>
-                      {% comment %} <div class="species-eval-grid" id="eval-cards-grid"></div> {% endcomment %}
-                    </div>
-                  </div>
-
-
-                  <!-- Formulario -->
-                  <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-5" data-animation="FadeIn">
-                    <div style="width:70%; margin:auto">
-                      <div class="row text-center">
-                        <div class="col-10 mx-auto">
-                          <h4 class="font-weight-normal"> Para imprimir el reporte con los resultados de la consulta por favor llena este formulario. </h4>
-                        </div>
-                      </div>
-                      <div class="multisteps-form__content">
-                        <div class="row text-start">
-                          <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Nombre del productor </label>
-                            <input class="multisteps-form__input form-control" type="text" name="NOMBRE" placeholder="Ej. Juan" onchange="handleForm(this)" required/>
-                          </div>
-
-                          <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Región </label>
-                            <select class="form-control" name="REGION" id="choices-region" onchange="regionSelected(this)">
-                              <option value="">-- Seleccione -- </option>
-                              <option value="Loreto">Loreto</option>
-                              <option value="Amazonas">Amazonas</option>
-                              <option value="Cajamarca">Cajamarca</option>
-                              <option value="Ucayali">Ucayali</option>
-                              <option value="San Martín">San Martín</option>
-                              <option value="Huánuco">Huánuco</option>
-                              <option value="Madre de Dios">Madre de Dios</option>
-                            </select>
-                          </div>
-  
-                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
-                            <label> Provincia </label>   
-                            <select class="form-control" name="PROVINCIA" id="choices-province" onchange="provinciaSelected(this)"></select>                         
-                          </div>
-
-                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
-                            <label> Distrito </label>
-                            <select class="form-control" name="DISTRITO" id="choices-district" onchange="handleForm(this)"></select>
-                          </div>
-  
-                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
-                            <label> Tipo de intervención </label>
-                            <select class="form-control" name="TIPO DE INTERVENCION" id="choices-intervention" onchange="handleForm(this)">
-                              <option value="">-- Seleccione -- </option>
-                              <option value="Agroforestería con cacao"> Agroforestería con cacao </option>
-                              <option value="Agroforestería con palma aceitera"> Agroforestería con palma aceitera </option>
-                              <option value="Agroforestería con café"> Agroforestería con café </option>
-                              <option value="Plantación forestal mixta"> Plantación forestal mixta </option>
-                              <option value="Purmas mejoradas"> Purmas mejoradas </option>
-                              <option value="Huertos caseros"> Huertos caseros </option>
-                              <option value="Otros"> Otros </option>
-                            </select>
-                          </div>
-
-                          <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Tamaño de la finca (ha) </label>
-                            <input class="multisteps-form__input form-control" name="TAMANO DE FINCA" type="number" onchange="handleForm(this)"/>
-                          </div>
-
-                          <div class="col-12 col-md-6 ms-auto mt-3">
-                            <label> Tamaño de la parcela (ha) </label>
-                            <input class="multisteps-form__input form-control" name="TAMANO DE PARCELA" type="number" onchange="handleForm(this)"/>
-                          </div>
-  
-                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
-                            <label> Tipo de usuario </label>
-                            <select class="form-control" name="TIPO DE USUARIO" id="choices-user" onchange="handleForm(this)">
-                              <option value="">-- Seleccione -- </option>
-                              <option value="Técnico"> Técnico </option>
-                              <option value="Agricultor"> Agricultor </option>
-                              <option value="Investigador"> Investigador </option>
-                              <option value="Otro"> Otro </option>
-                            </select>
-                          </div>
-
-                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
-                            <label> Identidad de género </label>
-                            <select class="form-control" name="IDENTIDAD DE GENERO" id="choices-gender" onchange="handleForm(this)">
-                              <option value="">-- Seleccione -- </option>
-                              <option value="Hombre"> Hombre </option>
-                              <option value="Mujer"> Mujer </option>
-                              <option value="Prefiero no decirlo"> Prefiero no decirlo </option>
-                            </select>
-                          </div>
-  
-                          <div class="col-12 col-md-6 ms-auto mt-3 text-start">
-                            <label> Edad del usuario </label>
-                            <select class="form-control" name="EDAD DEL USUARIO" id="choices-age" onchange="handleForm(this)">
-                              <option value="">-- Seleccione -- </option>
-                              <option value="18-30"> 18-30 </option>
-                              <option value="31-40"> 31-40 </option>
-                              <option value="41-50"> 41-50 </option>
-                              <option value="51-60"> 51-60 </option>
-                              <option value="Mayor a 60"> Mayor a 60 </option>
-                            </select>
-                          </div>  
-                        </div>
-
-                        <div class="row">
-                          <div class="mt-4 col-12 d-flex justify-content-end">
-                            <button class="btn bg-gradient-dark mb-0" style="color: white !important" type="submit" title="Send" id="print-button"> Imprimir </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> 
   </form>
 </div>
-
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
 {% block javascripts %}
-
-  <!--script src="/static/assets/js/plugins/datatables.js"></script-->
-  
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
-
   <script src="{% static 'assets/js/tool_arbolsaf.js' %}"></script>
-
-<script src="/static/assets/js/plugins/choices.min.js"></script>
-
-  {% comment %} <script>
-    if (document.getElementById('choices-region')) {
-      var country = document.getElementById('choices-region');
-      const example = new Choices(country);
-    }
-
-    if (document.getElementById('choices-province')) {
-      var country = document.getElementById('choices-province');
-      const example = new Choices(country);
-    }
-
-    if (document.getElementById('choices-district')) {
-      var country = document.getElementById('choices-district');
-      const example = new Choices(country);
-    }
-
-    if (document.getElementById('choices-intervention')) {
-      var country = document.getElementById('choices-intervention');
-      const example = new Choices(country);
-    }
-
-    if (document.getElementById('choices-user')) {
-      var country = document.getElementById('choices-user');
-      const example = new Choices(country);
-    }
-
-    if (document.getElementById('choices-gender')) {
-      var country = document.getElementById('choices-gender');
-      const example = new Choices(country);
-    }
-
-    if (document.getElementById('choices-age')) {
-      var country = document.getElementById('choices-age');
-      const example = new Choices(country);
-    }   
-  </script> {% endcomment %}  
-  
-
+  <script src="/static/assets/js/plugins/choices.min.js"></script>
 {% endblock javascripts %}

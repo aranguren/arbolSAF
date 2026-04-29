@@ -1,0 +1,36 @@
+<!-- Paso 2 — Consideraciones de clima y suelo -->
+<div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-2" data-animation="FadeIn">
+  <div class="row text-center">
+    <div class="col-10 mb-5 mx-auto w-auto" style="max-width: 800px;">
+      <p class="font-weight-normal m-0">¿Cuáles especies podrán desarrollarse adecuadamente en las condiciones climáticas de tu zona?</p>
+      <div class="p-4 mx-auto p-step">
+        <p class="mb-0 text-start">1. Resalta (clic) las celdas donde las condiciones de tu zona son muy diferentes a las que las especies necesiten.</p>
+        <p class="mb-0 text-start">2. Asigna el semáforo rojo cuando varias condiciones no sean adecuadas.</p>
+        <p class="mb-0 text-start">3. Asigna el semáforo verde si consideras que las condiciones de tu zona no serán problema para el desarrollo de la especie.</p>
+        <p class="mb-0 text-start">4. Puedes eliminar la especie si consideras que no desarrollará bien en tu zona.</p>
+      </div>
+    </div>
+  </div>
+  <div class="multisteps-form__content">
+    <div class="row mt-3 mb-2">
+      <div class="col-12">
+        <div class="card p-3">
+          <div class="category-tabs mb-3" id="cs-tabs">
+            <button type="button" class="btn btn-category btn-category-active" data-csmode="clima">Clima</button>
+            <button type="button" class="btn btn-category" data-csmode="suelo">Suelo</button>
+          </div>
+          <div id="cs-empty-msg" class="text-center text-muted py-4" style="display:none;">
+            <i class="fas fa-leaf fa-2x mb-2 d-block" style="color:#21ac8d;opacity:0.4;"></i>
+            Selecciona especies en el paso 1 para verlas aquí.
+          </div>
+          <div class="table-responsive">
+            <table class="table table-flush" id="cs-table">
+              <thead class="thead-light"><tr></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

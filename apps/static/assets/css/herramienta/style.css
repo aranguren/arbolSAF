@@ -652,7 +652,7 @@
 .footer {
     position: relative;
     /* bottom: -75vh; */
-    z-index: -1;
+    z-index: 0;
 }
 
 
@@ -769,4 +769,15 @@
     #table-card {
         height: 560px !important;
     }
+}
+
+/* ── Excepciones al color: black !important ─────────────────────── */
+/* Headings verdes en panel intro */
+.tool-page .arbol-main .intro-content h2,
+.tool-page .arbol-main .intro-content h3 { color: #2d6a2d !important; }
+
+/* Spinners de carga (text-success → verde Bootstrap) */
+.tool-page .arbol-main .text-success { color: #198754 !important; }
+.tool-page .arbol-main .spinner-border.text-success {
+    border-top-color: #198754 !important;
 }

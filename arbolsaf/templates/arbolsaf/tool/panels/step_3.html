@@ -1,0 +1,30 @@
+<!-- Paso 3 — Consideraciones morfológicas -->
+<div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-3" data-animation="FadeIn">
+  <div class="row text-center">
+    <div class="col-10 mb-5 mx-auto w-auto" style="max-width: 800px;">
+      <p class="font-weight-normal m-0">Decidir la densidad y la ubicación de las especies de asocio en tu SAF dependerá algunas de sus características.</p>
+    </div>
+  </div>
+  <div class="multisteps-form__content">
+    <div class="row mt-3 mb-2">
+      <div class="col-12">
+        <div class="card p-3">
+          <div class="category-tabs mb-3" id="morfo-tabs">
+            <button type="button" class="btn btn-category btn-category-active" data-morfomode="forma">Forma</button>
+            <button type="button" class="btn btn-category" data-morfomode="ecologia">Ecología</button>
+          </div>
+          <div id="morfo-empty-msg" class="text-center text-muted py-4" style="display:none;">
+            <i class="fas fa-leaf fa-2x mb-2 d-block" style="color:#21ac8d;opacity:0.4;"></i>
+            Selecciona especies en el paso 1 para verlas aquí.
+          </div>
+          <div class="table-responsive">
+            <table class="table table-flush" id="morfo-table">
+              <thead class="thead-light"><tr></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

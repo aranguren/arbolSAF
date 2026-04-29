@@ -21,19 +21,120 @@
 let data_species,
     species_selected = [],
     currentMode     = 'maderable',   // modo activo actual
-    lastDataMode    = 'maderable';   // último modo con datos completos (≠ preliminar)
+    lastDataMode    = 'maderable',   // último modo con datos completos (≠ preliminar)
+    portafolio_data = null,          // cache de todas las especies para el portafolio
+    portafolio_rendered = false;     // para renderizar sólo una vez
 
+// ── Carga de especies habilitadas para la herramienta ────────────
 $.ajax({
     url: "/arbolsaf/especie/listado/json/",
     type: "GET",
     dataType: "json",
     success: function(data) {
-        $(".spinner-loading").css("visibility", "hidden");
+        $('#step1-loading').hide();
+        $('#step1-table-wrap').show();
         console.log('GET DATA', data);
         data_species = data;
         createTable(data_species, 'maderable');   // auto-carga Maderable
     }
 });
+
+// ── Pre-fetch de todas las especies para el portafolio ───────────
+$.ajax({
+    url: "/arbolsaf/especie/listado/json/?todos=1",
+    type: "GET",
+    dataType: "json",
+    success: function(data) {
+        portafolio_data = data;
+        // Si el panel portafolio ya está visible, renderizarlo ahora
+        if ($('#panel-portafolio').hasClass('js-active')) {
+            renderPortafolio();
+        }
+    }
+});
+
+// ── Función para construir tarjeta del portafolio ────────────────
+function buildCatCard(sp) {
+    function v(x) { return (x !== null && x !== undefined && x !== '') ? x : '—'; }
+    var code   = sp['CODIGO'];
+    var cid    = 'cat-card-' + code;
+    var search = ((sp['NOMBRE COMUN'] || '') + ' ' + (sp['NOMBRE CIENTIFICO'] || '')).toLowerCase();
+
+    var imgHtml = (sp.imagenes && sp.imagenes.length > 0)
+        ? '<img src="' + sp.imagenes[0] + '" alt="">'
+        : '<i class="fas fa-tree"></i>';
+
+    var cats = '';
+    if ((sp['VALOR MADERA'] || 0) > 1) cats += '<span class="cat-badge cat-b-maderable">Maderable</span>';
+    if ((sp['VALOR FRUTA']  || 0) > 0) cats += '<span class="cat-badge cat-b-fruta">Frutal</span>';
+    if ((sp['VALOR SUELO']  || 0) > 0) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
+    if ((sp['VALOR MICROCLIMA']    || 0) > 0) cats += '<span class="cat-badge cat-b-microclima">Microclima</span>';
+    if ((sp['VALOR BIODIVERSIDAD'] || 0) > 0) cats += '<span class="cat-badge cat-b-biodiv">Biodiversidad</span>';
+    if ((sp['VALOR OTROS USOS']    || 0) > 0) cats += '<span class="cat-badge cat-b-otros">Otros usos</span>';
+
+    var threatParts = [];
+    if ((sp.v56_amenaza_iucn     || '').trim()) threatParts.push(sp.v56_amenaza_iucn.trim());
+    if ((sp.v59_amenaza_nacional || '').trim()) threatParts.push(sp.v59_amenaza_nacional.trim());
+    var amenaza = threatParts.length ? threatParts.join(' / ') : '—';
+
+    return (
+        '<div class="species-cat-card" id="' + cid + '" data-search="' + search + '">' +
+        '<div class="cat-header">' +
+            '<div class="cat-icon">' + imgHtml + '</div>' +
+            '<div class="cat-names">' +
+                '<div class="cat-common">' + v(sp['NOMBRE COMUN']) + '</div>' +
+                '<div class="cat-sci"><em>' + v(sp['NOMBRE CIENTIFICO']) + '</em></div>' +
+            '</div>' +
+        '</div>' +
+        '<div class="cat-body">' +
+            (cats ? '<div class="cat-cats">' + cats + '</div>' : '') +
+            '<table class="cat-info-table">' +
+                '<tr><td>Nativa de Perú</td><td>' + (sp.nativa ? 'Sí' : 'No') + '</td></tr>' +
+                '<tr><td>Endemismo para Perú</td><td>' + (sp.v64_endemismo ? 'Sí' : 'No') + '</td></tr>' +
+                '<tr><td>Categoría amenaza</td><td>' + amenaza + '</td></tr>' +
+            '</table>' +
+        '</div>' +
+        '<div class="cat-footer">' +
+            '<span class="cat-ivim-label">IVIM</span>' +
+            '<span class="cat-ivim-val">' + (sp['IVIM'] !== undefined ? sp['IVIM'] : '—') + '</span>' +
+        '</div>' +
+        '</div>'
+    );
+}
+
+// ── Renderizar portafolio en su panel ────────────────────────────
+function renderPortafolio() {
+    if (!portafolio_data) return;   // aún cargando
+    if (portafolio_rendered) return; // ya renderizado
+
+    portafolio_rendered = true;
+    $('#portafolio-loading').hide();
+    var grid = $('#portafolio-grid');
+    grid.empty();
+    portafolio_data.forEach(function(sp) { grid.append(buildCatCard(sp)); });
+    var n = portafolio_data.length;
+    $('#portafolio-count').text(n + ' especie' + (n !== 1 ? 's' : '') + ' encontrada' + (n !== 1 ? 's' : ''));
+
+    // Búsqueda cliente en portafolio
+    $('#portafolio-search').off('input').on('input', function() {
+        var q       = this.value.toLowerCase().trim();
+        var cards   = document.querySelectorAll('#portafolio-grid .species-cat-card');
+        var noRes   = document.getElementById('portafolio-no-results');
+        var counter = document.getElementById('portafolio-count');
+        var visible = 0;
+        cards.forEach(function(card) {
+            var match = !q || card.dataset.search.indexOf(q) !== -1;
+            card.style.display = match ? '' : 'none';
+            if (match) visible++;
+        });
+        counter.textContent = visible + ' especie' + (visible !== 1 ? 's' : '') + ' encontrada' + (visible !== 1 ? 's' : '');
+        if (noRes) {
+            noRes.style.display = (q && visible === 0) ? '' : 'none';
+            var st = document.getElementById('portafolio-search-term');
+            if (st) st.textContent = q;
+        }
+    });
+}
 
 var target = document.querySelector('#species-list tbody');
 // var target = document.querySelector('.multisteps-form__panel');
@@ -1253,19 +1354,22 @@ function provinciaSelected (e) {
     console.log('species_selected >>>>>>>', species_selected);    
 }
 
-// ── Reajuste de tablas al cambiar de paso ────────────────────────
+// ── Reajuste de paneles/tablas al cambiar de pestaña ────────────
 $(document).on('click', '#arbol-navtab .arbol-navtab-item', function() {
-    var step = $(this).data('step');
-    if (!step) return;
+    var panel = $(this).data('panel');
+    if (!panel) return;
     // Pequeño delay para que el panel sea visible antes de ajustar
     setTimeout(function() {
-        if (step == '1' && $.fn.DataTable.isDataTable('#species-list')) {
+        if (panel === 'panel-portafolio') {
+            renderPortafolio();
+        }
+        if (panel === 'step-1' && $.fn.DataTable.isDataTable('#species-list')) {
             $('#species-list').DataTable().columns.adjust();
         }
-        if (step == '2') {
+        if (panel === 'step-2') {
             createCSTable(currentCSMode);
         }
-        if (step == '3') {
+        if (panel === 'step-3') {
             createMorfoTable(currentMorfoMode);
         }
     }, 50);
