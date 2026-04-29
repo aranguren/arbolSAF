@@ -48,15 +48,48 @@
       background: #fff;
     }
 
-    /* ── Header (rendered by includes/header.html) ────────────────── */
-    header .card {
-      border-radius: 0 !important;
-      border: none;
-      margin: 0;
-    }
-    header img { width: 100%; display: block; }
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .arbol-header { margin: 0; line-height: 0; }
 
-    /* ── Navtab — Bootstrap nav-tabs style (ref: GlobUNT app) ─────── */
+    .arbol-header-link {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+
+    .arbol-header-img {
+      width: 100%;
+      display: block;
+      height: 120px;
+      object-fit: cover;
+      object-position: left center;
+    }
+
+    .arbol-header-caption {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: clamp(0.6rem, 1.4vw, 0.95rem);
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      width: 90%;
+      pointer-events: none;
+    }
+
+    @media (max-width: 575px) {
+      .arbol-header-img    { height: 65px; }
+      .arbol-header-caption { display: none; }
+    }
+    @media (min-width: 576px) and (max-width: 991px) {
+      .arbol-header-img { height: 90px; }
+    }
+
+    /* ── Navtab ──────────────────────────────────────────────────────── */
     .arbol-navtab-wrapper {
       background: #fff;
       border-bottom: 1px solid #dee2e6;
@@ -64,8 +97,9 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      margin-top: 0.75rem
+      margin-top: 0.75rem;
     }
+
     .arbol-navtab {
       display: flex;
       flex-wrap: wrap;
@@ -74,19 +108,20 @@
       padding: 0;
       border-bottom: none;
     }
+
     .arbol-navtab-item {
       display: block;
       padding: 10px 16px;
       font-size: 0.82rem;
       font-weight: 500;
-      color: #2d8653;           /* CIFOR-ICRAF green */
+      color: #2d8653;
       text-decoration: none;
       cursor: pointer;
       border: 1px solid transparent;
       border-bottom: none;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
-      margin-bottom: -1px;      /* overlap the wrapper border-bottom */
+      margin-bottom: -1px;
       white-space: normal;
       text-align: center;
       line-height: 1.35;
@@ -110,10 +145,32 @@
       pointer-events: none;
     }
 
-    /* ── Main content ────────────────────────────────────────────── */
+    /* ── Navtab responsive (pantallas pequeñas) ──────────────────────── */
+    @media (max-width: 767px) {
+      .arbol-navtab-wrapper {
+        padding: 0 0.5rem;
+        margin-top: 0.4rem;
+      }
+      .arbol-navtab {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .arbol-navtab::-webkit-scrollbar { display: none; }
+      .arbol-navtab-item {
+        flex-shrink: 0;
+        font-size: 0.72rem;
+        padding: 8px 10px;
+        min-width: 80px;
+        max-width: 120px;
+      }
+    }
+
+    /* ── Main content ────────────────────────────────────────────────── */
     .arbol-main { min-height: 60vh; }
 
-    /* ── Multistep panel show/hide ───────────────────────────────── */
+    /* ── Multistep panel show/hide ───────────────────────────────────── */
     .multisteps-form__panel {
       display: none !important;
       position: static !important;
@@ -136,41 +193,43 @@
     <nav class="arbol-navtab" id="arbol-navtab">
 
       <a class="arbol-navtab-item {% block nav_intro %}{% endblock %}"
-         href="{% url 'arbolsaf:about_page' %}">
+         data-panel="panel-intro"
+         href="{% url 'arbolsaf:tool_part1' %}">
         Introducción<br>(Acerca de)
       </a>
 
       <a class="arbol-navtab-item {% block nav_portafolio %}{% endblock %}"
-         href="{% url 'arbolsaf:species_portafolio' %}">
+         data-panel="panel-portafolio"
+         href="{% url 'arbolsaf:tool_part1' %}">
         Portafolio<br>de especies
       </a>
 
       <a class="arbol-navtab-item {% block nav_paso1 %}{% endblock %}"
-         data-step="1"
+         data-panel="step-1"
          href="{% url 'arbolsaf:tool_part1' %}">
         Selección de tu lista<br>preliminar (paso 1)
       </a>
 
       <a class="arbol-navtab-item {% block nav_paso2 %}{% endblock %}"
-         data-step="2"
+         data-panel="step-2"
          href="{% url 'arbolsaf:tool_part1' %}">
         Consideraciones de<br>clima y suelo (paso 2)
       </a>
 
       <a class="arbol-navtab-item {% block nav_paso3 %}{% endblock %}"
-         data-step="3"
+         data-panel="step-3"
          href="{% url 'arbolsaf:tool_part1' %}">
         Consideraciones<br>morfológicas (paso 3)
       </a>
 
       <a class="arbol-navtab-item {% block nav_paso4 %}{% endblock %}"
-         data-step="4"
+         data-panel="step-4"
          href="{% url 'arbolsaf:tool_part1' %}">
         Evaluación y ajuste<br>de la lista (paso 4)
       </a>
 
       <a class="arbol-navtab-item {% block nav_paso5 %}{% endblock %}"
-         data-step="5"
+         data-panel="step-5"
          href="{% url 'arbolsaf:tool_part1' %}">
         Registro y<br>reporte (paso 5)
       </a>
@@ -208,9 +267,9 @@
     var navItems = document.querySelectorAll('#arbol-navtab .arbol-navtab-item');
     var isToolPage = panels.length > 0;
 
-    function showPanel(stepId) {
+    function showPanel(panelId) {
       panels.forEach(function (p) { p.classList.remove('js-active'); });
-      var target = document.getElementById('step-' + stepId);
+      var target = document.getElementById(panelId);
       if (target) { target.classList.add('js-active'); }
     }
 
@@ -221,11 +280,11 @@
 
     if (isToolPage) {
       navItems.forEach(function (item) {
-        var step = item.dataset.step;
-        if (step === undefined) { return; }
+        var panel = item.dataset.panel;
+        if (panel === undefined) { return; }
         item.addEventListener('click', function (e) {
           e.preventDefault();
-          showPanel(step);
+          showPanel(panel);
           setActiveNav(this);
         });
       });

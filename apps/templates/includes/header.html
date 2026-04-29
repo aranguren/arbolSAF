@@ -1,11 +1,11 @@
 {% load user_has_group %}
-<header>
-  <div class="card top-0 rounded-0 position-relative overflow-hidden">
-    <a href="{% url 'arbolsaf:homepage' %}" class="d-block position-relative">
-      <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png" class="w-100">
-      <h3 class="position-absolute top-50 start-50 translate-middle text-center text-white m-0 px-3">
-        Sistema Integrado de Apoyo al Conocimiento<br>y Selección de Árboles para Sistemas Agroforestales
-      </h3>
-    </a>
-  </div>
+<header class="arbol-header">
+  <a href="{% url 'arbolsaf:homepage' %}" class="arbol-header-link">
+    <img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png"
+         alt="ÁrbolSAF" class="arbol-header-img">
+    <div class="arbol-header-caption">
+      Sistema Integrado de Apoyo al Conocimiento<br>
+      y Selección de Árboles para Sistemas Agroforestales
+    </div>
+  </a>
 </header>
