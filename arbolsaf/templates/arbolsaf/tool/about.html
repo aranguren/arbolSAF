@@ -18,6 +18,70 @@
   }
   .manual-link-card:hover { background: #e6f2e6; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
   .manual-link-card i { display: block; font-size: 1.8rem; margin-bottom: 0.5rem; }
+
+  /* ── Diagrama etapas codiseño ──────────────────────────────── */
+  .codiseno-diagram {
+    margin: 1.75rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .codiseno-diagram__title {
+    display: inline-block;
+    border: 2px solid #222;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.25rem;
+    border-radius: 4px;
+  }
+  .codiseno-diagram__flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .codiseno-box {
+    flex: 1;
+    border-radius: 14px;
+    padding: 1.1rem 1rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.45;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .codiseno-box--outline {
+    border: 2.5px solid #2d4a6a;
+    background: #fff;
+  }
+  .codiseno-box--filled {
+    background: #7aab4a;
+    color: #fff;
+    font-weight: 600;
+  }
+  .codiseno-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 0.4rem;
+    flex-shrink: 0;
+  }
+  .codiseno-arrow svg {
+    width: 36px;
+    height: 36px;
+    fill: #7aab4a;
+  }
+
+  /* Responsive: apila verticalmente en móvil */
+  @media (max-width: 600px) {
+    .codiseno-diagram__flow { flex-direction: column; align-items: center; gap: 0; }
+    .codiseno-box { width: 100%; max-width: 280px; padding: 0.9rem 1rem; }
+    .codiseno-arrow { transform: rotate(90deg); padding: 0.2rem 0; }
+    .codiseno-arrow svg { width: 28px; height: 28px; }
+  }
 </style>
 
 <div class="intro-content">
@@ -32,6 +96,38 @@
     La implementación de un SAF requiere una importante inversión de recursos y tiempo, por lo que en su
     diseño y planificación es necesario considerar varias etapas.
   </p>
+
+  <!-- Diagrama: Etapas de codiseño de un SAF -->
+  <div class="codiseno-diagram">
+    <div class="codiseno-diagram__title">Etapas de codiseño de un SAF</div>
+    <div class="codiseno-diagram__flow">
+
+      <div class="codiseno-box codiseno-box--outline">
+        Diagnóstico integral del contexto, las capacidades, los objetivos y recursos de la familia/agricultor
+      </div>
+
+      <div class="codiseno-arrow" aria-hidden="true">
+        <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="4,12 22,12 22,6 32,18 22,30 22,24 4,24"/>
+        </svg>
+      </div>
+
+      <div class="codiseno-box codiseno-box--filled">
+        Selección de especies y arreglo espacial y temporal considerando las especies de asocio
+      </div>
+
+      <div class="codiseno-arrow" aria-hidden="true">
+        <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="4,12 22,12 22,6 32,18 22,30 22,24 4,24"/>
+        </svg>
+      </div>
+
+      <div class="codiseno-box codiseno-box--outline">
+        Evaluación de los costos y beneficios económicos y ambientales que requiere y proveerá el SAF
+      </div>
+
+    </div>
+  </div>
 
   <h2>ÁrbolSAF como herramienta de apoyo al codiseño</h2>
   <p>
