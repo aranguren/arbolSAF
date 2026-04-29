@@ -174,22 +174,35 @@ observer.observe(target, config);
     }
 }); */
 
-// ── Función para renderizar punto boolean (sub-usos) ─────────────
+// ── Bloqueo/desbloqueo de pasos 2–5 según selección ─────────────
+function updateStepLocks() {
+    var hasSelection = species_selected.length > 0;
+    ['step-2', 'step-3', 'step-4', 'step-5'].forEach(function(panel) {
+        var $tab = $('[data-panel="' + panel + '"]');
+        if (hasSelection) {
+            $tab.removeClass('arbol-navtab-locked');
+        } else {
+            $tab.addClass('arbol-navtab-locked');
+        }
+    });
+}
+
+// ── Círculo gris sin valor (sub-usos booleanos: sí/no) ───────────
 function boolDot(value, type) {
     if (type === 'display') {
         return value
-            ? '<span class="bool-dot-yes">●</span>'
-            : '<span class="bool-dot-no">○</span>';
+            ? '<span class="cat-circle cat-circle--filled"></span>'
+            : '<span class="cat-circle cat-circle--empty"></span>';
     }
     return value ? 1 : 0;
 }
 
-// ── Función para renderizar punto de valor (>0 = relleno) ─────────
+// ── Círculo gris con valor (lista preliminar) ─────────────────────
 function valueDot(value, type) {
     if (type === 'display') {
         return value > 0
-            ? '<span class="val-dot-yes">●</span>'
-            : '<span class="val-dot-no">○</span>';
+            ? '<span class="cat-circle cat-circle--filled">' + value + '</span>'
+            : '<span class="cat-circle cat-circle--empty"></span>';
     }
     return value > 0 ? 1 : 0;
 }
@@ -428,8 +441,8 @@ function renderSemDot(semType) {
         var gOn = val === 'active_green';
         var rOn = val === 'active_red';
         var code = row['CODIGO'];
-        var dot = 'width:18px;height:18px;border-radius:50%;cursor:pointer;display:inline-block;border:2px solid;transition:opacity .15s,box-shadow .15s;';
-        return '<div style="display:flex;gap:5px;justify-content:center;align-items:center;">' +
+        var dot = 'width:20px;height:20px;border-radius:50%;cursor:pointer;display:inline-block;border:2px solid;transition:opacity .15s,box-shadow .15s;';
+        return '<div style="display:flex;gap:10px;justify-content:center;align-items:center;">' +
             '<span class="cs-light" data-code="' + code + '" data-type="' + semType + '" data-color="green" data-active="' + gOn + '" onclick="toggleCSLight(this)" ' +
                 'style="' + dot + 'background:#00a44d;border-color:#00a44d;opacity:' + (gOn ? '1' : '0.22') + ';box-shadow:' + (gOn ? '0 0 7px rgba(0,164,77,.65)' : 'none') + ';"></span>' +
             '<span class="cs-light" data-code="' + code + '" data-type="' + semType + '" data-color="red"   data-active="' + rOn + '" onclick="toggleCSLight(this)" ' +
@@ -684,6 +697,7 @@ $(document).on('click', '.dt-trash', function() {
     updateEvalEmptyMsg();
     createCSTable(currentCSMode);
     createMorfoTable(currentMorfoMode);
+    updateStepLocks();
     createTable(data_species, 'preliminar');
 });
 
@@ -907,6 +921,7 @@ function selectSpecies(item) {
         createEvalCard(specie_selected[0]);
         createCSTable(currentCSMode);
         createMorfoTable(currentMorfoMode);
+        updateStepLocks();
 
     } else {
         let specie_code = $(item).val();
@@ -921,6 +936,7 @@ function selectSpecies(item) {
 
         createCSTable(currentCSMode);
         createMorfoTable(currentMorfoMode);
+        updateStepLocks();
 
         // En modo Lista preliminar, refrescar tabla para quitar la especie deseleccionada
         if (currentMode === 'preliminar') {
@@ -957,6 +973,7 @@ function removeEvalCard(btn) {
     updateEvalEmptyMsg();
     createCSTable(currentCSMode);
     createMorfoTable(currentMorfoMode);
+    updateStepLocks();
 
     if (currentMode === 'preliminar') {
         createTable(data_species, 'preliminar');

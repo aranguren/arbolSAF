@@ -89,11 +89,28 @@
     #morfo-table thead th:not(:first-child) { text-align: center; }
     #morfo-table tbody td:not(:first-child)  { text-align: center; vertical-align: middle; }
 
-    /* ── Indicadores de punto en la tabla ───────────────────────── */
-    .bool-dot-yes { color: #00a44d; font-size: 1.1rem; line-height: 1; }
-    .bool-dot-no  { color: #ccc;    font-size: 1.1rem; line-height: 1; }
-    .val-dot-yes  { color: #555;    font-size: 1.2rem; line-height: 1; }
-    .val-dot-no   { color: #ddd;    font-size: 1.2rem; line-height: 1; }
+    /* ── Círculos de categoría en tablas ────────────────────────── */
+    .cat-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.8rem;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .cat-circle--filled {
+      background: #8c8c8c;
+      border: 2px solid #8c8c8c;
+      color: #fff;
+    }
+    .cat-circle--empty {
+      background: transparent;
+      border: 2px solid #d0d0d0;
+    }
 
     /* ── Paso 1 — responsive (solo móvil) ───────────────────────── */
     @media (max-width: 767px) {

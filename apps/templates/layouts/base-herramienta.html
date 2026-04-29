@@ -61,9 +61,10 @@
     .arbol-header-img {
       width: 100%;
       display: block;
-      height: 120px;
+      height: auto;
+      max-height: 180px;
       object-fit: cover;
-      object-position: left center;
+      object-position: center center;
     }
 
     .arbol-header-caption {
@@ -72,7 +73,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: #fff;
-      font-size: clamp(0.6rem, 1.4vw, 0.95rem);
+      font-size: clamp(0.6rem, 1.4vw, 1.25rem);
       font-weight: 600;
       line-height: 1.5;
       text-align: center;
@@ -82,11 +83,11 @@
     }
 
     @media (max-width: 575px) {
-      .arbol-header-img    { height: 65px; }
+      .arbol-header-img    { max-height: 65px; }
       .arbol-header-caption { display: none; }
     }
     @media (min-width: 576px) and (max-width: 991px) {
-      .arbol-header-img { height: 90px; }
+      .arbol-header-img { max-height: 110px; }
     }
 
     /* ── Navtab ──────────────────────────────────────────────────────── */
@@ -142,6 +143,14 @@
       color: #adb5bd !important;
       cursor: not-allowed;
       pointer-events: none;
+    }
+
+    /* Pasos bloqueados hasta seleccionar especie en paso 1 */
+    .arbol-navtab-locked {
+      color: #c5c5c5 !important;
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.55;
     }
 
     /* ── Navtab responsive (pantallas pequeñas) ──────────────────────── */
@@ -209,25 +218,25 @@
         Selección de tu lista<br>preliminar (paso 1)
       </a>
 
-      <a class="arbol-navtab-item {% block nav_paso2 %}{% endblock %}"
+      <a class="arbol-navtab-item arbol-navtab-locked {% block nav_paso2 %}{% endblock %}"
          data-panel="step-2"
          href="{% url 'arbolsaf:tool_part1' %}">
         Consideraciones de<br>clima y suelo (paso 2)
       </a>
 
-      <a class="arbol-navtab-item {% block nav_paso3 %}{% endblock %}"
+      <a class="arbol-navtab-item arbol-navtab-locked {% block nav_paso3 %}{% endblock %}"
          data-panel="step-3"
          href="{% url 'arbolsaf:tool_part1' %}">
         Consideraciones<br>morfológicas (paso 3)
       </a>
 
-      <a class="arbol-navtab-item {% block nav_paso4 %}{% endblock %}"
+      <a class="arbol-navtab-item arbol-navtab-locked {% block nav_paso4 %}{% endblock %}"
          data-panel="step-4"
          href="{% url 'arbolsaf:tool_part1' %}">
         Evaluación y ajuste<br>de la lista (paso 4)
       </a>
 
-      <a class="arbol-navtab-item {% block nav_paso5 %}{% endblock %}"
+      <a class="arbol-navtab-item arbol-navtab-locked {% block nav_paso5 %}{% endblock %}"
          data-panel="step-5"
          href="{% url 'arbolsaf:tool_part1' %}">
         Registro y<br>reporte (paso 5)
