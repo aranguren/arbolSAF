@@ -130,10 +130,8 @@
           <div class="row g-2 align-items-center my-3">
             <!-- Search -->
             <div class="d-flex justify-content-between">
-              <!-- Result count -->
-              <p class="text-muted mb-0" id="species-count">
-                {{ species|length }} especie{% if species|length != 1 %}s{% endif %} encontrada{% if species|length != 1 %}s{% endif %}
-              </p>
+              <!-- Result count (managed by JS) -->
+              <p class="text-muted mb-0" id="species-count">Cargando...</p>
               
                 <input type="text" id="species-search"
                    class="form-control"
@@ -177,9 +175,18 @@
           <div id="species-cat-grid" class="cat-grid"></div>
 
           <!-- No-results after client-side search -->
-          <div id="no-results-msg" class="text-center py-5">
+          <div id="no-results-msg" class="text-center py-5" style="display:none">
             <i class="fas fa-search fa-2x text-muted d-block mb-2"></i>
             <p class="text-muted">No se encontraron especies para "<span id="search-term"></span>"</p>
+          </div>
+
+          <!-- Infinite scroll sentinel -->
+          <div id="scroll-sentinel" style="height:1px"></div>
+
+          <!-- Per-page loader -->
+          <div id="scroll-loader" class="text-center py-3" style="display:none">
+            <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+            <span class="ms-2 text-muted" style="font-size:0.88rem;">Cargando más especies...</span>
           </div>
 
         </div><!-- /card-body -->
@@ -429,10 +436,93 @@ function buildCatCard(sp) {
   );
 }
 
+// ── Infinite scroll state ────────────────────────────────────────
+var currentPage = 1;
+var PAGE_SIZE   = 20;
+var isLoading   = false;
+var hasNext     = true;
+var totalLoaded = 0;
+
+function updateCounter() {
+  var q = document.getElementById('species-search').value.toLowerCase().trim();
+  var label;
+  if (q) {
+    var visible = document.querySelectorAll('.species-cat-card:not([style*="display: none"])').length;
+    label = visible + ' especie' + (visible !== 1 ? 's' : '') + ' encontrada' + (visible !== 1 ? 's' : '');
+  } else {
+    label = totalLoaded + ' especie' + (totalLoaded !== 1 ? 's' : '') + ' cargada' + (totalLoaded !== 1 ? 's' : '');
+    if (hasNext) label += ' — cargando más...';
+  }
+  document.getElementById('species-count').textContent = label;
+}
+
+function applySearch(q) {
+  var cards   = document.querySelectorAll('.species-cat-card');
+  var noRes   = document.getElementById('no-results-msg');
+  var visible = 0;
+  cards.forEach(function(card) {
+    var match = !q || card.dataset.search.indexOf(q) !== -1;
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  if (q && visible === 0) {
+    noRes.style.display = '';
+    document.getElementById('search-term').textContent = q;
+  } else {
+    noRes.style.display = 'none';
+  }
+  updateCounter();
+}
+
+function loadPage(page) {
+  if (isLoading) return;
+  isLoading = true;
+  if (page === 1) {
+    $('#species-loading').show();
+  } else {
+    $('#scroll-loader').show();
+  }
+
+  $.ajax({
+    url: '/arbolsaf/especie/listado/json/?todos=1&page_size=' + PAGE_SIZE + '&page=' + page,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      var especies = data.especies;
+      hasNext = data.has_next;
+
+      var grid = $('#species-cat-grid');
+      var q = document.getElementById('species-search').value.toLowerCase().trim();
+      especies.forEach(function(sp) {
+        var card = $(buildCatCard(sp));
+        if (q && card[0].dataset.search.indexOf(q) === -1) {
+          card.css('display', 'none');
+        }
+        grid.append(card);
+      });
+      totalLoaded += especies.length;
+
+      if (page === 1) { $('#species-loading').hide(); }
+      $('#scroll-loader').hide();
+
+      updateCounter();
+      isLoading = false;
+      currentPage = page + 1;
+
+      if (!hasNext) { observer.disconnect(); }
+    },
+    error: function() {
+      $('#species-loading').html('<p class="text-danger">Error al cargar las especies. Recarga la página.</p>');
+      $('#scroll-loader').hide();
+      isLoading = false;
+    }
+  });
+}
+
 // ── Load & render ────────────────────────────────────────────────
 $(document).ready(function () {
 
-  // Modals JS (unchanged)
+  // Modals JS
   document.getElementById("id_nombre_comun").value            = "{{ value_nombre_comun }}";
   document.getElementById("id_nombre_cientifico").value       = "{{ value_nombre_cientifico }}";
   document.getElementById("id_tipo_variable").value           = "{{ value_tipo_variable }}";
@@ -468,45 +558,21 @@ $(document).ready(function () {
     });
   });
 
-  // Fetch species data and build cards
-  $.ajax({
-    url: '/arbolsaf/especie/listado/json/?todos=1',
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      $('#species-loading').hide();
-      var grid = $('#species-cat-grid');
-      data.forEach(function(sp) { grid.append(buildCatCard(sp)); });
-      var n = data.length;
-      $('#species-count').text(n + ' especie' + (n !== 1 ? 's' : '') + ' encontrada' + (n !== 1 ? 's' : ''));
-    },
-    error: function() {
-      $('#species-loading').html('<p class="text-danger">Error al cargar las especies. Recarga la página.</p>');
+  // ── IntersectionObserver for infinite scroll ─────────────────
+  var sentinel = document.getElementById('scroll-sentinel');
+  observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !isLoading && hasNext) {
+      loadPage(currentPage);
     }
-  });
+  }, { rootMargin: '300px' });
+  observer.observe(sentinel);
 
-  // ── Client-side search (runs on JS-built cards) ──────────────
+  // Load first page
+  loadPage(1);
+
+  // ── Client-side search ───────────────────────────────────────
   document.getElementById('species-search').addEventListener('input', function () {
-    var q        = this.value.toLowerCase().trim();
-    var cards    = document.querySelectorAll('.species-cat-card');
-    var noRes    = document.getElementById('no-results-msg');
-    var counter  = document.getElementById('species-count');
-    var visible  = 0;
-
-    cards.forEach(function(card) {
-      var match = !q || card.dataset.search.indexOf(q) !== -1;
-      card.style.display = match ? '' : 'none';
-      if (match) visible++;
-    });
-
-    counter.textContent = visible + ' especie' + (visible !== 1 ? 's' : '') +
-                          ' encontrada' + (visible !== 1 ? 's' : '');
-    if (q && visible === 0) {
-      noRes.style.display = '';
-      document.getElementById('search-term').textContent = q;
-    } else {
-      noRes.style.display = 'none';
-    }
+    applySearch(this.value.toLowerCase().trim());
   });
 });
 </script>

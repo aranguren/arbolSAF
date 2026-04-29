@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.db import connection
+from django.core.paginator import Paginator
 import json
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel
 from ..forms import SpeciesForm
@@ -487,469 +488,249 @@ def species_delete(request):
 
 
 def species_list_json(request):
-    resp = {}
+    page_size = int(request.GET.get('page_size', 0))
+    page_num  = int(request.GET.get('page', 1))
 
-    variables = VariableTypeModel.objects.all()
     if request.GET.get('todos', '0') == '1':
-        especies = SpeciesModel.objects.all()
+        qs = SpeciesModel.objects.all()
     else:
-        especies = SpeciesModel.objects.filter(habilitada_herramienta=True)
+        qs = SpeciesModel.objects.filter(habilitada_herramienta=True)
+
+    qs = qs.prefetch_related(
+        'variables__tipo_variable',
+        'variables__valores_cualitativos',
+        'imagenes',
+    ).order_by('pk')
+
+    if page_size > 0:
+        paginator = Paginator(qs, page_size)
+        page_obj  = paginator.get_page(page_num)
+        especies  = list(page_obj)
+        has_next  = page_obj.has_next()
+    else:
+        especies = list(qs)
+        has_next = False
+
+    def qual_names(instance):
+        if instance is None:
+            return []
+        return [v.nombre for v in instance.valores_cualitativos.all()]
+
     especies_dict_list = []
     for especie in especies:
-        valores_especie = {
-        "CODIGO": especie.cod_esp,
-        "NOMBRE COMUN": especie.nombre_comun or "",
-        "NOMBRE CIENTIFICO": especie.nombre_cientifico or "",
-        "VALOR MADERA": especie.valor_madera,
-        "VALOR FRUTA": especie.valor_fruta,
-        "VALOR OTROS USOS": especie.valor_otros_usos,
-        "VALOR BIODIVERSIDAD": especie.valor_biodiversidad,
-        "VALOR MICROCLIMA": especie.valor_microclima,
-        "VALOR SUELO": especie.valor_suelo,
-        "IVIM": round(especie.ivim, 0)
+        vars_by_cod = {
+            var.tipo_variable.cod_var.lower(): var
+            for var in especie.variables.all()
         }
-        
-        #temperatura máxima de su zona de distribución
-        v100_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v100').first()
-        if v100_instance:
-            rango_inferior= v100_instance.rango_inferior or 0.0
-            rango_superior= v100_instance.rango_superior or 0.0
-            v100_temperatura_max_promedio = (rango_inferior+rango_superior)/2
-            v100_temperatura_max =  str(v100_temperatura_max_promedio)
+
+        valores_especie = {
+            "CODIGO": especie.cod_esp,
+            "NOMBRE COMUN": especie.nombre_comun or "",
+            "NOMBRE CIENTIFICO": especie.nombre_cientifico or "",
+            "VALOR MADERA": especie.valor_madera,
+            "VALOR FRUTA": especie.valor_fruta,
+            "VALOR OTROS USOS": especie.valor_otros_usos,
+            "VALOR BIODIVERSIDAD": especie.valor_biodiversidad,
+            "VALOR MICROCLIMA": especie.valor_microclima,
+            "VALOR SUELO": especie.valor_suelo,
+            "IVIM": round(especie.ivim, 0),
+        }
+
+        v100 = vars_by_cod.get('v100')
+        if v100:
+            valores_especie['v100_temperatura_max'] = str(((v100.rango_inferior or 0.0) + (v100.rango_superior or 0.0)) / 2)
         else:
-            v100_temperatura_max = ""
-        valores_especie['v100_temperatura_max'] = v100_temperatura_max
-        #temperatura mínima de su zona de distribución
+            valores_especie['v100_temperatura_max'] = ""
 
-        v101_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v101').first()
-        if v101_instance:
-            rango_inferior= v101_instance.rango_inferior or 0.0
-            rango_superior= v101_instance.rango_superior or 0.0
-            v101_temperatura_min_promedio = (rango_inferior+rango_superior)/2
-            v101_temperatura_min = v101_temperatura_min_promedio
+        v101 = vars_by_cod.get('v101')
+        if v101:
+            valores_especie['v101_temperatura_min'] = ((v101.rango_inferior or 0.0) + (v101.rango_superior or 0.0)) / 2
         else:
-            v101_temperatura_min = ""
-        valores_especie['v101_temperatura_min']=v101_temperatura_min
+            valores_especie['v101_temperatura_min'] = ""
 
-        v157_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v157').first()
-        if v157_instance:
-            rango_inferior= v157_instance.rango_inferior or 0
-            rango_superior= v157_instance.rango_superior or 0
-            v157_elevacion_min_promedio = (rango_inferior+rango_superior)/2
-            v157_elevacion_min = str(round(v157_elevacion_min_promedio))
+        v157 = vars_by_cod.get('v157')
+        if v157:
+            valores_especie['v157_elevacion_min'] = str(round(((v157.rango_inferior or 0) + (v157.rango_superior or 0)) / 2))
         else:
-            v157_elevacion_min = ""
-        valores_especie['v157_elevacion_min'] = v157_elevacion_min
+            valores_especie['v157_elevacion_min'] = ""
 
-
-        v158_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v158').first()
-        if v158_instance:
-            rango_inferior= v158_instance.rango_inferior or 0
-            rango_superior= v158_instance.rango_superior or 0
-            v158_elevacion_max_promedio = (rango_inferior+rango_superior)/2
-            v158_elevacion_max = str(round(v158_elevacion_max_promedio))
+        v158 = vars_by_cod.get('v158')
+        if v158:
+            valores_especie['v158_elevacion_max'] = str(round(((v158.rango_inferior or 0) + (v158.rango_superior or 0)) / 2))
         else:
-            v158_elevacion_max = ""
-        valores_especie['v158_elevacion_max'] = v158_elevacion_max
+            valores_especie['v158_elevacion_max'] = ""
 
-        v161_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v161').first()
-        if v161_instance:
-            valores = v161_instance.valores_cualitativos.all()
-            nombres_valores_v161 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v161)>0:
-                v161_tolerancia_condiciones = ','.join(nombres_valores_v161)
-            else:
-                v161_tolerancia_condiciones = ""
+        nombres = qual_names(vars_by_cod.get('v161'))
+        valores_especie['v161_tolerancia_condiciones'] = ','.join(nombres) if nombres else ""
+
+        v81 = vars_by_cod.get('v81')
+        if v81:
+            valores_especie['v81_precipitacion_max'] = str(round(((v81.rango_inferior or 0) + (v81.rango_superior or 0)) / 2))
         else:
-            v161_tolerancia_condiciones = ""
-        valores_especie['v161_tolerancia_condiciones'] = v161_tolerancia_condiciones
+            valores_especie['v81_precipitacion_max'] = ""
 
-        v81_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v81').first()
-        if v81_instance:
-            rango_inferior= v81_instance.rango_inferior or 0
-            rango_superior= v81_instance.rango_superior or 0
-            v81_precipitacion_max_promedio = (rango_inferior+rango_superior)/2
-            v81_precipitacion_max= str(round(v81_precipitacion_max_promedio))
+        v82 = vars_by_cod.get('v82')
+        if v82:
+            valores_especie['v82_precipitacion_min'] = str(round(((v82.rango_inferior or 0.0) + (v82.rango_superior or 0.0)) / 2))
         else:
-            v81_precipitacion_max = ""
-        valores_especie['v81_precipitacion_max'] = v81_precipitacion_max
+            valores_especie['v82_precipitacion_min'] = ""
 
-        v82_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v82').first()
-        if v82_instance:
-            rango_inferior= v82_instance.rango_inferior or 0.0
-            rango_superior= v82_instance.rango_superior or 0.0
-            v82_precipitacion_min_promedio = (rango_inferior+rango_superior)/2
-            v82_precipitacion_min= str(round(v82_precipitacion_min_promedio))
+        nombres = qual_names(vars_by_cod.get('v106'))
+        valores_especie['v106_tipo_suelo_optimo'] = ','.join(nombres) if nombres else ""
+
+        v108 = vars_by_cod.get('v108')
+        valores_especie['v108_tolerancia_acidez'] = ("SI" if v108.valor_boolean else "NO") if v108 else ""
+
+        v109 = vars_by_cod.get('v109')
+        valores_especie['v109_tolerancia_salinidad'] = ("SI" if v109.valor_boolean else "NO") if v109 else ""
+
+        v152 = vars_by_cod.get('v152')
+        valores_especie['v152_desarrollo_suelos_rocosos'] = ("SI" if v152.valor_boolean else "NO") if v152 else ""
+
+        v153 = vars_by_cod.get('v153')
+        valores_especie['v153_desarrollo_suelos_drenados'] = ("SI" if v153.valor_boolean else "NO") if v153 else ""
+
+        v159 = vars_by_cod.get('v159')
+        if v159:
+            valores_especie['v159_ph_max'] = str(((v159.rango_inferior or 0.0) + (v159.rango_superior or 0.0)) / 2)
         else:
-            v82_precipitacion_min = ""
-        valores_especie['v82_precipitacion_min'] = v82_precipitacion_min
+            valores_especie['v159_ph_max'] = ""
 
-        # PASO 3 SUELO
-
-        #tipo de suelo óptimo/preferido
-        v106_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v106').first()
-        if v106_instance:
-            valores = v106_instance.valores_cualitativos.all()
-            nombres_valores_v106 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v106)>0:
-                v106_tipo_suelo_optimo= ','.join(nombres_valores_v106)
-            else:
-                v106_tipo_suelo_optimo = ""
+        v160 = vars_by_cod.get('v160')
+        if v160:
+            valores_especie['v160_ph_min'] = str(((v160.rango_inferior or 0.0) + (v160.rango_superior or 0.0)) / 2)
         else:
-            v106_tipo_suelo_optimo = ""
-        valores_especie['v106_tipo_suelo_optimo'] = v106_tipo_suelo_optimo
+            valores_especie['v160_ph_min'] = ""
 
-        #tolerancia a la acidéz del suelo
-        v108_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v108').first()
-        if v108_instance:
-            v108_tolerancia_acidez = "SI" if v108_instance.valor_boolean else "NO"
+        nombres_v68 = qual_names(vars_by_cod.get('v68'))
+        valores_especie['v68_exigencia_suelos_fertiles'] = ','.join(nombres_v68) if nombres_v68 else ""
+
+        nombres = qual_names(vars_by_cod.get('v83'))
+        valores_especie['v83_preferencia_ph_suelo'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v281'))
+        valores_especie['v281_pluviosidad'] = ','.join(nombres) if nombres else ""
+
+        v1 = vars_by_cod.get('v1')
+        if v1:
+            valores_especie['v1_altura_copa'] = str(((v1.rango_inferior or 0.0) + (v1.rango_superior or 0.0)) / 2)
+            valores_especie['v1_altura_min'] = str(v1.rango_inferior) if v1.rango_inferior is not None else ''
+            valores_especie['v1_altura_max'] = str(v1.rango_superior) if v1.rango_superior is not None else ''
         else:
-            v108_tolerancia_acidez = ""
-        valores_especie['v108_tolerancia_acidez'] = v108_tolerancia_acidez
-
-        #tolerancia a la salinidad del suelo
-        v109_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v109').first()
-        if v109_instance:
-            v109_tolerancia_salinidad = "SI" if v109_instance.valor_boolean else "NO"
-        else:
-            v109_tolerancia_salinidad = ""
-        valores_especie['v109_tolerancia_salinidad'] = v109_tolerancia_salinidad
-
-        #desarrollo en suelos rocosos
-
-        v152_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v152').first()
-        if v152_instance:
-            v152_desarrollo_suelos_rocosos = "SI" if v152_instance.valor_boolean else "NO"
-        else:
-            v152_desarrollo_suelos_rocosos = ""
-        valores_especie['v152_desarrollo_suelos_rocosos'] = v152_desarrollo_suelos_rocosos
-
-        #desarrollo en suelos bien drenados
-
-        v153_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v153').first()
-        if v153_instance:
-            v153_desarrollo_suelos_drenados = "SI" if v153_instance.valor_boolean else "NO"
-        else:
-            v153_desarrollo_suelos_drenados = ""
-        valores_especie['v153_desarrollo_suelos_drenados'] = v153_desarrollo_suelos_drenados
-
-
-        #pH de suelo máximo
-        v159_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v159').first()
-        if v159_instance:
-            rango_inferior= v159_instance.rango_inferior or 0.0
-            rango_superior= v159_instance.rango_superior or 0.0
-            v159_ph_max_promedio = (rango_inferior+rango_superior)/2
-            v159_ph_max= str(v159_ph_max_promedio)
-        else:
-            v159_ph_max = ""
-        valores_especie['v159_ph_max'] = v159_ph_max
-
-        #pH de suelo minimo
-        v160_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v160').first()
-        if v160_instance:
-            rango_inferior= v160_instance.rango_inferior or 0.0
-            rango_superior= v160_instance.rango_superior or 0.0
-            v160_ph_min_promedio = (rango_inferior+rango_superior)/2
-            v160_ph_min= str(v160_ph_min_promedio)
-        else:
-            v160_ph_min = ""
-        valores_especie['v160_ph_min'] = v160_ph_min
-
-        
-
-        # exigencia de suelos fértiles
-        v68_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v68').first()
-        if v68_instance:
-            valores = v68_instance.valores_cualitativos.all()
-            nombres_valores_v68 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v68)>0:
-                v68_exigencia_suelos_fertiles= ','.join(nombres_valores_v68)
-            else:
-                v68_exigencia_suelos_fertiles = ""
-        else:
-            v68_exigencia_suelos_fertiles = ""
-        valores_especie['v68_exigencia_suelos_fertiles'] = v68_exigencia_suelos_fertiles
-
-        # preferencia ph suelo
-
-        v83_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v83').first()
-        if v83_instance:
-            valores = v83_instance.valores_cualitativos.all()
-            nombres_valores_v83 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v83)>0:
-                v83_preferencia_ph_suelo =  ','.join(nombres_valores_v83)
-            else:
-                v83_preferencia_ph_suelo = ""
-        else:
-            v83_preferencia_ph_suelo = ""
-        valores_especie['v83_preferencia_ph_suelo'] = v83_preferencia_ph_suelo
-
-
-        # pluviosidad de su zona de distribución
-        v281_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v281').first()
-        if v281_instance:
-            valores = v281_instance.valores_cualitativos.all()
-            nombres_valores_v281 = [valor.nombre for valor in valores]
-            v281_pluviosidad = ','.join(nombres_valores_v281) if nombres_valores_v281 else ""
-        else:
-            v281_pluviosidad = ""
-        valores_especie['v281_pluviosidad'] = v281_pluviosidad
-
-        # PASO 4 ASOCIO
-
-        # altura potencial de copa
-
-        v1_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v1').first()
-        if v1_instance:
-            rango_inferior= v1_instance.rango_inferior or 0.0
-            rango_superior= v1_instance.rango_superior or 0.0
-            v1_altura_copa_promedio=(rango_inferior+rango_superior)/2
-            v1_altura_copa= str(v1_altura_copa_promedio)
-            valores_especie['v1_altura_min'] = str(v1_instance.rango_inferior) if v1_instance.rango_inferior is not None else ''
-            valores_especie['v1_altura_max'] = str(v1_instance.rango_superior) if v1_instance.rango_superior is not None else ''
-        else:
-            v1_altura_copa = ""
+            valores_especie['v1_altura_copa'] = ""
             valores_especie['v1_altura_min'] = ''
             valores_especie['v1_altura_max'] = ''
-        valores_especie['v1_altura_copa'] = v1_altura_copa
 
-        # tipo raiz
-        v118_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v118').first()
-        if v118_instance:
-            valores = v118_instance.valores_cualitativos.all()
-            nombres_valores_v118 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v68)>0:
-                v118_tipo_raiz= ','.join(nombres_valores_v118)
-            else:
-                v118_tipo_raiz = ""
+        # Original code gated v118 on v68 names being non-empty (preserved as-is)
+        nombres_v118 = qual_names(vars_by_cod.get('v118'))
+        valores_especie['v118_tipo_raiz'] = ','.join(nombres_v118) if nombres_v68 else ""
+
+        nombres = qual_names(vars_by_cod.get('v119'))
+        valores_especie['v119_capacidad_regeneracion'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v13'))
+        valores_especie['v13_tipo_ramificacion_copa'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v143'))
+        valores_especie['v143_forma_corteza'] = ','.join(nombres) if nombres else ""
+
+        v2 = vars_by_cod.get('v2')
+        if v2:
+            valores_especie['v2_ancho_potencial_copa'] = str(((v2.rango_inferior or 0.0) + (v2.rango_superior or 0.0)) / 2)
+            valores_especie['v2_ancho_min'] = str(v2.rango_inferior) if v2.rango_inferior is not None else ''
+            valores_especie['v2_ancho_max'] = str(v2.rango_superior) if v2.rango_superior is not None else ''
         else:
-            v118_tipo_raiz = ""
-        valores_especie['v118_tipo_raiz'] = v118_tipo_raiz
-
-        # capacidad de regeneración de ramas podadas
-        v119_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v119').first()
-        if v119_instance:
-            valores = v119_instance.valores_cualitativos.all()
-            nombres_valores_v119 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v119)>0:
-                v119_capacidad_regeneracion= ','.join(nombres_valores_v119)
-            else:
-                v119_capacidad_regeneracion = ""
-        else:
-            v119_capacidad_regeneracion = ""
-        valores_especie['v119_capacidad_regeneracion'] = v119_capacidad_regeneracion
-
-        # tipo de ramificación de copa
-        v13_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v13').first()
-        if v13_instance:
-            valores = v13_instance.valores_cualitativos.all()
-            nombres_valores_v13 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v13)>0:
-                v13_tipo_ramificacion_copa= ','.join(nombres_valores_v13)
-            else:
-                v13_tipo_ramificacion_copa = ""
-        else:
-            v13_tipo_ramificacion_copa = ""
-        valores_especie['v13_tipo_ramificacion_copa'] = v13_tipo_ramificacion_copa
-
-        # forma de corteza
-        v143_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v143').first()
-        if v143_instance:
-            valores = v143_instance.valores_cualitativos.all()
-            nombres_valores_v143 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v143)>0:
-                v143_forma_corteza = ','.join(nombres_valores_v143)
-            else:
-                v143_forma_corteza = ""
-        else:
-            v143_forma_corteza = ""
-        valores_especie['v143_forma_corteza'] = v143_forma_corteza
-
-
-        #ancho potencial de copa
-
-        v2_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v2').first()
-        if v2_instance:
-            rango_inferior= v2_instance.rango_inferior or 0.0
-            rango_superior= v2_instance.rango_superior or 0.0
-            v2_ancho_potencial_copa_promedio=(rango_inferior+rango_superior)/2
-            v2_ancho_potencial_copa= str(v2_ancho_potencial_copa_promedio)
-            valores_especie['v2_ancho_min'] = str(v2_instance.rango_inferior) if v2_instance.rango_inferior is not None else ''
-            valores_especie['v2_ancho_max'] = str(v2_instance.rango_superior) if v2_instance.rango_superior is not None else ''
-        else:
-            v2_ancho_potencial_copa = ""
+            valores_especie['v2_ancho_potencial_copa'] = ""
             valores_especie['v2_ancho_min'] = ''
             valores_especie['v2_ancho_max'] = ''
-        valores_especie['v2_ancho_potencial_copa'] = v2_ancho_potencial_copa
 
-        # fenología de las hojas
+        nombres = qual_names(vars_by_cod.get('v37'))
+        valores_especie['v37_fenologia_hojas'] = ','.join(nombres) if nombres else ""
 
-        v37_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v37').first()
-        if v37_instance:
-            valores = v37_instance.valores_cualitativos.all()
-            nombres_valores_v37 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v37)>0:
-                v37_fenologia_hojas = ','.join(nombres_valores_v37)
+        v5 = vars_by_cod.get('v5')
+        if v5:
+            valores_especie['v4_densidad_promedio_copa'] = str(round(((v5.rango_inferior or 0) + (v5.rango_superior or 0)) / 2))
+        else:
+            valores_especie['v4_densidad_promedio_copa'] = ""
+
+        nombres = qual_names(vars_by_cod.get('v6'))
+        valores_especie['v6_follage'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v7'))
+        valores_especie['v7_forma_copa'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v73'))
+        valores_especie['v73_gremio_ecologico'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v144'))
+        valores_especie['v144_forma_fuste'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v9'))
+        valores_especie['v9_frecuencia_poda'] = ','.join(nombres) if nombres else ""
+
+        v35 = vars_by_cod.get('v35')
+        if v35:
+            nombres = qual_names(v35)
+            if nombres:
+                valores_especie['v35_epoca_caida_hojas'] = ','.join(nombres)
+            elif v35.rango_inferior is not None and v35.rango_superior is not None:
+                valores_especie['v35_epoca_caida_hojas'] = str(v35.rango_inferior) + '–' + str(v35.rango_superior)
             else:
-                v37_fenologia_hojas = ""
+                valores_especie['v35_epoca_caida_hojas'] = ''
         else:
-            v37_fenologia_hojas = ""
-        valores_especie['v37_fenologia_hojas'] = v37_fenologia_hojas
+            valores_especie['v35_epoca_caida_hojas'] = ''
 
-        # densidad promedio de la copa
+        nombres = qual_names(vars_by_cod.get('v80'))
+        valores_especie['v80_grupo_funcional'] = ','.join(nombres) if nombres else ""
 
-        v5_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v5').first()
-        if v5_instance:
-            rango_inferior= v5_instance.rango_inferior or 0
-            rango_superior= v5_instance.rango_superior or 0
-            v5_densidad_promedio_copa_promedio=(rango_inferior+rango_superior)/2
-            v5_densidad_promedio_copa= str(round(v5_densidad_promedio_copa_promedio))
-        else:
-            v5_densidad_promedio_copa = ""
-        valores_especie['v4_densidad_promedio_copa'] = v5_densidad_promedio_copa
-
-        # follaje
-
-        v6_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v6').first()
-        if v6_instance:
-            valores = v6_instance.valores_cualitativos.all()
-            nombres_valores_v6 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v6)>0:
-                v6_follage = ','.join(nombres_valores_v6)
-            else:
-                v6_follage = ""
-        else:
-            v6_follage = ""
-        valores_especie['v6_follage'] = v6_follage
-
-        # forma de la copa
-
-        v7_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v7').first()
-        if v7_instance:
-            valores = v7_instance.valores_cualitativos.all()
-            nombres_valores_v7 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v7)>0:
-                v7_forma_copa = ','.join(nombres_valores_v7)
-            else:
-                v7_forma_copa = ""
-        else:
-            v7_forma_copa = ""
-        valores_especie['v7_forma_copa'] = v7_forma_copa
-
-        # gremio ecologico
-
-        v73_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v73').first()
-        if v73_instance:
-            valores = v73_instance.valores_cualitativos.all()
-            nombres_valores_v73 = [valor.nombre for valor in valores]
-            if len(nombres_valores_v73)>0:
-                v73_gremio_ecologico = ','.join(nombres_valores_v73)
-            else:
-                v73_gremio_ecologico = ""
-        else:
-            v73_gremio_ecologico = ""
-        valores_especie['v73_gremio_ecologico'] = v73_gremio_ecologico
-
-
-        # PASO 3 MORFOLÓGICO
-
-        # V144 forma de fuste
-        v144_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v144').first()
-        if v144_instance:
-            nombres_v144 = [v.nombre for v in v144_instance.valores_cualitativos.all()]
-            v144_forma_fuste = ','.join(nombres_v144) if nombres_v144 else ''
-        else:
-            v144_forma_fuste = ''
-        valores_especie['v144_forma_fuste'] = v144_forma_fuste
-
-        # V9 frecuencia de poda
-        v9_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v9').first()
-        if v9_instance:
-            nombres_v9 = [v.nombre for v in v9_instance.valores_cualitativos.all()]
-            v9_frecuencia_poda = ','.join(nombres_v9) if nombres_v9 else ''
-        else:
-            v9_frecuencia_poda = ''
-        valores_especie['v9_frecuencia_poda'] = v9_frecuencia_poda
-
-        # V35 época de caída de hojas
-        v35_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v35').first()
-        if v35_instance:
-            nombres_v35 = [v.nombre for v in v35_instance.valores_cualitativos.all()]
-            if nombres_v35:
-                v35_epoca_caida_hojas = ','.join(nombres_v35)
-            elif v35_instance.rango_inferior is not None and v35_instance.rango_superior is not None:
-                v35_epoca_caida_hojas = str(v35_instance.rango_inferior) + '–' + str(v35_instance.rango_superior)
-            else:
-                v35_epoca_caida_hojas = ''
-        else:
-            v35_epoca_caida_hojas = ''
-        valores_especie['v35_epoca_caida_hojas'] = v35_epoca_caida_hojas
-
-        # V80 grupo funcional en la sucesión
-        v80_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v80').first()
-        if v80_instance:
-            nombres_v80 = [v.nombre for v in v80_instance.valores_cualitativos.all()]
-            v80_grupo_funcional = ','.join(nombres_v80) if nombres_v80 else ''
-        else:
-            v80_grupo_funcional = ''
-        valores_especie['v80_grupo_funcional'] = v80_grupo_funcional
-
-        # Boolean sub-use fields for category-specific tables (Paso 1)
         bool_vars_map = {
-            'v167': 'v167_madera_muebles',          # Maderable: Muebles
-            'v163': 'v163_madera_construccion',     # Maderable: Construcción
-            'v168': 'v168_madera_postes',           # Maderable: Postes/cajonería
-            'v170': 'v170_fruta',                   # Frutales: Fruta
-            'v130': 'v130_semilla_consumo',         # Frutales: Semilla
-            'v18':  'v18_abejas',                   # Biodiversidad: Abejas
-            'v89':  'v89_aves',                     # Biodiversidad: Aves
-            'v90':  'v90_micromamiferos',           # Biodiversidad: Micromamíferos
-            'v91':  'v91_murcielagos',              # Biodiversidad: Murciélagos
-            'v142': 'v142_carbon',                  # Otros usos: Carbón
-            'v162': 'v162_lena',                    # Otros usos: Leña
-            'v39':  'v39_forraje',                  # Otros usos: Forraje ganado
-            'v113': 'v113_medicinal',               # Otros usos: Medicinal
-            'v111': 'v111_artesanias',              # Otros usos: Artesanías
-            'v112': 'v112_cosmeticos',              # Otros usos: Cosméticos/repelente
-            'v102': 'v102_tintes',                  # Otros usos: Tintes/pigmentos
-            'v70':  'v70_fibra',                    # Otros usos: Fibra
+            'v167': 'v167_madera_muebles',
+            'v163': 'v163_madera_construccion',
+            'v168': 'v168_madera_postes',
+            'v170': 'v170_fruta',
+            'v130': 'v130_semilla_consumo',
+            'v18':  'v18_abejas',
+            'v89':  'v89_aves',
+            'v90':  'v90_micromamiferos',
+            'v91':  'v91_murcielagos',
+            'v142': 'v142_carbon',
+            'v162': 'v162_lena',
+            'v39':  'v39_forraje',
+            'v113': 'v113_medicinal',
+            'v111': 'v111_artesanias',
+            'v112': 'v112_cosmeticos',
+            'v102': 'v102_tintes',
+            'v70':  'v70_fibra',
         }
         for cod, key in bool_vars_map.items():
-            instance = especie.variables.filter(tipo_variable__cod_var__iexact=cod).first()
+            instance = vars_by_cod.get(cod)
             valores_especie[key] = bool(instance.valor_boolean) if instance else False
 
         valores_especie['imagenes'] = [img.imagen.url for img in especie.get_imagenes]
-
-        # Nativa de Perú (campo del modelo)
         valores_especie['nativa'] = bool(especie.nativa)
 
-        # v64 — Endemismo para Perú
-        v64_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v64').first()
-        valores_especie['v64_endemismo'] = bool(v64_instance.valor_boolean) if v64_instance else False
+        v64 = vars_by_cod.get('v64')
+        valores_especie['v64_endemismo'] = bool(v64.valor_boolean) if v64 else False
 
-        # v56 — Categoría amenaza IUCN
-        v56_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v56').first()
-        if v56_instance:
-            q56 = list(v56_instance.valores_cualitativos.all())
-            valores_especie['v56_amenaza_iucn'] = q56[0].nombre if q56 else (v56_instance.valor_texto or '')
+        v56 = vars_by_cod.get('v56')
+        if v56:
+            q56 = list(v56.valores_cualitativos.all())
+            valores_especie['v56_amenaza_iucn'] = q56[0].nombre if q56 else (v56.valor_texto or '')
         else:
             valores_especie['v56_amenaza_iucn'] = ''
 
-        # v59 — Categoría amenaza nacional (DS004)
-        v59_instance = especie.variables.filter(tipo_variable__cod_var__iexact='v59').first()
-        if v59_instance:
-            q59 = list(v59_instance.valores_cualitativos.all())
-            valores_especie['v59_amenaza_nacional'] = q59[0].nombre if q59 else (v59_instance.valor_texto or '')
+        v59 = vars_by_cod.get('v59')
+        if v59:
+            q59 = list(v59.valores_cualitativos.all())
+            valores_especie['v59_amenaza_nacional'] = q59[0].nombre if q59 else (v59.valor_texto or '')
         else:
             valores_especie['v59_amenaza_nacional'] = ''
 
         especies_dict_list.append(valores_especie)
 
-
-
-    #resp = json.dumps(especies_dict_list)
-    return  JsonResponse(especies_dict_list, status=200, safe=False)
+    if page_size > 0:
+        return JsonResponse({'especies': especies_dict_list, 'has_next': has_next}, status=200)
+    return JsonResponse(especies_dict_list, status=200, safe=False)
 
 
 class UpdateToolValuesView(View):
