@@ -6,12 +6,13 @@ from .views.cross_table_views import *
 from .views.tool_views import *
 from .views.homepage_views import *
 from .views.synonymous_views import sinonimo_delete, create_sinonimo, Synonymous2MCreateView
-from django.urls import path 
+from django.urls import path
+from django.views.generic import RedirectView
 
 app_name = 'arbolsaf'
 
 urlpatterns = [
-    path('principal', AboutToolView.as_view(),name='homepage'),
+    path('principal/', RedirectView.as_view(pattern_name='arbolsaf:tool_part1'), name='homepage'),
     path('portafolio', PortafolioView.as_view(), name='species_portafolio'),
     path('especie/listado', SpeciesListView.as_view(),name='species_list'),
     path('especie/listado/json/', species_list_json ,name='species_list_json'),
@@ -66,12 +67,12 @@ urlpatterns = [
     path('variable-especie/crear', create_variable_specie, name='variable_species_create'),
     path('variable-especie/modificar/<str:pk>', VariableSpeciesUpdateView.as_view(),name='variable_species_update'),
 
-    path('herramienta/intro/', IntroToolView.as_view(), name='tool_part0'),
+    path('herramienta/intro/', RedirectView.as_view(pattern_name='arbolsaf:tool_part1'), name='tool_part0'),
     path('herramienta/', ToolView.as_view(), name='tool_part1'),
 
     #path('herramienta/pdf/', ToolPDFView.as_view(), name='tool_pdf'),
     path('herramienta/pdf/', tool_print_pdf_view, name='tool_pdf'),
-    path('acerca-de/', AboutToolView.as_view(), name='about_page'),
+    path('acerca-de/', RedirectView.as_view(pattern_name='arbolsaf:tool_part1'), name='about_page'),
     
     path('species/activar/<str:pk>/', SpeciesActivateInToolView.as_view(), name='species_activate'),
     path('species/desactivar/<str:pk>/', SpeciesDeactivateInToolView.as_view(), name='species_deactivate'),
