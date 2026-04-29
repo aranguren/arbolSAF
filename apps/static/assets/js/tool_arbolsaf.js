@@ -174,18 +174,7 @@ observer.observe(target, config);
     }
 }); */
 
-// ── Bloqueo/desbloqueo de pasos 2–5 según selección ─────────────
-function updateStepLocks() {
-    var hasSelection = species_selected.length > 0;
-    ['step-2', 'step-3', 'step-4', 'step-5'].forEach(function(panel) {
-        var $tab = $('[data-panel="' + panel + '"]');
-        if (hasSelection) {
-            $tab.removeClass('arbol-navtab-locked');
-        } else {
-            $tab.addClass('arbol-navtab-locked');
-        }
-    });
-}
+
 
 // ── Círculo gris sin valor (sub-usos booleanos: sí/no) ───────────
 function boolDot(value, type) {
@@ -697,7 +686,6 @@ $(document).on('click', '.dt-trash', function() {
     updateEvalEmptyMsg();
     createCSTable(currentCSMode);
     createMorfoTable(currentMorfoMode);
-    updateStepLocks();
     createTable(data_species, 'preliminar');
 });
 
@@ -921,8 +909,7 @@ function selectSpecies(item) {
         createEvalCard(specie_selected[0]);
         createCSTable(currentCSMode);
         createMorfoTable(currentMorfoMode);
-        updateStepLocks();
-
+    
     } else {
         let specie_code = $(item).val();
 
@@ -936,8 +923,7 @@ function selectSpecies(item) {
 
         createCSTable(currentCSMode);
         createMorfoTable(currentMorfoMode);
-        updateStepLocks();
-
+    
         // En modo Lista preliminar, refrescar tabla para quitar la especie deseleccionada
         if (currentMode === 'preliminar') {
             createTable(data_species, 'preliminar');
@@ -973,7 +959,6 @@ function removeEvalCard(btn) {
     updateEvalEmptyMsg();
     createCSTable(currentCSMode);
     createMorfoTable(currentMorfoMode);
-    updateStepLocks();
 
     if (currentMode === 'preliminar') {
         createTable(data_species, 'preliminar');

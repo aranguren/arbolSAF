@@ -18,7 +18,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 class PortafolioView(ListView):
     """Vista pública del portafolio de especies — sin login requerido."""
     model = SpeciesModel
-    template_name = 'arbolsaf/species/species_list.html'
+    template_name = 'arbolsaf/species/species_portafolio.html'
     context_object_name = 'species'
     paginate_by = None
 
@@ -149,10 +149,7 @@ class SpeciesListView(LoginRequiredMixin, GroupRequiredMixin, ListView):
     group_required = [u'visualizador', u'editor']
     template_name = 'arbolsaf/species/species_list.html'
     context_object_name = 'species'
-    paginate_by = None  # Show all species at once for card layout
-
-    def get_paginate_by(self, queryset):
-        return None
+    paginate_by = 10
 
     def get_context_data(self, *args, **kwargs):
         context = super(SpeciesListView, self).get_context_data(*args, **kwargs)

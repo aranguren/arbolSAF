@@ -1,0 +1,513 @@
+{% extends 'layouts/base-herramienta.html' %}
+{% load user_has_group %}
+{% load l10n %}
+{% load i18n %}
+
+{% block title %}Portafolio de Especies{% endblock title %}
+
+{% block nav_portafolio %}active{% endblock %}
+
+{% block stylesheets %}
+<style>
+/* ── Search bar ─────────────────────────────────────────────────── */
+#species-search {
+  border-radius: 2rem;
+  border: 1px solid #dee2e6;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.875rem;
+  box-shadow: none;
+}
+#species-search:focus {
+  border-color: #40916c;
+  box-shadow: 0 0 0 0.2rem rgba(64,145,108,.2);
+}
+#species-count { font-size: 0.8rem; }
+#no-results-msg { display: none; }
+
+/* ── Catalog card grid ──────────────────────────────────────────── */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  padding: 0.5rem 0 1rem;
+}
+
+.species-cat-card {
+  border: 1px solid #d8e8e0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+/* Header */
+.cat-header {
+  background: #e6f4ee;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.cat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1b4332 0%, #40916c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.cat-icon img { width: 100%; height: 100%; object-fit: cover; }
+.cat-icon i   { color: rgba(255,255,255,0.9); font-size: 1.1rem; }
+.cat-names    { flex: 1; min-width: 0; }
+.cat-common   { font-weight: 700; font-size: 0.88rem; line-height: 1.25; color: #1a3a2a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cat-sci      { font-size: 0.74rem; color: #5a7a6a; }
+
+/* Body */
+.cat-body { padding: 0.7rem 0.9rem 0.5rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+
+/* Category badges */
+.cat-cats { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.cat-badge {
+  font-size: 0.67rem; font-weight: 700; letter-spacing: 0.02em;
+  padding: 0.22rem 0.55rem; border-radius: 20px; color: #fff; white-space: nowrap;
+}
+.cat-b-maderable   { background: #85604b; }
+.cat-b-fruta       { background: #806377; }
+.cat-b-biodiv      { background: #00a44d; }
+.cat-b-suelo       { background: #aa4207; }
+.cat-b-microclima  { background: #006d70; }
+.cat-b-otros       { background: #fdc00d; color: #333; }
+
+/* Info rows */
+.cat-info-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.cat-info-table td { padding: 0.2rem 0; vertical-align: top; color: #333; line-height: 1.3; }
+.cat-info-table td:first-child { color: #666; width: 48%; padding-right: 0.4rem; }
+.cat-info-table td:last-child  { font-weight: 600; }
+
+/* Footer */
+.cat-footer {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0.5rem 0.9rem;
+  border-top: 1px solid #edf5f0; background: #f8fbf9;
+}
+.cat-ivim-label { font-size: 0.68rem; font-weight: 600; color: #9e9e9e; text-transform: uppercase; letter-spacing: 0.5px; }
+.cat-ivim-val   { font-size: 0.88rem; font-weight: 700; color: #1b4332; }
+</style>
+{% endblock stylesheets %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <!-- ── Card header ──────────────────────────────────────── -->
+        <div class="card-header pb-0">
+          <div class="d-flex align-items-center mb-2">
+            <div class="d-flex flex-column">
+              <h3 class="mb-0 me-3">Portafolio de especies</h3>
+              <p class="text-muted mt-2">Principales usos y servicios de los árboles y palmeras de asocio de sistemas agroforestales.</p>
+            </div>  
+            
+            {% comment %} {% if has_filters %}
+              <span class="badge badge-pill badge-danger ms-2">
+                Filtros aplicados
+                <button type="button"
+                        onclick="window.location='{% url 'arbolsaf:species_list' %}'"
+                        class="btn-close btn-close-white ms-1"
+                        style="font-size:0.55rem"></button>
+              </span>
+            {% endif %} {% endcomment %}
+          </div>
+          <hr class="horizontal dark my-2">
+
+          <div class="row g-2 align-items-center my-3">
+            <!-- Search -->
+            <div class="d-flex justify-content-between">
+              <!-- Result count -->
+              <p class="text-muted mb-0" id="species-count">
+                {{ species|length }} especie{% if species|length != 1 %}s{% endif %} encontrada{% if species|length != 1 %}s{% endif %}
+              </p>
+              
+                <input type="text" id="species-search"
+                   class="form-control"
+                   placeholder="Buscar por nombre común o científico..."
+                   style="max-width: 450px;">
+            </div>
+            <!-- Buttons -->
+            {% comment %} <div class="col-12 col-md-7 d-flex flex-wrap gap-2 justify-content-md-end">
+              {% if request.user|has_group:"editor" or request.user.is_superuser %}
+                <a href="{% url 'arbolsaf:species_create' %}"
+                   class="btn btn-primary btn-sm">
+                  <i class="fa fa-plus me-1"></i>Crear
+                </a>
+              {% endif %}
+              <button class="btn btn-secondary btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#filterModal">
+                <i class="fa fa-filter me-1"></i>Filtrar
+              </button>
+              {% if request.user.is_superuser %}
+                <button class="btn btn-outline-secondary btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#ActualizarModal">
+                  <i class="fa fa-database me-1"></i>Actualizar Herramienta
+                </button>
+              {% endif %}
+            </div> {% endcomment %}
+          </div>
+        </div><!-- /card-header -->
+
+        <!-- ── Card body ────────────────────────────────────────── -->
+        <div class="card-body py-3">
+
+          <!-- Loading spinner -->
+          <div id="species-loading" class="text-center py-5">
+            <div class="spinner-border text-success" role="status" style="width:2.5rem;height:2.5rem;"></div>
+            <p class="mt-2 text-muted" style="font-size:0.88rem;">Cargando especies...</p>
+          </div>
+
+          <!-- Card grid (filled by JS) -->
+          <div id="species-cat-grid" class="cat-grid"></div>
+
+          <!-- No-results after client-side search -->
+          <div id="no-results-msg" class="text-center py-5">
+            <i class="fas fa-search fa-2x text-muted d-block mb-2"></i>
+            <p class="text-muted">No se encontraron especies para "<span id="search-term"></span>"</p>
+          </div>
+
+        </div><!-- /card-body -->
+      </div><!-- /card -->
+    </div>
+  </div>
+</div><!-- /container -->
+
+<!-- ── Modal: Actualizar Herramienta ──────────────────────────── -->
+<div class="modal fade" id="ActualizarModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Herramienta</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                aria-label="Close" id="dismissActualizar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-sm mb-0 font-weight-bold">
+          Esta acción actualizará los valores calculados de las especies presentes en la herramienta. ¿Desea continuar?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelarActualizar" class="btn bg-success text-white"
+                data-bs-dismiss="modal">Cerrar</button>
+        <form name="form-actualizar" id="form-tool">
+          {% csrf_token %}
+          <button type="submit" class="btn bg-danger text-white" id="actualizarHerramienta">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                  id="spinnerButton" style="display:none"></span>
+            Aceptar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal: Error ──────────────────────────────────────────── -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Error</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-2 text-center text-danger">
+            <i class="fa fa-3x fa-exclamation-circle"></i>
+          </div>
+          <div class="col-10">
+            <p class="text-sm mb-0 font-weight-bold"><span id="errorspan"></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-success text-white" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal: Success ────────────────────────────────────────── -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualización completada</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-2 text-center text-success">
+            <i class="fa fa-3x fa-thumbs-up"></i>
+          </div>
+          <div class="col-10">
+            <p class="text-sm mb-0 font-weight-bold">
+              Se ha realizado la actualización de los valores para todas las especies
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-success text-white" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal: Filtrar ────────────────────────────────────────── -->
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Filtrar</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <form id="filter_form" action="{% url 'arbolsaf:species_list' %}"
+                class="" method="get" autocomplete="off">
+            <input type="hidden" name="ordenar_por" id="ordenar_por" value="{{ ordenar_por }}">
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_cod_esp">Código especie</label>
+              <input id="id_cod_esp" type="text" name="cod_esp"
+                     class="form-control" value="{{ value_cod_esp }}">
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_nombre_comun">Nombre común</label>
+              <select id="id_nombre_comun" class="form-select" name="nombre_comun">
+                <option></option>
+                {% for nombre in nombre_comun_values %}
+                  <option value="{{ nombre.nombre_comun }}">
+                    {{ nombre.nombre_comun }} ({{ nombre.cod_esp }})
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_sinonimos">Sinónimos</label>
+              <input id="id_sinonimos" type="text" name="sinonimos"
+                     class="form-control" value="{{ value_sinonimos }}">
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_nombre_cientifico">Nombre científico</label>
+              <select id="id_nombre_cientifico" class="form-select" name="nombre_cientifico">
+                <option></option>
+                {% for nombre in nombre_cientifico_values %}
+                  <option value="{{ nombre.nombre_cientifico }}">
+                    {{ nombre.nombre_cientifico }} ({{ nombre.cod_esp }})
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_tipo_variable">Tipo de Variable</label>
+              <select id="id_tipo_variable" class="form-select" name="tipo_variable">
+                <option></option>
+                {% for variable in variables %}
+                  <option value="{{ variable.id }}">
+                    {{ variable.variable }} ({{ variable.cod_var }})
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_referencia">Referencia</label>
+              <select id="id_referencia" class="form-select" name="referencia">
+                <option></option>
+                {% for referencia in referencias %}
+                  <option value="{{ referencia.id }}">{{ referencia.fuente_final }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label class="control-label" for="id_habilitada_herramienta">Habilitada en herramienta</label>
+              <select id="id_habilitada_herramienta" class="form-select" name="habilitada_herramienta">
+                <option></option>
+                <option value="habilitada">Habilitada</option>
+                <option value="desabilitada">Deshabilitada</option>
+                <option value="habilitada_desabilitada">Habilitada y Deshabilitada</option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="reset_button" form="filter_form" type="button" class="btn btn-light btn-sm">
+          <i class="fa fa-trash"></i>&nbsp;Limpiar filtros
+        </button>
+        <button form="filter_form" type="submit" class="btn btn-primary btn-sm">
+          <i class="fa fa-filter"></i>&nbsp;Filtrar
+        </button>
+        <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+// ── Card builder ─────────────────────────────────────────────────
+function buildCatCard(sp) {
+  function v(x) { return (x !== null && x !== undefined && x !== '') ? x : '—'; }
+
+  var code   = sp['CODIGO'];
+  var cid    = 'cat-card-' + code;
+  var search = ((sp['NOMBRE COMUN'] || '') + ' ' + (sp['NOMBRE CIENTIFICO'] || '')).toLowerCase();
+
+  var imgHtml = (sp.imagenes && sp.imagenes.length > 0)
+    ? '<img src="' + sp.imagenes[0] + '" alt="">'
+    : '<i class="fas fa-tree"></i>';
+
+  // Category badges
+  var cats = '';
+  if ((sp['VALOR MADERA'] || 0) > 1) cats += '<span class="cat-badge cat-b-maderable">Maderable</span>';
+  if ((sp['VALOR FRUTA']  || 0) > 0) cats += '<span class="cat-badge cat-b-fruta">Frutal</span>';
+  if ((sp['VALOR SUELO']  || 0) > 0) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
+  if ((sp['VALOR MICROCLIMA']   || 0) > 0) cats += '<span class="cat-badge cat-b-microclima">Microclima</span>';
+  if ((sp['VALOR BIODIVERSIDAD']|| 0) > 0) cats += '<span class="cat-badge cat-b-biodiv">Biodiversidad</span>';
+  if ((sp['VALOR OTROS USOS']   || 0) > 0) cats += '<span class="cat-badge cat-b-otros">Otros usos</span>';
+
+  // Amenaza: combine v56 + v59
+  var threatParts = [];
+  if ((sp.v56_amenaza_iucn || '').trim())     threatParts.push((sp.v56_amenaza_iucn).trim());
+  if ((sp.v59_amenaza_nacional || '').trim()) threatParts.push((sp.v59_amenaza_nacional).trim());
+  var amenaza = threatParts.length ? threatParts.join(' / ') : '—';
+
+  return (
+    '<div class="species-cat-card" id="' + cid + '" data-search="' + search + '">' +
+
+    // Header
+    '<div class="cat-header">' +
+      '<div class="cat-icon">' + imgHtml + '</div>' +
+      '<div class="cat-names">' +
+        '<div class="cat-common">' + v(sp['NOMBRE COMUN']) + '</div>' +
+        '<div class="cat-sci"><em>' + v(sp['NOMBRE CIENTIFICO']) + '</em></div>' +
+      '</div>' +
+    '</div>' +
+
+    // Body
+    '<div class="cat-body">' +
+      (cats ? '<div class="cat-cats">' + cats + '</div>' : '') +
+      '<table class="cat-info-table">' +
+        '<tr><td>Nativa de Perú</td><td>' + (sp.nativa ? 'Sí' : 'No') + '</td></tr>' +
+        '<tr><td>Endemismo para Perú</td><td>' + (sp.v64_endemismo ? 'Sí' : 'No') + '</td></tr>' +
+        '<tr><td>Categoría amenaza</td><td>' + amenaza + '</td></tr>' +
+      '</table>' +
+    '</div>' +
+
+    // Footer
+    '<div class="cat-footer">' +
+      '<span class="cat-ivim-label">IVIM</span>' +
+      '<span class="cat-ivim-val">' + (sp['IVIM'] !== undefined ? sp['IVIM'] : '—') + '</span>' +
+    '</div>' +
+
+    '</div>'
+  );
+}
+
+// ── Load & render ────────────────────────────────────────────────
+$(document).ready(function () {
+
+  // Modals JS (unchanged)
+  document.getElementById("id_nombre_comun").value            = "{{ value_nombre_comun }}";
+  document.getElementById("id_nombre_cientifico").value       = "{{ value_nombre_cientifico }}";
+  document.getElementById("id_tipo_variable").value           = "{{ value_tipo_variable }}";
+  document.getElementById("id_referencia").value              = "{{ value_referencia }}";
+  document.getElementById("id_habilitada_herramienta").value  = "{{ value_habilitada_herramienta }}";
+
+  $('#reset_button').click(function () {
+    ["id_nombre_comun","id_nombre_cientifico","id_tipo_variable",
+     "id_referencia","id_habilitada_herramienta"].forEach(function(id) {
+      document.getElementById(id).value = "";
+    });
+  });
+
+  $('#form-tool').on('submit', function(e) {
+    e.preventDefault();
+    $("#spinnerButton").show();
+    ["actualizarHerramienta","cancelarActualizar","dismissActualizar"].forEach(function(id){ $("#"+id).prop('disabled',true); });
+    var token = $("form[name='form-actualizar'] input[name='csrfmiddlewaretoken']")[0].value;
+    $.ajax({
+      url: "/arbolsaf/especie/actualizar-herramienta/", type: "POST",
+      headers: {"X-CSRFToken": token}, data: {'actualizar':'ok'},
+      success: function() {
+        $("#ActualizarModal").modal('hide'); $("#spinnerButton").hide();
+        ["actualizarHerramienta","cancelarActualizar","dismissActualizar"].forEach(function(id){ $("#"+id).prop('disabled',false); });
+        $("#successModal").modal('show');
+      },
+      error: function() {
+        $("#ActualizarModal").modal('hide'); $("#spinnerButton").hide();
+        ["actualizarHerramienta","cancelarActualizar","dismissActualizar"].forEach(function(id){ $("#"+id).prop('disabled',false); });
+        $('#errorModal').modal('show');
+        document.getElementById('errorspan').textContent = 'Ha ocurrido un error. Contacte al Administrador.';
+      }
+    });
+  });
+
+  // Fetch species data and build cards
+  $.ajax({
+    url: '/arbolsaf/especie/listado/json/?todos=1',
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      $('#species-loading').hide();
+      var grid = $('#species-cat-grid');
+      data.forEach(function(sp) { grid.append(buildCatCard(sp)); });
+      var n = data.length;
+      $('#species-count').text(n + ' especie' + (n !== 1 ? 's' : '') + ' encontrada' + (n !== 1 ? 's' : ''));
+    },
+    error: function() {
+      $('#species-loading').html('<p class="text-danger">Error al cargar las especies. Recarga la página.</p>');
+    }
+  });
+
+  // ── Client-side search (runs on JS-built cards) ──────────────
+  document.getElementById('species-search').addEventListener('input', function () {
+    var q        = this.value.toLowerCase().trim();
+    var cards    = document.querySelectorAll('.species-cat-card');
+    var noRes    = document.getElementById('no-results-msg');
+    var counter  = document.getElementById('species-count');
+    var visible  = 0;
+
+    cards.forEach(function(card) {
+      var match = !q || card.dataset.search.indexOf(q) !== -1;
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    counter.textContent = visible + ' especie' + (visible !== 1 ? 's' : '') +
+                          ' encontrada' + (visible !== 1 ? 's' : '');
+    if (q && visible === 0) {
+      noRes.style.display = '';
+      document.getElementById('search-term').textContent = q;
+    } else {
+      noRes.style.display = 'none';
+    }
+  });
+});
+</script>
+{% endblock javascripts %}

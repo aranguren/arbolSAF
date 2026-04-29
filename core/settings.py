@@ -53,7 +53,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
-LOGIN_REDIRECT_URL = "/arbolsaf/especie/listado"  # Route defined in home/urls.py
+LOGIN_URL          = "/login/"                          # URL real del login
+LOGIN_REDIRECT_URL = "/arbolsaf/especie/listado"  # Entrada plataforma de datos tras login
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
 TEMPLATE_DIR = os.path.join(CORE_DIR, "apps/templates")  # ROOT dir for templates
 
