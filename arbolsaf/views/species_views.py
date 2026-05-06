@@ -499,6 +499,8 @@ def species_list_json(request):
     qs = qs.prefetch_related(
         'variables__tipo_variable',
         'variables__valores_cualitativos',
+        'variables__referencia',
+        'variables__referencia_2',
         'imagenes',
     ).order_by('pk')
 
@@ -522,6 +524,19 @@ def species_list_json(request):
             var.tipo_variable.cod_var.lower(): var
             for var in especie.variables.all()
         }
+
+        # Build refs dict: {cod_var: "Fuente 1 / Fuente 2"} — used for tooltips
+        refs = {}
+        for cod, var in vars_by_cod.items():
+            parts = []
+            if var.referencia_id and var.referencia:
+                parts.append(var.referencia.fuente_final)
+            if var.referencia_2_id and var.referencia_2:
+                f2 = var.referencia_2.fuente_final
+                if f2 not in parts:
+                    parts.append(f2)
+            if parts:
+                refs[cod] = ' / '.join(parts)
 
         valores_especie = {
             "CODIGO": especie.cod_esp,
@@ -706,6 +721,7 @@ def species_list_json(request):
             instance = vars_by_cod.get(cod)
             valores_especie[key] = bool(instance.valor_boolean) if instance else False
 
+        valores_especie['refs'] = refs
         valores_especie['imagenes'] = [img.imagen.url for img in especie.get_imagenes]
         valores_especie['nativa'] = bool(especie.nativa)
 
