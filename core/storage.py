@@ -3,9 +3,15 @@ from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
 
 class CompressedManifestStorage(ManifestStaticFilesStorage):
     """
-    Django's ManifestStaticFilesStorage with manifest_strict=False so that
-    CSS url() references to missing vendor assets are silently skipped
-    instead of raising an error. WhiteNoise middleware handles serving and
-    compression independently.
+    ManifestStaticFilesStorage that silently ignores CSS url() references
+    to missing files (e.g. vendor assets). When a referenced file can't be
+    found, the original path is kept unchanged instead of raising ValueError.
+    WhiteNoise middleware handles serving and compression independently.
     """
-    manifest_strict = False
+
+    def hashed_name(self, name, content=None, filename=None):
+        try:
+            return super().hashed_name(name, content=content, filename=filename)
+        except ValueError:
+            # File not found — return original path unchanged
+            return name
