@@ -1,10 +1,11 @@
-from whitenoise.storage import CompressedManifestStaticFilesStorage
+from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
 
 
-class CompressedManifestStorage(CompressedManifestStaticFilesStorage):
+class CompressedManifestStorage(ManifestStaticFilesStorage):
     """
-    Same as CompressedManifestStaticFilesStorage but skips CSS url()
-    references that point to missing files (vendor CSS with optional assets)
-    instead of raising MissingFileError.
+    Django's ManifestStaticFilesStorage with manifest_strict=False so that
+    CSS url() references to missing vendor assets are silently skipped
+    instead of raising an error. WhiteNoise middleware handles serving and
+    compression independently.
     """
     manifest_strict = False
