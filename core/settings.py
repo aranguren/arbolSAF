@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 # Cache-busting: appends content hash to filenames served via {% static %}.
 # Hardcoded /static/... paths still work (original files are preserved).
 # Requires: docker-compose exec web python manage.py collectstatic --noinput
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'core.storage.CompressedManifestStorage'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
