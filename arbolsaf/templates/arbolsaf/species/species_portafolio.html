@@ -387,21 +387,22 @@ function buildCatCard(sp) {
 
   var imgHtml = (sp.imagenes && sp.imagenes.length > 0)
     ? '<img src="' + sp.imagenes[0] + '" alt="">'
-    : '<i class="fas fa-tree"></i>';
+    : '<img src="{% static 'assets/img/icon-tree.svg' %}" alt="árbol" style="width:100%;height:100%;object-fit:contain;">';
 
   // Category badges
   var cats = '';
   if ((sp['VALOR MADERA'] || 0) > 1) cats += '<span class="cat-badge cat-b-maderable">Maderable</span>';
   if ((sp['VALOR FRUTA']  || 0) > 0) cats += '<span class="cat-badge cat-b-fruta">Frutal</span>';
-  if ((sp['VALOR SUELO']  || 0) > 0) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
+  if ((sp['VALOR SUELO']  || 0) > 1) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
   if ((sp['VALOR MICROCLIMA']   || 0) > 0) cats += '<span class="cat-badge cat-b-microclima">Microclima</span>';
   if ((sp['VALOR BIODIVERSIDAD']|| 0) > 0) cats += '<span class="cat-badge cat-b-biodiv">Biodiversidad</span>';
   if ((sp['VALOR OTROS USOS']   || 0) > 0) cats += '<span class="cat-badge cat-b-otros">Otros usos</span>';
 
-  // Amenaza: combine v56 + v59
+  // Amenaza: combine v56 + v59 + v175
   var threatParts = [];
-  if ((sp.v56_amenaza_iucn || '').trim())     threatParts.push((sp.v56_amenaza_iucn).trim());
-  if ((sp.v59_amenaza_nacional || '').trim()) threatParts.push((sp.v59_amenaza_nacional).trim());
+  if ((sp.v56_amenaza_iucn     || '').trim()) threatParts.push(sp.v56_amenaza_iucn.trim());
+  if ((sp.v59_amenaza_nacional || '').trim()) threatParts.push(sp.v59_amenaza_nacional.trim());
+  if ((sp.v175_amenaza_peru    || '').trim()) threatParts.push(sp.v175_amenaza_peru.trim());
   var amenaza = threatParts.length ? threatParts.join(' / ') : '—';
 
   return (
