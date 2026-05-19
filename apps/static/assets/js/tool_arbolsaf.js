@@ -62,12 +62,12 @@ function buildCatCard(sp) {
 
     var imgHtml = (sp.imagenes && sp.imagenes.length > 0)
         ? '<img src="' + sp.imagenes[0] + '" alt="">'
-        : '<i class="fas fa-tree"></i>';
+        : '<img src="/static/assets/img/icon-tree.svg" alt="árbol" style="width:100%;height:100%;object-fit:contain;">';
 
     var cats = '';
     if ((sp['VALOR MADERA'] || 0) > 0) cats += '<span class="cat-badge cat-b-maderable">Maderable</span>';
     if ((sp['VALOR FRUTA']  || 0) > 0) cats += '<span class="cat-badge cat-b-fruta">Frutal</span>';
-    if ((sp['VALOR SUELO']  || 0) > 0) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
+    if ((sp['VALOR SUELO']  || 0) > 1) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
     // if ((sp['VALOR MICROCLIMA']    || 0) > 0) cats += '<span class="cat-badge cat-b-microclima">Microclima</span>';
     if ((sp['VALOR BIODIVERSIDAD'] || 0) > 0) cats += '<span class="cat-badge cat-b-biodiv">Biodiversidad</span>';
     if ((sp['VALOR OTROS USOS']    || 0) > 0) cats += '<span class="cat-badge cat-b-otros">Otros usos</span>';
@@ -75,6 +75,7 @@ function buildCatCard(sp) {
     var threatParts = [];
     if ((sp.v56_amenaza_iucn     || '').trim()) threatParts.push(sp.v56_amenaza_iucn.trim());
     if ((sp.v59_amenaza_nacional || '').trim()) threatParts.push(sp.v59_amenaza_nacional.trim());
+    if ((sp.v175_amenaza_peru    || '').trim()) threatParts.push(sp.v175_amenaza_peru.trim());
     var amenaza = threatParts.length ? threatParts.join(' / ') : '—';
 
     return (
@@ -250,37 +251,43 @@ var MODES = {
     biodiversidad: {
         cols: [
             { title: 'Especie',                  data: 'NOMBRE COMUN' },
-            { title: 'Aves',                     data: 'v89_aves',           render: boolDot },
-            { title: 'Mamiferos<br>pequeños',    data: 'v90_micromamiferos', render: boolDot },
-            { title: 'Abejas',                   data: 'v18_abejas',         render: boolDot },
-            { title: 'Murciélagos',              data: 'v91_murcielagos',    render: boolDot },
-            { title: 'Grado<br>amenaza',         data: 'v56_amenaza_iucn' },
-            { title: 'Grado<br>protección',      data: 'v59_amenaza_nacional' },
-            { title: 'Endemismo',                data: 'v64_endemismo',      render: boolDot },
+            { title: 'Abejas',                   data: 'v18_abejas',              render: boolDot },
+            { title: 'Aves',                     data: 'v89_aves',                render: boolDot },
+            { title: 'Mamíferos<br>pequeños',    data: 'v90_micromamiferos',      render: boolDot },
+            { title: 'Mamíferos<br>mayores',     data: 'v176_mamiferos_mayores',  render: boolDot },
+            { title: 'Murciélagos',              data: 'v91_murcielagos',         render: boolDot },
+            { title: 'Primates',                 data: 'v175_primates',           render: boolDot },
+            { title: 'Amenaza/<br>protección',   data: 'v56_amenaza_iucn',        render: withRefs(['v56','v59'], renderAmenazaCombinada) },
             { title: 'Valor<br>biodiversidad',   data: 'VALOR BIODIVERSIDAD' },
-            { title: 'Seleccione',               data: 'CODIGO',             render: renderCheckbox, orderable: false },
+            { title: 'Seleccione',               data: 'CODIGO',                  render: renderCheckbox, orderable: false },
         ]
     },
     otrosusos: {
         cols: [
             { title: 'Especie',                  data: 'NOMBRE COMUN' },
-            { title: 'Carbón',                   data: 'v142_carbon',    render: boolDot },
-            { title: 'Leña',                     data: 'v162_lena',      render: boolDot },
-            { title: 'Forraje<br>ganado',        data: 'v39_forraje',    render: boolDot },
-            { title: 'Medicinal',                data: 'v113_medicinal', render: boolDot },
             { title: 'Artesanías',               data: 'v111_artesanias',render: boolDot },
+            { title: 'Carbón',                   data: 'v142_carbon',    render: boolDot },
             { title: 'Cosméticos/<br>repelente', data: 'v112_cosmeticos',render: boolDot },
-            { title: 'Tintes/<br>pigmentos',     data: 'v102_tintes',    render: boolDot },
             { title: 'Fibra',                    data: 'v70_fibra',      render: boolDot },
+            { title: 'Forraje<br>ganado',        data: 'v39_forraje',    render: boolDot },
+            { title: 'Leña',                     data: 'v162_lena',      render: boolDot },
+            { title: 'Medicinal',                data: 'v113_medicinal', render: boolDot },
+            { title: 'Tintes/<br>pigmentos',     data: 'v102_tintes',    render: boolDot },
             { title: 'Valor<br>otros usos',      data: 'VALOR OTROS USOS' },
             { title: 'Seleccione',               data: 'CODIGO',         render: renderCheckbox, orderable: false },
         ]
     },
     suelo: {
         cols: [
-            { title: 'Especie',         data: 'NOMBRE COMUN' },
-            { title: 'Valor<br>suelo',  data: 'VALOR SUELO' },
-            { title: 'Seleccione',      data: 'CODIGO',       render: renderCheckbox, orderable: false },
+            { title: 'Especie',                               data: 'NOMBRE COMUN' },
+            { title: 'Aporta fertilidad/<br>recuperación',    data: 'v95_fertilidad' },
+            { title: 'Asociación con<br>microorganismos',     data: 'v115_microorganismos' },
+            { title: 'Mejora la<br>estructura',               data: 'v116_mejora_estructura', render: boolDot },
+            { title: 'Presencia<br>de nódulos',               data: 'v171_nodulos',           render: boolDot },
+            { title: 'Tipo de<br>follaje',                    data: 'v37_fenologia_hojas' },
+            { title: 'Tolera<br>sequía',                      data: 'v161_tolerancia_condiciones' },
+            { title: 'Valor<br>suelo',                        data: 'VALOR SUELO' },
+            { title: 'Seleccione',                            data: 'CODIGO',                 render: renderCheckbox, orderable: false },
         ]
     },
     microclima: {
@@ -298,8 +305,8 @@ var MODES = {
             { title: 'Imágenes',          data: 'imagenes',             render: renderImgDT,  orderable: false },
             { title: 'Madera',            data: 'VALOR MADERA',         render: valueDot },
             { title: 'Fruta',             data: 'VALOR FRUTA',          render: valueDot },
-            { title: 'Suelo',             data: 'VALOR SUELO',          render: valueDot },
             { title: 'Biodiversidad',     data: 'VALOR BIODIVERSIDAD',  render: valueDot },
+            { title: 'Suelo',             data: 'VALOR SUELO',          render: valueDot },
             { title: 'Otros usos',        data: 'VALOR OTROS USOS',     render: valueDot },
             { title: 'IVIM',              data: 'IVIM' },
             { title: 'Deseleccionar',     data: 'CODIGO',               render: renderTrash,  orderable: false },
@@ -467,6 +474,38 @@ function toggleCSLight(btn) {
     });
 }
 
+// ── Tamaño de copa: combina altura (v1) y ancho (v2) con " / " ──────────
+function renderTamanoCopa(data, type, row) {
+    if (type !== 'display') return data || '';
+    function rngStr(min, max) {
+        var lo = (min !== '' && min !== null && min !== undefined) ? parseFloat(min) : null;
+        var hi = (max !== '' && max !== null && max !== undefined) ? parseFloat(max) : null;
+        if (lo === null && hi === null) return null;
+        if (lo !== null && hi !== null && lo === hi) return lo;
+        return (lo !== null ? lo : '—') + '–' + (hi !== null ? hi : '—');
+    }
+    var alt   = rngStr(row['v1_altura_min'], row['v1_altura_max']);
+    var ancho = rngStr(row['v2_ancho_min'],  row['v2_ancho_max']);
+    if (alt && ancho) return alt + ' / ' + ancho;
+    return alt || ancho || '—';
+}
+
+// ── Tipo de suelo óptimo: si hay más de 5 clases → "Amplia preferencia" ──
+function renderTipoSuelo(data, type) {
+    if (!data || data === '') return '—';
+    var clases = data.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    if (clases.length > 5) return 'amplia preferencia';
+    return data;
+}
+
+function renderAmenazaCombinada(data, type, row) {
+    if (type !== 'display') return data || '';
+    var parts = [];
+    if ((row.v56_amenaza_iucn     || '').trim()) parts.push(row.v56_amenaza_iucn.trim());
+    if ((row.v59_amenaza_nacional || '').trim()) parts.push(row.v59_amenaza_nacional.trim());
+    return parts.length ? parts.join(' / ') : '—';
+}
+
 function renderSINO(data, type) {
     if (type !== 'display') return data;
     if (data === 'SI') return '<span style="color:#00a44d;font-weight:600">Sí</span>';
@@ -534,11 +573,10 @@ var CS_MODES = {
     clima: {
         cols: [
             { title: 'Especie',                              data: 'NOMBRE COMUN' },
-            { title: 'Temperatura<br>(min–max; °C)',         data: 'v101_temperatura_min', render: withRefs(['v101','v100'], renderMinMax('v101_temperatura_min', 'v100_temperatura_max')) },
-            { title: 'Elevación<br>(min–max; m.s.n.m)',      data: 'v157_elevacion_min',   render: withRefs(['v157','v158'], renderMinMax('v157_elevacion_min',   'v158_elevacion_max'))   },
-            { title: 'Precipitación<br>(min–max; mm/año)',   data: 'v82_precipitacion_min', render: withRefs(['v82','v81'],   renderMinMax('v82_precipitacion_min', 'v81_precipitacion_max')) },
-            { title: 'pH suelo<br>(min–max)',                data: 'v160_ph_min',           render: withRefs(['v160','v159'], renderMinMax('v160_ph_min', 'v159_ph_max')) },
-            { title: 'Pluviosidad<br>zona distribución',    data: 'v281_pluviosidad',       render: withRefs(['v281'], null) },
+            { title: 'Elevación<br>(min–max; m.s.n.m)',      data: 'v157_elevacion_min',    render: withRefs(['v157','v158'], renderMinMax('v157_elevacion_min',   'v158_elevacion_max'))   },
+            { title: 'Pluviosidad<br>zona distribución',    data: 'v281_pluviosidad',        render: withRefs(['v281'], null) },
+            { title: 'Precipitación<br>(min–max; mm/año)',  data: 'v82_precipitacion_min',   render: withRefs(['v82','v81'],   renderMinMax('v82_precipitacion_min', 'v81_precipitacion_max')) },
+            { title: 'Temperatura<br>(min–max; °C)',        data: 'v101_temperatura_min',    render: withRefs(['v101','v100'], renderMinMax('v101_temperatura_min', 'v100_temperatura_max')) },
             { title: 'Tolerancia<br>condiciones<br>extremas', data: 'v161_tolerancia_condiciones', render: withRefs(['v161'], null) },
             { title: 'Semáforo',                             data: 'CODIGO', render: renderSemDot('clima'), orderable: false },
             { title: 'Eliminar',                             data: 'CODIGO', render: renderTrash,           orderable: false },
@@ -546,14 +584,13 @@ var CS_MODES = {
     },
     suelo: {
         cols: [
-            { title: 'Especie',                      data: 'NOMBRE COMUN' },
-            { title: 'Tipo de<br>suelo óptimo',      data: 'v106_tipo_suelo_optimo',        render: withRefs(['v106'], null) },
-            { title: 'Exigencia<br>suelos fértiles', data: 'v68_exigencia_suelos_fertiles',  render: withRefs(['v68'],  null) },
-            { title: 'Preferencia<br>pH suelo',      data: 'v83_preferencia_ph_suelo',       render: withRefs(['v83'],  null) },
+            { title: 'Especie',                               data: 'NOMBRE COMUN' },
             { title: 'Desarrollo en<br>suelos bien drenados', data: 'v153_desarrollo_suelos_drenados', render: withRefs(['v153'], renderSINO) },
             { title: 'Desarrollo en<br>suelos rocosos',       data: 'v152_desarrollo_suelos_rocosos',  render: withRefs(['v152'], renderSINO) },
+            { title: 'Exigencia<br>suelos fértiles',          data: 'v68_exigencia_suelos_fertiles',   render: withRefs(['v68'],  null) },
+            { title: 'Preferencia<br>pH suelo',               data: 'v83_preferencia_ph_suelo',        render: withRefs(['v83'],  null) },
+            { title: 'Tipo de<br>suelo óptimo',               data: 'v106_tipo_suelo_optimo',          render: withRefs(['v106'], renderTipoSuelo) },
             { title: 'Tolerancia<br>acidez del suelo',        data: 'v108_tolerancia_acidez',          render: withRefs(['v108'], renderSINO) },
-            { title: 'Tolerancia<br>salinidad del suelo',     data: 'v109_tolerancia_salinidad',       render: withRefs(['v109'], renderSINO) },
             { title: 'Semáforo',                     data: 'CODIGO', render: renderSemDot('suelo'), orderable: false },
             { title: 'Eliminar',                     data: 'CODIGO', render: renderTrash,           orderable: false },
         ]
@@ -564,25 +601,24 @@ var MORFO_MODES = {
     forma: {
         cols: [
             { title: 'Especie',                          data: 'NOMBRE COMUN' },
-            { title: 'Altura<br>potencial de copa (m)',  data: 'v1_altura_copa',           render: withRefs(['v1'],   null) },
-            { title: 'Ancho<br>potencial de copa (m)',   data: 'v2_ancho_potencial_copa',  render: withRefs(['v2'],   null) },
-            { title: 'Tipo<br>ramificación de copa',     data: 'v13_tipo_ramificacion_copa', render: withRefs(['v13'], null) },
-            { title: 'Forma<br>de copa',                 data: 'v7_forma_copa',            render: withRefs(['v7'],   null) },
-            { title: 'Forma<br>de fuste',                data: 'v144_forma_fuste',         render: withRefs(['v144'], null) },
-            { title: 'Follaje de copa',                  data: 'v6_follage',               render: withRefs(['v6'],   null) },
-            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',       render: withRefs(['v9'],   null) },
+            { title: 'Follaje de copa',                  data: 'v6_follage',                 render: withRefs(['v6'],       null) },
+            { title: 'Forma<br>de copa',                 data: 'v7_forma_copa',              render: withRefs(['v7'],       null) },
+            { title: 'Forma<br>de fuste',                data: 'v144_forma_fuste',           render: withRefs(['v144'],     null) },
+            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',         render: withRefs(['v9'],       null) },
+            { title: 'Tamaño copa<br>(altura / ancho, m)',  data: 'v1_altura_min',              render: withRefs(['v1','v2'],  renderTamanoCopa) },
+            { title: 'Tipo<br>ramificación de copa',     data: 'v13_tipo_ramificacion_copa', render: withRefs(['v13'],      null) },
             { title: 'Notas',                            data: 'CODIGO', render: renderNotes('NOTAS_FORMA'), orderable: false },
         ]
     },
     ecologia: {
         cols: [
             { title: 'Especie',                          data: 'NOMBRE COMUN' },
-            { title: 'Gremio<br>ecológico',              data: 'v73_gremio_ecologico',        render: withRefs(['v73'],  null) },
-            { title: 'Grupo<br>funcional',               data: 'v80_grupo_funcional',          render: withRefs(['v80'],  null) },
-            { title: 'Fenología<br>de las hojas',        data: 'v37_fenologia_hojas',          render: withRefs(['v37'],  null) },
             { title: 'Época de<br>caída de hojas',       data: 'v35_epoca_caida_hojas',        render: withRefs(['v35'],  renderMonths) },
-            { title: 'Tipo de<br>ramificación de copa',  data: 'v13_tipo_ramificacion_copa',   render: withRefs(['v13'],  null) },
-            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',           render: withRefs(['v9'],   null) },
+            { title: 'Fenología<br>de las hojas',        data: 'v37_fenologia_hojas',           render: withRefs(['v37'],  null) },
+            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',            render: withRefs(['v9'],   null) },
+            { title: 'Gremio<br>ecológico',              data: 'v73_gremio_ecologico',          render: withRefs(['v73'],  null) },
+            { title: 'Grupo<br>funcional',               data: 'v80_grupo_funcional',           render: withRefs(['v80'],  null) },
+            { title: 'Tipo de<br>ramificación de copa',  data: 'v13_tipo_ramificacion_copa',    render: withRefs(['v13'],  null) },
             { title: 'Notas',                            data: 'CODIGO', render: renderNotes('NOTAS_ECOLOGIA'), orderable: false },
         ]
     }
@@ -1005,7 +1041,7 @@ function createEvalCard(specie) {
 
         // Header
         '<div class="sec-header">' +
-            '<div class="sec-icon"><i class="fas fa-tree"></i></div>' +
+            '<div class="sec-icon"><img src="/static/assets/img/icon-tree.svg" alt="árbol" style="width:100%;height:100%;object-fit:contain;"></div>' +
             '<div class="sec-names">' +
                 '<div class="sec-common">' + v(specie['NOMBRE COMUN']) + '</div>' +
                 '<div class="sec-sci"><em>' + v(specie['NOMBRE CIENTIFICO']) + '</em></div>' +
@@ -1042,7 +1078,7 @@ function createEvalCard(specie) {
         // Panel Suelo
         '<div class="sec-panel sec-panel-suelo">' +
             '<table class="sec-data-table">' +
-                '<tr><td>Tipo de suelo óptimo</td><td><strong>' + v(specie['v106_tipo_suelo_optimo']) + '</strong></td></tr>' +
+                '<tr><td>Tipo de suelo óptimo</td><td><strong>' + renderTipoSuelo(specie['v106_tipo_suelo_optimo'], 'display') + '</strong></td></tr>' +
                 '<tr><td>Exigencia fertilidad</td><td><strong>' + v(specie['v68_exigencia_suelos_fertiles']) + '</strong></td></tr>' +
                 '<tr><td>Tolerancia acidez</td><td><strong>' + v(specie['v108_tolerancia_acidez']) + '</strong></td></tr>' +
                 '<tr><td>pH min / max</td><td><strong>' + rng(specie['v160_ph_min'], specie['v159_ph_max'], '') + '</strong></td></tr>' +

@@ -698,6 +698,12 @@ def species_list_json(request):
         nombres = qual_names(vars_by_cod.get('v80'))
         valores_especie['v80_grupo_funcional'] = ','.join(nombres) if nombres else ""
 
+        nombres = qual_names(vars_by_cod.get('v95'))
+        valores_especie['v95_fertilidad'] = ','.join(nombres) if nombres else ""
+
+        nombres = qual_names(vars_by_cod.get('v115'))
+        valores_especie['v115_microorganismos'] = ','.join(nombres) if nombres else ""
+
         bool_vars_map = {
             'v167': 'v167_madera_muebles',
             'v163': 'v163_madera_construccion',
@@ -707,6 +713,9 @@ def species_list_json(request):
             'v18':  'v18_abejas',
             'v89':  'v89_aves',
             'v90':  'v90_micromamiferos',
+            'v116': 'v116_mejora_estructura',
+            'v171': 'v171_nodulos',
+            'v176': 'v176_mamiferos_mayores',
             'v91':  'v91_murcielagos',
             'v142': 'v142_carbon',
             'v162': 'v162_lena',
@@ -741,6 +750,29 @@ def species_list_json(request):
             valores_especie['v59_amenaza_nacional'] = q59[0].nombre if q59 else (v59.valor_texto or '')
         else:
             valores_especie['v59_amenaza_nacional'] = ''
+
+        # v175 tiene dos registros con el mismo cod_var:
+        #   - cualitativo: "categoría amenaza Perú"
+        #   - boolean:     "recurso para primates"
+        v175_cual = next(
+            (var for var in especie.variables.all()
+             if var.tipo_variable.cod_var.lower() == 'v175'
+             and var.tipo_variable.tipo_variables == 'cualitativo'),
+            None
+        )
+        if v175_cual:
+            q175 = list(v175_cual.valores_cualitativos.all())
+            valores_especie['v175_amenaza_peru'] = q175[0].nombre if q175 else (v175_cual.valor_texto or '')
+        else:
+            valores_especie['v175_amenaza_peru'] = ''
+
+        v175_bool = next(
+            (var for var in especie.variables.all()
+             if var.tipo_variable.cod_var.lower() == 'v175'
+             and var.tipo_variable.tipo_variables == 'boolean'),
+            None
+        )
+        valores_especie['v175_primates'] = bool(v175_bool.valor_boolean) if v175_bool else False
 
         especies_dict_list.append(valores_especie)
 

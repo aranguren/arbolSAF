@@ -20,12 +20,17 @@
         <div class="card p-3" id="table-card">
           <!-- Pestañas de categoría -->
           <div class="category-tabs mb-3">
-            <button type="button" class="btn btn-category btn-category-active" data-mode="maderable">Maderable</button>
-            <button type="button" class="btn btn-category" data-mode="frutales">Frutales</button>
-            <button type="button" class="btn btn-category" data-mode="biodiversidad">Biodiversidad</button>
-            <button type="button" class="btn btn-category" data-mode="suelo">Suelo</button>
+            <button type="button" class="btn btn-category btn-category-active" data-mode="maderable"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" title="Maderable">Maderable</button>
+            <button type="button" class="btn btn-category" data-mode="frutales"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" title="Fruta o semilla de consumo humano">Frutales</button>
+            <button type="button" class="btn btn-category" data-mode="biodiversidad"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" title="Recurso de alimento, refugio u otro usado por grupos de fauna">Biodiversidad</button>
+            <button type="button" class="btn btn-category" data-mode="suelo"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contribución potencial de la especie a la mejora y recuperación del suelo">Suelo</button>
             {% comment %} <button type="button" class="btn btn-category" data-mode="microclima">Microclima</button> {% endcomment %}
-            <button type="button" class="btn btn-category" data-mode="otrosusos">Otros usos</button>
+            <button type="button" class="btn btn-category" data-mode="otrosusos"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" title="Usos adicionales de la especie con valor cultural o económico no incluidos en las categorías anteriores">Otros usos</button>
             <button type="button" class="btn btn-category" data-mode="preliminar">Lista preliminar</button>
           </div>
           <!-- Spinner (shown until data loads) -->
