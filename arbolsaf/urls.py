@@ -13,7 +13,6 @@ app_name = 'arbolsaf'
 
 urlpatterns = [
     path('principal/', RedirectView.as_view(pattern_name='arbolsaf:tool_part1'), name='homepage'),
-    path('portafolio', PortafolioView.as_view(), name='species_portafolio'),
     path('especie/listado', SpeciesListView.as_view(),name='species_list'),
     path('especie/listado/json/', species_list_json ,name='species_list_json'),
     
