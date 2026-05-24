@@ -621,9 +621,7 @@ def species_list_json(request):
         else:
             valores_especie['v59_amenaza_nacional'] = ''
 
-        # v175 tiene dos registros con el mismo cod_var:
-        #   - cualitativo: "categoría amenaza Perú"
-        #   - boolean:     "recurso para primates"
+        # v175: cualitativo "categoría amenaza Perú" (sin cambio)
         v175_cual = next(
             (var for var in especie.variables.all()
              if var.tipo_variable.cod_var.lower() == 'v175'
@@ -636,13 +634,13 @@ def species_list_json(request):
         else:
             valores_especie['v175_amenaza_peru'] = ''
 
-        v175_bool = next(
+        # v177: boolean "recurso para primates" (antes v175 boolean)
+        v177 = next(
             (var for var in especie.variables.all()
-             if var.tipo_variable.cod_var.lower() == 'v175'
-             and var.tipo_variable.tipo_variables == 'boolean'),
+             if var.tipo_variable.cod_var.lower() == 'v177'),
             None
         )
-        valores_especie['v175_primates'] = bool(v175_bool.valor_boolean) if v175_bool else False
+        valores_especie['v177_primates'] = bool(v177.valor_boolean) if v177 else False
 
         especies_dict_list.append(valores_especie)
 

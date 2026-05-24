@@ -277,7 +277,7 @@ var MODES = {
             { title: 'Mamíferos<br>pequeños',    data: 'v90_micromamiferos',      render: boolDot },
             { title: 'Mamíferos<br>mayores',     data: 'v176_mamiferos_mayores',  render: boolDot },
             { title: 'Murciélagos',              data: 'v91_murcielagos',         render: boolDot },
-            { title: 'Primates',                 data: 'v175_primates',           render: boolDot },
+            { title: 'Primates',                 data: 'v177_primates',           render: boolDot },
             { title: 'Amenaza/<br>protección',   data: 'v56_amenaza_iucn',        render: withRefs(['v56','v59'], renderAmenazaCombinada) },
             { title: 'Valor<br>biodiversidad',   data: 'VALOR BIODIVERSIDAD' },
             { title: 'Seleccione',               data: 'CODIGO',                  render: renderCheckbox, orderable: false },
