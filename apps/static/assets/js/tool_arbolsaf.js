@@ -73,9 +73,9 @@ function buildCatCard(sp) {
     if ((sp['VALOR OTROS USOS']    || 0) > 0) cats += '<span class="cat-badge cat-b-otros">Otros usos</span>';
 
     var threatParts = [];
+    if ((sp.v175_amenaza_peru    || '').trim()) threatParts.push(sp.v175_amenaza_peru.trim());
     if ((sp.v56_amenaza_iucn     || '').trim()) threatParts.push(sp.v56_amenaza_iucn.trim());
     if ((sp.v59_amenaza_nacional || '').trim()) threatParts.push(sp.v59_amenaza_nacional.trim());
-    if ((sp.v175_amenaza_peru    || '').trim()) threatParts.push(sp.v175_amenaza_peru.trim());
     var amenaza = threatParts.length ? threatParts.join(' / ') : '—';
 
     return (
@@ -186,6 +186,24 @@ function boolDot(value, type) {
     return value ? 1 : 0;
 }
 
+// ── Círculo sí/no basado en presencia de término en texto ─────────
+function textContainsDot(terms) {
+    return function(value, type) {
+        if (type === 'display') {
+            var txt = (value || '').toLowerCase();
+            var match = terms.some(function(t) { return txt.indexOf(t.toLowerCase()) !== -1; });
+            return match
+                ? '<span class="cat-circle cat-circle--filled"></span>'
+                : '<span class="cat-circle cat-circle--empty"></span>';
+        }
+        var txt = (value || '').toLowerCase();
+        return terms.some(function(t) { return txt.indexOf(t.toLowerCase()) !== -1; }) ? 1 : 0;
+    };
+}
+
+var renderFertilidad = textContainsDot(['fertilidad del suelo', 'recuperacion de suelo', 'recuperación de suelo']);
+var renderSequia     = textContainsDot(['sequia', 'sequía']);
+
 // ── Círculo gris con valor (lista preliminar) ─────────────────────
 function valueDot(value, type) {
     if (type === 'display') {
@@ -230,6 +248,7 @@ function renderCheckbox(code, type) {
 // ── Definición de columnas por modo ──────────────────────────────
 var MODES = {
     maderable: {
+        valueField: 'VALOR MADERA',
         cols: [
             { title: 'Especie',              data: 'NOMBRE COMUN' },
             { title: 'Construcción',         data: 'v163_madera_construccion', render: boolDot },
@@ -240,6 +259,7 @@ var MODES = {
         ]
     },
     frutales: {
+        valueField: 'VALOR FRUTA',
         cols: [
             { title: 'Especie',         data: 'NOMBRE COMUN' },
             { title: 'Fruta',           data: 'v170_fruta',          render: boolDot },
@@ -249,6 +269,7 @@ var MODES = {
         ]
     },
     biodiversidad: {
+        valueField: 'VALOR BIODIVERSIDAD',
         cols: [
             { title: 'Especie',                  data: 'NOMBRE COMUN' },
             { title: 'Abejas',                   data: 'v18_abejas',              render: boolDot },
@@ -263,6 +284,7 @@ var MODES = {
         ]
     },
     otrosusos: {
+        valueField: 'VALOR OTROS USOS',
         cols: [
             { title: 'Especie',                  data: 'NOMBRE COMUN' },
             { title: 'Artesanías',               data: 'v111_artesanias',render: boolDot },
@@ -278,19 +300,21 @@ var MODES = {
         ]
     },
     suelo: {
+        valueField: 'VALOR SUELO',
         cols: [
             { title: 'Especie',                               data: 'NOMBRE COMUN' },
-            { title: 'Aporta fertilidad/<br>recuperación',    data: 'v95_fertilidad' },
+            { title: 'Aporta fertilidad/<br>recuperación',    data: 'v95_fertilidad',             render: renderFertilidad },
             { title: 'Asociación con<br>microorganismos',     data: 'v115_microorganismos' },
             { title: 'Mejora la<br>estructura',               data: 'v116_mejora_estructura', render: boolDot },
             { title: 'Presencia<br>de nódulos',               data: 'v171_nodulos',           render: boolDot },
             { title: 'Tipo de<br>follaje',                    data: 'v37_fenologia_hojas' },
-            { title: 'Tolera<br>sequía',                      data: 'v161_tolerancia_condiciones' },
+            { title: 'Tolera<br>sequía',                      data: 'v161_tolerancia_condiciones', render: renderSequia },
             { title: 'Valor<br>suelo',                        data: 'VALOR SUELO' },
             { title: 'Seleccione',                            data: 'CODIGO',                 render: renderCheckbox, orderable: false },
         ]
     },
     microclima: {
+        valueField: 'VALOR MICROCLIMA',
         cols: [
             { title: 'Especie',              data: 'NOMBRE COMUN' },
             { title: 'Valor<br>microclima',  data: 'VALOR MICROCLIMA' },
@@ -314,7 +338,6 @@ var MODES = {
     }
 };
 
-// Las tablas de condiciones y asociaciones fueron reemplazadas por tarjetas (createEvalCard).
 
 
 function createTable(data, mode) {
@@ -335,7 +358,8 @@ function createTable(data, mode) {
         });
     } else {
         colDefs      = MODES[mode].cols;
-        tableData    = data;
+        var vf       = MODES[mode].valueField;
+        tableData    = vf ? data.filter(function(s) { return (s[vf] || 0) > 0; }) : data;
         lastDataMode = mode;
     }
 
@@ -746,8 +770,6 @@ $(document).on('click', '.dt-trash', function() {
     $('#species-list input[value="' + code + '"]').prop('checked', false);
     var idx = species_selected.findIndex(function(s) { return s['CODIGO'] === code; });
     if (idx > -1) species_selected.splice(idx, 1);
-    $('#eval-card-' + code).remove();
-    updateEvalEmptyMsg();
     createCSTable(currentCSMode);
     createMorfoTable(currentMorfoMode);
     createTable(data_species, 'preliminar');
@@ -970,16 +992,11 @@ function selectSpecies(item) {
         })
         console.log('species_selected', species_selected);
 
-        createEvalCard(specie_selected[0]);
         createCSTable(currentCSMode);
         createMorfoTable(currentMorfoMode);
     
     } else {
         let specie_code = $(item).val();
-
-        // Quitar tarjeta de evaluación
-        $('#eval-card-' + specie_code).remove();
-        updateEvalEmptyMsg();
 
         let indexForDelete = species_selected.findIndex(item => item['CODIGO'] === specie_code);
         species_selected.splice(indexForDelete, 1);
@@ -1009,139 +1026,6 @@ function checkRemoveSpecies() {
         // let CODE = tb_row.find('input[value="' + species['CODIGO'] + '"');
         tb_row.find('input[value="' + species['CODIGO'] + '"').prop("checked", true);
     })
-}
-
-function removeEvalCard(btn) {
-    var card = $(btn).closest('.species-eval-card');
-    var code = card.data('code');
-
-    $('#species-list input[value="' + code + '"]').prop('checked', false);
-    var idx = species_selected.findIndex(function(s) { return s['CODIGO'] === code; });
-    if (idx > -1) species_selected.splice(idx, 1);
-
-    card.remove();
-    updateEvalEmptyMsg();
-    createCSTable(currentCSMode);
-    createMorfoTable(currentMorfoMode);
-
-    if (currentMode === 'preliminar') {
-        createTable(data_species, 'preliminar');
-    }
-}
-
-// ── Tarjeta de evaluación por especie (Clima / Suelo / Morfología) ──
-function createEvalCard(specie) {
-    var code = specie['CODIGO'];
-
-    function v(x) { return (x !== null && x !== undefined && x !== '') ? x : '—'; }
-    function rng(a, b, unit) { return v(a) + ' – ' + v(b) + (unit ? ' ' + unit : ''); }
-
-    var html =
-        '<div class="species-eval-card" id="eval-card-' + code + '" data-code="' + code + '">' +
-
-        // Header
-        '<div class="sec-header">' +
-            '<div class="sec-icon"><img src="/static/assets/img/icon-tree.svg" alt="árbol" style="width:100%;height:100%;object-fit:contain;"></div>' +
-            '<div class="sec-names">' +
-                '<div class="sec-common">' + v(specie['NOMBRE COMUN']) + '</div>' +
-                '<div class="sec-sci"><em>' + v(specie['NOMBRE CIENTIFICO']) + '</em></div>' +
-            '</div>' +
-            '<div class="sec-semaphores">' +
-                '<div class="sec-sem-row">' +
-                    '<span class="sec-sem-label">Clima</span>' +
-                    '<span class="sec-sem-dot" data-state="none" data-code="' + code + '" data-type="clima" onclick="toggleSemaphore(this)"></span>' +
-                '</div>' +
-                '<div class="sec-sem-row">' +
-                    '<span class="sec-sem-label">Suelo</span>' +
-                    '<span class="sec-sem-dot" data-state="none" data-code="' + code + '" data-type="suelo" onclick="toggleSemaphore(this)"></span>' +
-                '</div>' +
-            '</div>' +
-        '</div>' +
-
-        // Tabs
-        '<div class="sec-tabs">' +
-            '<button type="button" class="sec-tab sec-tab-active" data-card="eval-card-' + code + '" data-panel="clima" onclick="switchCardTab(this)">🌡 CLIMA</button>' +
-            '<button type="button" class="sec-tab" data-card="eval-card-' + code + '" data-panel="suelo" onclick="switchCardTab(this)">🌱 SUELO</button>' +
-            '<button type="button" class="sec-tab" data-card="eval-card-' + code + '" data-panel="morfologia" onclick="switchCardTab(this)">🌿 MORFOLOGÍA</button>' +
-        '</div>' +
-
-        // Panel Clima
-        '<div class="sec-panel sec-panel-clima sec-panel-active">' +
-            '<table class="sec-data-table">' +
-                '<tr><td>Temp. min / max</td><td><strong>' + rng(specie['v101_temperatura_min'], specie['v100_temperatura_max'], '°C') + '</strong></td></tr>' +
-                '<tr><td>Elevación</td><td><strong>' + rng(specie['v157_elevacion_min'], specie['v158_elevacion_max'], 'msnm') + '</strong></td></tr>' +
-                '<tr><td>Precipitación</td><td><strong>' + rng(specie['v82_precipitacion_min'], specie['v81_precipitacion_max'], 'mm/año') + '</strong></td></tr>' +
-                '<tr><td>Tolerancia condiciones</td><td><strong>' + v(specie['v161_tolerancia_condiciones']) + '</strong></td></tr>' +
-            '</table>' +
-        '</div>' +
-
-        // Panel Suelo
-        '<div class="sec-panel sec-panel-suelo">' +
-            '<table class="sec-data-table">' +
-                '<tr><td>Tipo de suelo óptimo</td><td><strong>' + renderTipoSuelo(specie['v106_tipo_suelo_optimo'], 'display') + '</strong></td></tr>' +
-                '<tr><td>Exigencia fertilidad</td><td><strong>' + v(specie['v68_exigencia_suelos_fertiles']) + '</strong></td></tr>' +
-                '<tr><td>Tolerancia acidez</td><td><strong>' + v(specie['v108_tolerancia_acidez']) + '</strong></td></tr>' +
-                '<tr><td>pH min / max</td><td><strong>' + rng(specie['v160_ph_min'], specie['v159_ph_max'], '') + '</strong></td></tr>' +
-                '<tr><td>Drenaje preferido</td><td><strong>' + v(specie['v153_desarrollo_suelos_drenados']) + '</strong></td></tr>' +
-            '</table>' +
-        '</div>' +
-
-        // Panel Morfología
-        '<div class="sec-panel sec-panel-morfologia">' +
-            '<table class="sec-data-table">' +
-                '<tr><td>Gremio ecológico</td><td><strong>' + v(specie['v73_gremio_ecologico']) + '</strong></td></tr>' +
-                '<tr><td>Fenología</td><td><strong>' + v(specie['v37_fenologia_hojas']) + '</strong></td></tr>' +
-                '<tr><td>Tipo de raíz</td><td><strong>' + v(specie['v118_tipo_raiz']) + '</strong></td></tr>' +
-                '<tr><td>Forma copa</td><td><strong>' + v(specie['v7_forma_copa']) + '</strong></td></tr>' +
-                '<tr><td>Densidad copa</td><td><strong>' + v(specie['v4_densidad_promedio_copa']) + '%</strong></td></tr>' +
-                '<tr><td>Altura / ancho copa</td><td><strong>' + v(specie['v1_altura_copa']) + ' / ' + v(specie['v2_ancho_potencial_copa']) + ' m</strong></td></tr>' +
-            '</table>' +
-        '</div>' +
-
-        // Notas
-        '<div class="sec-notes-wrap">' +
-            '<textarea class="sec-notes" placeholder="Notas para esta especie..." data-code="' + code + '" onchange="noteHandle(this)"></textarea>' +
-        '</div>' +
-
-        // Footer
-        '<div class="sec-footer">' +
-            '<span class="sec-ivim">IVIM: <strong>' + Number(specie['IVIM'].toFixed(2)) + '</strong></span>' +
-            '<button type="button" class="sec-remove-btn" onclick="removeEvalCard(this)">✕ Eliminar</button>' +
-        '</div>' +
-
-        '</div>';
-
-    $('#eval-cards-grid').append(html);
-    updateEvalEmptyMsg();
-}
-
-function switchCardTab(btn) {
-    var cardId = btn.getAttribute('data-card');
-    var panel  = btn.getAttribute('data-panel');
-    var card   = document.getElementById(cardId);
-    card.querySelectorAll('.sec-tab').forEach(function(t) { t.classList.remove('sec-tab-active'); });
-    btn.classList.add('sec-tab-active');
-    card.querySelectorAll('.sec-panel').forEach(function(p) { p.classList.remove('sec-panel-active'); });
-    card.querySelector('.sec-panel-' + panel).classList.add('sec-panel-active');
-}
-
-function toggleSemaphore(dot) {
-    var states = ['none', 'green', 'red'];
-    var current = dot.getAttribute('data-state') || 'none';
-    var next = states[(states.indexOf(current) + 1) % states.length];
-    dot.setAttribute('data-state', next);
-    var code  = dot.getAttribute('data-code');
-    var type  = dot.getAttribute('data-type');
-    var field = type === 'clima' ? 'SEMAFORO_PASO_2' : 'SEMAFORO_PASO_3';
-    var val   = next === 'green' ? 'active_green' : (next === 'red' ? 'active_red' : '');
-    species_selected.forEach(function(s) {
-        if (s['CODIGO'] === code) { s[field] = val; }
-    });
-}
-
-function updateEvalEmptyMsg() {
-    var isEmpty = $('#eval-cards-grid').children().length === 0;
-    $('#eval-empty-msg').toggle(isEmpty);
 }
 
 function selectLights (item) {
@@ -1189,7 +1073,7 @@ function activeRed (item) {
 };
 
 function noteHandle(item) {
-    var code = $(item).data('code') || $(item).closest('.species-eval-card').data('code');
+    var code = $(item).data('code');
     var itemVal = $(item).val();
     $.each(species_selected, function(i, s) {
         if (s['CODIGO'] === code) { s['NOTAS'] = itemVal; }
@@ -1442,6 +1326,9 @@ $(document).on('click', '#arbol-navtab .arbol-navtab-item', function() {
 });
 
 $(document).ready(function() {
+
+    // Inicializar tooltips en botones de categoría (Maderable → Otros usos)
+    initRefTooltips();
 
     // $( window ).on( "resize", function() {
         /* function myFunction(x) {
