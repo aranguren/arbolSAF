@@ -177,7 +177,6 @@ def tool_print_pdf_view(request):
         especie['valor_fruta'] =  True if especie.get('VALOR FRUTA',0) >0 else False
         especie['valor_otros_usos'] = True if especie.get('VALOR OTROS USOS',0) >0 else False
         especie['valor_biodiversidad'] = True if especie.get('VALOR BIODIVERSIDAD',0) >0 else False
-        especie['valor_microclimea'] = True if especie.get('VALOR MICROCLIMA',0 ) >0  else False
         especie['valor_suelo'] = True if especie.get('VALOR SUELO','') >0  else False
 
   

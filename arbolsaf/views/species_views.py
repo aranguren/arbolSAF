@@ -416,7 +416,6 @@ def species_list_json(request):
             "VALOR FRUTA": especie.valor_fruta,
             "VALOR OTROS USOS": especie.valor_otros_usos,
             "VALOR BIODIVERSIDAD": especie.valor_biodiversidad,
-            "VALOR MICROCLIMA": especie.valor_microclima,
             "VALOR SUELO": especie.valor_suelo,
             "IVIM": round(especie.ivim, 0),
         }

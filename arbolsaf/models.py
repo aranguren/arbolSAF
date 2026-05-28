@@ -438,38 +438,6 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         suma = nativa + v56 + v59 + v64 + v89 + v90 + v18 + v91 + v177 + v176
         return round(suma * 6.0 / 10.0, 2)
 
-    @computed(models.IntegerField(_("Valor para Microclima"), default=0),
-                depends=[('variables', ['valor_boolean'])])
-    def valor_microclima(self):
-        """V4 V58"""
-        if len(self.get_variables)== 0:
-            return 0
-        
-        v4_instance = self.variables.filter(tipo_variable__cod_var__iexact='v4').first()
-        if v4_instance:
-            v4 = v4_instance.valor_boolean or False
-        else:
-            v4 = False
-
-        v58_instance = self.variables.filter(tipo_variable__cod_var__iexact='v58').first()
-        if v58_instance:
-            v58 = v58_instance.valor_boolean or False
-        else:
-            v58 = False
-
-        v54_instance = self.variables.filter(tipo_variable__cod_var__iexact='v54').first()
-        if v54_instance:
-            v54 = v54_instance.valor_boolean or False
-        else:
-            v54 = False
-        
-        if v4 or v54 or v58:
-            return 3
-        else:
-            return 0
-        
-
-    
     @computed(models.FloatField(_("Valor para el Suelo"), default=0.0),
                 depends=[('variables', ['valor_boolean'])])
     def valor_suelo(self):
@@ -585,22 +553,6 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         else:
             return 'alto'
 
-    @computed(models.CharField(_("Valor para Microclima"), max_length=50, 
-                               choices=VALUES_CHOICES, default='ninguno'),
-                                depends=[('self', ['valor_microclima'])])
-    def valor_microclima_category(self):
-
-
-        if self.valor_microclima == 0:
-            valor = 'ninguno' 
-        elif self.valor_microclima == 1:
-            valor = 'bajo'
-        elif self.valor_microclima == 2:
-            valor = 'medio'
-        elif self.valor_microclima == 3:
-            valor = 'alto'
-
-        return valor
 
     @computed(models.CharField(_("Valor para Suelo"), max_length=50,
                                choices=VALUES_CHOICES, default='ninguno'),
@@ -616,43 +568,14 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
             return 'alto'
 
 
-    @computed(models.FloatField(_("Índice Multiuso"), default=0.0),
-                depends=[('self', ['valor_madera','valor_fruta','valor_otros_usos',
-                                   'valor_biodiversidad','valor_microclima','valor_suelo'])])
-    def indice_multiuso(self):
-        count = 0
-        if self.valor_madera>0:
-            count+=1
-        if self.valor_fruta>0:
-            count+=1
-        if self.valor_otros_usos>0:
-            count+=1
-        if self.valor_biodiversidad>0:
-            count+=1
-        if self.valor_microclima>0:
-            count+=1
-        if self.valor_suelo>0:
-            count+=1
-
-    
-        return round(count/6*100, 2)
-
-    @computed(models.FloatField(_("Índice de valor de uso relativo"), default=0.0),
-                depends=[('self', ['valor_madera','valor_fruta','valor_otros_usos',
-                                   'valor_biodiversidad','valor_microclima','valor_suelo'])])
-    def indice_valor_uso_relativo(self):
-        
-        suma = self.valor_madera + self.valor_fruta + self.valor_otros_usos + \
-                self.valor_biodiversidad + self.valor_microclima + self.valor_suelo
-
-        return round(suma / 21 * 100, 2)
-
     @computed(models.FloatField(_("IVIM"), default=0.0),
-                depends=[('self', ['indice_multiuso','indice_valor_uso_relativo'])])
+                depends=[('self', ['valor_madera','valor_fruta','valor_otros_usos',
+                                   'valor_biodiversidad','valor_suelo'])])
     def ivim(self):
-        
-    
-        return self.indice_multiuso+ self.indice_valor_uso_relativo
+        return round(
+            self.valor_madera + self.valor_fruta + self.valor_otros_usos +
+            self.valor_biodiversidad + self.valor_suelo, 2
+        )
     
 
     @property

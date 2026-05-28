@@ -65,7 +65,7 @@ function buildCatCard(sp) {
         : '<img src="/static/assets/img/icon-tree.svg" alt="árbol" style="width:100%;height:100%;object-fit:contain;">';
 
     var cats = '';
-    if ((sp['VALOR MADERA'] || 0) > 0) cats += '<span class="cat-badge cat-b-maderable">Maderable</span>';
+    if ((sp['VALOR MADERA'] || 0) > 1) cats += '<span class="cat-badge cat-b-maderable">Maderable</span>';
     if ((sp['VALOR FRUTA']  || 0) > 0) cats += '<span class="cat-badge cat-b-fruta">Frutal</span>';
     if ((sp['VALOR SUELO']  || 0) > 1) cats += '<span class="cat-badge cat-b-suelo">Suelo</span>';
     // if ((sp['VALOR MICROCLIMA']    || 0) > 0) cats += '<span class="cat-badge cat-b-microclima">Microclima</span>';
@@ -313,14 +313,6 @@ var MODES = {
             { title: 'Seleccione',                            data: 'CODIGO',                 render: renderCheckbox, orderable: false },
         ]
     },
-    microclima: {
-        valueField: 'VALOR MICROCLIMA',
-        cols: [
-            { title: 'Especie',              data: 'NOMBRE COMUN' },
-            { title: 'Valor<br>microclima',  data: 'VALOR MICROCLIMA' },
-            { title: 'Seleccione',           data: 'CODIGO',           render: renderCheckbox, orderable: false },
-        ]
-    },
     preliminar: {
         cols: [
             { title: 'Nombre común',      data: 'NOMBRE COMUN' },
@@ -381,7 +373,7 @@ function createTable(data, mode) {
 
     // Aplicar color de cabecera según modo
     $('#species-list')
-        .removeClass('table-mode-maderable table-mode-frutales table-mode-biodiversidad table-mode-suelo table-mode-microclima table-mode-otrosusos table-mode-preliminar')
+        .removeClass('table-mode-maderable table-mode-frutales table-mode-biodiversidad table-mode-suelo table-mode-otrosusos table-mode-preliminar')
         .addClass('table-mode-' + mode);
 
     // Inicializar DataTable con nuevas columnas
@@ -942,13 +934,6 @@ function selectSpecies(item) {
                 '</td>' +
                 '<td>' +
                     '<div class="d-flex justify-content-center align-items-center">' +
-                        '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR MICROCLIMA']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
-                            // specie_selected[0]['VALOR MICROCLIMA'] +
-                        '</span>' +
-                    '</div>' +
-                '</td>' +
-                '<td>' +
-                    '<div class="d-flex justify-content-center align-items-center">' +
                         '<span style="opacity:1; cursor:inherit; ' + selectedColor(specie_selected[0]['VALOR BIODIVERSIDAD']) + '" class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center" data-bs-placement="bottom" title="">' +
                             // specie_selected[0]['VALOR BIODIVERSIDAD'] +
                         '</span>' +
@@ -1116,11 +1101,6 @@ function noteHandle(item) {
                     '<td>' +
                         '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
                             '<span ' + selectedColor(specie_selected[0]['VALOR SUELO']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
-                        '</div>' +
-                    '</td>' +
-                    '<td>' +
-                        '<div class="d-flex px-3 py-1 justify-content-center align-items-center">' +
-                            '<span ' + selectedColor(specie_selected[0]['VALOR MICROCLIMA']) + ' class="btn btn-sm btn-icon-only btn-rounded btn-outline-secondary mb-0 d-flex align-items-center justify-content-center ms-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Refund rate is lower with 97% than other products"></span>' +
                         '</div>' +
                     '</td>' +
                     '<td>' +
