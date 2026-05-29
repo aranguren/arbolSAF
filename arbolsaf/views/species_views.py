@@ -417,7 +417,7 @@ def species_list_json(request):
             "VALOR OTROS USOS": especie.valor_otros_usos,
             "VALOR BIODIVERSIDAD": especie.valor_biodiversidad,
             "VALOR SUELO": especie.valor_suelo,
-            "IVIM": round(especie.ivim, 0),
+            "IVIM": round(especie.ivim, 2),
         }
 
         v100 = vars_by_cod.get('v100')
