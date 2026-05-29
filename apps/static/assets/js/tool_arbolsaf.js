@@ -627,18 +627,18 @@ function renderFauna(sp) {
 
     // — Polinizadores (v14) — grid de 12 imágenes —
     var polinizadores = [
-        { label: 'Abejas',      key: 'abejas',      img: '/uploaded/fauna/abeja.png'      },
-        { label: 'Abejorros',   key: 'abejorros',   img: '/uploaded/fauna/abejorro.png'   },
-        { label: 'Avispas',     key: 'avispas',     img: '/uploaded/fauna/avispa.png'     },
-        { label: 'Chinches',    key: 'chinches',    img: '/uploaded/fauna/chinche.png'    },
-        { label: 'Colibríes',   key: 'colibríes',   img: '/uploaded/fauna/colibri.png'    },
-        { label: 'Escarabajos', key: 'escarabajos', img: '/uploaded/fauna/escarabajo.png' },
-        { label: 'Gorgojos',    key: 'gorgojos',    img: '/uploaded/fauna/gorgojo.png'    },
-        { label: 'Hormigas',    key: 'hormigas',    img: '/uploaded/fauna/hormiga.png'    },
-        { label: 'Mariposas',   key: 'mariposas',   img: '/uploaded/fauna/mariposa.png'   },
-        { label: 'Moscas',      key: 'moscas',      img: '/uploaded/fauna/mosca.png'      },
-        { label: 'Murciélagos', key: 'murciélagos', img: '/uploaded/fauna/murcielago.png' },
-        { label: 'Polillas',    key: 'polillas',    img: '/uploaded/fauna/polilla.png'    },
+        { label: 'Abejas',      key: 'abejas',      img: '/static/assets/img/fauna/abeja.png'      },
+        { label: 'Abejorros',   key: 'abejorros',   img: '/static/assets/img/fauna/abejorro.png'   },
+        { label: 'Avispas',     key: 'avispas',     img: '/static/assets/img/fauna/avispa.png'     },
+        { label: 'Chinches',    key: 'chinches',    img: '/static/assets/img/fauna/chinche.png'    },
+        { label: 'Colibríes',   key: 'colibríes',   img: '/static/assets/img/fauna/colibri.png'    },
+        { label: 'Escarabajos', key: 'escarabajos', img: '/static/assets/img/fauna/escarabajo.png' },
+        { label: 'Gorgojos',    key: 'gorgojos',    img: '/static/assets/img/fauna/gorgojo.png'    },
+        { label: 'Hormigas',    key: 'hormigas',    img: '/static/assets/img/fauna/hormiga.png'    },
+        { label: 'Mariposas',   key: 'mariposas',   img: '/static/assets/img/fauna/mariposa.png'   },
+        { label: 'Moscas',      key: 'moscas',      img: '/static/assets/img/fauna/mosca.png'      },
+        { label: 'Murciélagos', key: 'murciélagos', img: '/static/assets/img/fauna/murcielago.png' },
+        { label: 'Polillas',    key: 'polillas',    img: '/static/assets/img/fauna/polilla.png'    },
     ];
 
     var polEl = document.getElementById('sint-polinizadores-grid');
