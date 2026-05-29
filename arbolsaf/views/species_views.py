@@ -599,6 +599,14 @@ def species_list_json(request):
             instance = vars_by_cod.get(cod)
             valores_especie[key] = bool(instance.valor_boolean) if instance else False
 
+        # v14: agentes polinizadores (cualitativo, lista de valores)
+        v14 = vars_by_cod.get('v14')
+        if v14:
+            q14 = list(v14.valores_cualitativos.all())
+            valores_especie['v14_polinizadores'] = [q.nombre for q in q14]
+        else:
+            valores_especie['v14_polinizadores'] = []
+
         valores_especie['refs'] = refs
         valores_especie['imagenes'] = [img.imagen.url for img in especie.get_imagenes]
         valores_especie['nativa'] = bool(especie.nativa)

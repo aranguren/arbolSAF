@@ -1,21 +1,117 @@
-<!-- Paso 4 — Evaluación y ajuste de la lista -->
+<!-- Paso 4 — Síntesis ecológica del portafolio -->
 <div class="card multisteps-form__panel p-3 border-radius-xl bg-white" id="step-4" data-animation="FadeIn">
-  <div class="row text-center">
-    <div class="col-10 mb-4 mx-auto w-auto">
-      <div class="py-2 px-4 mx-auto title-step">
-        <h4 class="font-weight-normal m-0">Evalúa las condiciones de cada especie seleccionada</h4>
-      </div>
-      <div class="p-4 mx-auto p-step">
-        <p class="mb-0 text-start">1. Usa el semáforo de cada tarjeta para indicar si la especie es adecuada para tu zona (verde) o no (rojo).</p>
-        <p class="mb-0 text-start">2. Navega entre las pestañas Clima, Suelo y Morfología para revisar las características de cada especie.</p>
-      </div>
+
+  <!-- Encabezado del paso -->
+  <div class="row text-center mb-2">
+    <div class="col-10 mx-auto w-auto" style="max-width:860px;">
+      {% comment %} <div class="py-2 px-4 mx-auto title-step">
+        <h4 class="font-weight-normal m-0">Síntesis ecológica de tu portafolio de especies</h4>
+      </div> {% endcomment %}
+      <p>Síntesis ecológica de tu portafolio de especies</p>
+      <p class="mt-3 mb-0 text-start">
+        Tu selección integra especies con distintos atributos ecológicos y potenciales beneficios para la biodiversidad y el paisaje.
+        El cuadro resume la composición general del portafolio, incluyendo el numero de especies nativas y endémicas, especies bajo alguna 
+        categoría de amenaza (IUCN/CITES) y el IVIM promedio del portafolio, índice que sintetiza el aporte potencial de las especies a productos 
+        y servicios ecosistémicos como madera, frutos, biodiversidad, fertilidad del suelo y otros usos.
+      </p>
+      <p class="mt-3 mb-0 text-start">
+        Las visualizaciones muestran además cómo las especies seleccionadas podrían contribuir al mantenimiento de fauna silvestre, 
+        polinizadores y otros procesos ecológicos asociados.  
+      </p>
     </div>
   </div>
-  <div class="multisteps-form__content">
-    <div class="eval-empty-msg text-center text-muted py-5" id="eval-empty-msg">
+
+  <div class="multisteps-form__content px-2 px-md-4">
+
+    <!-- Mensaje cuando no hay especies seleccionadas -->
+    <div id="sint-empty-msg" class="text-center text-muted py-4">
       <i class="fas fa-leaf fa-2x mb-2 d-block" style="color:#21ac8d;opacity:0.4;"></i>
-      Selecciona especies en el paso 1 para verlas aquí.
+      Selecciona especies en el paso 1 para ver la síntesis.
     </div>
 
-  </div>
+    <!-- Contenido visible solo cuando hay especies seleccionadas -->
+    <div id="sint-content" style="display:none;">
+
+      <!-- ── a) Composición ─────────────────────────────────────────── -->
+      <div class="my-5">
+        <p class="mb-3" style="font-weight:700;border-bottom:2px solid #21ac8d;padding-bottom:0.35rem;">
+          a) Composición de tu portafolio
+        </p>
+        <table class="mx-auto" style="max-width:520px;border-collapse:collapse;width:100%;">
+          <tbody>
+            <tr style="background:#6c757d;color:#fff;">
+              <td style="padding:0.5rem 0.85rem;font-weight:700;">Número de especies</td>
+              <td style="padding:0.5rem 0.85rem;font-weight:700;text-align:center;width:80px;" id="sint-n-especies">—</td>
+            </tr>
+            <tr style="background:#f0f4f8;">
+              <td style="padding:0.4rem 0.85rem;">Nativas</td>
+              <td style="padding:0.4rem 0.85rem;text-align:center;" id="sint-nativas">—</td>
+            </tr>
+            <tr>
+              <td style="padding:0.4rem 0.85rem;">Endémicas del Perú</td>
+              <td style="padding:0.4rem 0.85rem;text-align:center;" id="sint-endemicas">—</td>
+            </tr>
+            <tr style="background:#f0f4f8;">
+              <td style="padding:0.4rem 0.85rem;">Especies con algún grado de amenaza</td>
+              <td style="padding:0.4rem 0.85rem;text-align:center;" id="sint-amenaza">—</td>
+            </tr>
+            <tr>
+              <td style="padding:0.4rem 0.85rem;">Promedio del IVIM (escala de 0 a 18)</td>
+              <td style="padding:0.4rem 0.85rem;text-align:center;" id="sint-ivim">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── b) Servicios y productos ──────────────────────────────── -->
+      <div class="mb-5">
+        <p class="mb-1" style="font-weight:700;border-bottom:2px solid #21ac8d;padding-bottom:0.35rem;">
+          b) Servicios y productos asociados a las especies seleccionadas
+        </p>
+        <p class="text-muted mb-4">
+          Los gráficos muestran el porcentaje de especies seleccionadas que pueden aportar:
+          izquierda) madera, frutos o contribuir al mantenimiento de la biodiversidad y la
+          fertilidad del suelo; derecha) otros varios usos.
+        </p>
+        <div class="row g-4">
+          <div class="col-12 col-md-6">
+            <div style="position:relative;height:230px;">
+              <canvas id="chart-main-cats"></canvas>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div style="position:relative;height:230px;">
+              <canvas id="chart-otros-usos"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── c) Fauna y polinizadores ─────────────────────────────── -->
+      <div class="mb-5">
+        <p class="mb-1" style="font-weight:700;border-bottom:2px solid #21ac8d;padding-bottom:0.35rem;">
+          c) Fauna y polinizadores
+        </p>
+        <p class="text-muted mb-4">
+          Izquierda) grupos de fauna para los que las especies seleccionadas aportan recursos de alimento o refugio.
+          Derecha) agentes polinizadores asociados a las especies seleccionadas (el icono se resalta cuando al menos
+          una especie del portafolio los atrae).
+        </p>
+        <div class="row g-4 align-items-start">
+          <div class="col-12 col-md-5">
+            <p class="mb-2" style="font-size:0.8rem;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.04em;">Grupos de fauna</p>
+            <div style="position:relative;height:290px;">
+              <canvas id="chart-fauna-groups"></canvas>
+            </div>
+          </div>
+          <div class="col-12 col-md-7">
+            <p class="mb-2" style="font-size:0.8rem;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.04em;">Agentes polinizadores</p>
+            <div id="sint-polinizadores-grid"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sint-content -->
+
+  </div><!-- /multisteps-form__content -->
 </div>

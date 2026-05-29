@@ -413,6 +413,274 @@ $(document).on('click', '.btn-category', function() {
     createTable(data_species, $(this).data('mode'));
 });
 
+// ── Paso 4 — Síntesis ecológica ──────────────────────────────────
+var _chartMainCats   = null;
+var _chartOtrosUsos  = null;
+var _chartFaunaGrups = null;
+
+function renderSintesis() {
+    var sp = species_selected;
+    var n  = sp.length;
+
+    var emptyMsg = document.getElementById('sint-empty-msg');
+    var content  = document.getElementById('sint-content');
+    if (emptyMsg) emptyMsg.style.display = n === 0 ? '' : 'none';
+    if (content)  content.style.display  = n === 0 ? 'none' : '';
+
+    // ── a) Estadísticas de composición ────────────────────────────
+    var nativas   = sp.filter(function(s) { return s.nativa; }).length;
+    var endemicas = sp.filter(function(s) { return s.v64_endemismo; }).length;
+    var amenaza   = sp.filter(function(s) {
+        return (s.v56_amenaza_iucn     || '').trim() ||
+               (s.v59_amenaza_nacional || '').trim() ||
+               (s.v175_amenaza_peru    || '').trim();
+    }).length;
+    var ivimVals = sp.map(function(s) { return parseFloat(s['IVIM']); })
+                     .filter(function(v) { return !isNaN(v); });
+    var ivimAvg  = ivimVals.length
+        ? (ivimVals.reduce(function(a, b) { return a + b; }, 0) / ivimVals.length).toFixed(1)
+        : '—';
+
+    document.getElementById('sint-n-especies').textContent = n;
+    document.getElementById('sint-nativas').textContent    = nativas;
+    document.getElementById('sint-endemicas').textContent  = endemicas;
+    document.getElementById('sint-amenaza').textContent    = amenaza;
+    document.getElementById('sint-ivim').textContent       = ivimAvg;
+
+    if (n === 0) return;
+
+    // ── b) Gráficos de servicios y productos ──────────────────────
+    function pct(count) { return n ? Math.round(count / n * 100) : 0; }
+
+    // Gráfico izquierdo — categorías principales
+    var mainLabels = ['Maderables', 'Frutales', 'Suelos', 'Biodiversidad'];
+    var mainData   = [
+        pct(sp.filter(function(s) { return (s['VALOR MADERA']        || 0) > 1; }).length),
+        pct(sp.filter(function(s) { return (s['VALOR FRUTA']         || 0) > 0; }).length),
+        pct(sp.filter(function(s) { return (s['VALOR SUELO']         || 0) > 0; }).length),
+        pct(sp.filter(function(s) { return (s['VALOR BIODIVERSIDAD'] || 0) > 0; }).length),
+    ];
+    var mainColors = ['#85604b', '#806377', '#aa4207', '#00a44d'];
+
+    if (_chartMainCats) _chartMainCats.destroy();
+    _chartMainCats = new Chart(document.getElementById('chart-main-cats'), {
+        type: 'bar',
+        data: {
+            labels: mainLabels,
+            datasets: [{
+                data: mainData,
+                backgroundColor: mainColors,
+                borderRadius: 4,
+                barThickness: 28,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) { return ' ' + ctx.parsed.x + '%'; }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    min: 0, max: 100,
+                    ticks: { callback: function(v) { return v + '%'; }, stepSize: 25 },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Gráfico derecho — otros usos
+    var otrosLabels = ['Artesanías', 'Carbón', 'Cosméticos', 'Fibra', 'Forraje', 'Leña', 'Medicinal', 'Tintes'];
+    var otrosData   = [
+        pct(sp.filter(function(s) { return s.v111_artesanias;  }).length),
+        pct(sp.filter(function(s) { return s.v142_carbon;      }).length),
+        pct(sp.filter(function(s) { return s.v112_cosmeticos;  }).length),
+        pct(sp.filter(function(s) { return s.v70_fibra;        }).length),
+        pct(sp.filter(function(s) { return s.v39_forraje;      }).length),
+        pct(sp.filter(function(s) { return s.v162_lena;        }).length),
+        pct(sp.filter(function(s) { return s.v113_medicinal;   }).length),
+        pct(sp.filter(function(s) { return s.v102_tintes;      }).length),
+    ];
+
+    if (_chartOtrosUsos) _chartOtrosUsos.destroy();
+    _chartOtrosUsos = new Chart(document.getElementById('chart-otros-usos'), {
+        type: 'bar',
+        data: {
+            labels: otrosLabels,
+            datasets: [{
+                data: otrosData,
+                backgroundColor: '#c8a951',
+                borderRadius: 4,
+                barThickness: 18,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) { return ' ' + ctx.parsed.x + '%'; }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    min: 0, max: 100,
+                    ticks: { callback: function(v) { return v + '%'; }, stepSize: 25 },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+
+    // ── c) Fauna y polinizadores ──────────────────────────────────
+    renderFauna(sp);
+}
+
+function renderFauna(sp) {
+    // — Grupos de fauna: gráfico de pastel —
+    var faunaGroups = [
+        { label: 'Abejas',         short: 'Abejas',      key: 'v18_abejas'            },
+        { label: 'Aves',           short: 'Aves',         key: 'v89_aves'              },
+        { label: 'Mamífero pequeños',  short: 'Mamífero\npequeños',key: 'v90_micromamiferos'    },
+        { label: 'Mamífero mayores',  short: 'Mamífero\nmayores',key: 'v176_mamiferos_mayores'},
+        { label: 'Murciélagos',    short: 'Murciélagos', key: 'v91_murcielagos'       },
+        { label: 'Primates',       short: 'Primates',    key: 'v177_primates'         },
+    ];
+
+    var GREEN_PRESENT = '#21ac8d';
+    var GRAY_ABSENT   = '#d8d8d8';
+
+    var labels = faunaGroups.map(function(g) { return g.label; });
+    var colors = faunaGroups.map(function(g) {
+        return sp.some(function(s) { return s[g.key]; }) ? GREEN_PRESENT : GRAY_ABSENT;
+    });
+
+    // Plugin inline para dibujar labels dentro de cada segmento
+    var sliceLabelPlugin = {
+        id: 'sliceLabels',
+        afterDraw: function(chart) {
+            var ctx = chart.ctx;
+            var meta = chart.getDatasetMeta(0);
+            meta.data.forEach(function(arc, i) {
+                var midAngle = (arc.startAngle + arc.endAngle) / 2;
+                var r = arc.outerRadius * 0.65;
+                var x = arc.x + Math.cos(midAngle) * r;
+                var y = arc.y + Math.sin(midAngle) * r;
+                var lines = faunaGroups[i].short.split('\n');
+                var lineH = 11;
+                ctx.save();
+                ctx.fillStyle = colors[i] === GRAY_ABSENT ? '#666' : '#fff';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                var startY = y - ((lines.length - 1) * lineH) / 2;
+                lines.forEach(function(line, li) {
+                    ctx.fillText(line, x, startY + li * lineH);
+                });
+                ctx.restore();
+            });
+        }
+    };
+
+    if (_chartFaunaGrups) _chartFaunaGrups.destroy();
+    _chartFaunaGrups = new Chart(document.getElementById('chart-fauna-groups'), {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: [1, 1, 1, 1, 1, 1],
+                backgroundColor: colors,
+                borderColor: '#fff',
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            var present = colors[ctx.dataIndex] === GREEN_PRESENT;
+                            return ' ' + ctx.label + ': ' + (present ? 'Presente' : 'No detectado');
+                        }
+                    }
+                }
+            }
+        },
+        plugins: [sliceLabelPlugin]
+    });
+
+    // — Polinizadores (v14) — grid de 12 imágenes —
+    var polinizadores = [
+        { label: 'Abejas',      key: 'abejas',      img: '/uploaded/fauna/abeja.png'      },
+        { label: 'Abejorros',   key: 'abejorros',   img: '/uploaded/fauna/abejorro.png'   },
+        { label: 'Avispas',     key: 'avispas',     img: '/uploaded/fauna/avispa.png'     },
+        { label: 'Chinches',    key: 'chinches',    img: '/uploaded/fauna/chinche.png'    },
+        { label: 'Colibríes',   key: 'colibríes',   img: '/uploaded/fauna/colibri.png'    },
+        { label: 'Escarabajos', key: 'escarabajos', img: '/uploaded/fauna/escarabajo.png' },
+        { label: 'Gorgojos',    key: 'gorgojos',    img: '/uploaded/fauna/gorgojo.png'    },
+        { label: 'Hormigas',    key: 'hormigas',    img: '/uploaded/fauna/hormiga.png'    },
+        { label: 'Mariposas',   key: 'mariposas',   img: '/uploaded/fauna/mariposa.png'   },
+        { label: 'Moscas',      key: 'moscas',      img: '/uploaded/fauna/mosca.png'      },
+        { label: 'Murciélagos', key: 'murciélagos', img: '/uploaded/fauna/murcielago.png' },
+        { label: 'Polillas',    key: 'polillas',    img: '/uploaded/fauna/polilla.png'    },
+    ];
+
+    var polEl = document.getElementById('sint-polinizadores-grid');
+    if (!polEl) return;
+
+    // Build set of all pollinator keys present in selected species
+    var presentKeys = {};
+    sp.forEach(function(s) {
+        var arr = s.v14_polinizadores || [];
+        arr.forEach(function(val) { presentKeys[val.toLowerCase()] = true; });
+    });
+
+    var polHtml = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;">';
+    polinizadores.forEach(function(p) {
+        var present = presentKeys[p.key];
+        var opacity = present ? '1' : '0.2';
+        var border  = present ? '2px solid #21ac8d' : '2px solid transparent';
+        var bg      = present ? '#e8f7f3' : '#f5f5f5';
+        polHtml +=
+            '<div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;' +
+            'padding:0.45rem;border-radius:10px;background:' + bg + ';border:' + border + ';opacity:' + opacity + ';">' +
+            '<img src="' + p.img + '" alt="' + p.label + '" style="width:60px;height:60px;object-fit:contain;">' +
+            '<span style="font-size:0.75rem;text-align:center;color:#333;font-weight:' + (present ? '700' : '400') + ';line-height:1.2;">' + p.label + '</span>' +
+            '</div>';
+    });
+    polHtml += '</div>';
+    polEl.innerHTML = polHtml;
+}
+
+// Activa renderSintesis() cada vez que step-4 se hace visible
+(function() {
+    var el = document.getElementById('step-4');
+    if (!el) return;
+    new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if (m.attributeName === 'class' && el.classList.contains('js-active')) {
+                renderSintesis();
+            }
+        });
+    }).observe(el, { attributes: true });
+})();
+
 // ── Step-2: Clima / Suelo ─────────────────────────────────────────
 var currentCSMode   = 'clima';
 
