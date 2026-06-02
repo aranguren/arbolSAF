@@ -401,16 +401,11 @@
                             <td class="text-center">
                               <a href="{% url 'arbolsaf:species_detail_variable' variable.id %}"><i class="far fa-eye me-2 mx-2" aria-hidden="true"></i></a>
                               {% if request.user|has_group:"editor" or request.user.is_superuser %}
-                                {% if not variable.chequeo %}
-                                  <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
-                                {% else %}
-                                  <i class="far fa-edit me-2 mx-2" aria-hidden="true"></i>
-                                {% endif %}
+                                <a href="{% url 'arbolsaf:species_update_variable' variable.id %}"><i class="far fa-edit me-2 mx-2" aria-hidden="true"></i></a>
                                 <button class="btn btn-link text-danger text-gradient px-0 mb-0 deletebin mx-2"
                                         id="eliminarVariable"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteVariableModal"
-                                        {% if variable.chequeo %}disabled{% endif %}
                                         value="{{ variable.id }}">
                                   <i class="far fa-trash-alt me-2" aria-hidden="true"></i>
                                 </button>

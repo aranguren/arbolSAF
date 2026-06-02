@@ -289,8 +289,10 @@ class VariableO2MUpdateView(LoginRequiredMixin, GroupRequiredMixin, UpdateView):
 
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)  
-        if self.object.chequeo:
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        is_editor = user.groups.filter(name='editor').exists()
+        if self.object.chequeo and not (is_editor or user.is_superuser):
             raise PermissionDenied()
              
         context['segment'] = ['arbolsaf','species']
