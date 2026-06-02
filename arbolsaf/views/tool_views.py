@@ -1,9 +1,19 @@
 from django.views.generic import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from wkhtmltopdf.views import PDFTemplateResponse
 import json
 from django.conf import settings
-from ..models import SpeciesModel, RegistroReporteHerramienta
+from ..models import SpeciesModel, RegistroReporteHerramienta, ReferenceModel, VariableModel
+
+# Variables referenciadas en los pasos 2 (clima/suelo) y 3 (forma/ecología) de la herramienta
+TOOL_STEP_2_3_COD_VARS = [
+    'v1', 'v2', 'v6', 'v7', 'v9', 'v13', 'v35', 'v37',
+    'v68', 'v73', 'v80', 'v81', 'v82', 'v83',
+    'v100', 'v101', 'v106', 'v108',
+    'v144', 'v152', 'v153', 'v157', 'v158', 'v161', 'v281',
+]
+
 
 class ToolView(TemplateView):
     template_name = "arbolsaf/tool/tool.html"
@@ -11,6 +21,18 @@ class ToolView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["segment"] = ["herramienta"]
+
+        cod_vars_lower = [c.lower() for c in TOOL_STEP_2_3_COD_VARS]
+        ref_ids = set(
+            VariableModel.objects
+            .filter(tipo_variable__cod_var__iregex=r'^(' + '|'.join(cod_vars_lower) + r')$')
+            .values_list('referencia_id', 'referencia_2_id')
+            .iterator()
+        )
+        flat_ids = {rid for tup in ref_ids for rid in tup if rid is not None}
+        context["tool_references"] = (
+            ReferenceModel.objects.filter(id__in=flat_ids).order_by('fuente_final')
+        )
         return context
 
 

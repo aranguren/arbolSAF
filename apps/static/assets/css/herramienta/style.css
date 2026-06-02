@@ -771,10 +771,46 @@
     }
 }
 
+/* ── Contenido de paneles de herramienta (global) ───────────────── */
+/* Contenedor centrado con texto alineado a la izquierda */
+.tool-panel-content {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* Título de sección principal — mismo estilo que intro-content h2 */
+.tool-section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2d6a2d;
+    border-bottom: 2px solid #2d6a2d;
+    padding-bottom: 0.35rem;
+    margin-bottom: 1rem;
+}
+
+/* Subtítulo de subsección (h3 equivalente) */
+.tool-subsection-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.6rem;
+}
+
+/* Texto corrido de paneles */
+.tool-panel-content p { font-size: 1rem; color: #444; line-height: 1.7; margin-bottom: 1rem; }
+
 /* ── Excepciones al color: black !important ─────────────────────── */
 /* Headings verdes en panel intro */
 .tool-page .arbol-main .intro-content h2,
-.tool-page .arbol-main .intro-content h3 { color: #2d6a2d !important; }
+.tool-page .arbol-main .intro-content h3,
+.tool-page .arbol-main h2.tool-section-title {
+    color: #2d6a2d !important;
+    border-bottom: 2px solid #2d6a2d;
+    padding-bottom: 0.35rem;
+}
 
 /* Spinners de carga (text-success → verde Bootstrap) */
 .tool-page .arbol-main .text-success { color: #198754 !important; }

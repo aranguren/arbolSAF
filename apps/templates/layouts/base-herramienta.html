@@ -242,9 +242,11 @@
         Registro y<br>reporte (paso 5)
       </a>
 
-      <span class="arbol-navtab-item arbol-navtab-disabled">
+      <a class="arbol-navtab-item {% block nav_metodos %}{% endblock %}"
+         data-panel="step-metodos"
+         href="{% url 'arbolsaf:tool_part1' %}">
         Métodos<br>y créditos
-      </span>
+      </a>
 
       <a class="arbol-navtab-item"
          href="{% url 'arbolsaf:variable_species_list' %}" target="_blank">
