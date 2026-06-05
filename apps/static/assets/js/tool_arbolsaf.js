@@ -204,6 +204,18 @@ function textContainsDot(terms) {
 var renderFertilidad = textContainsDot(['fertilidad del suelo', 'recuperacion de suelo', 'recuperación de suelo']);
 var renderSequia     = textContainsDot(['sequia', 'sequía']);
 
+// ── Tipo de follaje (v37) — display tal cual, sort por ranking ─────
+// Para que la flechita ordene caducifolio > semicaducifolio > perennifolio,
+// devolvemos un puntaje numérico cuando DataTables pide 'sort'/'type'.
+function renderFollaje(value, type) {
+    if (type === 'display') return value || '—';
+    var txt = (value || '').toLowerCase();
+    if (txt.indexOf('semicaducifolio') !== -1) return 1;
+    if (txt.indexOf('caducifolio')     !== -1) return 2;
+    if (txt.indexOf('perennifolio')    !== -1) return 0;
+    return -1;  // vacío al final
+}
+
 // ── Círculo gris con valor (lista preliminar) ─────────────────────
 function valueDot(value, type) {
     if (type === 'display') {
@@ -211,7 +223,10 @@ function valueDot(value, type) {
             ? '<span class="cat-circle cat-circle--filled">' + value + '</span>'
             : '<span class="cat-circle cat-circle--empty"></span>';
     }
-    return value > 0 ? 1 : 0;
+    // Para sort/filter/type devolver la magnitud real (no 0/1) para que
+    // DataTables ordene 3 > 2 > 1 > 0 correctamente.
+    var n = parseFloat(value);
+    return isNaN(n) ? 0 : n;
 }
 
 // ── Ícono de imagen para DataTable (modo Lista preliminar) ────────
@@ -307,7 +322,7 @@ var MODES = {
             { title: 'Asociación con<br>microorganismos',     data: 'v115_microorganismos' },
             { title: 'Mejora la<br>estructura',               data: 'v116_mejora_estructura', render: boolDot },
             { title: 'Presencia<br>de nódulos',               data: 'v171_nodulos',           render: boolDot },
-            { title: 'Tipo de<br>follaje',                    data: 'v37_fenologia_hojas' },
+            { title: 'Tipo de<br>follaje',                    data: 'v37_fenologia_hojas',         render: renderFollaje },
             { title: 'Tolera<br>sequía',                      data: 'v161_tolerancia_condiciones', render: renderSequia },
             { title: 'Valor<br>suelo',                        data: 'VALOR SUELO' },
             { title: 'Seleccione',                            data: 'CODIGO',                 render: renderCheckbox, orderable: false },
@@ -631,24 +646,33 @@ function renderFauna(sp) {
         { label: 'Abejorros',   key: 'abejorros',   img: '/static/assets/img/fauna/abejorro.png'   },
         { label: 'Avispas',     key: 'avispas',     img: '/static/assets/img/fauna/avispa.png'     },
         { label: 'Chinches',    key: 'chinches',    img: '/static/assets/img/fauna/chinche.png'    },
-        { label: 'Colibríes',   key: 'colibríes',   img: '/static/assets/img/fauna/colibri.png'    },
+        { label: 'Colibríes',   key: 'colibries',   img: '/static/assets/img/fauna/colibri.png'    },
         { label: 'Escarabajos', key: 'escarabajos', img: '/static/assets/img/fauna/escarabajo.png' },
         { label: 'Gorgojos',    key: 'gorgojos',    img: '/static/assets/img/fauna/gorgojo.png'    },
         { label: 'Hormigas',    key: 'hormigas',    img: '/static/assets/img/fauna/hormiga.png'    },
         { label: 'Mariposas',   key: 'mariposas',   img: '/static/assets/img/fauna/mariposa.png'   },
         { label: 'Moscas',      key: 'moscas',      img: '/static/assets/img/fauna/mosca.png'      },
-        { label: 'Murciélagos', key: 'murciélagos', img: '/static/assets/img/fauna/murcielago.png' },
+        { label: 'Murciélagos', key: 'murcielagos', img: '/static/assets/img/fauna/murcielago.png' },
         { label: 'Polillas',    key: 'polillas',    img: '/static/assets/img/fauna/polilla.png'    },
     ];
 
     var polEl = document.getElementById('sint-polinizadores-grid');
     if (!polEl) return;
 
+    // Normalizador: lowercase + strip acentos (NFD). En la BD las opciones de v14
+    // están sin acentos ('colibries', 'murcielagos'), pero antes el JS comparaba
+    // con tilde ('colibríes', 'murciélagos') y nunca matcheaban.
+    function _norm(s) {
+        return (s || '').toString().toLowerCase()
+            .normalize('NFD').replace(/[̀-ͯ]/g, '')
+            .trim();
+    }
+
     // Build set of all pollinator keys present in selected species
     var presentKeys = {};
     sp.forEach(function(s) {
         var arr = s.v14_polinizadores || [];
-        arr.forEach(function(val) { presentKeys[val.toLowerCase()] = true; });
+        arr.forEach(function(val) { presentKeys[_norm(val)] = true; });
     });
 
     var polHtml = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.65rem;">';
@@ -783,11 +807,19 @@ function renderTipoSuelo(data, type) {
 }
 
 function renderAmenazaCombinada(data, type, row) {
-    if (type !== 'display') return data || '';
+    var v56 = (row.v56_amenaza_iucn     || '').trim();
+    var v59 = (row.v59_amenaza_nacional || '').trim();
+
+    // Texto combinado v56 / v59 (o '' si ambos están vacíos).
+    // Se usa tanto para mostrar como para ordenar — DataTables hará
+    // sort alfabético natural sobre este string.
     var parts = [];
-    if ((row.v56_amenaza_iucn     || '').trim()) parts.push(row.v56_amenaza_iucn.trim());
-    if ((row.v59_amenaza_nacional || '').trim()) parts.push(row.v59_amenaza_nacional.trim());
-    return parts.length ? parts.join(' / ') : '—';
+    if (v56) parts.push(v56);
+    if (v59) parts.push(v59);
+    var combined = parts.join(' / ');
+
+    if (type !== 'display') return combined;  // sort/filter/type
+    return combined || '—';
 }
 
 function renderSINO(data, type) {
