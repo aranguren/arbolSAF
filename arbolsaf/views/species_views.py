@@ -390,21 +390,65 @@ def species_list_json(request):
 
     especies_dict_list = []
     for especie in especies:
-        vars_by_cod = {
-            var.tipo_variable.cod_var.lower(): var
-            for var in especie.variables.all()
+        # IMPORTANTE: una especie puede tener N filas en arbolsaf_variable para el
+        # mismo cod_var (una por referencia bibliográfica). Antes este bucle usaba
+        # un dict-comprehension { cod: var } que se quedaba con SOLO la última
+        # fila iterada, perdiendo el resto. Eso provocaba, p.ej., que Anacaspi
+        # apareciera como "no tolera sequía" porque su fila ganadora de V161 traía
+        # "helada" en vez de "sequia".
+        #
+        # Ahora agregamos:
+        #   vars_by_cod_list[cod] -> [var1, var2, ...]  (todas las filas)
+        #   vars_by_cod[cod]      -> 1ra fila (compatibilidad para rangos/texto)
+        #   bool_by_cod[cod]      -> True si ALGUNA fila tiene valor_boolean=True
+        #   qual_by_cod[cod]      -> set de nombres (lowercase, stripped) de
+        #                            valores_cualitativos UNIDOS de todas las filas
+        vars_by_cod_list = {}
+        for var in especie.variables.all():
+            cod = var.tipo_variable.cod_var.lower()
+            vars_by_cod_list.setdefault(cod, []).append(var)
+
+        vars_by_cod = {cod: rows[0] for cod, rows in vars_by_cod_list.items()}
+
+        bool_by_cod = {
+            cod: any(bool(v.valor_boolean) for v in rows)
+            for cod, rows in vars_by_cod_list.items()
         }
 
+        qual_by_cod = {}
+        for cod, rows in vars_by_cod_list.items():
+            names = set()
+            for v in rows:
+                for opt in v.valores_cualitativos.all():
+                    if opt.nombre:
+                        names.add(opt.nombre.strip())
+            if names:
+                qual_by_cod[cod] = names
+
+        # Shadowing: redefinimos qual_names DENTRO del loop para que devuelva la
+        # unión agregada (todas las filas) en vez de las de una sola instancia.
+        # Todos los call sites de la forma qual_names(vars_by_cod.get('vXX'))
+        # ahora reciben automáticamente el set completo.
+        def qual_names(instance):
+            if instance is None:
+                return []
+            cod = instance.tipo_variable.cod_var.lower()
+            return sorted(qual_by_cod.get(cod, set()))
+
         # Build refs dict: {cod_var: "Fuente 1 / Fuente 2"} — used for tooltips
+        # Recoge fuentes de TODAS las filas del cod_var, no solo la primera.
         refs = {}
-        for cod, var in vars_by_cod.items():
+        for cod, rows in vars_by_cod_list.items():
             parts = []
-            if var.referencia_id and var.referencia:
-                parts.append(var.referencia.fuente_final)
-            if var.referencia_2_id and var.referencia_2:
-                f2 = var.referencia_2.fuente_final
-                if f2 not in parts:
-                    parts.append(f2)
+            for var in rows:
+                if var.referencia_id and var.referencia:
+                    f = var.referencia.fuente_final
+                    if f and f not in parts:
+                        parts.append(f)
+                if var.referencia_2_id and var.referencia_2:
+                    f2 = var.referencia_2.fuente_final
+                    if f2 and f2 not in parts:
+                        parts.append(f2)
             if parts:
                 refs[cod] = ' / '.join(parts)
 
@@ -462,17 +506,18 @@ def species_list_json(request):
         nombres = qual_names(vars_by_cod.get('v106'))
         valores_especie['v106_tipo_suelo_optimo'] = ','.join(nombres) if nombres else ""
 
-        v108 = vars_by_cod.get('v108')
-        valores_especie['v108_tolerancia_acidez'] = ("SI" if v108.valor_boolean else "NO") if v108 else ""
+        # Booleanos con representación SI/NO/"" — usamos bool_by_cod (agregado).
+        # Si la variable no existe en ninguna fila → "". Si existe pero ninguna fila
+        # la marcó TRUE → "NO". Si alguna fila la marcó TRUE → "SI".
+        def _si_no(cod):
+            if cod not in vars_by_cod_list:
+                return ""
+            return "SI" if bool_by_cod.get(cod, False) else "NO"
 
-        v109 = vars_by_cod.get('v109')
-        valores_especie['v109_tolerancia_salinidad'] = ("SI" if v109.valor_boolean else "NO") if v109 else ""
-
-        v152 = vars_by_cod.get('v152')
-        valores_especie['v152_desarrollo_suelos_rocosos'] = ("SI" if v152.valor_boolean else "NO") if v152 else ""
-
-        v153 = vars_by_cod.get('v153')
-        valores_especie['v153_desarrollo_suelos_drenados'] = ("SI" if v153.valor_boolean else "NO") if v153 else ""
+        valores_especie['v108_tolerancia_acidez']         = _si_no('v108')
+        valores_especie['v109_tolerancia_salinidad']      = _si_no('v109')
+        valores_especie['v152_desarrollo_suelos_rocosos'] = _si_no('v152')
+        valores_especie['v153_desarrollo_suelos_drenados'] = _si_no('v153')
 
         v159 = vars_by_cod.get('v159')
         if v159:
@@ -596,58 +641,44 @@ def species_list_json(request):
             'v70':  'v70_fibra',
         }
         for cod, key in bool_vars_map.items():
-            instance = vars_by_cod.get(cod)
-            valores_especie[key] = bool(instance.valor_boolean) if instance else False
+            valores_especie[key] = bool_by_cod.get(cod, False)
 
-        # v14: agentes polinizadores (cualitativo, lista de valores)
-        v14 = vars_by_cod.get('v14')
-        if v14:
-            q14 = list(v14.valores_cualitativos.all())
-            valores_especie['v14_polinizadores'] = [q.nombre for q in q14]
-        else:
-            valores_especie['v14_polinizadores'] = []
+        # v14: agentes polinizadores (cualitativo, lista de valores) — agregado.
+        valores_especie['v14_polinizadores'] = sorted(qual_by_cod.get('v14', set()))
 
         valores_especie['refs'] = refs
         valores_especie['imagenes'] = [img.imagen.url for img in especie.get_imagenes]
         valores_especie['nativa'] = bool(especie.nativa)
 
-        v64 = vars_by_cod.get('v64')
-        valores_especie['v64_endemismo'] = bool(v64.valor_boolean) if v64 else False
+        valores_especie['v64_endemismo'] = bool_by_cod.get('v64', False)
 
-        v56 = vars_by_cod.get('v56')
-        if v56:
-            q56 = list(v56.valores_cualitativos.all())
-            valores_especie['v56_amenaza_iucn'] = q56[0].nombre if q56 else (v56.valor_texto or '')
+        # v56 IUCN: unimos opciones de todas las filas; si no hay opciones cualitativas
+        # caemos al valor_texto de la primera fila.
+        nombres_v56 = sorted(qual_by_cod.get('v56', set()))
+        if nombres_v56:
+            valores_especie['v56_amenaza_iucn'] = ' / '.join(nombres_v56)
         else:
-            valores_especie['v56_amenaza_iucn'] = ''
+            v56 = vars_by_cod.get('v56')
+            valores_especie['v56_amenaza_iucn'] = (v56.valor_texto or '') if v56 else ''
 
-        v59 = vars_by_cod.get('v59')
-        if v59:
-            q59 = list(v59.valores_cualitativos.all())
-            valores_especie['v59_amenaza_nacional'] = q59[0].nombre if q59 else (v59.valor_texto or '')
+        # v59 CITES: igual que v56.
+        nombres_v59 = sorted(qual_by_cod.get('v59', set()))
+        if nombres_v59:
+            valores_especie['v59_amenaza_nacional'] = ' / '.join(nombres_v59)
         else:
-            valores_especie['v59_amenaza_nacional'] = ''
+            v59 = vars_by_cod.get('v59')
+            valores_especie['v59_amenaza_nacional'] = (v59.valor_texto or '') if v59 else ''
 
-        # v175: cualitativo "categoría amenaza Perú" (sin cambio)
-        v175_cual = next(
-            (var for var in especie.variables.all()
-             if var.tipo_variable.cod_var.lower() == 'v175'
-             and var.tipo_variable.tipo_variables == 'cualitativo'),
-            None
-        )
-        if v175_cual:
-            q175 = list(v175_cual.valores_cualitativos.all())
-            valores_especie['v175_amenaza_peru'] = q175[0].nombre if q175 else (v175_cual.valor_texto or '')
+        # v175: cualitativo "categoría amenaza Perú" — agregado sobre todas las filas.
+        nombres_v175 = sorted(qual_by_cod.get('v175', set()))
+        if nombres_v175:
+            valores_especie['v175_amenaza_peru'] = ' / '.join(nombres_v175)
         else:
-            valores_especie['v175_amenaza_peru'] = ''
+            v175_cual = vars_by_cod.get('v175')
+            valores_especie['v175_amenaza_peru'] = (v175_cual.valor_texto or '') if v175_cual else ''
 
-        # v177: boolean "recurso para primates" (antes v175 boolean)
-        v177 = next(
-            (var for var in especie.variables.all()
-             if var.tipo_variable.cod_var.lower() == 'v177'),
-            None
-        )
-        valores_especie['v177_primates'] = bool(v177.valor_boolean) if v177 else False
+        # v177: boolean "recurso para primates" — agregado sobre todas las filas.
+        valores_especie['v177_primates'] = bool_by_cod.get('v177', False)
 
         especies_dict_list.append(valores_especie)
 

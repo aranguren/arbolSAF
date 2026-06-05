@@ -317,17 +317,37 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         return self.imagenes.all()
 
     #campos calculados
+
+    # --- Helpers de agregación ---------------------------------------------
+    # Una especie puede tener MÚLTIPLES filas en arbolsaf_variable para el mismo
+    # cod_var (una por referencia). Usar .first() pierde información cuando
+    # diferentes referencias aportan valores distintos (p. ej. v161 con
+    # "helada" en una fila y "sequia" en otra). Estos helpers consultan
+    # *todas* las filas para ese cod_var.
+
+    def _any_bool(self, cod):
+        """True si alguna fila VariableModel(cod_var=cod) tiene valor_boolean=True."""
+        return self.variables.filter(
+            tipo_variable__cod_var__iexact=cod,
+            valor_boolean=True,
+        ).exists()
+
+    def _qual_options(self, cod):
+        """Conjunto de nombres de opciones cualitativas (lowercase, stripped)
+        unidos de TODAS las filas VariableModel(cod_var=cod) de la especie."""
+        nombres = self.variables.filter(
+            tipo_variable__cod_var__iexact=cod,
+        ).values_list('valores_cualitativos__nombre', flat=True)
+        return {n.lower().strip() for n in nombres if n}
+
     @computed(models.IntegerField(_("Valor para  Madera"), default=0),
                 depends=[('variables', ['valor_boolean'])])
     def valor_madera(self):
         if len(self.get_variables) == 0:
             return 0
 
-        v169_instance = self.variables.filter(tipo_variable__cod_var__iexact='v169').first()
-        v169 = bool(v169_instance and v169_instance.valor_boolean)
-
-        v147_instance = self.variables.filter(tipo_variable__cod_var__iexact='v147').first()
-        v147 = bool(v147_instance and v147_instance.valor_boolean)
+        v169 = self._any_bool('v169')
+        v147 = self._any_bool('v147')
 
         if v169 and v147:
             return 3
@@ -335,16 +355,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         if v169:
             return 2
 
-        v163_instance = self.variables.filter(tipo_variable__cod_var__iexact='v163').first()
-        v163 = bool(v163_instance and v163_instance.valor_boolean)
-
-        v167_instance = self.variables.filter(tipo_variable__cod_var__iexact='v167').first()
-        v167 = bool(v167_instance and v167_instance.valor_boolean)
-
-        v168_instance = self.variables.filter(tipo_variable__cod_var__iexact='v168').first()
-        v168 = bool(v168_instance and v168_instance.valor_boolean)
-
-        if v163 or v167 or v168:
+        if self._any_bool('v163') or self._any_bool('v167') or self._any_bool('v168'):
             return 1
 
         return 0
@@ -357,18 +368,12 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         if len(self.get_variables) == 0:
             return 0
 
-        v170_instance = self.variables.filter(tipo_variable__cod_var__iexact='v170').first()
-        if v170_instance and v170_instance.valor_boolean:
+        if self._any_bool('v170'):
             return 3
-
-        v130_instance = self.variables.filter(tipo_variable__cod_var__iexact='v130').first()
-        if v130_instance and v130_instance.valor_boolean:
+        if self._any_bool('v130'):
             return 2
-
-        v23_instance = self.variables.filter(tipo_variable__cod_var__iexact='v23').first()
-        if v23_instance and v23_instance.valor_boolean:
+        if self._any_bool('v23'):
             return 1
-
         return 0
 
 
@@ -378,16 +383,12 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         if len(self.get_variables) == 0:
             return 0.0
 
-        def _bool(cod):
-            inst = self.variables.filter(tipo_variable__cod_var__iexact=cod).first()
-            return bool(inst and inst.valor_boolean)
-
         # grupo alto (leña, carbón, forraje)
-        alto = 3 if any(_bool(c) for c in ('v162', 'v142', 'v39')) else 0
+        alto = 3 if any(self._any_bool(c) for c in ('v162', 'v142', 'v39')) else 0
         # grupo medio (medicinal, artesanías)
-        medio = 2 if any(_bool(c) for c in ('v113', 'v111')) else 0
+        medio = 2 if any(self._any_bool(c) for c in ('v113', 'v111')) else 0
         # grupo bajo (tintes-pigmentos, cos-rep, fibra)
-        bajo = 1 if any(_bool(c) for c in ('v102', 'v112', 'v70')) else 0
+        bajo = 1 if any(self._any_bool(c) for c in ('v102', 'v112', 'v70')) else 0
 
         return round((alto + medio + bajo) / 2.0, 2)
         
@@ -400,40 +401,31 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
         nativa = 1.0 if self.nativa else 0.0
 
-        # v56 IUCN (cualitativa): EN=1, VU=0.5, NT=0.25
-        v56_instance = self.variables.filter(tipo_variable__cod_var__iexact='v56').first()
-        if v56_instance:
-            nombres_v56 = [v.nombre.lower().strip() for v in v56_instance.valores_cualitativos.all()]
-            if 'en' in nombres_v56:
-                v56 = 1.0
-            elif 'vu' in nombres_v56:
-                v56 = 0.5
-            elif 'nt' in nombres_v56:
-                v56 = 0.25
-            else:
-                v56 = 0.0
+        # v56 IUCN (cualitativa): EN=1, VU=0.5, NT=0.25 — agregado de TODAS las filas
+        nombres_v56 = self._qual_options('v56')
+        if 'en' in nombres_v56:
+            v56 = 1.0
+        elif 'vu' in nombres_v56:
+            v56 = 0.5
+        elif 'nt' in nombres_v56:
+            v56 = 0.25
         else:
             v56 = 0.0
 
         # v59 CITES (cualitativa): Apéndice II = 1
-        v59_instance = self.variables.filter(tipo_variable__cod_var__iexact='v59').first()
-        if v59_instance:
-            nombres_v59 = [v.nombre.lower().strip() for v in v59_instance.valores_cualitativos.all()]
-            v59 = 1.0 if 'ii' in nombres_v59 else 0.0
-        else:
-            v59 = 0.0
+        nombres_v59 = self._qual_options('v59')
+        v59 = 1.0 if 'ii' in nombres_v59 else 0.0
 
-        def _bool(cod):
-            inst = self.variables.filter(tipo_variable__cod_var__iexact=cod).first()
-            return 1.0 if (inst and inst.valor_boolean) else 0.0
+        def _b(cod):
+            return 1.0 if self._any_bool(cod) else 0.0
 
-        v64  = _bool('v64')   # endémica
-        v89  = _bool('v89')   # aves
-        v90  = _bool('v90')   # micromamíferos
-        v18  = _bool('v18')   # abejas
-        v91  = _bool('v91')   # murciélagos
-        v177 = _bool('v177')  # primates
-        v176 = _bool('v176')  # mamíferos grandes
+        v64  = _b('v64')   # endémica
+        v89  = _b('v89')   # aves
+        v90  = _b('v90')   # micromamíferos
+        v18  = _b('v18')   # abejas
+        v91  = _b('v91')   # murciélagos
+        v177 = _b('v177')  # primates
+        v176 = _b('v176')  # mamíferos mayores
 
         suma = nativa + v56 + v59 + v64 + v89 + v90 + v18 + v91 + v177 + v176
         return round(suma * 6.0 / 10.0, 2)
@@ -445,49 +437,33 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
             return 0.0
 
         # v116 mejora estructura suelo (boolean)
-        v116_instance = self.variables.filter(tipo_variable__cod_var__iexact='v116').first()
-        v116 = 1 if (v116_instance and v116_instance.valor_boolean) else 0
+        v116 = 1 if self._any_bool('v116') else 0
 
         # v171 presencia nódulos (boolean)
-        v171_instance = self.variables.filter(tipo_variable__cod_var__iexact='v171').first()
-        v171 = 1 if (v171_instance and v171_instance.valor_boolean) else 0
+        v171 = 1 if self._any_bool('v171') else 0
 
         # v37 caducifolio (cualitativa): caducifolio=2, semicaducifolio=1
-        v37_instance = self.variables.filter(tipo_variable__cod_var__iexact='v37').first()
-        if v37_instance:
-            nombres_v37 = [v.nombre.lower().strip() for v in v37_instance.valores_cualitativos.all()]
-            if 'caducifolio' in nombres_v37:
-                v37 = 2
-            elif 'semicaducifolio' in nombres_v37:
-                v37 = 1
-            else:
-                v37 = 0
+        nombres_v37 = self._qual_options('v37')
+        if 'caducifolio' in nombres_v37:
+            v37 = 2
+        elif 'semicaducifolio' in nombres_v37:
+            v37 = 1
         else:
             v37 = 0
 
         # v95 aporta fertilidad (cualitativa)
-        v95_instance = self.variables.filter(tipo_variable__cod_var__iexact='v95').first()
-        if v95_instance:
-            nombres_v95 = [v.nombre.lower().strip() for v in v95_instance.valores_cualitativos.all()]
-            v95 = 1 if any(n in nombres_v95 for n in ('fertilidad del suelo', 'recuperacion de suelos', 'recuperacion de suelo')) else 0
-        else:
-            v95 = 0
+        nombres_v95 = self._qual_options('v95')
+        v95 = 1 if any(n in nombres_v95 for n in (
+            'fertilidad del suelo', 'recuperacion de suelos', 'recuperacion de suelo'
+        )) else 0
 
-        # v161 tolera sequía (cualitativa)
-        v161_instance = self.variables.filter(tipo_variable__cod_var__iexact='v161').first()
-        if v161_instance:
-            nombres_v161 = [v.nombre.lower().strip() for v in v161_instance.valores_cualitativos.all()]
-            v161 = 1 if 'sequia' in nombres_v161 or 'sequía' in nombres_v161 else 0
-        else:
-            v161 = 0
+        # v161 tolera sequía (cualitativa) — agregado sobre todas las referencias
+        nombres_v161 = self._qual_options('v161')
+        v161 = 1 if ('sequia' in nombres_v161 or 'sequía' in nombres_v161) else 0
 
         # v115 asociación microbiana (cualitativa): bacterias o micorrizas
-        v115_instance = self.variables.filter(tipo_variable__cod_var__iexact='v115').first()
-        if v115_instance:
-            nombres_v115 = [v.nombre.lower().strip() for v in v115_instance.valores_cualitativos.all()]
-            v115 = 1 if any(n in nombres_v115 for n in ('bacterias', 'micorrizas')) else 0
-        else:
-            v115 = 0
+        nombres_v115 = self._qual_options('v115')
+        v115 = 1 if any(n in nombres_v115 for n in ('bacterias', 'micorrizas')) else 0
 
         # max bruto = 7 (2+1+1+1+1+1), normalizado a escala 0-3
         puntaje_bruto = v116 + v171 + v37 + v95 + v161 + v115
