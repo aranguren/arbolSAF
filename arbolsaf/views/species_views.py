@@ -687,21 +687,25 @@ def species_list_json(request):
     return JsonResponse(especies_dict_list, status=200, safe=False)
 
 
-class UpdateToolValuesView(View):
-    #template_parcela ='agrimensuras/project_pdf_parcela.html' # the template 
-    #template_lotificacion ='agrimensuras/project_pdf_lotificacion.html' 
-    #template_header ='agrimensuras/project_pdf_header.html' 
-    #template_footer ='agrimensuras/project_pdf_footer.html' 
+class UpdateToolValuesView(LoginRequiredMixin, GroupRequiredMixin, View):
+    group_required = [u'editor']
 
     def post(self, request, **kw):
-
-
-        result = subprocess.run(["python3", "manage.py", "updatedata"], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-
-        print(result.stderr.decode('ascii'))
-        print(result.stdout.decode('ascii'))
-        #return  JsonResponse( {'error':'internal server error'}, status=500, safe=False)
-        return  JsonResponse( {'status':'ok'}, status=200, safe=False)
+        result = subprocess.run(
+            [sys.executable, "manage.py", "updatedata"],
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            cwd=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        )
+        stdout = result.stdout.decode('utf-8', errors='replace')
+        stderr = result.stderr.decode('utf-8', errors='replace')
+        print(stdout)
+        print(stderr)
+        if result.returncode != 0:
+            return JsonResponse({'status': 'error', 'detail': stderr}, status=500, safe=False)
+        return JsonResponse({'status': 'ok'}, status=200, safe=False)
        
 
 class SpeciesActivateInToolView(LoginRequiredMixin, View):
