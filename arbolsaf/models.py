@@ -341,7 +341,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         return {n.lower().strip() for n in nombres if n}
 
     @computed(models.IntegerField(_("Valor para  Madera"), default=0),
-                depends=[('variables', ['valor_boolean'])])
+                depends=[])
     def valor_madera(self):
         if len(self.get_variables) == 0:
             return 0
@@ -363,7 +363,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
 
     @computed(models.IntegerField(_("Valor para  Fruta"), default=0),
-                depends=[('variables', ['valor_boolean'])])
+                depends=[])
     def valor_fruta(self):
         if len(self.get_variables) == 0:
             return 0
@@ -378,7 +378,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
 
 
     @computed(models.FloatField(_("Valor para Otros usos"), default=0.0),
-                depends=[('variables', ['valor_boolean'])])
+                depends=[])
     def valor_otros_usos(self):
         if len(self.get_variables) == 0:
             return 0.0
@@ -394,7 +394,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         
     
     @computed(models.FloatField(_("Valor para Biodiversidad"), default=0.0),
-                depends=[('variables', ['valor_boolean']), ('self', ['nativa'])])
+                depends=[])
     def valor_biodiversidad(self):
         if len(self.get_variables) == 0:
             return 0.0
@@ -431,7 +431,7 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         return round(suma * 6.0 / 10.0, 2)
 
     @computed(models.FloatField(_("Valor para el Suelo"), default=0.0),
-                depends=[('variables', ['valor_boolean'])])
+                depends=[])
     def valor_suelo(self):
         if len(self.get_variables) == 0:
             return 0.0
@@ -574,6 +574,13 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
         return self.sinonimos.all()
 
         
+
+    def save(self, *args, **kwargs):
+        # Nunca recalcular campos computados automáticamente al guardar.
+        # Los valores se actualizan exclusivamente via el botón "Actualizar Herramienta"
+        # (manage.py updatedata), no por .save() desde la plataforma de datos.
+        kwargs['skip_computedfields'] = True
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.nombre_cientifico} ({self.cod_esp})"
