@@ -8,6 +8,8 @@ from django.contrib.auth import get_user_model
 from django.db import connection
 from django.core.paginator import Paginator
 import json
+import sys
+import os
 from ..models import SpeciesModel, VariableTypeModel, ReferenceModel
 from ..forms import SpeciesForm
 from ..permissions import GroupRequiredMixin, group_required
@@ -623,6 +625,7 @@ def species_list_json(request):
             'v163': 'v163_madera_construccion',
             'v168': 'v168_madera_postes',
             'v170': 'v170_fruta',
+            'v23':  'v23_frutas_consumo_humano',
             'v130': 'v130_semilla_consumo',
             'v18':  'v18_abejas',
             'v89':  'v89_aves',

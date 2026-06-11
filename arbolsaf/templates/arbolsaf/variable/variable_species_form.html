@@ -538,6 +538,14 @@
   $(document).ready(function () {
     $('.js-select2-simple').select2();
 
+    // Abrir desplegable al recibir foco por Tab
+    $(document).on('focus', '.select2-selection', function() {
+        var $select = $(this).closest('.select2-container').siblings('select.js-select2-simple');
+        if ($select.length) {
+            setTimeout(function() { $select.select2('open'); }, 10);
+        }
+    });
+
 
 /*
   tipo_variable = $('#id_tipo_variable').find(":selected").val();

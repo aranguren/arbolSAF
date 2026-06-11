@@ -37,6 +37,105 @@ docker-compose build
 docker-compose up -d
 ```
 
+## Deploy de cambios (después de cada push al servidor)
+
+```bash
+git pull
+docker-compose exec web python manage.py collectstatic --noinput
+docker-compose restart web
+```
+
+## Restaurar base de datos desde un dump de producción
+
+> ⚠️ Estos pasos sobreescriben la BD del entorno destino. Nunca ejecutar apuntando a producción.
+> Las imágenes subidas viven en `media/` en disco — no se ven afectadas por este proceso.
+
+---
+
+### En local
+
+El dump debe estar en `assets/clonedb<fecha>.sql` dentro del proyecto.
+Ejecutar desde la carpeta `Despliegue/` donde está el `docker-compose.yml`.
+
+```bash
+# 1. Backup de usuarios locales (antes de tocar nada)
+docker-compose exec web python manage.py dumpdata \
+  auth.user auth.group auth.permission \
+  --natural-foreign --natural-primary \
+  -o /code/usuarios_backup.json
+
+# 2. Copiar el dump al contenedor de BD
+docker cp ../assets/clonedb<fecha>.sql despliegue-db-1:/tmp/clonedb.sql
+
+# 3. Detener web para liberar conexiones
+docker-compose stop web
+
+# 4. Borrar y recrear la BD
+#    IMPORTANTE: usar -d postgres (no -d arbolsaf) para poder borrarla
+docker-compose exec -e PGPASSWORD=<password> db psql -h 127.0.0.1 -U arbolsaf -d postgres -c "DROP DATABASE arbolsaf;"
+docker-compose exec -e PGPASSWORD=<password> db psql -h 127.0.0.1 -U arbolsaf -d postgres -c "CREATE DATABASE arbolsaf OWNER arbolsaf;"
+
+# 5. Cargar el dump
+docker-compose exec -e PGPASSWORD=<password> db psql -h 127.0.0.1 -U arbolsaf -d arbolsaf -f /tmp/clonedb.sql
+
+# 6. Reiniciar web y aplicar migraciones
+docker-compose start web
+docker-compose exec web python manage.py migrate
+
+# 7. Restaurar usuarios locales
+docker-compose exec web python manage.py loaddata /code/usuarios_backup.json
+
+# 8. Estáticos y restart
+docker-compose exec web python manage.py collectstatic --noinput
+docker-compose restart web
+```
+
+---
+
+### En el servidor de desarrollo
+
+Ejecutar desde `~/src/` en el servidor. Contenedores: `src_db_1`, `src_web_1`.
+
+```bash
+# 0. Subir el dump desde la máquina local (ejecutar en LOCAL, no en el servidor)
+scp assets/clonedb<fecha>.sql usuario@<ip-servidor>:~/src/
+
+# Conectarse al servidor
+ssh usuario@<ip-servidor>
+cd ~/src/
+
+# 1. Backup de usuarios del servidor de desarrollo (antes de tocar nada)
+docker-compose exec web python manage.py dumpdata \
+  auth.user auth.group auth.permission \
+  --natural-foreign --natural-primary \
+  -o /code/usuarios_backup.json
+
+# 2. Copiar el dump al contenedor de BD
+docker cp clonedb<fecha>.sql src_db_1:/tmp/clonedb.sql
+
+# 3. Detener web para liberar conexiones
+docker-compose stop web
+
+# 4. Borrar y recrear la BD
+#    IMPORTANTE: usar -d postgres (no -d arbolsaf) para poder borrarla
+docker-compose exec -e PGPASSWORD=<password> db psql -h 127.0.0.1 -U arbolsaf -d postgres -c "DROP DATABASE arbolsaf;"
+docker-compose exec -e PGPASSWORD=<password> db psql -h 127.0.0.1 -U arbolsaf -d postgres -c "CREATE DATABASE arbolsaf OWNER arbolsaf;"
+
+# 5. Cargar el dump
+docker-compose exec -e PGPASSWORD=<password> db psql -h 127.0.0.1 -U arbolsaf -d arbolsaf -f /tmp/clonedb.sql
+
+# 6. Reiniciar web y aplicar migraciones
+docker-compose start web
+docker-compose exec web python manage.py migrate
+
+# 7. Restaurar usuarios del servidor de desarrollo
+docker-compose exec web python manage.py loaddata /code/usuarios_backup.json
+
+# 8. Estáticos y restart
+docker-compose exec web python manage.py collectstatic --noinput
+docker-compose restart web
+```
+
 ## Environment Variables
 
 Database connection requires these env vars (defaults to `postgres:postgres@127.0.0.1:5432/arbolsaf`):

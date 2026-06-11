@@ -109,6 +109,44 @@
       background: transparent;
       border: 1px solid #8c8c8c;
     }
+    /* Colores de círculo según tabla activa */
+    .table-mode-maderable   .cat-circle--filled { background: #85604b; border-color: #6b4c3b; }
+    .table-mode-frutales    .cat-circle--filled { background: #806377; border-color: #66526e; }
+    .table-mode-biodiversidad .cat-circle--filled { background: #00a44d; border-color: #008a40; }
+    .table-mode-suelo       .cat-circle--filled { background: #aa4207; border-color: #8e3606; }
+    .table-mode-otrosusos   .cat-circle--filled { background: #fdc00d; border-color: #d4a20a; color: #333; }
+    /* Círculo más grande en tabla preliminar */
+    .table-mode-preliminar  .cat-circle { width: 28px; height: 28px; font-size: 0.75rem; }
+
+    /* Tabla preliminar: altura automática según filas */
+    #table-card.table-card--preliminar { min-height: auto !important; height: auto !important; }
+
+    /* Botón Volver al paso 1 */
+    .btn-volver-paso1 {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.4rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #21ac8d 0%, #178a72 100%);
+      border: none;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 10px rgba(33,172,141,0.35);
+      cursor: pointer;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    }
+    .btn-volver-paso1:hover {
+      background: linear-gradient(135deg, #1c9b7f 0%, #13735f 100%);
+      box-shadow: 0 6px 14px rgba(33,172,141,0.45);
+      transform: translateY(-1px);
+    }
+    .btn-volver-paso1:active {
+      background: linear-gradient(135deg, #136b56 0%, #0f5a47 100%);
+      box-shadow: 0 2px 6px rgba(33,172,141,0.3);
+      transform: translateY(1px);
+    }
 
     /* ── Paso 1 — responsive (solo móvil) ───────────────────────── */
     @media (max-width: 767px) {

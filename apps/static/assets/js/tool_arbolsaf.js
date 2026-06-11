@@ -186,6 +186,13 @@ function boolDot(value, type) {
     return value ? 1 : 0;
 }
 
+// ── Nombre común con tooltip de nombre científico ─────────────────
+function renderNombreComun(value, type, row) {
+    if (type !== 'display') return value || '';
+    var sci = row['NOMBRE CIENTIFICO'] || '';
+    return '<span data-bs-toggle="tooltip" data-bs-placement="top" title="' + sci + '" style="cursor:default;">' + (value || '') + '</span>';
+}
+
 // ── Círculo sí/no basado en presencia de término en texto ─────────
 function textContainsDot(terms) {
     return function(value, type) {
@@ -219,8 +226,9 @@ function renderFollaje(value, type) {
 // ── Círculo gris con valor (lista preliminar) ─────────────────────
 function valueDot(value, type) {
     if (type === 'display') {
-        return value > 0
-            ? '<span class="cat-circle cat-circle--filled">' + value + '</span>'
+        var n = parseFloat(value);
+        return n > 0
+            ? '<span class="cat-circle cat-circle--filled">' + n.toFixed(1) + '</span>'
             : '<span class="cat-circle cat-circle--empty"></span>';
     }
     // Para sort/filter/type devolver la magnitud real (no 0/1) para que
@@ -265,7 +273,7 @@ var MODES = {
     maderable: {
         valueField: 'VALOR MADERA',
         cols: [
-            { title: 'Especie',              data: 'NOMBRE COMUN' },
+            { title: 'Especie',              data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Construcción',         data: 'v163_madera_construccion', render: boolDot },
             { title: 'Muebles',              data: 'v167_madera_muebles',      render: boolDot },
             { title: 'Postes/<br>cajonería', data: 'v168_madera_postes',       render: boolDot },
@@ -276,8 +284,8 @@ var MODES = {
     frutales: {
         valueField: 'VALOR FRUTA',
         cols: [
-            { title: 'Especie',         data: 'NOMBRE COMUN' },
-            { title: 'Fruta',           data: 'v170_fruta',          render: boolDot },
+            { title: 'Especie',         data: 'NOMBRE COMUN', render: renderNombreComun },
+            { title: 'Fruta',           data: 'v23_frutas_consumo_humano', render: boolDot },
             { title: 'Semilla',         data: 'v130_semilla_consumo', render: boolDot },
             { title: 'Valor<br>fruta',  data: 'VALOR FRUTA' },
             { title: 'Seleccione',      data: 'CODIGO',              render: renderCheckbox, orderable: false },
@@ -286,7 +294,7 @@ var MODES = {
     biodiversidad: {
         valueField: 'VALOR BIODIVERSIDAD',
         cols: [
-            { title: 'Especie',                  data: 'NOMBRE COMUN' },
+            { title: 'Especie',                  data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Abejas',                   data: 'v18_abejas',              render: boolDot },
             { title: 'Aves',                     data: 'v89_aves',                render: boolDot },
             { title: 'Mamíferos<br>pequeños',    data: 'v90_micromamiferos',      render: boolDot },
@@ -301,7 +309,7 @@ var MODES = {
     otrosusos: {
         valueField: 'VALOR OTROS USOS',
         cols: [
-            { title: 'Especie',                  data: 'NOMBRE COMUN' },
+            { title: 'Especie',                  data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Artesanías',               data: 'v111_artesanias',render: boolDot },
             { title: 'Carbón',                   data: 'v142_carbon',    render: boolDot },
             { title: 'Cosméticos/<br>repelente', data: 'v112_cosmeticos',render: boolDot },
@@ -317,7 +325,7 @@ var MODES = {
     suelo: {
         valueField: 'VALOR SUELO',
         cols: [
-            { title: 'Especie',                               data: 'NOMBRE COMUN' },
+            { title: 'Especie',                               data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Aporta fertilidad/<br>recuperación',    data: 'v95_fertilidad',             render: renderFertilidad },
             { title: 'Asociación con<br>microorganismos',     data: 'v115_microorganismos' },
             { title: 'Mejora la<br>estructura',               data: 'v116_mejora_estructura', render: boolDot },
@@ -330,7 +338,7 @@ var MODES = {
     },
     preliminar: {
         cols: [
-            { title: 'Nombre común',      data: 'NOMBRE COMUN' },
+            { title: 'Nombre común',      data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Nombre científico', data: 'NOMBRE CIENTIFICO',
               render: function(d, t) { return t === 'display' ? '<em>' + d + '</em>' : d; } },
             { title: 'Imágenes',          data: 'imagenes',             render: renderImgDT,  orderable: false },
@@ -339,7 +347,9 @@ var MODES = {
             { title: 'Biodiversidad',     data: 'VALOR BIODIVERSIDAD',  render: valueDot },
             { title: 'Suelo',             data: 'VALOR SUELO',          render: valueDot },
             { title: 'Otros usos',        data: 'VALOR OTROS USOS',     render: valueDot },
-            { title: 'IVIM',              data: 'IVIM' },
+            { title: '<span data-bs-toggle="tooltip" data-bs-placement="top" title="Índice de Valor de Importancia Multifuncional" style="cursor:help;border-bottom:1px dotted rgba(255,255,255,0.5);color:inherit !important;">IVIM</span>',
+              data: 'IVIM',
+              render: function(v, t) { if (t !== 'display') return parseFloat(v) || 0; var n = parseFloat(v); return isNaN(n) ? '—' : n.toFixed(1); } },
             { title: 'Deseleccionar',     data: 'CODIGO',               render: renderTrash,  orderable: false },
         ]
     }
@@ -386,16 +396,21 @@ function createTable(data, mode) {
     theadHtml += '</tr>';
     $('#species-list thead').html(theadHtml);
 
-    // Aplicar color de cabecera según modo
+    // Aplicar color de cabecera según modo y altura automática en preliminar
     $('#species-list')
         .removeClass('table-mode-maderable table-mode-frutales table-mode-biodiversidad table-mode-suelo table-mode-otrosusos table-mode-preliminar')
         .addClass('table-mode-' + mode);
+    if (mode === 'preliminar') {
+        $('#table-card').addClass('table-card--preliminar');
+    } else {
+        $('#table-card').removeClass('table-card--preliminar');
+    }
 
     // Inicializar DataTable con nuevas columnas
     $('#species-list').DataTable({
         data: tableData,
         lengthChange: false,
-        pageLength: 8,
+        pageLength: 10,
         deferRender: true,
         autoWidth: false,
         columns: colDefs.map(function(col) {
@@ -417,6 +432,16 @@ function createTable(data, mode) {
                 "next":       "Próximo",
                 "previous":   "Anterior"
             },
+        },
+        drawCallback: function() {
+            initRefTooltips();
+            this.api().columns().header().each(function(th) {
+                $(th).find('[data-bs-toggle="tooltip"]').each(function() {
+                    if (!bootstrap.Tooltip.getInstance(this)) {
+                        new bootstrap.Tooltip(this, { trigger: 'hover', boundary: 'window' });
+                    }
+                });
+            });
         }
     });
 }
@@ -715,6 +740,12 @@ function renderMinMax(minKey, maxKey) {
     return function(data, type, row) {
         var lo = row[minKey] !== '' && row[minKey] !== null && row[minKey] !== undefined ? row[minKey] : null;
         var hi = row[maxKey] !== '' && row[maxKey] !== null && row[maxKey] !== undefined ? row[maxKey] : null;
+        if (type !== 'display') {
+            // Ordenar numéricamente por el valor mínimo (vacíos al final)
+            if (lo !== null) return parseFloat(lo);
+            if (hi !== null) return parseFloat(hi);
+            return 1e9;
+        }
         if (!lo && !hi) return '—';
         return (lo || '—') + ' – ' + (hi || '—');
     };
@@ -724,6 +755,11 @@ function renderRaw(minKey, maxKey) {
     return function(data, type, row) {
         var lo = row[minKey] !== '' && row[minKey] !== null && row[minKey] !== undefined ? row[minKey] : null;
         var hi = row[maxKey] !== '' && row[maxKey] !== null && row[maxKey] !== undefined ? row[maxKey] : null;
+        if (type !== 'display') {
+            if (lo !== null) return parseFloat(lo);
+            if (hi !== null) return parseFloat(hi);
+            return 1e9;
+        }
         if (!lo && !hi) return '—';
         if (String(lo) === String(hi)) return lo;
         return (lo || '—') + ' – ' + (hi || '—');
@@ -888,7 +924,7 @@ function withRefs(refKeys, innerRender) {
 var CS_MODES = {
     clima: {
         cols: [
-            { title: 'Especie',                              data: 'NOMBRE COMUN' },
+            { title: 'Especie',                              data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Elevación<br>(min–max; m.s.n.m)',      data: 'v157_elevacion_min',    render: withRefs(['v157','v158'], renderMinMax('v157_elevacion_min',   'v158_elevacion_max'))   },
             { title: 'Pluviosidad<br>zona distribución',    data: 'v281_pluviosidad',        render: withRefs(['v281'], null) },
             { title: 'Precipitación<br>(min–max; mm/año)',  data: 'v82_precipitacion_min',   render: withRefs(['v82','v81'],   renderMinMax('v82_precipitacion_min', 'v81_precipitacion_max')) },
@@ -900,7 +936,7 @@ var CS_MODES = {
     },
     suelo: {
         cols: [
-            { title: 'Especie',                               data: 'NOMBRE COMUN' },
+            { title: 'Especie',                               data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Desarrollo en<br>suelos bien drenados', data: 'v153_desarrollo_suelos_drenados', render: withRefs(['v153'], renderSINO) },
             { title: 'Desarrollo en<br>suelos rocosos',       data: 'v152_desarrollo_suelos_rocosos',  render: withRefs(['v152'], renderSINO) },
             { title: 'Exigencia<br>suelos fértiles',          data: 'v68_exigencia_suelos_fertiles',   render: withRefs(['v68'],  null) },
@@ -916,7 +952,7 @@ var CS_MODES = {
 var MORFO_MODES = {
     forma: {
         cols: [
-            { title: 'Especie',                          data: 'NOMBRE COMUN' },
+            { title: 'Especie',                          data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Follaje de copa',                  data: 'v6_follage',                 render: withRefs(['v6'],       null) },
             { title: 'Forma<br>de copa',                 data: 'v7_forma_copa',              render: withRefs(['v7'],       null) },
             { title: 'Forma<br>de fuste',                data: 'v144_forma_fuste',           render: withRefs(['v144'],     null) },
@@ -928,7 +964,7 @@ var MORFO_MODES = {
     },
     ecologia: {
         cols: [
-            { title: 'Especie',                          data: 'NOMBRE COMUN' },
+            { title: 'Especie',                          data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Época de<br>caída de hojas',       data: 'v35_epoca_caida_hojas',        render: withRefs(['v35'],  renderMonths) },
             { title: 'Fenología<br>de las hojas',        data: 'v37_fenologia_hojas',           render: withRefs(['v37'],  null) },
             { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',            render: withRefs(['v9'],   null) },
