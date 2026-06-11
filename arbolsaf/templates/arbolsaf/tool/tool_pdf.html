@@ -1,548 +1,410 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha ArbolSAF</title>
-    <!--link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"-->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
-    <style>
-    .margin-custom {
-      margin-right: 50px;
-      margin-left: 50px;
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 14px; color: #222; line-height: 1.55; }
+    h5   { font-size: 15px; }
+
+    /* ── Título de sección ── */
+    .sec-title {
+      font-weight: 700;
+      font-size: 16px;
+      border-bottom: 2px solid #21ac8d;
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+      margin-top: 36px;
+    }
+    /* Primer sec-title de cada página: sin margen superior extra */
+    .page-first-title { margin-top: 10px; }
+
+    /* ── Subtítulo (b, c…) dentro de una sección principal ── */
+    .sub-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: #21ac8d;
+      margin-top: 26px;
+      margin-bottom: 12px;
+      padding-left: 2px;
     }
 
-    p {
-      font-size: 20px;
-    }
+    /* ── Tabla composición ── */
+    .comp-table { width: 100%; max-width: 540px; margin: 0 auto; border-collapse: collapse; font-size: 13px; }
+    .comp-table td { padding: 9px 16px; }
+    .comp-table tr.head-row td { background: #6c757d; color: #fff; font-weight: 700; }
+    .comp-table tr.even-row td { background: #f0f4f8; }
+    .comp-table td:last-child   { text-align: center; font-weight: 600; width: 90px; }
 
-    .font-18 {
-      font-size: 18px;
+    /* ── Tabla detalle especies ── */
+    .det-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .det-table th {
+      background: #8392AB; color: #fff;
+      padding: 9px 8px; text-align: center;
+      border: 1px solid #6b7a93;
+      white-space: nowrap;
     }
-
-    .font-32 {
-      font-size: 32px;
+    .det-table th.left { text-align: left; }
+    .det-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid #dee2e6;
+      vertical-align: middle;
+      text-align: center;
     }
+    .det-table td.left { text-align: left; }
+    .det-table tbody tr:nth-child(even) td { background: #f8f9fa; }
 
-    .text-table{
+    /* ── Tabla semáforos ── */
+    .sem-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .sem-table th {
+      background: #495057; color: #fff;
+      padding: 9px 10px; text-align: center;
+      border: 1px solid #343a40;
+    }
+    .sem-table th.left { text-align: left; }
+    .sem-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #dee2e6;
+      vertical-align: middle;
+      text-align: center;
+    }
+    .sem-table td.left { text-align: left; }
+    .sem-table tbody tr:nth-child(even) td { background: #f8f9fa; }
+
+    /* ── Círculo de categoría ── */
+    .cat-dot {
+      display: inline-block;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      font-size: 10px; font-weight: 700;
+      text-align: center; line-height: 28px;
+      vertical-align: middle;
+    }
+    .cat-empty  { background: transparent; border: 1px solid #8c8c8c; }
+    .cat-madera { background: #85604b; border: 1px solid #6b4c3b; color: #fff; }
+    .cat-fruta  { background: #806377; border: 1px solid #66526e; color: #fff; }
+    .cat-biodiv { background: #00a44d; border: 1px solid #008a40; color: #fff; }
+    .cat-suelo  { background: #aa4207; border: 1px solid #8e3606; color: #fff; }
+    .cat-otros  { background: #fdc00d; border: 1px solid #d4a20a; color: #333; }
+    .cat-ivim   { background: #8392AB; border: 1px solid #6b7a93; color: #fff; width: 30px; height: 30px; line-height: 30px; }
+
+    /* ── Semáforo: puntos verde/rojo ── */
+    .sem-dot {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid;
+      vertical-align: middle;
+      margin: 0 2px;
+    }
+    .sem-g-on  { background: #00a44d; border-color: #00a44d; }
+    .sem-g-off { background: #00a44d; border-color: #00a44d; opacity: 0.18; }
+    .sem-r-on  { background: #ea4a4a; border-color: #ea4a4a; }
+    .sem-r-off { background: #ea4a4a; border-color: #ea4a4a; opacity: 0.18; }
+
+    /* ── Grid de polinizadores ── */
+    .pol-wrap { font-size: 0; }   /* elimina gaps entre inline-blocks */
+    .pol-item {
+      display: inline-block;
+      width: 23%;
+      margin: 1% 0.8%;
+      text-align: center;
+      padding: 6px 3px;
+      border-radius: 8px;
+      box-sizing: border-box;
+      vertical-align: top;
+    }
+    .pol-active   { background: #e8f7f3; border: 1px solid #21ac8d; }
+    .pol-inactive { background: #f5f5f5; border: 1px solid transparent; opacity: 0.28; }
+    .pol-item img   { width: 38px; height: 38px; object-fit: contain; display: block; margin: 0 auto 4px; }
+    .pol-item span  { font-size: 10px; font-weight: 600; color: #444; }
+
+    /* ── Datos del usuario ── */
+    .udata { overflow: hidden; margin-bottom: 24px; }
+    .udata-item { float: left; width: 48%; margin-bottom: 14px; }
+    .udata-item:nth-child(odd) { margin-right: 4%; }
+    .udata-label { font-size: 12px; color: #777; margin-bottom: 3px; }
+    .udata-val   { font-size: 14px; font-weight: 600; }
+
+    /* ── Saltos de página ── */
+    .page-break { page-break-before: always; }
+    .no-break   { page-break-inside: avoid; }
+
+    /* ── Tablas: evitar corte dentro de una fila; repetir cabecera ── */
+    .det-table tbody tr,
+    .sem-table tbody tr { page-break-inside: avoid; }
+    .det-table thead,
+    .sem-table thead    { display: table-header-group; }
+
+    /* ── Pie del reporte ── */
+    .report-footer {
+      margin-top: 56px;
+      padding-top: 14px;
+      border-top: 1px solid #dee2e6;
       font-size: 12px;
+      color: #555;
     }
-    thead{
-      background-color: #c5c7c5;
-    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  PÁGINA 1 — Portada, datos y composición          -->
+<!-- ══════════════════════════════════════════════════ -->
+<div style="margin: 0 40px;">
+
+  <h3 class="text-center mb-2" style="color:#1b4332; font-size:26px;">ÁrbolSAF de CIFOR-ICRAF</h3>
+  <p class="text-center" style="font-size:14px; color:#666; margin-bottom:16px;">
+    Fecha de consulta: <strong>{{ fecha }}</strong>
+  </p>
+
+  <p style="font-size:14px; text-align:justify; margin-top:10px; margin-bottom:20px;">
+    <strong>ÁrbolSAF</strong> es un sistema digital integrado que apoya la
+    <strong>selección de especies de</strong> árboles y palmeras para sistemas agroforestales.
+    La información disponible se basa en literatura científica y técnica recopilada en su base de datos.
+    No obstante, dado que las condiciones ambientales (clima y suelo) y socioeconómicas varían entre
+    sitios, los resultados deben interpretarse como una guía de referencia y complementarse con la
+    experiencia de campo, el conocimiento local y otras fuentes de información relevantes.
+  </p>
+
+  <!-- Datos del usuario -->
+  <p class="sec-title page-first-title">Datos del usuario</p>
+  <div class="udata">
+    <div class="udata-item">
+      <div class="udata-label">Nombre del productor</div>
+      <div class="udata-val">{{ nombre }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Región</div>
+      <div class="udata-val">{{ region }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Provincia</div>
+      <div class="udata-val">{{ provincia }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Distrito</div>
+      <div class="udata-val">{{ distrito }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Tipo de intervención</div>
+      <div class="udata-val">{{ tipo_intervencion }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Tamaño de la finca (ha)</div>
+      <div class="udata-val">{{ tam_finca }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Tamaño de la parcela (ha)</div>
+      <div class="udata-val">{{ tam_parcela }}</div>
+    </div>
+    <div class="udata-item">
+      <div class="udata-label">Tipo de usuario</div>
+      <div class="udata-val">{{ tipo_usuario }}</div>
+    </div>
+  </div>
+
+  <!-- Composición del portafolio -->
+  <p class="sec-title">Principales características de las especies seleccionadas por el usuario</p>
+  <table class="comp-table" style="margin-top:4px;">
+    <tbody>
+      <tr class="head-row"><td>Número de especies</td><td>{{ n_especies }}</td></tr>
+      <tr><td>Nativas</td><td>{{ n_nativas }}</td></tr>
+      <tr class="even-row"><td>Endémicas del Perú</td><td>{{ n_endemicas }}</td></tr>
+      <tr><td>Especies con algún grado de amenaza</td><td>{{ n_amenaza }}</td></tr>
+      <tr class="even-row"><td>Promedio del IVIM (escala de 0 a 18)</td><td>{{ ivim_promedio }}</td></tr>
+    </tbody>
+  </table>
+
+</div><!-- /página 1 -->
 
 
-    .blue-label {
-      color: #237bb1;
-    }
-    .row-head {
-      background-color: #237bb1;
-      color: white;
-    }
-    .full-border{
-      border:3px solid black;
-    }
-    
-    .table-bottom-border{
-      border-bottom:5px solid black;
-    }
+<!-- ══════════════════════════════════════════════════ -->
+<!--  PÁGINA 2 — Gráficos de servicios y fauna         -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page-break" style="margin: 0 40px;">
 
+  <!-- Título principal de la sección -->
+  <p class="sec-title page-first-title">Servicios, productos y fauna asociados a las especies seleccionadas</p>
 
-    
-    #map { height: 180px; }
+  <!-- b) Servicios y productos -->
+  <p class="sub-title">b) Servicios y productos</p>
+  <p style="font-size:14px; color:#666; margin-bottom:18px;">
+    Los gráficos muestran el porcentaje de especies seleccionadas que pueden aportar:
+    arriba) madera, frutos, o contribuir al mantenimiento de la biodiversidad y fertilidad del suelo;
+    abajo) otros varios usos.
+  </p>
+  <div class="no-break" style="margin-bottom:20px;">
+    {{ bar_chart_main|safe }}
+  </div>
+  <div class="no-break" style="margin-bottom:28px;">
+    {{ bar_chart_otros|safe }}
+  </div>
 
-    .pagebreak{page-break-inside: avoid!important;}
-    
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-      .break-before {
-    page-break-before: always;
-}
+  <!-- c) Fauna y polinizadores -->
+  <p class="sub-title">c) Fauna y polinizadores</p>
+  <p style="font-size:14px; color:#666; margin-bottom:18px;">
+    Izquierda) grupos de fauna para los que las especies seleccionadas aportan recursos de alimento
+    o refugio. Derecha) agentes polinizadores asociados a las especies seleccionadas (el ícono se
+    resalta cuando al menos una especie del portafolio los atrae).
+  </p>
 
-.color-background{
-  background-color: red;
-}
-
-.main-img {
-  max-width: 800px;
-}
-
-
-  
-  .texto-normal {  
-    font-size: 20px;  
-  }  
-  .texto-resaltado {  
-    font-size: 18px;  
-  }  
-
-  ul {
-    margin: 0;
-  }
-  ul.dashed {
-    list-style-type: none;
-  }
-  ul.dashed > li {
-    text-indent: -20px;
-  }
-  ul.dashed > li:before {
-    content: "-";
-    text-indent: -20px;
-  }
-
-  .red-dot {
-    height: 25px;
-    width: 25px;
-    background-color: #EA4A4A;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .green-dot {
-    height: 25px;
-    width: 25px;
-    background-color: #00A44D;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .gray-dot {
-    height: 25px;
-    width: 25px;
-    background-color: #8392AB;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  
-  .white-dot {
-    height: 25px;
-    width: 25px;
-    background-color: #F9F9F9;
-    border-radius: 50%;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    display: inline-block;
-  }
-  .green-text{
-    color: #00A44D;
-    font-size: 20px;
-  }
-  .red-text{
-    color: #EA4A4A;
-    font-size: 20px;
- 
-  }
-
-    </style>
-  </head>
-  <body>
-    <!--img src="/static/assets/img/herramienta/Cabecera_1_ÁrbolSAF.png" class="w-100 h-20"-->
-
-
-    <h2 class="text-center mt-10">Reporte de consulta de la herramienta interactiva ÁrbolSAF</h2>
-    <br/>
-    <br/>
-    <div class="margin-custom">
-        <p class="mt-5">
-          Este es el portafolio de especies de árboles y palmeras que usted ha seleccionado y las consideraciones realizadas tomando en cuenta los requerimientos de clima y suelo de las especies, y las características clave que ayudan al diseño de opciones agroforestales.  
-        </p>
-
-
-        <br/>
-        <br/>
-
-        <h4>
-          <strong>Datos del usuario</strong>
-        </h4>
-        <div class="row mt-5">
-          <div class="col-6">
-            <div class="form-group">
-              <h6>
-                <strong class="font-18">Nombre del productor</strong>
-              </h6>
-              <spam class="mr-2 font-18">{{nombre}}</span>
-            </div>
+  <table style="width:100%; border-collapse:collapse; border:none;">
+    <tr>
+      <!-- Pastel de fauna -->
+      <td style="width:275px; vertical-align:top; padding:0 18px 0 0; border:none;">
+        <p style="font-size:10px; font-weight:700; color:#555; text-transform:uppercase;
+                  letter-spacing:0.05em; margin-bottom:6px;">GRUPOS DE FAUNA</p>
+        {{ fauna_pie|safe }}
+      </td>
+      <!-- Grid de polinizadores -->
+      <td style="vertical-align:top; padding:0; border:none;">
+        <p style="font-size:10px; font-weight:700; color:#555; text-transform:uppercase;
+                  letter-spacing:0.05em; margin-bottom:6px;">AGENTES POLINIZADORES</p>
+        <div class="pol-wrap">
+          {% for p in polinizadores %}
+          <div class="pol-item {% if p.active %}pol-active{% else %}pol-inactive{% endif %}">
+            <img src="{% static p.img %}" alt="{{ p.label }}">
+            <span>{{ p.label }}</span>
           </div>
-            <div class="col-6">
-              <div class="form-group">
-                <h6>
-                  <strong class="font-18">Región</strong>
-                </h6>
-                <spam class="mr-2 font-18">{{region}}</span>
-              </div>
-            </div>
+          {% endfor %}
         </div>
-        <div class="row mt-3">
-          <div class="col-6">
-            <div class="form-group">
-              <h6>
-                <strong class="font-18">Provincia</strong>
-              </h6>
-              <spam class="mr-2 font-18">{{provincia}}</span>
-            </div>
-          </div>
-            <div class="col-6">
-              <div class="form-group">
-                <h6>
-                  <strong class="font-18">Distrito</strong>
-                </h6>
-                <spam class="mr-2 font-18">{{distrito}}</span>
-              </div>
-            </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-6">
-            <div class="form-group">
-              <h6>
-                <strong class="font-18">Tipo de intervención</strong>
-              </h6>
-              <spam class="mr-2 font-18">{{tipo_intervencion}}</span>
-            </div>
-          </div>
-            <div class="col-6">
-              <div class="form-group">
-                <h6>
-                  <strong class="font-18">Tamaño de la finca (ha)</strong>
-                </h6>
-                <spam class="mr-2 font-18">{{tam_finca}}</span>
-              </div>
-            </div>
-        </div>
-        <div class="row mt-3 mb-5">
-          <div class="col-6">
-            <div class="form-group">
-              <h6>
-                <strong class="font-18">Tamaño de la parcela (ha)</strong>
-              </h6>
-              <spam class="mr-2 font-18">{{tam_parcela}}</span>
-            </div>
-          </div>
-            <div class="col-6">
-              <div class="form-group">
-                <h6>
-                  <strong class="font-18">Tipo de usuario</strong>
-                </h6>
-                <spam class="mr-2 font-18">{{tipo_usuario}}</span>
-              </div>
-            </div>
-        </div>
-        <h4>
-          <strong>Paso 1</strong>
-        </h4>
-        <p class="mt-5">
-          Estos son los productos y servicios que brindan las especies del portafolio que seleccionó
-        </p>
+      </td>
+    </tr>
+  </table>
 
-        <div class="row mt-5 mb-5">
-          <div class="col-lg-12">
-            <table class="table table-bordered text-table">
-              <thead>
-                <th>Nombre común</th>
-                <th>Nombre científico</th>
-                <th>Madera</th>
-                <th>Fruta</th>
-                <th>Suelo</th>
-                <th>Biodiversidad</th>
-                <th>Otros usos</th>
-                <th>IVIM</th>
-              </thead>
-        
-
-              {% for especie in especies %}
-                  <tr>
-                    <td>{{especie.nombre_comun }}</td>
-                    <td><i>{{especie.nombre_cientifico }}</i></td>
-                    <td class="text-center">
-                      {% if  especie.valor_madera %}
-                      <span class="gray-dot"></span>
-                      {% else %}
-                      <span class="white-dot"></span>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">
-                      {% if  especie.valor_fruta %}
-                      <span class="gray-dot"></span>
-                      {% else %}
-                      <span class="white-dot"></span>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">
-                      {% if  especie.valor_suelo %}
-                      <span class="gray-dot"></span>
-                      {% else %}
-                      <span class="white-dot"></span>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">
-                      {% if  especie.valor_biodiversidad %}
-                      <span class="gray-dot"></span>
-                      {% else %}
-                      <span class="white-dot"></span>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">
-                      {% if  especie.valor_otros_usos %}
-                      <span class="gray-dot"></span>
-                      {% else %}
-                      <span class="white-dot"></span>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">{{especie.IVIM|floatformat:0}}</td>
-                  </tr>
-              
-              {% endfor %}
-        
-            </table>
-          </div>
-        </div>
-
-        <h4>
-          <strong>Paso 2</strong>
-        </h4>
-        <p class="mt-5">
-          Se presentan los requerimientos de clima y altitud de las especies seleccionadas y la calificación que usted le asignó semáforo verde y rojo (letras V y R) considerando las condiciones del lugar donde se instalará la parcela. 
-        </p>
-        <p>
-          Semáforo verde (V) sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo (R) sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
-        </p>
-        <div class="row mt-5 mb-5">
-          <div class="col-lg-12">
-            <table class="table table-bordered text-table">
-              <thead>
-                <th>Nombre común</th>
-                <th>Temperatura mínima</th>
-                <th>Temperatura máxima</th>
-                <th>Elevación mínima</th>
-                <th>Elevación máxima</th>
-                <th>Precipitación mínima</th>
-                <th>Precipitación máxima</th>
-                <th>Tolerancia a condiciones extremas</th>
-                <th>Seleccionada</th>
-              </thead>  
-
-              {% for especie in especies %}
-                  <tr>
-                    <td>{{especie.nombre_comun }}</td>
-                    <td class="text-center">{{especie.v101_temperatura_min }}</td>
-                    <td class="text-center">{{especie.v100_temperatura_max }}</td>
-                    <td class="text-center">{{especie.v157_elevacion_min }}</td>
-                    <td class="text-center">{{especie.v158_elevacion_max }}</td>
-                    <td class="text-center">{{especie.v101_temperatura_min }}</td>
-                    <td class="text-center">{{especie.v101_temperatura_min }}</td>
-                    <td class="text-center">{{especie.v161_tolerancia_condiciones}}</td>
-                    <td class="text-center">
-                      {% if  especie.SEMAFORO_PASO_2 == 'active_green'%}
-                      <span class="green-text">V</span>
-                      {% elif  especie.SEMAFORO_PASO_2 == 'active_red'%}
-                      <span class="red-text">R</span>
-                      {% else %}
-                      -
-                      {% endif %}
-                      
-                    </td>
-                  </tr>
-              
-              {% endfor %}
-        
-             
-        
-            </table>
-          </div>
-        </div>
+</div><!-- /página 2 -->
 
 
-        <h4>
-          <strong>Paso 3</strong>
-        </h4>
-        <p class="mt-5">
-          Se presentan los requerimientos de suelo de las especies seleccionadas y la calificación que usted le asignó semáforo verde y rojo (letras V y R) considerando las condiciones del lugar donde se instalará la parcela.  
-        </p>
+<!-- ══════════════════════════════════════════════════ -->
+<!--  PÁGINA 3 — Detalle de especies + Consideraciones -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page-break" style="margin: 0 40px;">
 
-        <p>
-          Semáforo verde (V) sugiere que en general los parámetros mostrados no influirían negativamente en el desarrollo de la especie; el semáforo rojo (R) sugiere que algunos de los parámetros mostrados podrían impactar negativamente en el desarrollo de la especie. 
-        </p>
-        <div class="row mt-5 mb-5">
-          <div class="col-lg-12">
-            <table class="table table-bordered text-table">
-              <thead>
-                <th>Nombre común</th>
-                <th>Suelo preferido</th>
-                <th>Tolerancia a la acidez</th>
-                <th>Tolerancia a la salinidad</th>
-                <th>Preferencia pH suelo</th>
-                <th>pH mínimo suelo</th>
-                <th>ph máximo suelo</th>
-                <th>Desarrollo en suelos rocosos</th>
-                <th>Preferencia a Suelos Drenados</th>
-                <th>Seleccione</th>
-              </thead>
-        
-             
-              {% for especie in especies %}
-                  <tr>
-                    <td>{{especie.nombre_comun }}</td>
-                    <td class="text-center">{{especie.v106_tipo_suelo_optimo }}</td>
-                    <td class="text-center">{{especie.v108_tolerancia_acidez }}</td>
-                    <td class="text-center">{{especie.v109_tolerancia_salinidad }}</td>
-                    <td class="text-center">{{especie.v83_preferencia_ph_suelo }}</td>
-                    <td class="text-center">{{especie.v160_ph_min }}</td>
-                    <td class="text-center">{{especie.v159_ph_max }}</td>
-                    <td class="text-center">{{especie.v152_desarrollo_suelos_rocosos }}</td>
-                    <td class="text-center">{{especie.v153_desarrollo_suelos_drenados }}</td>
-                    <td class="text-center">
-                      {% if  especie.SEMAFORO_PASO_3 == 'active_green'%}
-                      <span class="green-text">V</span>
-                      {% elif  especie.SEMAFORO_PASO_3 == 'active_red'%}
-                      <span class="red-text">R</span>
-                      {% else %}
-                      -
-                      {% endif %}
-                    </td>
-                  </tr>
-              
-              {% endfor %}
-            
-        
-            </table>
-          </div>
-        </div>
+  <!-- Detalle de la lista de especies -->
+  <p class="sec-title page-first-title">Detalle de la lista de especies</p>
+  <p style="font-size:14px; margin-bottom:18px;">
+    Esta sección contiene el nombre común (usado en la Amazonía Peruana), nombre científico y
+    valoración por uso/servicio de cada especie seleccionada. El Índice de Valor de Importancia
+    Multifuncional (IVIM; 0 a 18) acumula los valores de usos y servicios (entre 0 a 3,
+    y biodiversidad entre 0 a 6) (Mas información revisar la sección de metodología).
+  </p>
 
-        <h4>
-          <strong>Paso 4</strong>
-        </h4>
-        <p class="mt-5">
-          Estas son las características morfológicas clave de las especies como una guía para decidir la densidad y la ubicación de las especies seleccionadas. Se muestran las notas que usted hizo en la columna final.  
-        </p>
+  <table class="det-table" style="margin-bottom:28px;">
+    <thead>
+      <tr>
+        <th class="left" style="min-width:110px;">Nombre común</th>
+        <th class="left" style="min-width:120px;">Nombre científico</th>
+        <th style="width:52px;">Madera</th>
+        <th style="width:52px;">Fruta</th>
+        <th style="width:62px;">Biodiver&shy;sidad</th>
+        <th style="width:52px;">Suelo</th>
+        <th style="width:62px;">Otros usos</th>
+        <th style="width:48px;">IVIM</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for especie in especies %}
+      <tr>
+        <td class="left">{{ especie.nombre_comun }}</td>
+        <td class="left"><i>{{ especie.nombre_cientifico }}</i></td>
+        <td>
+          {% if especie.valor_madera_num > 0 %}
+            <span class="cat-dot cat-madera">{{ especie.valor_madera_num|floatformat:1 }}</span>
+          {% else %}
+            <span class="cat-dot cat-empty"></span>
+          {% endif %}
+        </td>
+        <td>
+          {% if especie.valor_fruta_num > 0 %}
+            <span class="cat-dot cat-fruta">{{ especie.valor_fruta_num|floatformat:1 }}</span>
+          {% else %}
+            <span class="cat-dot cat-empty"></span>
+          {% endif %}
+        </td>
+        <td>
+          {% if especie.valor_biodiversidad_num > 0 %}
+            <span class="cat-dot cat-biodiv">{{ especie.valor_biodiversidad_num|floatformat:1 }}</span>
+          {% else %}
+            <span class="cat-dot cat-empty"></span>
+          {% endif %}
+        </td>
+        <td>
+          {% if especie.valor_suelo_num > 0 %}
+            <span class="cat-dot cat-suelo">{{ especie.valor_suelo_num|floatformat:1 }}</span>
+          {% else %}
+            <span class="cat-dot cat-empty"></span>
+          {% endif %}
+        </td>
+        <td>
+          {% if especie.valor_otros_usos_num > 0 %}
+            <span class="cat-dot cat-otros">{{ especie.valor_otros_usos_num|floatformat:1 }}</span>
+          {% else %}
+            <span class="cat-dot cat-empty"></span>
+          {% endif %}
+        </td>
+        <td>
+          {% if especie.IVIM > 0 %}
+            <span class="cat-dot cat-ivim">{{ especie.IVIM|floatformat:1 }}</span>
+          {% else %}
+            <span class="cat-dot cat-empty"></span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-        <div class="row mt-5 mb-5">
-          <div class="col-lg-12">
-            <table class="table table-bordered text-table">
-              <thead>
-                <th>Nombre común</th>
-                <th>Gremio ecológico</th>
-                <th>Fenología</th>
-                <th>Tipo de raiz</th>
-                <th>Tipo de corteza</th>
-                <th>Capacidad de regeneración de ramas</th>
-                <th>Forma copa</th>
-                <th>Altura copa</th>
-                <th>Ancho copa</th>
-                <th>Tipo de ramificación</th>
-                <!--th>Notas</th-->
-              </thead>
-        
-              {% for especie in especies %}
-                  <tr>
-                    <td class="text-table">{{especie.nombre_comun }}</td>
-                    <td class="text-center">{{especie.v73_gremio_ecologico }}</td>
-                    <td class="text-center">{{especie.v37_fenologia_hojas }}</td>
-                    <td class="text-center">{{especie.v118_tipo_raiz }}</td>
-                    <td class="text-center">{{especie.v143_forma_corteza }}</td>
-                    <td class="text-center">{{especie.v119_capacidad_regeneracion }}</td>
-                    <td class="text-center">{{especie.v7_forma_copa }}</td>
-                    <td class="text-center">{{especie.v1_altura_copa }}</td>
-                    <td class="text-center">{{especie.v2_ancho_potencial_copa }}</td>
-                    <td class="text-center">{{especie.v13_tipo_ramificacion_copa }}</td>
-                    <!--td class="text-center">
-                      {{especie.NOTAS }}
-                    </td-->
-                  </tr>
-              
-              {% endfor %}
-            
-        
-            </table>
-          </div>
-        </div>
+  <!-- Consideraciones para el establecimiento en campo -->
+  <p class="sec-title">Consideraciones para el establecimiento en campo</p>
+  <p style="font-size:14px; margin-bottom:18px;">
+    Contiene la asignación por el usuario de semáforos según requerimiento de clima y suelo de las
+    especies versus las condiciones de la zona donde se instalará el sistema. Notas escritas por el
+    usuario que apoyan la distribución espacial y temporal de las especies según características
+    morfológicas y ecológicas.
+  </p>
 
-        <p class="mt-5">
-          Notas para cada especie del paso 4 
-        </p>
+  <table class="sem-table">
+    <thead>
+      <tr>
+        <th class="left" style="min-width:110px;">Especie</th>
+        <th style="width:70px;">Clima</th>
+        <th style="width:70px;">Suelo</th>
+        <th class="left">Notas según forma</th>
+        <th class="left">Notas según ecología</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for especie in especies %}
+      <tr>
+        <td class="left">{{ especie.nombre_comun }}</td>
+        <td>
+          <span class="sem-dot {% if especie.SEMAFORO_PASO_2 == 'active_green' %}sem-g-on{% else %}sem-g-off{% endif %}"></span>
+          <span class="sem-dot {% if especie.SEMAFORO_PASO_2 == 'active_red' %}sem-r-on{% else %}sem-r-off{% endif %}"></span>
+        </td>
+        <td>
+          <span class="sem-dot {% if especie.SEMAFORO_PASO_3 == 'active_green' %}sem-g-on{% else %}sem-g-off{% endif %}"></span>
+          <span class="sem-dot {% if especie.SEMAFORO_PASO_3 == 'active_red' %}sem-r-on{% else %}sem-r-off{% endif %}"></span>
+        </td>
+        <td class="left" style="max-width:160px;">{{ especie.NOTAS_FORMA }}</td>
+        <td class="left" style="max-width:160px;">{{ especie.NOTAS_ECOLOGIA }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-        <div class="row mt-5 mb-5">
-          <div class="col-lg-12">
-            <table class="table table-bordered text-table">
-              <thead>
-                <th>Nombre común</th>
-                <th>Notas</th>
-              </thead>
-        
-              {% for especie in especies %}
-                  <tr>
-                    <td>{{especie.nombre_comun }}</td>
-                    <td>
-                      {{especie.NOTAS }}
-                    </td>
-                  </tr>
-              
-              {% endfor %}
-            
-        
-            </table>
-          </div>
-        </div>
+  <!-- Pie del reporte — fluye debajo de la última tabla; si hay espacio queda en esa página -->
+  <div class="report-footer">
+    Este reporte fue generado por la herramienta interactiva
+    <strong>ÁrbolSAF v.1.1 (2026)</strong>&nbsp;&nbsp;
+    (<a href="http://arbolsaf.cifor-icraf.org">http://arbolsaf.cifor-icraf.org</a>)
+  </div>
 
-        <h4>
-          <strong>Datos complementarios de las especies seleccionadas </strong>
-        </h4>
-
-        <div class="row mt-5 mb-5">
-          <div class="col-lg-12">
-            <table class="table table-bordered text-table">
-              <thead>
-                <th>Especie</th>
-                <th>Estatus de conservación UICN </th>
-                <th>Estatus de conservación CITES </th>
-                <th>Tipo de semilla por viabilidad </th>
-              </thead>
-        
-              {% for especie in especies %}
-                  <tr>
-
-                    <td class="text-center">{{especie.nombre_comun }}</td>
-                    <td class="text-center">{{especie.v56_categoria_amenaza_iucn }}</td>
-                    <td class="text-center">{{especie.v59_categoria_amenaza_cites }}</td>
-                    <td class="text-center">{{especie.v136_tipo_semilla_viabilidad }}</td>
-                  </tr>
-              
-              {% endfor %}
-            
-        
-            </table>
-          </div>
-        </div>
-
-        <br/>
-
-        <h5><strong>Estatus de conservación IUCN</strong></h5>
-        <p>DD= Datos insuficientes, LC= De menor preocupación, NT= Casi amenazado, VU= Vulnerable, EN= En peligro de extinción, CR= Peligro crítico de extinción, EW= Extinto en la naturaleza EX= Extinto.</p>
-        <h5><strong>Estatus de conservación CITES</strong></h5>
-        <p>Grado de amenaza debido al comercio internacional<br>
-          Apéndice I incluye especies en peligro de extinción que son o pueden ser afectadas por el comercio. Su comercio está sujeto a una reglamentación particularmente estricta y se autorizará solamente bajo circunstancias excepcionales<br>
-          Apéndices II y III incluyen especies que no necesariamente están en peligro de extinción, pero cuyo comercio debe ser controlado para garantizar su supervivencia.
-        </p>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <p><b>Este reporte fue generado por la herramienta interactiva ÁrbolSAF</b><br> (<a href="http://arbolsaf.cifor-icraf.org">http://arbolsaf.cifor-icraf.org</a>)</p>
-
-        <!--p>
-        Carreño-Rocabado G., Quiñones L., Ramos K., Ramirez F., Visscher A, Robiglio V. 2023. Herramienta interactiva de selección de especies para el codiseño de opciones agroforestales ArbolSAF Versión Alfa 1.0. CIFOR-ICRAF. Perú.  
-
-        </p-->
-
-
-</div>
+</div><!-- /página 3 -->
 
 </body>
 </html>

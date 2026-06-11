@@ -1,19 +1,18 @@
 FROM ghcr.io/osgeo/gdal:ubuntu-small-3.6.4
 ENV PYTHONUNBUFFERED=1
+ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /code
 
 # System deps + wkhtmltopdf (required for PDF generation via django-wkhtmltopdf)
+# Using Ubuntu 22.04 (Jammy) apt package — the old buster .deb does not install on Ubuntu
 RUN apt update -y && apt install -y \
     python3-pip \
     python3-dev \
-    wget \
     xfonts-base \
     xfonts-75dpi \
     libfontconfig1 \
     libxrender1 \
- && wget -q https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
- && (dpkg -i wkhtmltox_0.12.5-1.buster_amd64.deb || apt-get install -f -y) \
- && rm wkhtmltox_0.12.5-1.buster_amd64.deb \
+    wkhtmltopdf \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
