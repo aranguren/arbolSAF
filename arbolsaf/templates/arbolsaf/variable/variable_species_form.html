@@ -536,14 +536,60 @@
 
 
   $(document).ready(function () {
-    $('.js-select2-simple').select2();
+    var $selects = $('.js-select2-simple');
+    $selects.select2();
 
-    // Abrir desplegable al recibir foco por Tab
-    $(document).on('focus', '.select2-selection', function() {
-        var $select = $(this).closest('.select2-container').siblings('select.js-select2-simple');
-        if ($select.length) {
-            setTimeout(function() { $select.select2('open'); }, 10);
+    // Avanzar al siguiente campo focusable del formulario
+    function focusNext($select) {
+        var $form = $select.closest('form');
+        // Select2 oculta el <select> nativo — usar el .select2-selection visible como ancla
+        var $sel2 = $select.next('.select2-container').find('.select2-selection');
+        var $anchor = $sel2.length ? $sel2 : $select;
+
+        var $focusable = $form.find(
+            'input:not([disabled]):not([type=hidden]):visible,' +
+            'textarea:not([disabled]):visible,' +
+            'button:not([type=submit]):not([disabled]):visible,' +
+            '.select2-selection[tabindex="0"]:visible'
+        );
+        var idx = $focusable.index($anchor);
+        if (idx !== -1 && idx < $focusable.length - 1) {
+            $focusable.eq(idx + 1).trigger('focus');
         }
+    }
+
+    // 1. Tab sobre el botón del select2 (desplegable cerrado) → abre el desplegable
+    $(document).on('keydown', '.select2-selection', function(e) {
+        if (e.key !== 'Tab' || e.shiftKey) return;
+        var $container = $(this).closest('.select2-container');
+        if ($container.hasClass('select2-container--open')) return;
+        var $sel = $container.siblings('select.js-select2-simple');
+        if (!$sel.length) return;
+        e.preventDefault();
+        $sel.select2('open');
+    });
+
+    // 2. Tab dentro del campo de búsqueda (desplegable abierto) → cerrar y avanzar
+    //    IMPORTANTE: usar capture phase (true) para interceptar ANTES que Select2,
+    //    que procesa Tab en su propio handler del elemento (antes del delegado en document).
+    //    El selector correcto es '.select2-dropdown' porque Select2 porta el dropdown
+    //    al <body> como hermano de .select2-container, NO como hijo de él.
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Tab' || e.shiftKey) return;
+        if (!$(e.target).closest('.select2-dropdown').length) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var $open = $selects.filter(function() { return $(this).select2('isOpen'); }).first();
+        if (!$open.length) return;
+        $open.select2('close');
+        // Esperar a que Select2 termine de restaurar el foco internamente antes de moverlo
+        setTimeout(function() { focusNext($open); }, 100);
+    }, true); // true = capture phase, se ejecuta antes que cualquier handler del elemento
+
+    // 3. Tras cualquier selección (Enter, Tab+opción destacada, clic) → avanzar al siguiente
+    $selects.on('select2:select', function() {
+        var $this = $(this);
+        setTimeout(function() { focusNext($this); }, 20);
     });
 
 

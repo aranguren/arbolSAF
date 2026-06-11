@@ -224,6 +224,13 @@ function renderFollaje(value, type) {
 }
 
 // ── Círculo gris con valor (lista preliminar) ─────────────────────
+// Valor numérico sin adorno: 1 decimal o '—' si es cero/nulo
+function valuePlain(value, type) {
+    if (type !== 'display') return parseFloat(value) || 0;
+    var n = parseFloat(value);
+    return isNaN(n) || n === 0 ? '—' : n.toFixed(1);
+}
+
 function valueDot(value, type) {
     if (type === 'display') {
         var n = parseFloat(value);
@@ -277,7 +284,7 @@ var MODES = {
             { title: 'Construcción',         data: 'v163_madera_construccion', render: boolDot },
             { title: 'Muebles',              data: 'v167_madera_muebles',      render: boolDot },
             { title: 'Postes/<br>cajonería', data: 'v168_madera_postes',       render: boolDot },
-            { title: 'Valor<br>madera',      data: 'VALOR MADERA' },
+            { title: 'Valor<br>madera',      data: 'VALOR MADERA',         render: valuePlain },
             { title: 'Seleccione',           data: 'CODIGO',                   render: renderCheckbox, orderable: false },
         ]
     },
@@ -287,7 +294,7 @@ var MODES = {
             { title: 'Especie',         data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Fruta',           data: 'v23_frutas_consumo_humano', render: boolDot },
             { title: 'Semilla',         data: 'v130_semilla_consumo', render: boolDot },
-            { title: 'Valor<br>fruta',  data: 'VALOR FRUTA' },
+            { title: 'Valor<br>fruta',  data: 'VALOR FRUTA',           render: valuePlain },
             { title: 'Seleccione',      data: 'CODIGO',              render: renderCheckbox, orderable: false },
         ]
     },
@@ -302,7 +309,7 @@ var MODES = {
             { title: 'Murciélagos',              data: 'v91_murcielagos',         render: boolDot },
             { title: 'Primates',                 data: 'v177_primates',           render: boolDot },
             { title: 'Amenaza/<br>protección',   data: 'v56_amenaza_iucn',        render: withRefs(['v56','v59'], renderAmenazaCombinada) },
-            { title: 'Valor<br>biodiversidad',   data: 'VALOR BIODIVERSIDAD' },
+            { title: 'Valor<br>biodiversidad',   data: 'VALOR BIODIVERSIDAD',  render: valuePlain },
             { title: 'Seleccione',               data: 'CODIGO',                  render: renderCheckbox, orderable: false },
         ]
     },
@@ -318,7 +325,7 @@ var MODES = {
             { title: 'Leña',                     data: 'v162_lena',      render: boolDot },
             { title: 'Medicinal',                data: 'v113_medicinal', render: boolDot },
             { title: 'Tintes/<br>pigmentos',     data: 'v102_tintes',    render: boolDot },
-            { title: 'Valor<br>otros usos',      data: 'VALOR OTROS USOS' },
+            { title: 'Valor<br>otros usos',      data: 'VALOR OTROS USOS',     render: valuePlain },
             { title: 'Seleccione',               data: 'CODIGO',         render: renderCheckbox, orderable: false },
         ]
     },
@@ -332,7 +339,7 @@ var MODES = {
             { title: 'Presencia<br>de nódulos',               data: 'v171_nodulos',           render: boolDot },
             { title: 'Tipo de<br>follaje',                    data: 'v37_fenologia_hojas',         render: renderFollaje },
             { title: 'Tolera<br>sequía',                      data: 'v161_tolerancia_condiciones', render: renderSequia },
-            { title: 'Valor<br>suelo',                        data: 'VALOR SUELO' },
+            { title: 'Valor<br>suelo',                        data: 'VALOR SUELO',         render: valuePlain },
             { title: 'Seleccione',                            data: 'CODIGO',                 render: renderCheckbox, orderable: false },
         ]
     },
