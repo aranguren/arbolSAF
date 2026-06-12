@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin, ExportMixin
 from import_export.fields import Field
@@ -596,16 +597,51 @@ admin.site.register(models.RegistroReporteHerramienta, RegistroReporteHerramient
 
 
 class ConfiguracionAdmin(admin.ModelAdmin):
-    list_display = ['nombre',]
-    #list_display = ('name','codigo','provincia','created','created_by','modified','modified_by')
-    fieldsets = [
-        (None,               {'fields': ['nombre']}),
-         ('Textos Acerca de', {'fields': ['texto_seccion_arbolsaf', 'texto_seccion_creditos',
-                                        'texto_seccion_descargo_responsabilidad', 
-                                        'texto_seccion_agradecimientos', 
- ]}),
-    ]
+    list_display = ['nombre']
 
+    fieldsets = [
+        (None, {'fields': ['nombre']}),
+        ('Introducción', {
+            'fields': ['texto_seccion_arbolsaf'],
+            'description': (
+                'El diagrama "Etapas de codiseño de un SAF" está embebido como imagen '
+                'dentro del texto. Puedes verlo y reposicionarlo directamente en el editor.'
+            ),
+        }),
+        ('Métodos — Selección de especies', {
+            'fields': ['texto_metodos_seleccion'],
+            'classes': ['collapse'],
+        }),
+        ('Métodos — Categorización & IVIM', {
+            'fields': ['texto_metodos_categorizacion'],
+            'classes': ['collapse'],
+        }),
+        ('Métodos — Datos y referencias', {
+            'fields': ['texto_metodos_datos'],
+            'description': 'Texto introductorio. La lista de referencias se genera automáticamente.',
+            'classes': ['collapse'],
+        }),
+        ('Métodos — Versiones y créditos', {
+            'fields': [
+                'texto_metodos_versiones_antes',
+                'imagen_arbolsaf_v1',
+                'texto_metodos_versiones_despues',
+            ],
+            'description': (
+                'La imagen (captura de la v1.0) aparece entre los dos bloques de texto. '
+                'Sube una nueva imagen para reemplazarla; si no hay imagen cargada se usa la imagen por defecto.'
+            ),
+            'classes': ['collapse'],
+        }),
+        ('Métodos — Descargo de responsabilidad', {
+            'fields': ['texto_seccion_descargo_responsabilidad'],
+            'classes': ['collapse'],
+        }),
+        ('Campos legado (no mostrados en la herramienta)', {
+            'fields': ['texto_seccion_creditos', 'texto_seccion_agradecimientos'],
+            'classes': ['collapse'],
+        }),
+    ]
 
 
 admin.site.register(models.Configuracion, ConfiguracionAdmin)

@@ -149,3 +149,24 @@ MEDIA_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MEDIA_ROOT = os.path.join(MEDIA_BASE_DIR, 'media')
 MEDIA_URL = '/uploaded/'
+
+# ── CKEditor ─────────────────────────────────────────────────────────
+# allowedContent=True: no eliminar clases, atributos ni estilos inline
+# contentsCss: carga el CSS de la herramienta para que los títulos y
+#   subtítulos se vean con el estilo correcto dentro del editor
+CKEDITOR_CONFIGS = {
+    'default': {
+        # No eliminar clases HTML ni atributos personalizados
+        'allowedContent': True,
+        'extraAllowedContent': '*(*)[*]{*}',
+        # CSS dedicado para el iframe del editor (sin selectores .tool-page/.arbol-main)
+        'contentsCss': ['/static/assets/css/herramienta/ckeditor-content.css'],
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Format', 'Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source'],
+        ],
+    }
+}

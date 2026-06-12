@@ -726,11 +726,28 @@ class SingletonModel(models.Model):
 class Configuracion(SingletonModel):
 
     nombre = models.CharField(_("Nombre"), max_length=50, default="Configuración")
-    texto_seccion_arbolsaf = RichTextField("Texto pestaña Arbolsaf", default="Escriba su texto aquí")
-    texto_seccion_creditos = RichTextField("Texto pestaña Créditos", default="Escriba los créditos")
-    texto_seccion_descargo_responsabilidad = RichTextField("Texto pestaña Descargo de responsabilidad", default="Escriba el texto")
-    texto_seccion_agradecimientos = RichTextField("Texto pestaña Agradecimientos", default="Escriba el texto")
 
+    # ── Introducción ─────────────────────────────────────────────────
+    # El diagrama "Etapas de codiseño" está embebido como <img> dentro del texto.
+    texto_seccion_arbolsaf = RichTextField("Introducción", default="")
+
+    # ── Métodos: pestañas ─────────────────────────────────────────────
+    texto_metodos_seleccion = RichTextField("Métodos: Selección de especies", default="")
+    texto_metodos_categorizacion = RichTextField("Métodos: Categorización & IVIM", default="")
+    texto_metodos_datos = RichTextField("Métodos: Datos y referencias (texto introductorio)", default="")
+
+    # Versiones y créditos — dividido antes/después de la imagen v1
+    texto_metodos_versiones_antes = RichTextField("Métodos: Versiones y créditos (antes de la imagen)", default="")
+    imagen_arbolsaf_v1 = models.ImageField(
+        "Imagen ÁrbolSAF v1.0 (sección Versiones)", upload_to='configuracion/', blank=True, null=True
+    )
+    texto_metodos_versiones_despues = RichTextField("Métodos: Versiones y créditos (después de la imagen)", default="")
+
+    texto_seccion_descargo_responsabilidad = RichTextField("Métodos: Descargo de responsabilidad", default="")
+
+    # ── (legacy, no utilizado en templates) ──────────────────────────
+    texto_seccion_creditos = RichTextField("(legado) Créditos", default="")
+    texto_seccion_agradecimientos = RichTextField("(legado) Agradecimientos", default="")
 
     class Meta:
         db_table = 'arbolsaf_configuracion'

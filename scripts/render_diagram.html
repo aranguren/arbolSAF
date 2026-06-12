@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Inter, Arial, sans-serif;
+    background: #fff;
+    padding: 24px 28px 24px 28px;
+    width: 860px;
+  }
+  .codiseno-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .codiseno-diagram__title {
+    display: inline-block;
+    border: 2px solid #222;
+    padding: 0.5rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.25rem;
+    border-radius: 4px;
+  }
+  .codiseno-diagram__flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+  }
+  .codiseno-box {
+    flex: 1;
+    border-radius: 14px;
+    padding: 1.1rem 1rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .codiseno-box--outline {
+    border: 2.5px solid #2d4a6a;
+    background: #fff;
+    color: #1a1a1a;
+  }
+  .codiseno-box--filled {
+    background: #7aab4a;
+    color: #fff;
+    font-weight: 600;
+  }
+  .codiseno-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 0.4rem;
+    flex-shrink: 0;
+  }
+  .codiseno-arrow svg {
+    width: 36px;
+    height: 36px;
+  }
+</style>
+</head>
+<body>
+<div class="codiseno-diagram">
+  <div class="codiseno-diagram__title">Etapas de codiseño de un SAF</div>
+  <div class="codiseno-diagram__flow">
+
+    <div class="codiseno-box codiseno-box--outline">
+      Diagnóstico integral del contexto, las capacidades, los objetivos y recursos de la familia/agricultor
+    </div>
+
+    <div class="codiseno-arrow">
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="4,12 22,12 22,6 32,18 22,30 22,24 4,24" fill="#7aab4a"/>
+      </svg>
+    </div>
+
+    <div class="codiseno-box codiseno-box--filled">
+      Selección de especies y arreglo espacial y temporal considerando las especies de asocio
+    </div>
+
+    <div class="codiseno-arrow">
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="4,12 22,12 22,6 32,18 22,30 22,24 4,24" fill="#7aab4a"/>
+      </svg>
+    </div>
+
+    <div class="codiseno-box codiseno-box--outline">
+      Evaluación de los costos y beneficios económicos y ambientales que requiere y proveerá el SAF
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

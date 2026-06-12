@@ -7,7 +7,7 @@ import math
 import unicodedata
 from datetime import date
 from django.conf import settings
-from ..models import SpeciesModel, RegistroReporteHerramienta, ReferenceModel, VariableModel
+from ..models import SpeciesModel, RegistroReporteHerramienta, ReferenceModel, VariableModel, Configuracion
 
 
 # ── Helpers para gráficos SVG en el PDF ────────────────────────────────────
@@ -150,6 +150,7 @@ class ToolView(TemplateView):
         context["tool_references"] = (
             ReferenceModel.objects.filter(id__in=flat_ids).order_by('fuente_final')
         )
+        context["config"] = Configuracion.load()
         return context
 
 

@@ -1,0 +1,48 @@
+/*
+ * Estilos cargados DENTRO del iframe del editor CKEditor.
+ * No usar selectores con .tool-page o .arbol-main — no existen en el iframe.
+ */
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    font-size: 1rem;
+    color: #444;
+    padding: 12px 18px;
+    line-height: 1.7;
+}
+
+/* ── Títulos principales: verde con línea inferior ─────────────── */
+h2, h3 {
+    color: #2d6a2d;
+    border-bottom: 2px solid #2d6a2d;
+    padding-bottom: 0.35rem;
+    margin-top: 1.4rem;
+    margin-bottom: 0.9rem;
+    font-weight: 700;
+}
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.15rem; }
+
+/* ── Subtítulos de subsección: línea divisoria gris ────────────── */
+p.tool-subsection-title,
+.tool-subsection-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #c0c8d0;
+    padding-bottom: 0.25rem;
+    margin-top: 1.2rem;
+    margin-bottom: 0.6rem;
+}
+
+/* ── Párrafos y listas ─────────────────────────────────────────── */
+p  { margin-bottom: 0.9rem; }
+ul, ol { padding-left: 1.4rem; margin-bottom: 0.9rem; }
+li { margin-bottom: 0.35rem; }
+
+/* ── Versiones: itálica-negrita inline ─────────────────────────── */
+p[style*="font-style:italic"],
+p[style*="font-style: italic"] {
+    color: #333;
+}
