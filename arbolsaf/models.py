@@ -5,6 +5,7 @@ from computedfields.models import ComputedFieldsModel, computed, compute
 import urllib.parse
 from django.core.cache import cache
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class BasicAuditModel(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, 
@@ -729,17 +730,17 @@ class Configuracion(SingletonModel):
 
     # ── Introducción ─────────────────────────────────────────────────
     # El diagrama "Etapas de codiseño" está embebido como <img> dentro del texto.
-    texto_seccion_arbolsaf = RichTextField("Introducción", default="")
+    texto_seccion_arbolsaf = RichTextUploadingField("Introducción", default="")
 
     # ── Métodos: pestañas ─────────────────────────────────────────────
-    texto_metodos_seleccion = RichTextField("Métodos: Selección de especies", default="")
-    texto_metodos_categorizacion = RichTextField("Métodos: Categorización & IVIM", default="")
-    texto_metodos_datos = RichTextField("Métodos: Datos y referencias (texto introductorio)", default="")
+    texto_metodos_seleccion = RichTextUploadingField("Métodos: Selección de especies", default="")
+    texto_metodos_categorizacion = RichTextUploadingField("Métodos: Categorización & IVIM", default="")
+    texto_metodos_datos = RichTextUploadingField("Métodos: Datos y referencias (texto introductorio)", default="")
 
     # Versiones y créditos — campo único con imagen arbolsafv1.png embebida
-    texto_metodos_versiones = RichTextField("Métodos: Versiones y créditos", default="")
+    texto_metodos_versiones = RichTextUploadingField("Métodos: Versiones y créditos", default="")
 
-    texto_seccion_descargo_responsabilidad = RichTextField("Métodos: Descargo de responsabilidad", default="")
+    texto_seccion_descargo_responsabilidad = RichTextUploadingField("Métodos: Descargo de responsabilidad", default="")
 
     # ── (legacy, no utilizado en templates) ──────────────────────────
     texto_seccion_creditos = RichTextField("(legado) Créditos", default="")

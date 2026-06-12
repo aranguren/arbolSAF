@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'computedfields',
     'import_export',
     'ckeditor',
+    'ckeditor_uploader',
     'arbolsaf',
     'apps.home',  # Enable the inner home (home)
     'django_browser_reload',
@@ -150,6 +151,12 @@ MEDIA_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(MEDIA_BASE_DIR, 'media')
 MEDIA_URL = '/uploaded/'
 
+# Subcarpeta dentro de MEDIA_ROOT donde CKEditor sube las imágenes del editor
+CKEDITOR_UPLOAD_PATH = 'editor_uploads/'
+# Solo admins pueden subir — no requiere autenticación adicional
+CKEDITOR_RESTRICT_BY_USER = False
+CKEDITOR_BROWSE_SHOW_DIRS = True
+
 # ── CKEditor ─────────────────────────────────────────────────────────
 # allowedContent=True: no eliminar clases, atributos ni estilos inline
 # contentsCss: carga el CSS de la herramienta para que los títulos y
@@ -165,7 +172,7 @@ CKEDITOR_CONFIGS = {
         'toolbar_Custom': [
             ['Format', 'Bold', 'Italic', 'Underline', 'Strike'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
-            ['Link', 'Unlink'],
+            ['Image', 'Link', 'Unlink'],
             ['RemoveFormat', 'Source'],
         ],
     }
