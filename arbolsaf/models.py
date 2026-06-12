@@ -736,12 +736,8 @@ class Configuracion(SingletonModel):
     texto_metodos_categorizacion = RichTextField("Métodos: Categorización & IVIM", default="")
     texto_metodos_datos = RichTextField("Métodos: Datos y referencias (texto introductorio)", default="")
 
-    # Versiones y créditos — dividido antes/después de la imagen v1
-    texto_metodos_versiones_antes = RichTextField("Métodos: Versiones y créditos (antes de la imagen)", default="")
-    imagen_arbolsaf_v1 = models.ImageField(
-        "Imagen ÁrbolSAF v1.0 (sección Versiones)", upload_to='configuracion/', blank=True, null=True
-    )
-    texto_metodos_versiones_despues = RichTextField("Métodos: Versiones y créditos (después de la imagen)", default="")
+    # Versiones y créditos — campo único con imagen arbolsafv1.png embebida
+    texto_metodos_versiones = RichTextField("Métodos: Versiones y créditos", default="")
 
     texto_seccion_descargo_responsabilidad = RichTextField("Métodos: Descargo de responsabilidad", default="")
 

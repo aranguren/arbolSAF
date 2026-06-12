@@ -14,19 +14,16 @@
 
     <!-- ── Selección de especies ──────────────────────────────────── -->
     <div class="metodos-panel tool-panel-content mt-4" id="metodos-seleccion">
-      <h2 class="tool-section-title mb-3">Selección de especies</h2>
       {{ config.texto_metodos_seleccion|safe }}
     </div>
 
     <!-- ── Categorización & IVIM ─────────────────────────────────── -->
     <div class="metodos-panel tool-panel-content mt-4" id="metodos-categorizacion" style="display:none;">
-      <h2 class="tool-section-title mb-3">Categorización &amp; IVIM</h2>
       {{ config.texto_metodos_categorizacion|safe }}
     </div>
 
     <!-- ── Datos & referencias ────────────────────────────────────── -->
     <div class="metodos-panel tool-panel-content mt-4" id="metodos-datos" style="display:none;">
-      <h2 class="tool-section-title mb-3">Datos y referencias</h2>
       {{ config.texto_metodos_datos|safe }}
 
       <p class="tool-subsection-title mt-4">Referencias utilizadas</p>
@@ -47,23 +44,11 @@
 
     <!-- ── Versiones & créditos ───────────────────────────────────── -->
     <div class="metodos-panel tool-panel-content mt-4" id="metodos-versiones" style="display:none;">
-      <h2 class="tool-section-title mb-3">Versiones y créditos</h2>
-      {{ config.texto_metodos_versiones_antes|safe }}
-
-      <p style="text-align:center;margin:1rem 0;">
-        {% if config.imagen_arbolsaf_v1 %}
-          <img src="{{ config.imagen_arbolsaf_v1.url }}" alt="ÁrbolSAF v.1.0-beta (2023)" style="max-width:100%;height:auto;">
-        {% else %}
-          <img src="/static/assets/img/arbolsafv1.png" alt="ÁrbolSAF v.1.0-beta (2023)" style="max-width:100%;height:auto;">
-        {% endif %}
-      </p>
-
-      {{ config.texto_metodos_versiones_despues|safe }}
+      {{ config.texto_metodos_versiones|safe }}
     </div>
 
     <!-- ── Descargo de responsabilidad ───────────────────────────── -->
     <div class="metodos-panel tool-panel-content mt-4" id="metodos-descargo" style="display:none;">
-      <h2 class="tool-section-title mb-3">Descargo de responsabilidad</h2>
       {{ config.texto_seccion_descargo_responsabilidad|safe }}
     </div>
 

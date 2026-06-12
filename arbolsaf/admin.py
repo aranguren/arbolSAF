@@ -622,14 +622,10 @@ class ConfiguracionAdmin(admin.ModelAdmin):
             'classes': ['collapse'],
         }),
         ('Métodos — Versiones y créditos', {
-            'fields': [
-                'texto_metodos_versiones_antes',
-                'imagen_arbolsaf_v1',
-                'texto_metodos_versiones_despues',
-            ],
+            'fields': ['texto_metodos_versiones'],
             'description': (
-                'La imagen (captura de la v1.0) aparece entre los dos bloques de texto. '
-                'Sube una nueva imagen para reemplazarla; si no hay imagen cargada se usa la imagen por defecto.'
+                'La imagen de ÁrbolSAF v1.0 está embebida dentro del texto. '
+                'Puedes verla y reposicionarla directamente en el editor.'
             ),
             'classes': ['collapse'],
         }),
