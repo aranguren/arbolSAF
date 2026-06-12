@@ -742,9 +742,6 @@ class Configuracion(SingletonModel):
 
     texto_seccion_descargo_responsabilidad = RichTextUploadingField("Métodos: Descargo de responsabilidad", default="")
 
-    # ── (legacy, no utilizado en templates) ──────────────────────────
-    texto_seccion_creditos = RichTextField("(legado) Créditos", default="")
-    texto_seccion_agradecimientos = RichTextField("(legado) Agradecimientos", default="")
 
     class Meta:
         db_table = 'arbolsaf_configuracion'

@@ -803,13 +803,43 @@
 .tool-panel-content p { font-size: 1rem; color: #444; line-height: 1.7; margin-bottom: 1rem; }
 
 /* ── Excepciones al color: black !important ─────────────────────── */
-/* Headings verdes en panel intro */
+
+/* Títulos de sección — verde con línea inferior (con o sin clase) */
 .tool-page .arbol-main .intro-content h2,
 .tool-page .arbol-main .intro-content h3,
-.tool-page .arbol-main h2.tool-section-title {
+.tool-page .arbol-main h2.tool-section-title,
+.tool-page .arbol-main .tool-panel-content h2.tool-section-title,
+.tool-page .arbol-main .tool-panel-content h2 {
     color: #2d6a2d !important;
-    border-bottom: 2px solid #2d6a2d;
-    padding-bottom: 0.35rem;
+    border-bottom: 2px solid #2d6a2d !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Subtítulos de subsección — línea divisoria gris */
+.tool-page .arbol-main .tool-subsection-title,
+.tool-page .arbol-main p.tool-subsection-title,
+.tool-page .arbol-main .tool-panel-content .tool-subsection-title {
+    color: #444 !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    padding-bottom: 0.2rem !important;
+    margin-bottom: 0.6rem !important;
+}
+
+/* Diagrama codiseño: texto blanco en caja verde, fill verde en flechas SVG */
+.tool-page .arbol-main .codiseno-box--filled,
+.tool-page .arbol-main .codiseno-box--filled * {
+    color: #fff !important;
+}
+.tool-page .arbol-main .codiseno-arrow svg,
+.tool-page .arbol-main .codiseno-arrow svg polygon,
+.tool-page .arbol-main .codiseno-arrow svg path {
+    fill: #7aab4a !important;
+}
+.tool-page .arbol-main .codiseno-box--outline {
+    color: #1a1a1a !important;
 }
 
 /* Spinners de carga (text-success → verde Bootstrap) */

@@ -633,10 +633,6 @@ class ConfiguracionAdmin(admin.ModelAdmin):
             'fields': ['texto_seccion_descargo_responsabilidad'],
             'classes': ['collapse'],
         }),
-        ('Campos legado (no mostrados en la herramienta)', {
-            'fields': ['texto_seccion_creditos', 'texto_seccion_agradecimientos'],
-            'classes': ['collapse'],
-        }),
     ]
 
 
