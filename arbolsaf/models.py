@@ -344,6 +344,10 @@ class SpeciesModel(BasicAuditModel, ComputedFieldsModel):
     @computed(models.IntegerField(_("Valor para  Madera"), default=0),
                 depends=[])
     def valor_madera(self):
+        # Si la especie es palmera o herbácea (v104) no tiene valor maderable
+        if self._qual_options('v104') & {'palmera', 'herbacea'}:
+            return 0
+
         if len(self.get_variables) == 0:
             return 0
 
