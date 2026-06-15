@@ -1145,9 +1145,7 @@ function slideCarrousel (item, id_carrousel ) {
                 '<div class="modal-content">' +
                     '<div class="modal-header">' +
                         '<h5 class="modal-title" id="exampleModalLongTitle"> Imágenes </h5>' +
-                        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                        '</button>' +
+                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
                     '</div>' +
                     '<div class="modal-body">' + 
                         '<div id="' + id_carrousel + '" class="carousel slide" data-ride="carousel">' +
@@ -1190,7 +1188,7 @@ function slideCarrousel (item, id_carrousel ) {
     i += '</div>' +
             '</div>' +
                 '<div class="modal-footer">' +
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>' +
+                    '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>' +
                     // <button type="button" class="btn btn-primary">Save changes</button>
                 '</div>' +
             '</div>' +

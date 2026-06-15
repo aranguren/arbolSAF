@@ -374,7 +374,7 @@ def species_list_json(request):
         'variables__referencia',
         'variables__referencia_2',
         'imagenes',
-    ).order_by('pk')
+    ).order_by('nombre_comun')
 
     if page_size > 0:
         paginator = Paginator(qs, page_size)
