@@ -137,8 +137,12 @@
     /* ── Tablas: evitar corte dentro de una fila; repetir cabecera ── */
     .det-table tbody tr,
     .sem-table tbody tr { page-break-inside: avoid; }
+    /* Repetir encabezado en cada página y evitar que quede huérfano al pie */
     .det-table thead,
-    .sem-table thead    { display: table-header-group; }
+    .sem-table thead    { display: table-header-group; page-break-after: avoid; }
+    /* Tablas pequeñas que caben en una página: forzarlas íntegras a la siguiente
+       si no hay espacio suficiente en la actual */
+    .no-break           { page-break-inside: avoid; }
 
     /* ── Pie del reporte ── */
     .report-footer {
@@ -210,6 +214,7 @@
 
   <!-- Composición del portafolio -->
   <p class="sec-title">Principales características de las especies seleccionadas por el usuario</p>
+  <div class="no-break">
   <table class="comp-table" style="margin-top:4px;">
     <tbody>
       <tr class="head-row"><td>Número de especies</td><td>{{ n_especies }}</td></tr>
@@ -219,6 +224,7 @@
       <tr class="even-row"><td>Promedio del IVIM (escala de 0 a 18)</td><td>{{ ivim_promedio }}</td></tr>
     </tbody>
   </table>
+  </div><!-- /no-break comp-table -->
 
 </div><!-- /página 1 -->
 
@@ -248,15 +254,20 @@
   <!-- c) Fauna y polinizadores -->
   <p class="sub-title">c) Fauna y polinizadores</p>
   <p style="font-size:14px; color:#666; margin-bottom:18px;">
-    Izquierda) grupos de fauna para los que las especies seleccionadas aportan recursos de alimento
-    o refugio. Derecha) agentes polinizadores asociados a las especies seleccionadas (el ícono se
-    resalta cuando al menos una especie del portafolio los atrae).
+    Se muestran los grupos de fauna para los que las especies seleccionadas aportan recursos de alimento
+    o refugio y los agentes polinizadores asociados a las especies seleccionadas (el icono se resalta
+    cuando al menos una especie del portafolio registra relación con dicho polinizador).
   </p>
 
-  <table style="width:100%; border-collapse:collapse; border:none;">
+  <div class="no-break">
+  <table style="width:100%; border-collapse:collapse; border:none; table-layout:fixed;">
+    <colgroup>
+      <col style="width:280px;">
+      <col>
+    </colgroup>
     <tr>
       <!-- Pastel de fauna -->
-      <td style="width:275px; vertical-align:top; padding:0 18px 0 0; border:none;">
+      <td style="vertical-align:top; padding:0 18px 0 0; border:none;">
         <p style="font-size:10px; font-weight:700; color:#555; text-transform:uppercase;
                   letter-spacing:0.05em; margin-bottom:6px;">GRUPOS DE FAUNA</p>
         {{ fauna_pie|safe }}
@@ -276,6 +287,7 @@
       </td>
     </tr>
   </table>
+  </div>
 
 </div><!-- /página 2 -->
 

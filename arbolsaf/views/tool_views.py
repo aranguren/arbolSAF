@@ -76,7 +76,7 @@ def _make_fauna_pie_svg(fauna_active, size=200):
     GREEN = '#21ac8d'
     GRAY  = '#d8d8d8'
 
-    svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 {0} {0}">'.format(size)]
+    svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="{0}" height="{0}" viewBox="0 0 {0} {0}">'.format(size)]
 
     for i, (label, active) in enumerate(fauna_active):
         color      = GREEN if active else GRAY
@@ -393,9 +393,8 @@ def tool_print_pdf_view(request):
     data['n_nativas']   = sum(1 for e in especies_obj if e.get('nativa'))
     data['n_endemicas'] = sum(1 for e in especies_obj if e.get('v64_endemismo'))
     data['n_amenaza']   = sum(1 for e in especies_obj if
-                              (e.get('v56_amenaza_iucn') or '').strip() or
-                              (e.get('v59_amenaza_nacional') or '').strip() or
-                              (e.get('v175_amenaza_peru') or '').strip())
+                              any(cat in (e.get('v56_amenaza_iucn') or '').upper()
+                                  for cat in ('VU', 'EN')))
     ivim_vals  = [float(e.get('IVIM') or 0) for e in especies_obj]
     ivim_valid = [v for v in ivim_vals if v > 0]
     data['ivim_promedio'] = ('{:.1f}'.format(sum(ivim_valid) / len(ivim_valid))

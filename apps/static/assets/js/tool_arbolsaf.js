@@ -41,7 +41,7 @@ $.ajax({
 
 // ── Pre-fetch de todas las especies para el portafolio ───────────
 $.ajax({
-    url: "/arbolsaf/especie/listado/json/?todos=1",
+    url: "/arbolsaf/especie/listado/json/",
     type: "GET",
     dataType: "json",
     success: function(data) {
@@ -308,7 +308,7 @@ var MODES = {
             { title: 'Mamíferos<br>mayores',     data: 'v176_mamiferos_mayores',  render: boolDot },
             { title: 'Murciélagos',              data: 'v91_murcielagos',         render: boolDot },
             { title: 'Primates',                 data: 'v177_primates',           render: boolDot },
-            { title: 'Amenaza/<br>protección',   data: 'v56_amenaza_iucn',        render: withRefs(['v56','v59'], renderAmenazaCombinada) },
+            { title: '<span data-bs-toggle="tooltip" data-bs-placement="top" title="LC= De menor preocupación, DD= Datos insuficientes, NT= Casi amenazado, VU= Vulnerable, EN= en peligro de extinción; Cites II = comercio bajo reglamentación" style="cursor:help;border-bottom:1px dotted rgba(255,255,255,0.5);color:inherit !important;">Amenaza/<br>protección</span>', data: 'v56_amenaza_iucn', render: withRefs(['v56','v59'], renderAmenazaCombinada) },
             { title: 'Valor<br>biodiversidad',   data: 'VALOR BIODIVERSIDAD',  render: valuePlain },
             { title: 'Seleccione',               data: 'CODIGO',                  render: renderCheckbox, orderable: false },
         ]
@@ -478,9 +478,8 @@ function renderSintesis() {
     var nativas   = sp.filter(function(s) { return s.nativa; }).length;
     var endemicas = sp.filter(function(s) { return s.v64_endemismo; }).length;
     var amenaza   = sp.filter(function(s) {
-        return (s.v56_amenaza_iucn     || '').trim() ||
-               (s.v59_amenaza_nacional || '').trim() ||
-               (s.v175_amenaza_peru    || '').trim();
+        var v56 = (s.v56_amenaza_iucn || '').toUpperCase();
+        return v56.indexOf('VU') >= 0 || v56.indexOf('EN') >= 0;
     }).length;
     var ivimVals = sp.map(function(s) { return parseFloat(s['IVIM']); })
                      .filter(function(v) { return !isNaN(v); });
@@ -963,9 +962,9 @@ var MORFO_MODES = {
             { title: 'Follaje de copa',                  data: 'v6_follage',                 render: withRefs(['v6'],       null) },
             { title: 'Forma<br>de copa',                 data: 'v7_forma_copa',              render: withRefs(['v7'],       null) },
             { title: 'Forma<br>de fuste',                data: 'v144_forma_fuste',           render: withRefs(['v144'],     null) },
-            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',         render: withRefs(['v9'],       null) },
+            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',          render: withRefs(['v9'],       null) },
+            { title: 'Tipo de<br>ramificación',          data: 'v13_tipo_ramificacion',       render: withRefs(['v13'],      null) },
             { title: 'Tamaño copa<br>(altura / ancho, m)',  data: 'v1_altura_min',              render: withRefs(['v1','v2'],  renderTamanoCopa) },
-            { title: 'Tipo<br>ramificación de copa',     data: 'v13_tipo_ramificacion_copa', render: withRefs(['v13'],      null) },
             { title: 'Notas',                            data: 'CODIGO', render: renderNotes('NOTAS_FORMA'), orderable: false },
         ]
     },
@@ -974,10 +973,8 @@ var MORFO_MODES = {
             { title: 'Especie',                          data: 'NOMBRE COMUN', render: renderNombreComun },
             { title: 'Época de<br>caída de hojas',       data: 'v35_epoca_caida_hojas',        render: withRefs(['v35'],  renderMonths) },
             { title: 'Fenología<br>de las hojas',        data: 'v37_fenologia_hojas',           render: withRefs(['v37'],  null) },
-            { title: 'Frecuencia<br>de poda',            data: 'v9_frecuencia_poda',            render: withRefs(['v9'],   null) },
             { title: 'Gremio<br>ecológico',              data: 'v73_gremio_ecologico',          render: withRefs(['v73'],  null) },
             { title: 'Grupo<br>funcional',               data: 'v80_grupo_funcional',           render: withRefs(['v80'],  null) },
-            { title: 'Tipo de<br>ramificación de copa',  data: 'v13_tipo_ramificacion_copa',    render: withRefs(['v13'],  null) },
             { title: 'Notas',                            data: 'CODIGO', render: renderNotes('NOTAS_ECOLOGIA'), orderable: false },
         ]
     }
