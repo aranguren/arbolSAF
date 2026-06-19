@@ -740,7 +740,7 @@ function renderFauna(sp) {
 var currentCSMode   = 'clima';
 
 // ── Step-3: Forma / Ecología ─────────────────────────────────────
-var currentMorfoMode = 'forma';
+var currentMorfoMode = 'ecologia';
 
 function renderMinMax(minKey, maxKey) {
     return function(data, type, row) {
@@ -886,7 +886,7 @@ function renderNotes(notesKey) {
         if (type !== 'display') return '';
         var stored = species_selected.find(function(s) { return s['CODIGO'] === code; });
         var note = stored ? (stored[notesKey] || '') : '';
-        return '<textarea class="dt-note" data-code="' + code + '" data-field="' + notesKey + '" rows="2" ' +
+        return '<textarea class="dt-note" data-code="' + code + '" data-field="' + notesKey + '" rows="2" maxlength="250" ' +
                'style="width:100%;min-width:120px;font-size:0.73rem;border:1px solid #dee2e6;border-radius:4px;padding:3px 5px;resize:vertical;" ' +
                'onchange="noteDTHandle(this)">' + note + '</textarea>';
     };
